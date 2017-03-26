@@ -16,7 +16,7 @@ in such a way that no trusted third parties are required anymore.
 ----
 ## Get it! ##
 
-  - *pre-packaged* - `https://github.com/SigwoTechnologies/jupiter/archive/v1.0.zip`
+  - *pre-packaged* - `https://github.com/SigwoTechnologies/jupiter/archive/v1.0.1.zip`
 
   - *dependencies*:
     - *general* - Java 8

@@ -48,23 +48,23 @@ in such a way that no trusted third parties are required anymore.
 
   - we love **pull requests**
   - we love issues (resolved ones actually ;-) )
-  - in any case, make sure you leave **your ideas** at BitBucket
+  - in any case, make sure you leave **your ideas** at GitHub
   - assist others on the issue tracker
   - **review** existing code and pull requests
   - cf. coding guidelines in DEVELOPERS-GUIDE.md
 
 ----
-## Troubleshooting the NRS (Jupiter Reference Software) ##
+## Troubleshooting the JRS (Jupiter Reference Software) ##
 
-  - How to Stop the NRS Server?
+  - How to Stop the JRS Server?
     - click on Jupiter Stop icon, or run `./stop.sh`
     - or if started from command line, ctrl+c or close the console window
 
   - UI Errors or Stacktraces?
-    - report on BitBucket
+    - report on Github
 
   - Permissions Denied?
-    - no spaces and only latin characters in the path to the NRS installation directory
+    - no spaces and only latin characters in the path to the JRS installation directory
     - known jetty issue
 
 ----

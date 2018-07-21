@@ -167,7 +167,7 @@ public class DesktopApplication extends Application {
 
         Scene scene = new Scene(browser);
         String address = API.getServerRootUri().toString();
-        stage.getIcons().add(new Image(address + "/img/nxt-icon-32x32.png"));
+        stage.getIcons().add(new Image(address + "/img/jup-icon-32x32.png"));
         stage.initStyle(StageStyle.DECORATED);
         stage.setScene(scene);
         stage.sizeToScene();

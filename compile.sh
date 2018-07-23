@@ -10,18 +10,18 @@ APPLICATION="jrs"
 /bin/rm -rf addons/classes
 /bin/mkdir -p addons/classes/
 
-echo "compiling nxt core..."
+echo "compiling Jupiter core..."
 find src/java/nxt/ -name "*.java" > sources.tmp
 javac -encoding utf8 -sourcepath "${SP}" -classpath "${CP}" -d classes/ @sources.tmp || exit 1
-echo "nxt core class files compiled successfully"
+echo "Jupiter core class files compiled successfully"
 
-echo "compiling nxt desktop..."
+echo "compiling Jupiter desktop..."
 find src/java/nxtdesktop/ -name "*.java" > sources.tmp
 javac -encoding utf8 -sourcepath "${SP}" -classpath "${CP}" -d classes/ @sources.tmp
 if [ $? -eq 0 ]; then
-    echo "nxt desktop class files compiled successfully"
+    echo "Jupiter desktop class files compiled successfully"
 else
-    echo "if javafx is not supported, nxt desktop compile errors are safe to ignore, but desktop wallet will not be available"
+    echo "if javafx is not supported, Jupiter desktop compile errors are safe to ignore, but desktop wallet will not be available"
 fi
 
 rm -f sources.tmp
@@ -37,4 +37,4 @@ else
     rm -f addons.tmp
 fi
 
-echo "compilation done"
+echo "Jupiter compilation done"

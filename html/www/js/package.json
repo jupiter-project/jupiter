@@ -1,7 +1,7 @@
 {
-  "name": "nxt-blockchain",
-  "version": "1.0.5",
-  "description": "Client API library for the NXT Blockchain",
+  "name": "jupiter-blockchain",
+  "version": "1.11.6.0",
+  "description": "Client API library for the Jupiter Blockchain",
   "main": "nrs.node.bridge.js",
   "directories": {
     "test": "test"
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.org/JeanLucPicard/nxt.git"
+    "url": "git+https://github.com/SigwoTechnologies/jupiter.git"
   },
   "keywords": [
     "blockchain",
@@ -19,8 +19,9 @@
     "api"
   ],
   "author": "Jelurida",
+  "contributors": "Sigwo Technologies",
   "license": "MIT",
-  "homepage": "https://bitbucket.org/JeanLucPicard/nxt#readme",
+  "homepage": "https://github.com/SigwoTechnologies/jupiter#readme",
   "dependencies": {
     "async": "^2.1.4",
     "crypto-js": "^3.1.9-1",

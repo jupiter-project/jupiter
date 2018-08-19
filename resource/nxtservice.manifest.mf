@@ -1,18 +1,18 @@
 Manifest-Version: 1.0
-Class-Path: lib/tika-core-1.13.jar lib/javax.servlet-api-3.1.0.jar lib
- /jetty-server-9.3.16.v20170120.jar lib/jetty-servlet-9.3.16.v20170120
- .jar lib/websocket-common-9.3.16.v20170120.jar lib/tika-parsers-1.13.
- jar lib/weupnp-0.1.4.jar lib/jetty-client-9.3.16.v20170120.jar lib/lu
- cene-queries-5.3.2.jar lib/slf4j-jdk14-1.7.22.jar lib/jetty-http-9.3.
- 16.v20170120.jar lib/bcprov-jdk15on-156.jar lib/core-3.3.0.jar lib/lu
- cene-analyzers-common-5.3.2.jar lib/json-simple-1.1.1.jar lib/jetty-p
- roxy-9.3.16.v20170120.jar lib/jetty-continuation-9.3.16.v20170120.jar
-  lib/lucene-core-5.3.2.jar lib/jetty-util-9.3.16.v20170120.jar lib/we
- bsocket-client-9.3.16.v20170120.jar lib/lucene-queryparser-5.3.2.jar 
- lib/h2-1.4.194.jar lib/websocket-server-9.3.16.v20170120.jar lib/jett
- y-io-9.3.16.v20170120.jar lib/websocket-servlet-9.3.16.v20170120.jar 
- lib/javase-3.3.0.jar lib/slf4j-api-1.7.22.jar lib/websocket-api-9.3.1
- 6.v20170120.jar lib/jetty-security-9.3.16.v20170120.jar lib/jetty-ser
- vlets-9.3.16.v20170120.jar conf/
+Class-Path: lib/slf4j-jdk14-1.7.22.jar lib/jetty-http-9.3.16.v20170120
+ .jar lib/bcprov-jdk15on-156.jar lib/jetty-server-9.3.16.v20170120.jar
+  lib/websocket-client-9.3.16.v20170120.jar lib/core-3.3.0.jar lib/jso
+ n-simple-1.1.1.jar lib/tika-core-1.13.jar lib/tika-parsers-1.13.jar l
+ ib/jetty-io-9.3.16.v20170120.jar lib/lucene-analyzers-common-5.3.2.ja
+ r lib/slf4j-api-1.7.22.jar lib/websocket-server-9.3.16.v20170120.jar 
+ lib/jetty-client-9.3.16.v20170120.jar lib/javase-3.3.0.jar lib/h2-1.4
+ .194.jar lib/javax.servlet-api-3.1.0.jar lib/websocket-common-9.3.16.
+ v20170120.jar lib/lucene-queries-5.3.2.jar lib/jetty-servlet-9.3.16.v
+ 20170120.jar lib/jetty-util-9.3.16.v20170120.jar lib/lucene-core-5.3.
+ 2.jar lib/jetty-servlets-9.3.16.v20170120.jar lib/weupnp-0.1.4.jar li
+ b/websocket-api-9.3.16.v20170120.jar lib/lucene-queryparser-5.3.2.jar
+  lib/jetty-proxy-9.3.16.v20170120.jar lib/websocket-servlet-9.3.16.v2
+ 0170120.jar lib/jetty-continuation-9.3.16.v20170120.jar lib/jetty-sec
+ urity-9.3.16.v20170120.jar conf/
 Main-Class: nxt.env.service.NxtService
 

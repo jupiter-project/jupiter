@@ -8,7 +8,7 @@ Jupiter is the base platform needed to run the [Gravity](https://github.com/Sigw
 ----
 ## Get it! ##
 
-  - *pre-packaged* - `https://github.com/SigwoTechnologies/jupiter/archive/v1.1.0.zip`
+  - *pre-packaged* - `https://github.com/SigwoTechnologies/jupiter/releases/download/1.11.6.0/jrs-client-1.11.6.0.zip`
 
   - *dependencies*:
     - *General* - Java 8

@@ -1,0 +1,15 @@
+version: '3'
+networks: 
+  dbnet:
+    driver: bridge
+    
+jupiter:
+    build: .
+    networks:
+      - dbnet
+    ports:
+      - "7876:7876"
+    restart: always
+    command: ./run.sh
+    volumes:
+      - ./:/apps/jupiter

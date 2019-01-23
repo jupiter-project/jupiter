@@ -1,0 +1,5 @@
+nohup.out
+logs/nxt.log
+logs/nxt.log.lck
+nxt_db/
+html/www/html/pages/sources.tmp

@@ -1,6 +1,6 @@
 {
   "name": "jupiter-blockchain",
-  "version": "1.11.6.0",
+  "version": "1.11.7.0",
   "description": "Client API library for the Jupiter Blockchain",
   "main": "nrs.node.bridge.js",
   "directories": {

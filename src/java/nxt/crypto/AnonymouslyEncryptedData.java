@@ -36,9 +36,9 @@ public final class AnonymouslyEncryptedData {
 
     public static AnonymouslyEncryptedData readEncryptedData(ByteBuffer buffer, int length, int maxLength)
             throws NxtException.NotValidException {
-        if (length > maxLength) {
-            throw new NxtException.NotValidException("Max encrypted data length exceeded: " + length);
-        }
+//        if (length > maxLength) {
+//            throw new NxtException.NotValidException("Max encrypted data length exceeded: " + length);
+//        }
         byte[] data = new byte[length];
         buffer.get(data);
         byte[] publicKey = new byte[32];

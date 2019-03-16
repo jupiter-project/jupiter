@@ -35,7 +35,7 @@ RUN apt-get install -y oracle-java8-installer
 
 # compile Jupiter
 RUN cd /root && git clone https://github.com/sigwotechnologies/jupiter && \
-cd jupiter && chmod + compile.sh && ./compile.sh && ./run.sh
+cd jupiter && chmod + compile.sh && ./compile.sh
 
 # both Jupiter ports get exposed
 EXPOSE 7874 7876

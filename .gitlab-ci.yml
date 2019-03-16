@@ -10,12 +10,6 @@ services:
 before_script:
   - docker info
   - docker login -u=$CI_REGISTRY_USER -p="$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-    
-test:
-  stage: test
-  script:
-    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME ./
-    - docker run --name metis $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME npm run test;
 
 deploy_branch:
   stage: deploy

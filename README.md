@@ -8,11 +8,11 @@ Jupiter is the base platform needed to run the [Gravity](https://github.com/Sigw
 ----
 ## Get it! ##
 
-  - *pre-packaged* - `https://github.com/SigwoTechnologies/jupiter/releases/download/1.11.6.0/jrs-client-1.11.6.0.zip`
+  - *pre-packaged* - `https://github.com/SigwoTechnologies/jupiter/releases/download/1.11.7.3/jrs-client-1.11.7.3.zip`
 
   - *dependencies*:
     - *General* - Java 8
-    - *Ubuntu* - `http://www.webupd8.org/2012/09/install-oracle-java-8-in-ubuntu-via-ppa.html`
+    - *Ubuntu* - `apt install openjdk-8-jre-headless`
     - *Debian* - `http://www.webupd8.org/2014/03/how-to-install-oracle-java-8-in-debian.html`
     - *FreeBSD* - `pkg install openjdk8`
 

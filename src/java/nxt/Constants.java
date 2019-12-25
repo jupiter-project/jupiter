@@ -43,7 +43,7 @@ public final class Constants {
     public static final int MAX_ROLLBACK = Math.max(Nxt.getIntProperty("nxt.maxRollback"), 720);
     public static final int GUARANTEED_BALANCE_CONFIRMATIONS = isTestnet ? Nxt.getIntProperty("nxt.testnetGuaranteedBalanceConfirmations", 1440) : 1440;
     public static final int LEASING_DELAY = isTestnet ? Nxt.getIntProperty("nxt.testnetLeasingDelay", 1440) : 1440;
-    public static final long MIN_FORGING_BALANCE_NQT = 1000 * ONE_NXT;
+    public static final long MIN_FORGING_BALANCE_NQT = 10000 * ONE_NXT;
 
     public static final int MAX_TIMEDRIFT = 15; // allow up to 15 s clock difference
     public static final int FORGING_DELAY = Nxt.getIntProperty("nxt.forgingDelay");
@@ -126,13 +126,15 @@ public final class Constants {
 
     public static final int MAX_REFERENCED_TRANSACTION_TIMESPAN = 60 * 1440 * 60;
     public static final int CHECKSUM_BLOCK_1 = Integer.MAX_VALUE;
+    // First fork prior to exchange listing
+    public static final int CHECKSUM_BLOCK_2 = isTestnet ? 100 : 1105000;
 
-    public static final int LAST_CHECKSUM_BLOCK = 0;
+    public static final int LAST_CHECKSUM_BLOCK = CHECKSUM_BLOCK_2;
     // LAST_KNOWN_BLOCK must also be set in html/www/js/nrs.constants.js
-    public static final int LAST_KNOWN_BLOCK = isTestnet ? 0 : 0;
+    public static final int LAST_KNOWN_BLOCK = CHECKSUM_BLOCK_2;
 
-    public static final int[] MIN_VERSION = new int[] {1, 0};
-    public static final int[] MIN_PROXY_VERSION = new int[] {1, 0};
+    public static final int[] MIN_VERSION = new int[] {1, 11, 7, 1};
+    public static final int[] MIN_PROXY_VERSION = new int[] {1, 11, 7, 1};
 
     static final long UNCONFIRMED_POOL_DEPOSIT_NQT = (isTestnet ? 50 : 100) * ONE_NXT;
     public static final long SHUFFLING_DEPOSIT_NQT = (isTestnet ? 7 : 1000) * ONE_NXT;

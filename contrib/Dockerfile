@@ -31,7 +31,9 @@ RUN apt install -y openjdk-8-jre-headless openjdk-8-jdk
 
 # compile Jupiter
 RUN cd /root && git clone https://github.com/sigwotechnologies/jupiter && \
-cd jupiter && chmod + compile.sh && ./compile.sh && ./run.sh
+cd jupiter && chmod + compile.sh && ./compile.sh && ./start.sh
+RUN sleep 30
+RUN ./stop.sh
 
 # both Jupiter ports get exposed
 EXPOSE 7874 7876

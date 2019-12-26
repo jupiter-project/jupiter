@@ -26,7 +26,8 @@ ENV LC_ALL C.UTF-8
 #RUN su - $USER # switch to testuser
 
 # Install Jupiter
-RUN apt-get update && apt-get install -y build-essential software-properties-common python-software-properties g++ libssl-dev apache2-utils curl git python make nano wget unzip openjdk-8-jre
+RUN apt-get update && apt-get install -y build-essential software-properties-common python-software-properties g++ libssl-dev apache2-utils curl git python make nano wget unzip 
+RUN apt install -y openjdk-8-jre
 
 # compile Jupiter
 RUN cd /root && git clone https://github.com/sigwotechnologies/jupiter && \

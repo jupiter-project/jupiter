@@ -27,11 +27,11 @@ ENV LC_ALL C.UTF-8
 
 # Install Jupiter
 RUN apt-get update && apt-get install -y build-essential software-properties-common python-software-properties g++ libssl-dev apache2-utils curl git python make nano
-RUN add-apt-repository ppa:webupd8team/java -y
 RUN apt-get update
 RUN apt-get install -y wget unzip
-RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-RUN apt-get install -y oracle-java8-installer
+RUN apt-get install openjdk-8-jre
+#RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+#RUN apt-get install -y oracle-java8-installer
 
 # compile Jupiter
 RUN cd /root && git clone https://github.com/sigwotechnologies/jupiter && \

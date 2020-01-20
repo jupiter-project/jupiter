@@ -1,0 +1,2 @@
+* Reverted 10,000 forging to 1,000
+* Changed peer port to 7864 so Nxt and Jupiter do not connect

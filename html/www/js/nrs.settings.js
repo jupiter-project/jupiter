@@ -34,7 +34,7 @@ var NRS = (function(NRS, $) {
 		"enable_plugins": "0",
 		"items_page": "15",
 		"admin_password": "",
-        "exchange_url": "https://exchange.darcr.us",
+        "exchange_url": "https://coinlim.com",
         "exchange_api_key": "",
         "exchange_coin0": "BTC",
         "exchange_coin1": "DAR",

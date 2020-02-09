@@ -20,14 +20,14 @@
 var NRS = (function(NRS, $) {
 	var index = 0;
 	var bundles = [
-		{alias: "nrsVersion", status: "release", prefix: "nxt-client-", ext: "zip"},
-		{alias: "nrsBetaVersion", status: "beta", prefix: "nxt-client-", ext: "zip"},
-		{alias: "nrsVersionWin", status: "release", prefix: "nxt-client-", ext: "exe"},
-		{alias: "nrsBetaVersionWin", status: "beta", prefix: "nxt-client-", ext: "exe"},
-		{alias: "nrsVersionMac", status: "release", prefix: "nxt-installer-", ext: "dmg"},
-		{alias: "nrsBetaVersionMac", status: "beta", prefix: "nxt-installer-", ext: "dmg"},
-		{alias: "nrsVersionLinux", status: "release", prefix: "nxt-client-", ext: "sh"},
-		{alias: "nrsBetaVersionLinux", status: "beta", prefix: "nxt-client-", ext: "sh"}
+		{alias: "nrsVersion", status: "release", prefix: "jrs-client-", ext: "zip"},
+		{alias: "nrsBetaVersion", status: "beta", prefix: "jrs-client-", ext: "zip"},
+		{alias: "nrsVersionWin", status: "release", prefix: "jrs-client-", ext: "exe"},
+		{alias: "nrsBetaVersionWin", status: "beta", prefix: "jrs-client-", ext: "exe"},
+		{alias: "nrsVersionMac", status: "release", prefix: "jrs-installer-", ext: "dmg"},
+		{alias: "nrsBetaVersionMac", status: "beta", prefix: "jrs-installer-", ext: "dmg"},
+		{alias: "nrsVersionLinux", status: "release", prefix: "jrs-client-", ext: "sh"},
+		{alias: "nrsBetaVersionLinux", status: "beta", prefix: "jrs-client-", ext: "sh"}
 	];
 	NRS.isOutdated = false;
 
@@ -146,7 +146,7 @@ var NRS = (function(NRS, $) {
             return;
         }
         var filename = bundle.prefix + NRS.downloadedVersion.versionNr + "." + bundle.ext;
-        var fileurl = "https://bitbucket.org/JeanLucPicard/nxt/downloads/" + filename;
+        var fileurl = "https://github.com/SigwoTechnologies/jupiter/releases/download/" + filename;
         var nrsUpdateExplanation = $("#nrs_update_explanation");
         if (window.java !== undefined) {
             window.java.popupHandlerURLChange(fileurl);

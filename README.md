@@ -1,5 +1,5 @@
 ----
-# Welcome to Jupiter! # [![pipeline status](https://github.com/SigwoTechnologies/jupiter/blob/master/public/img/pipeline.svg)](https://gitlab.com/sigwotechnologies/jupiter/commits/master)
+# Welcome to Jupiter! # [![pipeline status](https://github.com/SigwoTechnologies/jupiter/tree/master/html/www/img)](https://gitlab.com/sigwotechnologies/jupiter/commits/master)
 
 ----
 ## What is Jupiter? ##

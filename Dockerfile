@@ -34,4 +34,4 @@ RUN cd /root && git clone https://github.com/sigwotechnologies/jupiter && \
 cd jupiter && chmod + compile.sh && ./compile.sh
 
 # both Jupiter ports get exposed
-EXPOSE 7874 7876
+EXPOSE 7864 7876

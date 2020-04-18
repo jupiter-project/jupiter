@@ -34,10 +34,10 @@ var NRS = (function(NRS, $) {
 		"enable_plugins": "0",
 		"items_page": "15",
 		"admin_password": "",
-        "exchange_url": "https://coinlim.com",
+        "exchange_url": "https://stex.com",
         "exchange_api_key": "",
         "exchange_coin0": "BTC",
-        "exchange_coin1": "MER",
+        "exchange_coin1": "JUP",
         "exchange_coin2": "ETH",
 		"max_nxt_decimals": "8"
 	};

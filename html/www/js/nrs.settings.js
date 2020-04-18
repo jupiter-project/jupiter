@@ -37,7 +37,7 @@ var NRS = (function(NRS, $) {
         "exchange_url": "https://coinlim.com",
         "exchange_api_key": "",
         "exchange_coin0": "BTC",
-        "exchange_coin1": "DAR",
+        "exchange_coin1": "MER",
         "exchange_coin2": "ETH",
 		"max_nxt_decimals": "8"
 	};
@@ -551,12 +551,12 @@ var NRS = (function(NRS, $) {
 		}
 
 		if (!key || key == "animate_forging") {
-            var forgingIndicator = $("#forging_indicator");
-            if (NRS.settings["animate_forging"] == "1") {
-				forgingIndicator.addClass("animated");
-			} else {
-				forgingIndicator.removeClass("animated");
-			}
+            	  var forgingIndicator = $("#forging_indicator");
+                  if (NRS.settings["animate_forging"] == "1" && NRS.isAnimationAllowed()) {
+			forgingIndicator.addClass("animated");
+		  } else {
+			forgingIndicator.removeClass("animated");
+		  }
 		}
 
 		if (!key || key == "items_page") {

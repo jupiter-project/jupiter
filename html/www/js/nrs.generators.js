@@ -69,7 +69,7 @@ var NRS = (function(NRS) {
             loadingDotsClass: "loading_dots"
         });
         var params = {
-            "limit": 10
+            "limit": 100
         };
         NRS.sendRequest("getNextBlockGenerators+", params,
             function(response) {

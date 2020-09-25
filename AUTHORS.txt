@@ -1,6 +1,6 @@
 This is a list of the current and past developers working on the Jupiter core software.
 sigwo
-steven@sigwo.com
+voorsie
 
 ---------------------------------------------------------------------------------------
 This is a list of current and past developers working on the Nxt core software,

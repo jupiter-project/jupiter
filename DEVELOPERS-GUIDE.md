@@ -35,7 +35,7 @@
   - [Vincent Driessen's Branching Model](http://nvie.com/posts/a-successful-git-branching-model/)
   - **tl;dr:**
     - master is release branch
-    - develop is maintained by sigwo
+    - dev is maintained by sigwo
     - feature/abc is yours
 
 ### Design ###

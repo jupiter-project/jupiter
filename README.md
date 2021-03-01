@@ -18,7 +18,7 @@ Jupiter is the base platform needed to run the [Gravity](https://github.com/jupi
     - *FreeBSD* - `pkg install openjdk8`
     - *MacOS* (from Terminal)
       - `brew tap AdoptOpenJDK/openjdk`<br>
-      - `brew cask install adoptopenjdk8`<br>
+      - `brew install --cask adoptopenjdk8`<br>
       - To check, `java -version`
 
   - *Repository* - `git clone https://github.com/jupiter-project/jupiter/`

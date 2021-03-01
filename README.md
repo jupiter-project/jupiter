@@ -3,21 +3,25 @@
 
 ----
 ## What is Jupiter? ##
-Jupiter is the base platform needed to run the [Gravity](https://github.com/SigwoTechnologies/jupiter-gravity) framework for information storage and decentralized application building. Jupiter is built from [Nxt's](https://nxt.org) system based on cryptography and blockchain technology.
+Jupiter is the base platform needed to run the [Gravity](https://github.com/jupiter-project/gravity) framework for information storage and decentralized application building. Jupiter is built from [Nxt's](https://nxt.org) system based on cryptography and blockchain technology.
 
 ----
 ## Get it! ##
 
 =======
-  - *pre-packaged* - `https://github.com/SigwoTechnologies/jupiter/releases` and download the latest release.
+  - *pre-packaged* - `https://github.com/jupiter-project/jupiter/releases` and download the latest release.
 
   - *dependencies*:
     - *General* - Java 8
     - *Ubuntu* - `apt install openjdk-8-jre-headless`
     - *Debian* - `http://www.webupd8.org/2014/03/how-to-install-oracle-java-8-in-debian.html`
     - *FreeBSD* - `pkg install openjdk8`
+    - *MacOS* (from Terminal)
+      - `brew tap AdoptOpenJDK/openjdk`<br>
+      - `brew cask install adoptopenjdk8`<br>
+      - To check, `java -version`
 
-  - *Repository* - `git clone https://github.com/SigwoTechnologies/jupiter/`
+  - *Repository* - `git clone https://github.com/jupiter-project/jupiter/`
   
 ----
 ## Run it! ##

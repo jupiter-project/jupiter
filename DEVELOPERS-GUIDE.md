@@ -35,7 +35,7 @@
   - [Vincent Driessen's Branching Model](http://nvie.com/posts/a-successful-git-branching-model/)
   - **tl;dr:**
     - master is release branch
-    - develop is maintained by Jean-Luc
+    - dev is maintained by sigwo
     - feature/abc is yours
 
 ### Design ###
@@ -56,7 +56,6 @@
 
 ### Testing ###
 
-  - [to be filled by Lior, kushti]
   - all API calls can be tested manually from the auto-generated http://localhost:7876/test page
   - many tests need blocks to be generated, see the examples how to fake the forging process
   - write your tests against the http API or the public java API, which are relatively stable
@@ -149,7 +148,7 @@ For providing new translation strings on the platform for the community to trans
 
 ### Mobile App ###
 
-The NXT wallet UI run as a mobile app.
+The JUP wallet UI run as a mobile app.
 
 To build the Android APK application follow these steps (Tested on Windows 7 64 bit):
 1. Install node.js (tested with Node 4.4.7 and npm 2.15.8), Apache Cordova (tested with Cordova 6.3.1) - see https://cordova.apache.org/

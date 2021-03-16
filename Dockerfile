@@ -24,7 +24,7 @@ COPY . .
 RUN chmod + compile.sh && ./compile.sh
 
 # make start script executable
-RUN chmod + start.sh
+RUN chmod + run.sh
 
 # both Jupiter ports get exposed
 EXPOSE 7864 7876

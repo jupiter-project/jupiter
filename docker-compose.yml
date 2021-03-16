@@ -1,13 +1,11 @@
-version: '3'
-networks: 
-  dbnet:
-    driver: bridge
-    
-jupiter:
+version: "3"
+services:
+  jupiter:
     build: .
     networks:
       - dbnet
     ports:
+      - "7864:7864"
       - "7876:7876"
     restart: always
     command: ./run.sh

@@ -13,12 +13,12 @@ Jupiter is the base platform needed to run the [Gravity](https://github.com/jupi
 
   - *dependencies*:
     - *General* - Java 8
-    - *Ubuntu* - `apt install openjdk-8-jre-headless`
+    - *Ubuntu* - `apt install openjdk-8-jdk-headless`
     - *Debian* - `http://www.webupd8.org/2014/03/how-to-install-oracle-java-8-in-debian.html`
     - *FreeBSD* - `pkg install openjdk8`
     - *MacOS* (from Terminal)
       - `brew tap AdoptOpenJDK/openjdk`<br>
-      - `brew cask install adoptopenjdk8`<br>
+      - `brew install --cask adoptopenjdk8`<br>
       - To check, `java -version`
 
   - *Repository* - `git clone https://github.com/jupiter-project/jupiter/`

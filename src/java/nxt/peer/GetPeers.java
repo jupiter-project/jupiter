@@ -33,7 +33,7 @@ final class GetPeers extends PeerServlet.PeerRequestHandler {
         JSONArray services = new JSONArray();
         Peers.getAllPeers().forEach(otherPeer -> {
             if (!otherPeer.isBlacklisted() && otherPeer.getAnnouncedAddress() != null
-                    && otherPeer.getState() == Peer.State.CONNECTED && otherPeer.shareAddress()) 
+                    && otherPeer.getState() == Peer.State.CONNECTED && otherPeer.shareAddress() 
                     && otherPeer.getApplication() == "JRS") {
                 jsonArray.add(otherPeer.getAnnouncedAddress());
                 services.add(Long.toUnsignedString(((PeerImpl)otherPeer).getServices()));

@@ -146,7 +146,7 @@ var NRS = (function(NRS, $) {
             return;
         }
         var filename = bundle.prefix + NRS.downloadedVersion.versionNr + "." + bundle.ext;
-        var fileurl = "https://github.com/SigwoTechnologies/jupiter/releases/download/" + filename;
+        var fileurl = "https://github.com/jupiter-project/jupiter/releases/" + filename;
         var nrsUpdateExplanation = $("#nrs_update_explanation");
         if (window.java !== undefined) {
             window.java.popupHandlerURLChange(fileurl);

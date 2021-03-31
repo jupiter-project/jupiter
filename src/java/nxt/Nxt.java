@@ -391,6 +391,7 @@ public final class Nxt {
                 Logger.logMessage("Copyright © 2013-2016 The Nxt Core Developers.");
                 Logger.logMessage("Copyright © 2016-2017 Jelurida IP B.V.");
                 Logger.logMessage("Copyright © 2016-2020 Sigwo Technologies");
+                Logger.logMessage("Copyright © 2020-2021 Jupiter Project Developers");
                 Logger.logMessage("Distributed under GPLv2, with ABSOLUTELY NO WARRANTY.");
                 if (API.getWelcomePageUri() != null) {
                     Logger.logMessage("Client UI is at " + API.getWelcomePageUri());

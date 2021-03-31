@@ -8,7 +8,6 @@ Jupiter is the base platform needed to run the [Gravity](https://github.com/jupi
 ----
 ## Get it! ##
 
-=======
   - *pre-packaged* - `https://github.com/jupiter-project/jupiter/releases` and download the latest release.
 
   - *dependencies*:

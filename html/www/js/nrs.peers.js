@@ -81,7 +81,7 @@ var NRS = (function(NRS, $) {
 
 					rows += "<tr>";
 					rows += "<td>";
-					rows += (peer.state == 1 ? "<i class='fa fa-check-circle' style='color:#5cb85c' title='Connected'></i>" : "<i class='fa fa-times-circle' style='color:#f0ad4e' title='Disconnected'></i>");
+					rows += (peer.state == 1 ? "<i class='fa fa-check-circle' style='color:#5cb85c' title='Connected'></i>" : "<i class='fa fa-times-circle' style='color:#006937' title='Disconnected'></i>");
 					rows += "&nbsp;&nbsp;" + (peer.announcedAddress ? NRS.getPeerLink(peer.announcedAddress) : $.t("unknown")) + "</td>";
 					rows += "<td" + (peer.weight > 0 ? " style='font-weight:bold'" : "") + ">" + NRS.formatWeight(peer.weight) + "</td>";
 					rows += "<td>" + NRS.formatVolume(peer.downloadedVolume) + "</td>";

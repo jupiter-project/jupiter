@@ -1,5 +1,5 @@
 ----
-# Welcome to Jupiter! # [![pipeline status](https://github.com/SigwoTechnologies/jupiter/blob/master/html/www/img/pipeline.svg)](https://gitlab.com/sigwotechnologies/jupiter/commits/master)
+# Welcome to Jupiter!
 
 ----
 ## What is Jupiter? ##
@@ -8,7 +8,6 @@ Jupiter is the base platform needed to run the [Gravity](https://github.com/jupi
 ----
 ## Get it! ##
 
-=======
   - *pre-packaged* - `https://github.com/jupiter-project/jupiter/releases` and download the latest release.
 
   - *dependencies*:

@@ -19,7 +19,10 @@
     "api"
   ],
   "author": "Jelurida",
-  "contributors": "Sigwo Technologies",
+  "contributors": [
+    "Sigwo Technologies",
+    "Jupiter Project Developers"
+  ],
   "license": "MIT",
   "homepage": "https://github.com/SigwoTechnologies/jupiter#readme",
   "dependencies": {

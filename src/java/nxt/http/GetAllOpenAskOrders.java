@@ -41,7 +41,6 @@ public final class GetAllOpenAskOrders extends APIServlet.APIRequestHandler {
     protected JSONStreamAware processRequest(HttpServletRequest req) {
         JSONObject response = new JSONObject();
         JSONArray ordersData = new JSONArray();
-        System.out.println("javiiii");
 
         int firstIndex = ParameterParser.getFirstIndex(req);
         int lastIndex = ParameterParser.getLastIndex(req);

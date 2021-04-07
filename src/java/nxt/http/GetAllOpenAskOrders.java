@@ -16,8 +16,13 @@
 
 package nxt.http;
 
+import nxt.Nxt;
 import nxt.Order;
+import nxt.Transaction;
 import nxt.db.DbIterator;
+import nxt.util.Convert;
+import nxt.util.Logger;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
@@ -34,16 +39,25 @@ public final class GetAllOpenAskOrders extends APIServlet.APIRequestHandler {
 
     @Override
     protected JSONStreamAware processRequest(HttpServletRequest req) {
-
         JSONObject response = new JSONObject();
         JSONArray ordersData = new JSONArray();
+        System.out.println("javiiii");
 
         int firstIndex = ParameterParser.getFirstIndex(req);
         int lastIndex = ParameterParser.getLastIndex(req);
 
         try (DbIterator<Order.Ask> askOrders = Order.Ask.getAll(firstIndex, lastIndex)) {
             while (askOrders.hasNext()) {
-                ordersData.add(JSONData.askOrder(askOrders.next()));
+            	Order.Ask askOrder = askOrders.next();
+            	
+            	Transaction transaction = Nxt.getBlockchain().getTransaction(askOrder.getId());
+            	JSONObject askOrderJSON = JSONData.askOrder(askOrder);
+            	if (transaction != null && transaction.getMessage() != null) {
+                	String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
+                	askOrderJSON.put("message", messageString);
+            	}
+            	
+                ordersData.add(askOrderJSON);
             }
         }
 

@@ -49,11 +49,20 @@ public final class GetAllOpenAskOrders extends APIServlet.APIRequestHandler {
             while (askOrders.hasNext()) {
             	Order.Ask askOrder = askOrders.next();
             	
-            	Transaction transaction = Nxt.getBlockchain().getTransaction(askOrder.getId());
+            	Transaction transaction = Nxt.getBlockchain().getTransaction(askOrder.getAssetId());
             	JSONObject askOrderJSON = JSONData.askOrder(askOrder);
-            	if (transaction != null && transaction.getMessage() != null) {
-                	String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
-                	askOrderJSON.put("message", messageString);
+            	if (transaction != null) {
+            		if (transaction.getMessage() != null) {
+            			String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
+                    	askOrderJSON.put("assetMessage", messageString);
+            		}
+            		if (transaction.getAttachment().getJSONObject().containsKey("name")){
+            			askOrderJSON.put("assetName", transaction.getAttachment().getJSONObject().get("name"));
+            		}
+            		if (transaction.getAttachment().getJSONObject().containsKey("description")){
+            			askOrderJSON.put("assetDescription", transaction.getAttachment().getJSONObject().get("description"));
+            		}
+                    Logger.logMessage(transaction.getAttachment().getJSONObject().toJSONString());
             	}
             	
                 ordersData.add(askOrderJSON);

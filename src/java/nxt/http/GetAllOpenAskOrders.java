@@ -54,13 +54,13 @@ public final class GetAllOpenAskOrders extends APIServlet.APIRequestHandler {
             	if (transaction != null) {
             		if (transaction.getMessage() != null) {
             			String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
-                    	askOrderJSON.put("assetMessage", messageString);
+                    	askOrderJSON.put("message", messageString);
             		}
             		if (transaction.getAttachment().getJSONObject().containsKey("name")){
-            			askOrderJSON.put("assetName", transaction.getAttachment().getJSONObject().get("name"));
+            			askOrderJSON.put("name", transaction.getAttachment().getJSONObject().get("name"));
             		}
             		if (transaction.getAttachment().getJSONObject().containsKey("description")){
-            			askOrderJSON.put("assetDescription", transaction.getAttachment().getJSONObject().get("description"));
+            			askOrderJSON.put("description", transaction.getAttachment().getJSONObject().get("description"));
             		}
                     Logger.logMessage(transaction.getAttachment().getJSONObject().toJSONString());
             	}

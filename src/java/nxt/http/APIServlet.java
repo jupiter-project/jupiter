@@ -53,6 +53,10 @@ import static nxt.http.JSONResponses.REQUIRED_LAST_BLOCK_NOT_FOUND;
 public final class APIServlet extends HttpServlet {
 
     public abstract static class APIRequestHandler {
+    	
+    	protected static String NAME_FIELD = "name";
+    	protected static String DESCRIPTION_FIELD = "description";
+    	protected static String MESSAGE_FIELD = "message";
 
         private final List<String> parameters;
         private final String fileParameter;

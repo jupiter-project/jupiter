@@ -33,9 +33,6 @@ public final class GetAllOpenAskOrders extends APIServlet.APIRequestHandler {
 
     static final GetAllOpenAskOrders instance = new GetAllOpenAskOrders();
     
-    private static String NAME_FIELD = "name";
-    private static String DESCRIPTION_FIELD = "description";
-
     private GetAllOpenAskOrders() {
         super(new APITag[] {APITag.AE}, "query", "firstIndex", "lastIndex");
     }
@@ -59,7 +56,7 @@ public final class GetAllOpenAskOrders extends APIServlet.APIRequestHandler {
             	if (transaction != null) {
             		if (transaction.getMessage() != null) {
             			String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
-            			askOrderJSON.put("message", messageString);
+            			askOrderJSON.put(MESSAGE_FIELD, messageString);
             		}
             		if (transaction.getAttachment().getJSONObject().containsKey(NAME_FIELD)){
             			String nameString = (String) transaction.getAttachment().getJSONObject().get(NAME_FIELD);

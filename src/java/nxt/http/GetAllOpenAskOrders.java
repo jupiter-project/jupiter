@@ -79,14 +79,13 @@ public final class GetAllOpenAskOrders extends APIServlet.APIRequestHandler {
         return response;
     }
     
-    private boolean matchByNameOrDescription(JSONObject askOrderJSON, String query ) {
+    private boolean matchByNameOrDescription(JSONObject askOrderJSON, String query) {
     	if (query.isEmpty()) {
     		return true;
     	}
     	
 		if ((askOrderJSON.containsKey(NAME_FIELD) && ((String)askOrderJSON.get(NAME_FIELD)).toLowerCase().indexOf(query) != -1) ||
 		(askOrderJSON.containsKey(DESCRIPTION_FIELD) && ((String)askOrderJSON.get(DESCRIPTION_FIELD)).toLowerCase().indexOf(query) != -1)){
-			System.out.println(true);
 			return true;
 		} 
 

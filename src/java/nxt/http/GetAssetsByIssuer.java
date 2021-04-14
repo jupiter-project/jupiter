@@ -49,7 +49,7 @@ public final class GetAssetsByIssuer extends APIServlet.APIRequestHandler {
         response.put("assets", accountsJSONArray);
         for (long accountId : accountIds) {
             JSONArray assetsJSONArray = new JSONArray();
-            try (DbIterator<Asset> assets = Asset.getAssetsIssuedBy(accountId, firstIndex, lastIndex)) {
+            try (DbIterator<Asset> assets = Asset.getAssetsIssuedBy(query, accountId, firstIndex, lastIndex)) {
                 while (assets.hasNext()) {
                 	Asset asset = assets.next();
                 	JSONObject assetJSON = JSONData.asset(asset, includeCounts);
@@ -62,29 +62,11 @@ public final class GetAssetsByIssuer extends APIServlet.APIRequestHandler {
                 		}
                 	}
                 	
-                	// filter by name or description fields by the query parameter
-                	if (matchByNameOrDescription(assetJSON, query)) {
-                		assetsJSONArray.add(assetJSON);
-                	}
-                    
+                	assetsJSONArray.add(assetJSON);
                 }
             }
             accountsJSONArray.add(assetsJSONArray);
         }
         return response;
     }
-    
-    private boolean matchByNameOrDescription(JSONObject assetJSON, String query) {
-    	if (query.isEmpty()) {
-    		return true;
-    	}
-    	
-		if ((assetJSON.containsKey(NAME_FIELD) && ((String)assetJSON.get(NAME_FIELD)).toLowerCase().indexOf(query) != -1) ||
-		(assetJSON.containsKey(DESCRIPTION_FIELD) && ((String)assetJSON.get(DESCRIPTION_FIELD)).toLowerCase().indexOf(query) != -1)){
-			return true;
-		} 
-
-		return false;
-    }
-
 }

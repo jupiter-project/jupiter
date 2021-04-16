@@ -21,32 +21,35 @@ import nxt.Order;
 import nxt.Transaction;
 import nxt.db.DbIterator;
 import nxt.util.Convert;
-import nxt.util.Logger;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import javax.servlet.http.HttpServletRequest;
 
-public final class GetAllOpenAskOrders extends APIServlet.APIRequestHandler {
+public final class SearchAllOpenAskOrders extends APIServlet.APIRequestHandler {
 
-    static final GetAllOpenAskOrders instance = new GetAllOpenAskOrders();
-    
-    private GetAllOpenAskOrders() {
-        super(new APITag[] {APITag.AE}, "firstIndex", "lastIndex");
+    static final SearchAllOpenAskOrders instance = new SearchAllOpenAskOrders();
+
+    private SearchAllOpenAskOrders() {
+        super(new APITag[] {APITag.AE}, "query", "firstIndex", "lastIndex");
     }
-    
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws ParameterException {
+        String query = Convert.nullToEmpty(req.getParameter("query"));
+        if (query.isEmpty()) {
+            return JSONResponses.missing("query");
+        }
+        
+        int firstIndexToInclude = ParameterParser.getFirstIndex(req);
+        int lastIndexToInclude = ParameterParser.getLastIndex(req);
+
         JSONObject response = new JSONObject();
         JSONArray ordersData = new JSONArray();
 
-        int firstIndex = ParameterParser.getFirstIndex(req);
-        int lastIndex = ParameterParser.getLastIndex(req);
-
-        try (DbIterator<Order.Ask> askOrders = Order.Ask.getAll(firstIndex, lastIndex)) {
+        int elementsFiltered = 0;
+        try (DbIterator<Order.Ask> askOrders = Order.Ask.getAll()) {
             while (askOrders.hasNext()) {
             	Order.Ask askOrder = askOrders.next();
             	
@@ -67,11 +70,31 @@ public final class GetAllOpenAskOrders extends APIServlet.APIRequestHandler {
             		}
             	}
             	
-            	ordersData.add(askOrderJSON);
+            	// filter by name or description fields by the query parameter
+            	if (matchByNameOrDescription(askOrderJSON, query)) {
+            		if (elementsFiltered >= firstIndexToInclude && elementsFiltered <= lastIndexToInclude) {
+            			ordersData.add(askOrderJSON);
+            		}
+            		
+            		elementsFiltered++;
+            		
+            		if (elementsFiltered > lastIndexToInclude) {
+            			break;
+            		}
+            	}
             }
         }
 
         response.put("openOrders", ordersData);
         return response;
+    }
+    
+    private boolean matchByNameOrDescription(JSONObject askOrderJSON, String query) {
+		if ((askOrderJSON.containsKey(NAME_FIELD) && ((String)askOrderJSON.get(NAME_FIELD)).toLowerCase().indexOf(query) != -1) ||
+		(askOrderJSON.containsKey(DESCRIPTION_FIELD) && ((String)askOrderJSON.get(DESCRIPTION_FIELD)).toLowerCase().indexOf(query) != -1)){
+			return true;
+		} 
+
+		return false;
     }
 }

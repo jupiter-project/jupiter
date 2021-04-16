@@ -16,8 +16,13 @@
 
 package nxt.http;
 
+import nxt.Nxt;
 import nxt.NxtException;
 import nxt.Order;
+import nxt.Transaction;
+import nxt.util.Convert;
+
+import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +44,25 @@ public final class GetAskOrder extends APIServlet.APIRequestHandler {
         if (askOrder == null) {
             return UNKNOWN_ORDER;
         }
-        return JSONData.askOrder(askOrder);
+        
+        JSONObject askOrderJSON = JSONData.askOrder(askOrder);
+        Transaction transaction = Nxt.getBlockchain().getTransaction(askOrder.getAssetId());
+    	if (transaction != null) {
+    		if (transaction.getMessage() != null) {
+    			String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
+    			askOrderJSON.put(MESSAGE_FIELD, messageString);
+    		}
+    		if (transaction.getAttachment().getJSONObject().containsKey(NAME_FIELD)){
+    			String nameString = (String) transaction.getAttachment().getJSONObject().get(NAME_FIELD);
+    			askOrderJSON.put(NAME_FIELD, nameString);
+    		}
+    		if (transaction.getAttachment().getJSONObject().containsKey(DESCRIPTION_FIELD)){
+    			String descriptionString = (String) transaction.getAttachment().getJSONObject().get(DESCRIPTION_FIELD);
+    			askOrderJSON.put(DESCRIPTION_FIELD, descriptionString);
+    		}
+    	}
+        
+        
+        return askOrderJSON;
     }
-
 }

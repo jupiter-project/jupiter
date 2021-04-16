@@ -312,6 +312,10 @@ public abstract class EntityDbTable<T> extends DerivedDbTable {
             throw new RuntimeException(e.toString(), e);
         }
     }
+    
+    public final DbIterator<T> getAll() {
+        return getAll(0, Integer.MAX_VALUE, defaultSort());
+    }
 
     public final DbIterator<T> getAll(int from, int to) {
         return getAll(from, to, defaultSort());

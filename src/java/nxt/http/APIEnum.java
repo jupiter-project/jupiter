@@ -282,7 +282,9 @@ public enum APIEnum {
     GET_ASSET_DIVIDENDS("getAssetDividends", GetAssetDividends.instance),
     BLACKLIST_API_PROXY_PEER("blacklistAPIProxyPeer", BlacklistAPIProxyPeer.instance),
     GET_NEXT_BLOCK_GENERATORS("getNextBlockGenerators", GetNextBlockGeneratorsTemp.instance),
-    SEARCH_ALL_OPEN_ASK_ORDERS("searchAllOpenAskOrders", SearchAllOpenAskOrders.instance);
+    SEARCH_ALL_OPEN_ASK_ORDERS("searchAllOpenAskOrders", SearchAllOpenAskOrders.instance),
+	SEARCH_ALL_TRADES_ORDERS("searchAllTrades", SearchAllTrades.instance);
+	
 
 
     private static final Map<String, APIEnum> apiByName = new HashMap<>();

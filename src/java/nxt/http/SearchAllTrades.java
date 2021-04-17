@@ -16,9 +16,8 @@
 
 package nxt.http;
 
-import nxt.Nxt;
 import nxt.Order;
-import nxt.Transaction;
+import nxt.Trade;
 import nxt.db.DbIterator;
 import nxt.util.Convert;
 import org.json.simple.JSONArray;
@@ -27,12 +26,12 @@ import org.json.simple.JSONStreamAware;
 
 import javax.servlet.http.HttpServletRequest;
 
-public final class SearchAllOpenAskOrders extends APIServlet.APIRequestHandler {
+public final class SearchAllTrades extends APIServlet.APIRequestHandler {
 
-    static final SearchAllOpenAskOrders instance = new SearchAllOpenAskOrders();
+    static final SearchAllTrades instance = new SearchAllTrades();
 
-    private SearchAllOpenAskOrders() {
-        super(new APITag[] {APITag.AE}, "query", "firstIndex", "lastIndex");
+    private SearchAllTrades() {
+        super(new APITag[] {APITag.AE}, "query", "timestamp", "firstIndex", "lastIndex");
     }
 
     @Override
@@ -42,23 +41,25 @@ public final class SearchAllOpenAskOrders extends APIServlet.APIRequestHandler {
             return JSONResponses.missing("query");
         }
         
+        final int timestamp = ParameterParser.getTimestamp(req);
         int firstIndexToInclude = ParameterParser.getFirstIndex(req);
         int lastIndexToInclude = ParameterParser.getLastIndex(req);
-
+        
         JSONObject response = new JSONObject();
-        JSONArray ordersData = new JSONArray();
-
+        JSONArray trades = new JSONArray();
         int elementsFiltered = 0;
-        try (DbIterator<Order.Ask> askOrders = Order.Ask.getAll()) {
-            while (askOrders.hasNext()) {
-            	Order.Ask askOrder = askOrders.next();
-            	
-            	JSONObject askOrderJSON = JSONData.askOrder(askOrder, true);
-            	
-            	// filter by name or description fields by the query parameter
-            	if (matchByName(askOrderJSON, query)) {
+        try (DbIterator<Trade> tradeIterator = Trade.getAllTrades()) {
+            while (tradeIterator.hasNext()) {
+                Trade trade = tradeIterator.next();
+                if (trade.getTimestamp() < timestamp) {
+                    break;
+                }
+                JSONObject tradeJSON = JSONData.trade(trade, true);
+                
+                // filter by name or description fields by the query parameter
+            	if (matchByName(tradeJSON, query)) {
             		if (elementsFiltered >= firstIndexToInclude && elementsFiltered <= lastIndexToInclude) {
-            			ordersData.add(askOrderJSON);
+            			trades.add(tradeJSON);
             		}
             		
             		elementsFiltered++;
@@ -69,13 +70,13 @@ public final class SearchAllOpenAskOrders extends APIServlet.APIRequestHandler {
             	}
             }
         }
-
-        response.put("openOrders", ordersData);
-        return response;
+        
+       response.put("trades", trades);
+       return response;
     }
     
-    private boolean matchByName(JSONObject askOrderJSON, String query) {
-		if ((askOrderJSON.containsKey(NAME_FIELD) && ((String)askOrderJSON.get(NAME_FIELD)).toLowerCase().indexOf(query) != -1)){
+    private boolean matchByName(JSONObject tradeJSON, String query) {
+		if ((tradeJSON.containsKey(NAME_FIELD) && ((String)tradeJSON.get(NAME_FIELD)).toLowerCase().indexOf(query) != -1)){
 			return true;
 		} 
 

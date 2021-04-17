@@ -65,6 +65,10 @@ public final class Trade {
     public static DbIterator<Trade> getAllTrades(int from, int to) {
         return tradeTable.getAll(from, to);
     }
+    
+    public static DbIterator<Trade> getAllTrades() {
+        return tradeTable.getAll();
+    }
 
     public static int getCount() {
         return tradeTable.getCount();

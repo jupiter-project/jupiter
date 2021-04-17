@@ -43,7 +43,7 @@ public final class GetAsset extends APIServlet.APIRequestHandler {
         	 Transaction transaction = Nxt.getBlockchain().getTransaction(new Long((String)asset.get("asset")));
         	 if (transaction != null && transaction.getMessage() != null) {
      			String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
-     			asset.put("message", messageString);
+     			asset.put(MESSAGE_FIELD, messageString);
      		}
         }
         

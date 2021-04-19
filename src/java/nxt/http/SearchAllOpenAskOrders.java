@@ -18,7 +18,6 @@ package nxt.http;
 
 import nxt.Nxt;
 import nxt.Order;
-import nxt.Transaction;
 import nxt.db.DbIterator;
 import nxt.util.Convert;
 import org.json.simple.JSONArray;

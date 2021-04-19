@@ -284,7 +284,7 @@ public enum APIEnum {
     GET_NEXT_BLOCK_GENERATORS("getNextBlockGenerators", GetNextBlockGeneratorsTemp.instance),
     SEARCH_ALL_OPEN_ASK_ORDERS("searchAllOpenAskOrders", SearchAllOpenAskOrders.instance),
 	SEARCH_ALL_TRADES_ORDERS("searchAllTrades", SearchAllTrades.instance),
-	SEARCH_ALL_ACCOUNT_ASSETS("SearchAccountAssets", SearchAccountAssets.instance);
+	SEARCH_ALL_ACCOUNT_ASSETS("searchAccountAssets", SearchAccountAssets.instance);
 
 
     private static final Map<String, APIEnum> apiByName = new HashMap<>();

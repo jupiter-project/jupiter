@@ -77,13 +77,10 @@ public final class SearchAllOpenAskOrders extends APIServlet.APIRequestHandler {
     		return true;
     	}
     	String[] queryWords = query.split(" ");
-    	boolean matches = false;
+    	boolean matches = true;
     	for (String word : queryWords) {
-    		matches = matches || match(json, NAME_FIELD, word);
-    		matches = matches || match(json, DESCRIPTION_FIELD, word);
+    		matches = matches && (match(json, NAME_FIELD, word) || match(json, DESCRIPTION_FIELD, word));
     	}
-    	
-		
 
 		return matches;
     }

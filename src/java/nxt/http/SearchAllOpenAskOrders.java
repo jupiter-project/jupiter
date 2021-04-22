@@ -16,7 +16,6 @@
 
 package nxt.http;
 
-import nxt.Nxt;
 import nxt.Order;
 import nxt.db.DbIterator;
 import nxt.util.Convert;
@@ -55,7 +54,7 @@ public final class SearchAllOpenAskOrders extends APIServlet.APIRequestHandler {
             	JSONObject askOrderJSON = JSONData.askOrder(askOrder, true);
             	
             	// filter by name or description fields by the query parameter
-            	if (matchByName(askOrderJSON, query)) {
+            	if (filterByNameDescription(askOrderJSON, query)) {
             		if (elementsFiltered >= firstIndexToInclude && elementsFiltered <= lastIndexToInclude) {
             			ordersData.add(askOrderJSON);
             		}
@@ -73,11 +72,26 @@ public final class SearchAllOpenAskOrders extends APIServlet.APIRequestHandler {
         return response;
     }
     
-    private boolean matchByName(JSONObject askOrderJSON, String query) {
-		if ((askOrderJSON.containsKey(NAME_FIELD) && ((String)askOrderJSON.get(NAME_FIELD)).toLowerCase().indexOf(query) != -1)){
+    private boolean filterByNameDescription(JSONObject json, String query) {
+    	if (query == null || query.isEmpty()) {
+    		return true;
+    	}
+    	String[] queryWords = query.split(" ");
+    	boolean matches = false;
+    	for (String word : queryWords) {
+    		matches = matches || match(json, NAME_FIELD, word);
+    		matches = matches || match(json, DESCRIPTION_FIELD, word);
+    	}
+    	
+		
+
+		return matches;
+    }
+    
+    private boolean match(JSONObject json, String field, String query) {
+    	if ((json.containsKey(field) && ((String)json.get(field)).toLowerCase().indexOf(query.toLowerCase()) != -1)){
 			return true;
 		} 
-
-		return false;
+    	return false;
     }
 }

@@ -37,7 +37,7 @@ public final class GetAskOrders extends APIServlet.APIRequestHandler {
     static final GetAskOrders instance = new GetAskOrders();
 
     private GetAskOrders() {
-        super(new APITag[] {APITag.AE}, "asset", "firstIndex", "lastIndex", "showExpectedCancellations");
+        super(new APITag[] {APITag.AE}, "asset", "firstIndex", "lastIndex", "showExpectedCancellations", "includeNTFInfo");
     }
 
     @Override
@@ -46,6 +46,7 @@ public final class GetAskOrders extends APIServlet.APIRequestHandler {
         long assetId = ParameterParser.getUnsignedLong(req, "asset", true);
         int firstIndex = ParameterParser.getFirstIndex(req);
         int lastIndex = ParameterParser.getLastIndex(req);
+        boolean includeNTFInfo = "true".equalsIgnoreCase(req.getParameter("includeNTFInfo"));
         boolean showExpectedCancellations = "true".equalsIgnoreCase(req.getParameter("showExpectedCancellations"));
 
         long[] cancellations = null;
@@ -64,7 +65,7 @@ public final class GetAskOrders extends APIServlet.APIRequestHandler {
         try (DbIterator<Order.Ask> askOrders = Order.Ask.getSortedOrders(assetId, firstIndex, lastIndex)) {
             while (askOrders.hasNext()) {
                 Order.Ask order = askOrders.next();
-                JSONObject orderJSON = JSONData.askOrder(order);
+                JSONObject orderJSON = JSONData.askOrder(order, includeNTFInfo);
                 if (showExpectedCancellations && Arrays.binarySearch(cancellations, order.getId()) >= 0) {
                     orderJSON.put("expectedCancellation", Boolean.TRUE);
                 }

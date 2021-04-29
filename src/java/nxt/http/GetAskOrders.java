@@ -46,7 +46,8 @@ public final class GetAskOrders extends APIServlet.APIRequestHandler {
         long assetId = ParameterParser.getUnsignedLong(req, "asset", true);
         int firstIndex = ParameterParser.getFirstIndex(req);
         int lastIndex = ParameterParser.getLastIndex(req);
-        boolean includeNTFInfo = "true".equalsIgnoreCase(req.getParameter("includeNTFInfo"));
+        //boolean includeNTFInfo = "true".equalsIgnoreCase(req.getParameter("includeNTFInfo"));
+        boolean includeNTFInfo = false;
         boolean showExpectedCancellations = "true".equalsIgnoreCase(req.getParameter("showExpectedCancellations"));
 
         long[] cancellations = null;
@@ -78,5 +79,4 @@ public final class GetAskOrders extends APIServlet.APIRequestHandler {
         return response;
 
     }
-
 }

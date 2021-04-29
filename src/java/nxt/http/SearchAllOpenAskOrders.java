@@ -30,12 +30,13 @@ public final class SearchAllOpenAskOrders extends APIServlet.APIRequestHandler {
     static final SearchAllOpenAskOrders instance = new SearchAllOpenAskOrders();
 
     private SearchAllOpenAskOrders() {
-        super(new APITag[] {APITag.AE}, "query", "firstIndex", "lastIndex");
+        super(new APITag[] {APITag.AE}, "query", "account", "firstIndex", "lastIndex");
     }
 
     @Override
     protected JSONStreamAware processRequest(HttpServletRequest req) throws ParameterException {
         String query = Convert.nullToEmpty(req.getParameter("query"));
+        long accountId = ParameterParser.getAccountId(req, false);
         if (query.isEmpty()) {
             return JSONResponses.missing("query");
         }
@@ -47,25 +48,31 @@ public final class SearchAllOpenAskOrders extends APIServlet.APIRequestHandler {
         JSONArray ordersData = new JSONArray();
 
         int elementsFiltered = 0;
-        try (DbIterator<Order.Ask> askOrders = Order.Ask.getAll()) {
-            while (askOrders.hasNext()) {
-            	Order.Ask askOrder = askOrders.next();
-            	
-            	JSONObject askOrderJSON = JSONData.askOrder(askOrder, true);
-            	
-            	// filter by name or description fields by the query parameter
-            	if (filterByNameDescription(askOrderJSON, query)) {
-            		if (elementsFiltered >= firstIndexToInclude && elementsFiltered <= lastIndexToInclude) {
-            			ordersData.add(askOrderJSON);
-            		}
-            		
-            		elementsFiltered++;
-            		
-            		if (elementsFiltered > lastIndexToInclude) {
-            			break;
-            		}
-            	}
-            }
+        DbIterator<Order.Ask> askOrders;
+        
+        if (accountId == 0) {
+        	askOrders = Order.Ask.getAll();
+        } else {
+        	askOrders = Order.Ask.getAskOrdersByAccount(accountId, 0, Integer.MAX_VALUE);
+        }
+        
+        while (askOrders.hasNext()) {
+        	Order.Ask askOrder = askOrders.next();
+        	
+        	JSONObject askOrderJSON = JSONData.askOrder(askOrder, true);
+        	
+        	// filter by name or description fields by the query parameter
+        	if (filterByNameDescription(askOrderJSON, query)) {
+        		if (elementsFiltered >= firstIndexToInclude && elementsFiltered <= lastIndexToInclude) {
+        			ordersData.add(askOrderJSON);
+        		}
+        		
+        		elementsFiltered++;
+        		
+        		if (elementsFiltered > lastIndexToInclude) {
+        			break;
+        		}
+        	}
         }
 
         response.put("openOrders", ordersData);
@@ -78,8 +85,10 @@ public final class SearchAllOpenAskOrders extends APIServlet.APIRequestHandler {
     	}
     	String[] queryWords = query.split(" ");
     	boolean matches = true;
+    	
+    	
     	for (String word : queryWords) {
-    		matches = matches && (match(json, NAME_FIELD, word) || match(json, DESCRIPTION_FIELD, word));
+    		matches = matches && (match(json, NAME_FIELD, word) || match(json, DESCRIPTION_FIELD, word) || (match(json, MESSAGE_FIELD, word)));
     	}
 
 		return matches;

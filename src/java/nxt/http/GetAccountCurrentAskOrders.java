@@ -16,12 +16,9 @@
 
 package nxt.http;
 
-import nxt.Nxt;
 import nxt.NxtException;
 import nxt.Order;
-import nxt.Transaction;
 import nxt.db.DbIterator;
-import nxt.util.Convert;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -34,7 +31,7 @@ public final class GetAccountCurrentAskOrders extends APIServlet.APIRequestHandl
     static final GetAccountCurrentAskOrders instance = new GetAccountCurrentAskOrders();
 
     private GetAccountCurrentAskOrders() {
-        super(new APITag[] {APITag.ACCOUNTS, APITag.AE}, "account", "asset", "firstIndex", "lastIndex");
+        super(new APITag[] {APITag.ACCOUNTS, APITag.AE}, "account", "asset", "firstIndex", "lastIndex", "includeNTFInfo");
     }
 
     @Override
@@ -44,6 +41,7 @@ public final class GetAccountCurrentAskOrders extends APIServlet.APIRequestHandl
         long assetId = ParameterParser.getUnsignedLong(req, "asset", false);
         int firstIndex = ParameterParser.getFirstIndex(req);
         int lastIndex = ParameterParser.getLastIndex(req);
+        boolean includeNTFInfo = "true".equalsIgnoreCase(req.getParameter("includeNTFInfo"));
 
         DbIterator<Order.Ask> askOrders;
         if (assetId == 0) {
@@ -51,30 +49,11 @@ public final class GetAccountCurrentAskOrders extends APIServlet.APIRequestHandl
         } else {
             askOrders = Order.Ask.getAskOrdersByAccountAsset(accountId, assetId, firstIndex, lastIndex);
         }
+        
         JSONArray orders = new JSONArray();
         try {
             while (askOrders.hasNext()) {
-            	Order.Ask askOrder = askOrders.next();
-            	
-            	Transaction transaction = Nxt.getBlockchain().getTransaction(askOrder.getAssetId());
-            	JSONObject askOrderJSON = JSONData.askOrder(askOrder);
-            	if (transaction != null) {
-            		if (transaction.getMessage() != null) {
-            			String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
-            			askOrderJSON.put(MESSAGE_FIELD, messageString);
-            		}
-            		if (transaction.getAttachment().getJSONObject().containsKey(NAME_FIELD)){
-            			String nameString = (String) transaction.getAttachment().getJSONObject().get(NAME_FIELD);
-            			askOrderJSON.put(NAME_FIELD, nameString);
-            		}
-            		if (transaction.getAttachment().getJSONObject().containsKey(DESCRIPTION_FIELD)){
-            			String descriptionString = (String) transaction.getAttachment().getJSONObject().get(DESCRIPTION_FIELD);
-            			askOrderJSON.put(DESCRIPTION_FIELD, descriptionString);
-            		}
-            	}
-            	
-            	
-                orders.add(askOrderJSON);
+                orders.add(JSONData.askOrder(askOrders.next(), includeNTFInfo));
             }
         } finally {
             askOrders.close();
@@ -83,5 +62,4 @@ public final class GetAccountCurrentAskOrders extends APIServlet.APIRequestHandl
         response.put("askOrders", orders);
         return response;
     }
-
 }

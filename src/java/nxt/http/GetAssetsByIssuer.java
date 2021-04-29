@@ -33,7 +33,7 @@ public final class GetAssetsByIssuer extends APIServlet.APIRequestHandler {
     static final GetAssetsByIssuer instance = new GetAssetsByIssuer();
 
     private GetAssetsByIssuer() {
-        super(new APITag[] {APITag.AE, APITag.ACCOUNTS}, "query", "account", "account", "account", "firstIndex", "lastIndex", "includeCounts");
+        super(new APITag[] {APITag.AE, APITag.ACCOUNTS}, "query", "account", "account", "account", "firstIndex", "lastIndex", "includeCounts", "includeNTFInfo");
     }
 
     @Override
@@ -43,6 +43,7 @@ public final class GetAssetsByIssuer extends APIServlet.APIRequestHandler {
         int lastIndex = ParameterParser.getLastIndex(req);
         boolean includeCounts = "true".equalsIgnoreCase(req.getParameter("includeCounts"));
         String query = Convert.nullToEmpty(req.getParameter("query")).toLowerCase();
+        boolean includeNTFInfo = "true".equalsIgnoreCase(req.getParameter("includeNTFInfo"));
 
         JSONObject response = new JSONObject();
         JSONArray accountsJSONArray = new JSONArray();
@@ -54,12 +55,15 @@ public final class GetAssetsByIssuer extends APIServlet.APIRequestHandler {
                 	Asset asset = assets.next();
                 	JSONObject assetJSON = JSONData.asset(asset, includeCounts);
                 	
-                	Transaction transaction = Nxt.getBlockchain().getTransaction(asset.getId());
-                	if (transaction != null) {
-                		if (transaction.getMessage() != null) {
-                			String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
-                			assetJSON.put(MESSAGE_FIELD, messageString);
-                		}
+                	if (includeNTFInfo) {
+                		Transaction transaction = Nxt.getBlockchain().getTransaction(asset.getId());
+                	
+	                	if (transaction != null) {
+	                		if (transaction.getMessage() != null) {
+	                			String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
+	                			assetJSON.put(MESSAGE_FIELD, messageString);
+	                		}
+	                	}
                 	}
                 	
                 	assetsJSONArray.add(assetJSON);

@@ -63,10 +63,12 @@ import nxt.peer.Hallmark;
 import nxt.peer.Peer;
 import nxt.util.Convert;
 import nxt.util.Filter;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -234,16 +236,53 @@ public final class JSONData {
         return json;
     }
 
-    static JSONObject askOrder(Order.Ask order) {
-        JSONObject json = order(order);
-        json.put("type", "ask");
+    static JSONObject askOrder(Order.Ask askOrder) {
+        return askOrder(askOrder, false);
+    }
+    
+    static JSONObject askOrder(Order.Ask askOrder, boolean includeNTFInfo) {
+    	JSONObject json = order(askOrder);
+    	json.put("type", "ask");
+        
+    	if (includeNTFInfo) {
+    		json = JSONData.addNFTInfo(json, Nxt.getBlockchain().getTransaction(askOrder.getAssetId()));
+    	}
+        
         return json;
     }
 
     static JSONObject bidOrder(Order.Bid order) {
-        JSONObject json = order(order);
+    	return bidOrder(order, false);
+    }
+    
+    static JSONObject bidOrder(Order.Bid order, boolean includeNTFInfo) {
+    	JSONObject json = order(order);
         json.put("type", "bid");
+        
+        if (includeNTFInfo) {
+        	json = JSONData.addNFTInfo(json, Nxt.getBlockchain().getTransaction(order.getAssetId()));
+        }
+        
         return json;
+    }
+    
+    static JSONObject addNFTInfo(JSONObject json, Transaction transaction) {
+    	
+    	 if (transaction != null) {
+     		JSONObject attachmentObject = transaction.getAttachment().getJSONObject();
+     		if (transaction.getMessage() != null) {
+     			String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
+     			json.put("message", messageString);
+     		}
+     		if (attachmentObject.containsKey("name")){
+     			json.put("name", attachmentObject.get("name"));
+     		}
+     		if (attachmentObject.containsKey("description")){
+     			json.put("description", (String) attachmentObject.get("description"));
+     		}
+     	}
+    	
+    	return json;
     }
 
     private static JSONObject order(Order order) {
@@ -1166,9 +1205,22 @@ public final class JSONData {
     }
 
     private static void putAssetInfo(JSONObject json, long assetId) {
-        Asset asset = Asset.getAsset(assetId);
-        json.put("name", asset.getName());
-        json.put("decimals", asset.getDecimals());
+        Transaction transaction = Nxt.getBlockchain().getTransaction(assetId);
+        
+        JSONObject attachmentObject = transaction.getAttachment().getJSONObject();
+        if (transaction.getMessage() != null) {
+			String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
+			json.put("message", messageString);
+		}
+        if (attachmentObject.containsKey("name")){
+			json.put("name", (String) attachmentObject.get("name"));
+		}
+		if (attachmentObject.containsKey("description")){
+			json.put("description", (String) attachmentObject.get("description"));
+		}
+		if (attachmentObject.containsKey("decimals")){
+			json.put("decimals", (Byte) attachmentObject.get("decimals"));
+		}
     }
 
     private static void putExpectedTransaction(JSONObject json, Transaction transaction) {

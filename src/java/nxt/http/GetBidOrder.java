@@ -16,16 +16,12 @@
 
 package nxt.http;
 
-import nxt.Nxt;
 import nxt.NxtException;
 import nxt.Order;
-import nxt.Transaction;
-import nxt.util.Convert;
-
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
 
 import static nxt.http.JSONResponses.UNKNOWN_ORDER;
 
@@ -34,35 +30,19 @@ public final class GetBidOrder extends APIServlet.APIRequestHandler {
     static final GetBidOrder instance = new GetBidOrder();
 
     private GetBidOrder() {
-        super(new APITag[] {APITag.AE}, "order");
+        super(new APITag[] {APITag.AE}, "order", "includeNTFInfo");
     }
 
     @Override
     protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
         long orderId = ParameterParser.getUnsignedLong(req, "order", true);
         Order.Bid bidOrder = Order.Bid.getBidOrder(orderId);
+        boolean includeNTFInfo = "true".equalsIgnoreCase(req.getParameter("includeNTFInfo"));
         if (bidOrder == null) {
             return UNKNOWN_ORDER;
         }
         
-        JSONObject bidOrderJSON = JSONData.bidOrder(bidOrder);
-        Transaction transaction = Nxt.getBlockchain().getTransaction(bidOrder.getAssetId());
-    	if (transaction != null) {
-    		if (transaction.getMessage() != null) {
-    			String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
-    			bidOrderJSON.put(MESSAGE_FIELD, messageString);
-    		}
-    		if (transaction.getAttachment().getJSONObject().containsKey(NAME_FIELD)){
-    			String nameString = (String) transaction.getAttachment().getJSONObject().get(NAME_FIELD);
-    			bidOrderJSON.put(NAME_FIELD, nameString);
-    		}
-    		if (transaction.getAttachment().getJSONObject().containsKey(DESCRIPTION_FIELD)){
-    			String descriptionString = (String) transaction.getAttachment().getJSONObject().get(DESCRIPTION_FIELD);
-    			bidOrderJSON.put(DESCRIPTION_FIELD, descriptionString);
-    		}
-    	}
-        
-        return bidOrderJSON;
+        return JSONData.bidOrder(bidOrder, includeNTFInfo);
     }
 
 }

@@ -16,11 +16,8 @@
 
 package nxt.http;
 
-import nxt.Nxt;
 import nxt.Order;
-import nxt.Transaction;
 import nxt.db.DbIterator;
-import nxt.util.Convert;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -33,7 +30,7 @@ public final class GetAccountCurrentBidOrders extends APIServlet.APIRequestHandl
     static final GetAccountCurrentBidOrders instance = new GetAccountCurrentBidOrders();
 
     private GetAccountCurrentBidOrders() {
-        super(new APITag[] {APITag.ACCOUNTS, APITag.AE}, "account", "asset", "firstIndex", "lastIndex");
+        super(new APITag[] {APITag.ACCOUNTS, APITag.AE}, "account", "includeNTFInfo", "asset", "firstIndex", "lastIndex");
     }
 
     @Override
@@ -43,6 +40,7 @@ public final class GetAccountCurrentBidOrders extends APIServlet.APIRequestHandl
         long assetId = ParameterParser.getUnsignedLong(req, "asset", false);
         int firstIndex = ParameterParser.getFirstIndex(req);
         int lastIndex = ParameterParser.getLastIndex(req);
+        boolean includeNTFInfo = "true".equalsIgnoreCase(req.getParameter("includeNTFInfo"));
 
         DbIterator<Order.Bid> bidOrders;
         if (assetId == 0) {
@@ -53,27 +51,7 @@ public final class GetAccountCurrentBidOrders extends APIServlet.APIRequestHandl
         JSONArray orders = new JSONArray();
         try {
             while (bidOrders.hasNext()) {
-            	Order.Bid bidOrder = bidOrders.next();
-            	
-            	Transaction transaction = Nxt.getBlockchain().getTransaction(bidOrder.getAssetId());
-            	JSONObject bidOrderJSON = JSONData.bidOrder(bidOrder);
-            	if (transaction != null) {
-            		if (transaction.getMessage() != null) {
-            			String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
-            			bidOrderJSON.put(MESSAGE_FIELD, messageString);
-            		}
-            		if (transaction.getAttachment().getJSONObject().containsKey(NAME_FIELD)){
-            			String nameString = (String) transaction.getAttachment().getJSONObject().get(NAME_FIELD);
-            			bidOrderJSON.put(NAME_FIELD, nameString);
-            		}
-            		if (transaction.getAttachment().getJSONObject().containsKey(DESCRIPTION_FIELD)){
-            			String descriptionString = (String) transaction.getAttachment().getJSONObject().get(DESCRIPTION_FIELD);
-            			bidOrderJSON.put(DESCRIPTION_FIELD, descriptionString);
-            		}
-            	}
-            	
-            	
-                orders.add(bidOrderJSON);
+                orders.add(JSONData.bidOrder(bidOrders.next(), includeNTFInfo));
             }
         } finally {
             bidOrders.close();

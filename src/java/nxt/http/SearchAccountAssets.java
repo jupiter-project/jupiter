@@ -16,7 +16,10 @@
 
 package nxt.http;
 
+import nxt.Account;
+import nxt.Nxt;
 import nxt.Order;
+import nxt.Transaction;
 import nxt.db.DbIterator;
 import nxt.util.Convert;
 import org.json.simple.JSONArray;
@@ -25,12 +28,12 @@ import org.json.simple.JSONStreamAware;
 
 import javax.servlet.http.HttpServletRequest;
 
-public final class SearchAllOpenAskOrders extends APIServlet.APIRequestHandler {
+public final class SearchAccountAssets extends APIServlet.APIRequestHandler {
 
-    static final SearchAllOpenAskOrders instance = new SearchAllOpenAskOrders();
+    static final SearchAccountAssets instance = new SearchAccountAssets();
 
-    private SearchAllOpenAskOrders() {
-        super(new APITag[] {APITag.AE}, "query", "firstIndex", "lastIndex");
+    private SearchAccountAssets() {
+        super(new APITag[] {APITag.AE}, "query", "account", "height", "firstIndex", "lastIndex");
     }
 
     @Override
@@ -42,21 +45,20 @@ public final class SearchAllOpenAskOrders extends APIServlet.APIRequestHandler {
         
         int firstIndexToInclude = ParameterParser.getFirstIndex(req);
         int lastIndexToInclude = ParameterParser.getLastIndex(req);
+        long accountId = ParameterParser.getAccountId(req, true);
+        int height = ParameterParser.getHeight(req);
 
         JSONObject response = new JSONObject();
-        JSONArray ordersData = new JSONArray();
+        JSONArray assetJSON = new JSONArray();
 
         int elementsFiltered = 0;
-        try (DbIterator<Order.Ask> askOrders = Order.Ask.getAll()) {
-            while (askOrders.hasNext()) {
-            	Order.Ask askOrder = askOrders.next();
-            	
-            	JSONObject askOrderJSON = JSONData.askOrder(askOrder, true);
-            	
-            	// filter by name or description fields by the query parameter
-            	if (filterByNameDescription(askOrderJSON, query)) {
+        try (DbIterator<Account.AccountAsset> accountAssets = Account.getAccountAssets(accountId, height, 0, -1)) {
+            while (accountAssets.hasNext()) {
+            	JSONObject accountAssetJSON = JSONData.accountAsset(accountAssets.next(), false, true);
+                
+            	if (matchByName(accountAssetJSON, query)) {
             		if (elementsFiltered >= firstIndexToInclude && elementsFiltered <= lastIndexToInclude) {
-            			ordersData.add(askOrderJSON);
+            			assetJSON.add(accountAssetJSON);
             		}
             		
             		elementsFiltered++;
@@ -66,29 +68,17 @@ public final class SearchAllOpenAskOrders extends APIServlet.APIRequestHandler {
             		}
             	}
             }
+            
+            response.put("accountAssets", assetJSON);
+            return response;
         }
-
-        response.put("openOrders", ordersData);
-        return response;
     }
     
-    private boolean filterByNameDescription(JSONObject json, String query) {
-    	if (query == null || query.isEmpty()) {
-    		return true;
-    	}
-    	String[] queryWords = query.split(" ");
-    	boolean matches = true;
-    	for (String word : queryWords) {
-    		matches = matches && (match(json, NAME_FIELD, word) || match(json, DESCRIPTION_FIELD, word));
-    	}
-
-		return matches;
-    }
-    
-    private boolean match(JSONObject json, String field, String query) {
-    	if ((json.containsKey(field) && ((String)json.get(field)).toLowerCase().indexOf(query.toLowerCase()) != -1)){
+    private boolean matchByName(JSONObject askOrderJSON, String query) {
+		if ((askOrderJSON.containsKey(NAME_FIELD) && ((String)askOrderJSON.get(NAME_FIELD)).toLowerCase().indexOf(query) != -1)){
 			return true;
 		} 
-    	return false;
+
+		return false;
     }
 }

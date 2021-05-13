@@ -100,6 +100,10 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
     private volatile boolean isRestoring;
     private volatile boolean alreadyInitialized = false;
     private volatile long genesisBlockId;
+    
+    private int blockGenerationRateLogInterval =  Nxt.getIntProperty("nxt.blockGenerationRateLogInterval");
+    private int blockHeightGenerationRateStartingLog = Nxt.getIntProperty("nxt.blockGenerationRateStartingHeightLog");
+    private int lastBlockHeightUsedToCalculateBlockGenerationRate = blockHeightGenerationRateStartingLog;
 
     private final Runnable getMoreBlocksThread = new Runnable() {
 
@@ -1764,7 +1768,28 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
             pushBlock(block);
             blockListeners.notify(block, Event.BLOCK_GENERATED);
             Logger.logDebugMessage("Account " + Long.toUnsignedString(block.getGeneratorId()) + " generated block " + block.getStringId()
-                    + " at height " + block.getHeight() + " timestamp " + block.getTimestamp() + " fee " + ((float)block.getTotalFeeNQT())/Constants.ONE_NXT);
+            		+ " after " + (block.getTimestamp() - previousBlock.getTimestamp()) + " seconds"
+                    + " with height " + block.getHeight() + " timestamp " + block.getTimestamp() + " fee " 
+            		+ ((float)block.getTotalFeeNQT())/Constants.ONE_NXT + "\n");
+            
+            // show stats for block rate generation
+            try {
+            	if (block.getHeight() > (lastBlockHeightUsedToCalculateBlockGenerationRate + blockGenerationRateLogInterval)) {
+                	Block blockGenerationRateStartingHeightLog = blockchain.getBlockAtHeight(blockHeightGenerationRateStartingLog);
+                	
+                	if (blockGenerationRateStartingHeightLog != null) {
+                		double avarageTime = ((double)(block.getTimestamp() - blockGenerationRateStartingHeightLog.getTimestamp())/(double)(block.getHeight()-blockGenerationRateStartingHeightLog.getHeight()));
+                    	
+                    	Logger.logInfoMessage("[BGR STATS] From block " + blockGenerationRateStartingHeightLog.getHeight() 
+                    	+ " to " + block.getHeight() + " = " + Constants.DECIMAL_FORMAT.format(avarageTime) + " seconds per block");
+                	}
+                	lastBlockHeightUsedToCalculateBlockGenerationRate = block.getHeight();
+                }
+			} catch (Exception e) {
+			}
+            
+            
+            
         } catch (TransactionNotAcceptedException e) {
             Logger.logDebugMessage("Generate block failed: " + e.getMessage());
             TransactionProcessorImpl.getInstance().processWaitingTransactions();

@@ -67,7 +67,7 @@ public final class Generator implements Comparable<Generator> {
                     BlockchainImpl.getInstance().updateLock();
                     try {
                         Block lastBlock = Nxt.getBlockchain().getLastBlock();
-                        if (lastBlock == null || lastBlock.getHeight() < Constants.LAST_KNOWN_BLOCK) {
+                        if (lastBlock == null) {
                             return;
                         }
                         final int generationLimit = Nxt.getEpochTime() - delayTime;

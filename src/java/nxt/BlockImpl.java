@@ -55,7 +55,8 @@ final class BlockImpl implements Block {
     private volatile String stringId = null;
     private volatile long generatorId;
     private volatile byte[] bytes = null;
-
+    
+    private static boolean showBlockTimeGenerationRateLogs = Nxt.getBooleanProperty("nxt.showBlockTimeGenerationRateLogs");
 
     BlockImpl(int version, int timestamp, long previousBlockId, long totalAmountNQT, long totalFeeNQT, int payloadLength, byte[] payloadHash,
               byte[] generatorPublicKey, byte[] generationSignature, byte[] previousBlockHash, List<TransactionImpl> transactions, String secretPhrase) {
@@ -419,18 +420,37 @@ final class BlockImpl implements Block {
         }
     }
 
+    /**
+     * If two successive blocks get generated too quickly, the new BaseTarget gets reduced. 
+     * If instead they take too long, the value gets increased
+     * @param previousBlock
+     */
     private void calculateBaseTarget(BlockImpl previousBlock) {
         long prevBaseTarget = previousBlock.baseTarget;
         int blockchainHeight = previousBlock.height;
+        
         if (blockchainHeight > 2 && blockchainHeight % 2 == 0) {
             BlockImpl block = BlockDb.findBlockAtHeight(blockchainHeight - 2);
             int blocktimeAverage = (this.timestamp - block.timestamp) / 3;
-            if (blocktimeAverage > 60) {
-                baseTarget = (prevBaseTarget * Math.min(blocktimeAverage, Constants.MAX_BLOCKTIME_LIMIT)) / 60;
+            
+            if (blocktimeAverage > Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE) {
+                baseTarget = (prevBaseTarget * Math.min(blocktimeAverage, Constants.MAX_BLOCKTIME_LIMIT)) / Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE;
+                if (showBlockTimeGenerationRateLogs) {
+                	double percentage = ((double) baseTarget/prevBaseTarget)*100 - 100;
+                    Logger.logDebugMessage("BGR average for the last 2 blocks ("+blocktimeAverage+"s) > expected ("+Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE+"s)");
+                    Logger.logDebugMessage("Increased base target value from " + prevBaseTarget + " to " + baseTarget + " ("+ Constants.DECIMAL_FORMAT.format(percentage) +"%)");
+                }
             } else {
                 baseTarget = prevBaseTarget - prevBaseTarget * Constants.BASE_TARGET_GAMMA
-                        * (60 - Math.max(blocktimeAverage, Constants.MIN_BLOCKTIME_LIMIT)) / 6000;
+                        * (Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE - Math.max(blocktimeAverage, Constants.MIN_BLOCKTIME_LIMIT))
+                        / (100*Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE);
+                if (showBlockTimeGenerationRateLogs) {
+	                double percentage = 100 - ((double)baseTarget/prevBaseTarget)*100;
+	                Logger.logDebugMessage("BGR average for the last 2 blocks ("+blocktimeAverage+"s) < expected ("+Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE+"s)");
+	                Logger.logDebugMessage("Decreased base target value from " + prevBaseTarget + " to " + baseTarget + " ("+ Constants.DECIMAL_FORMAT.format(percentage) +"%)");
+                }
             }
+            
             if (baseTarget < 0 || baseTarget > Constants.MAX_BASE_TARGET) {
                 baseTarget = Constants.MAX_BASE_TARGET;
             }

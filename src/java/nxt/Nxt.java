@@ -208,6 +208,20 @@ public final class Nxt {
             return defaultValue;
         }
     }
+    
+    public static double getDoubleProperty(String name) {
+    	return getDoubleProperty(name, 1);
+    }
+    public static double getDoubleProperty(String name, double defaultValue) {
+        try {
+            double result = Double.parseDouble(properties.getProperty(name));
+            Logger.logMessage(name + " = \"" + result + "\"");
+            return result;
+        } catch (NumberFormatException e) {
+            Logger.logMessage(name + " not defined or not numeric, using default value " + defaultValue);
+            return defaultValue;
+        }
+    }
 
     public static String getStringProperty(String name) {
         return getStringProperty(name, null, false);

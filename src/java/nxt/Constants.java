@@ -42,6 +42,8 @@ public final class Constants {
     public static final int MAX_BLOCKTIME_LIMIT = Nxt.getIntProperty("nxt.maxBlockTimeLimit");
     public static final int EXPECTED_AVERAGE_BLOCK_GENERATION_RATE = Nxt.getIntProperty("nxt.expectedAverageBaseTarget");
     public static final int BASE_TARGET_GAMMA = Nxt.getIntProperty("nxt.baseTargetGamma");
+    public static final double BASE_TARGET_GAMMA_REDUCED = Nxt.getDoubleProperty("nxt.baseTargetGammaReduced");
+    
     public static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
     
     public static final int MAX_ROLLBACK = Math.max(Nxt.getIntProperty("nxt.maxRollback"), 720);

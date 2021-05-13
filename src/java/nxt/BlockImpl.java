@@ -434,7 +434,8 @@ final class BlockImpl implements Block {
             int blocktimeAverage = (this.timestamp - block.timestamp) / 3;
             
             if (blocktimeAverage > Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE) {
-                baseTarget = (prevBaseTarget * Math.min(blocktimeAverage, Constants.MAX_BLOCKTIME_LIMIT)) / Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE;
+            	double reducedFactor = Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE*Constants.BASE_TARGET_GAMMA_REDUCED;
+                baseTarget = Math.round((prevBaseTarget * Math.min(blocktimeAverage, Constants.MAX_BLOCKTIME_LIMIT)) / reducedFactor);
                 if (showBlockTimeGenerationRateLogs) {
                 	double percentage = ((double) baseTarget/prevBaseTarget)*100 - 100;
                     Logger.logDebugMessage("BGR average for the last 2 blocks ("+blocktimeAverage+"s) > expected ("+Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE+"s)");

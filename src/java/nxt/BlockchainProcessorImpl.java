@@ -29,6 +29,8 @@ import nxt.util.Listener;
 import nxt.util.Listeners;
 import nxt.util.Logger;
 import nxt.util.ThreadPool;
+import nxt.util.Time;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
@@ -1769,8 +1771,9 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
             blockListeners.notify(block, Event.BLOCK_GENERATED);
             Logger.logDebugMessage("Account " + Long.toUnsignedString(block.getGeneratorId()) + " generated block " + block.getStringId()
             		+ " after " + (block.getTimestamp() - previousBlock.getTimestamp()) + " seconds"
-                    + " with height " + block.getHeight() + " timestamp " + block.getTimestamp() + " fee " 
-            		+ ((float)block.getTotalFeeNQT())/Constants.ONE_NXT + "\n");
+                    + " height " + block.getHeight() 
+                    + " timestamp " + block.getTimestamp()+"("+Time.getDateTimeStringInfo(block.getTimestamp()) + ")" 
+                    + " fee " + ((float)block.getTotalFeeNQT())/Constants.ONE_NXT + "\n");
             
             // show stats for block rate generation
             try {

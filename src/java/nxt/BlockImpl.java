@@ -20,6 +20,8 @@ import nxt.AccountLedger.LedgerEvent;
 import nxt.crypto.Crypto;
 import nxt.util.Convert;
 import nxt.util.Logger;
+import nxt.util.Time;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -438,17 +440,22 @@ final class BlockImpl implements Block {
                 baseTarget = Math.round((prevBaseTarget * Math.min(blocktimeAverage, Constants.MAX_BLOCKTIME_LIMIT)) / reducedFactor);
                 if (showBlockTimeGenerationRateLogs) {
                 	double percentage = ((double) baseTarget/prevBaseTarget)*100 - 100;
-                    Logger.logDebugMessage("BGR average for the last 2 blocks ("+blocktimeAverage+"s) > expected ("+Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE+"s)");
-                    Logger.logDebugMessage("Increased base target value from " + prevBaseTarget + " to " + baseTarget + " ("+ Constants.DECIMAL_FORMAT.format(percentage) +"%)");
+                    Logger.logDebugMessage("BGR average for the last 2 blocks ("+blocktimeAverage+"s) > expected (" + 
+                    		Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE+"s)");
+                    Logger.logDebugMessage("Increased base target value from " + prevBaseTarget + " to " + 
+                    		baseTarget + " ("+ Constants.DECIMAL_FORMAT.format(percentage) +"%)");
                 }
+                
             } else {
                 baseTarget = prevBaseTarget - prevBaseTarget * Constants.BASE_TARGET_GAMMA
                         * (Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE - Math.max(blocktimeAverage, Constants.MIN_BLOCKTIME_LIMIT))
                         / (100*Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE);
                 if (showBlockTimeGenerationRateLogs) {
 	                double percentage = 100 - ((double)baseTarget/prevBaseTarget)*100;
-	                Logger.logDebugMessage("BGR average for the last 2 blocks ("+blocktimeAverage+"s) < expected ("+Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE+"s)");
-	                Logger.logDebugMessage("Decreased base target value from " + prevBaseTarget + " to " + baseTarget + " ("+ Constants.DECIMAL_FORMAT.format(percentage) +"%)");
+	                Logger.logDebugMessage("BGR average for the last 2 blocks ("+blocktimeAverage+"s) < expected (" +
+	                		Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE+"s)");
+	                Logger.logDebugMessage("Decreased base target value from " + prevBaseTarget + " to " + 
+	                		baseTarget + " ("+ Constants.DECIMAL_FORMAT.format(percentage) +"%)");
                 }
             }
             

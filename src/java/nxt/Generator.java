@@ -55,6 +55,7 @@ public final class Generator implements Comparable<Generator> {
     private static volatile List<Generator> sortedForgers = null;
     private static long lastBlockId;
     private static int delayTime = Constants.FORGING_DELAY;
+    private static final int MIN_BLOCK_TIME = 8;
     
     private static final Runnable generateBlocksThread = new Runnable() {
 
@@ -232,21 +233,28 @@ public final class Generator implements Comparable<Generator> {
         Generator.delayTime = delay;
     }
     
-    static boolean verifyHit(BigInteger hit, BigInteger effectiveBalance, Block previousBlock, int timestamp) {
-        int elapsedTime = timestamp - previousBlock.getTimestamp();
-        if (elapsedTime <= 0) {
+    static boolean verifyHit(BigInteger hit, BigInteger effectiveBalance, Block previousBlock, int timestampToHit) {
+        int elapsedTimeToHit = timestampToHit - previousBlock.getTimestamp();
+        if (elapsedTimeToHit <= 0) {
             return false;
         }
-        
+
         BigInteger effectiveBaseTarget = BigInteger.valueOf(previousBlock.getBaseTarget()).multiply(effectiveBalance);
-        BigInteger prevTarget = effectiveBaseTarget.multiply(BigInteger.valueOf(elapsedTime - 1));
+        BigInteger prevTarget = effectiveBaseTarget.multiply(BigInteger.valueOf(elapsedTimeToHit - 1));
         BigInteger target = prevTarget.add(effectiveBaseTarget);
         
+        boolean elapsedTimeToHitLessThanMinimun = (elapsedTimeToHit <= MIN_BLOCK_TIME + 1);
+        if (elapsedTimeToHitLessThanMinimun) {
+        	Logger.logDebugMessage("- Verified A HIT with elapsedTimeToHitLT8");
+        }
         
-        return hit.compareTo(target) < 0
-	        && (hit.compareTo(prevTarget) >= 0
-	        || (Constants.isTestnet ? elapsedTime > 300 : elapsedTime > 3600)
-	        || Constants.isOffline);
+        boolean verified = hit.compareTo(target) < 0
+    	        && (hit.compareTo(prevTarget) >= 0
+        		|| elapsedTimeToHitLessThanMinimun
+        		|| (elapsedTimeToHit > 3600)
+    	        || Constants.isOffline);
+        
+        return verified;
     }
     
     static boolean allowsFakeForging(byte[] publicKey) {
@@ -264,8 +272,19 @@ public final class Generator implements Comparable<Generator> {
     }
 
     static long getHitTime(BigInteger effectiveBalance, BigInteger hit, Block lastBlock) {
-    	return lastBlock.getTimestamp()
-                + hit.divide(BigInteger.valueOf(lastBlock.getBaseTarget()).multiply(effectiveBalance)).longValue();
+    	long delta = hit.divide(BigInteger.valueOf(lastBlock.getBaseTarget()).multiply(effectiveBalance)).longValue();
+    	if (delta < MIN_BLOCK_TIME) {
+    		Logger.logDebugMessage("Block Delta("+delta+ ") < "+MIN_BLOCK_TIME+", TOO LOW, setting to "+MIN_BLOCK_TIME);
+    		delta = MIN_BLOCK_TIME;
+    	}
+    	
+    	long hitTime = lastBlock.getTimestamp() + delta;
+    	Logger.logDebugMessage("getHitTime function -> baseTarget: " 
+    			+ lastBlock.getBaseTarget() + " hitTime generated:" 
+    			+ Time.getDateTimeStringInfo(hitTime) + " delta:" + delta + " block timestamp:"+ lastBlock.getTimestamp() 
+    			+ "(" + Time.getDateTimeStringInfo(lastBlock.getTimestamp()) + ")");
+    	
+    	return hitTime;
     }
     
     private final long accountId;

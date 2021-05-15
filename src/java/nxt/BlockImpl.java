@@ -460,6 +460,7 @@ final class BlockImpl implements Block {
             }
             
             if (baseTarget < 0 || baseTarget > Constants.MAX_BASE_TARGET) {
+            	Logger.logDebugMessage("- baseTarget"+baseTarget+ " > MAX_BASE_TARGET" + Constants.MAX_BASE_TARGET);
                 baseTarget = Constants.MAX_BASE_TARGET;
             }
             if (baseTarget < Constants.MIN_BASE_TARGET) {

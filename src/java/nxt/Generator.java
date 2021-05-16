@@ -128,7 +128,7 @@ public final class Generator implements Comparable<Generator> {
         Collections.sort(forgers);
         sortedForgers = Collections.unmodifiableList(forgers);
         if (!sortedForgers.isEmpty()) {
-        	Logger.logDebugMessage(sortedForgers.get(0).toString());
+        	Logger.logDebugMessage("Candidate forge for the new block: " + sortedForgers.get(0).toString());
         }
     }
 
@@ -243,18 +243,11 @@ public final class Generator implements Comparable<Generator> {
         BigInteger prevTarget = effectiveBaseTarget.multiply(BigInteger.valueOf(elapsedTimeToHit - 1));
         BigInteger target = prevTarget.add(effectiveBaseTarget);
         
-        boolean elapsedTimeToHitLessThanMinimun = (elapsedTimeToHit <= MIN_BLOCK_TIME + 1);
-        if (elapsedTimeToHitLessThanMinimun) {
-        	Logger.logDebugMessage("- Verified A HIT with elapsedTimeToHitLT8");
-        }
-        
-        boolean verified = hit.compareTo(target) < 0
+        return hit.compareTo(target) < 0
     	        && (hit.compareTo(prevTarget) >= 0
-        		|| elapsedTimeToHitLessThanMinimun
+        		|| (elapsedTimeToHit <= MIN_BLOCK_TIME + 1)
         		|| (elapsedTimeToHit > 3600)
     	        || Constants.isOffline);
-        
-        return verified;
     }
     
     static boolean allowsFakeForging(byte[] publicKey) {
@@ -274,17 +267,10 @@ public final class Generator implements Comparable<Generator> {
     static long getHitTime(BigInteger effectiveBalance, BigInteger hit, Block lastBlock) {
     	long delta = hit.divide(BigInteger.valueOf(lastBlock.getBaseTarget()).multiply(effectiveBalance)).longValue();
     	if (delta < MIN_BLOCK_TIME) {
-    		Logger.logDebugMessage("Block Delta("+delta+ ") < "+MIN_BLOCK_TIME+", TOO LOW, setting to "+MIN_BLOCK_TIME);
     		delta = MIN_BLOCK_TIME;
     	}
     	
-    	long hitTime = lastBlock.getTimestamp() + delta;
-    	Logger.logDebugMessage("getHitTime function -> baseTarget: " 
-    			+ lastBlock.getBaseTarget() + " hitTime generated:" 
-    			+ Time.getDateTimeStringInfo(hitTime) + " delta:" + delta + " block timestamp:"+ lastBlock.getTimestamp() 
-    			+ "(" + Time.getDateTimeStringInfo(lastBlock.getTimestamp()) + ")");
-    	
-    	return hitTime;
+    	return lastBlock.getTimestamp() + delta;
     }
     
     private final long accountId;
@@ -364,13 +350,12 @@ public final class Generator implements Comparable<Generator> {
     boolean forge(Block lastBlock, int generationLimit) throws BlockchainProcessor.BlockNotAcceptedException {
         int timestampToHit = getTimestamp(generationLimit);
         if (!verifyHit(hit, effectiveBalance, lastBlock, timestampToHit)) {
-            Logger.logDebugMessage(this.toString() + " failed to forge at " + timestampToHit + "("+Time.getDateTimeStringInfo(timestampToHit)+")"
+            Logger.logErrorMessage(this.toString() + " failed to forge at " + timestampToHit + "("+Time.getDateTimeStringInfo(timestampToHit)+")"
             		+ " height " + lastBlock.getHeight() 
             		+ " last timestamp " + lastBlock.getTimestamp() + "("+Time.getDateTimeStringInfo(lastBlock.getTimestamp())+")");
             return false;
         }
         int start = Nxt.getEpochTime();
-        Logger.logDebugMessage("Forging in forge function, hit:" + this.toString());
         while (true) {
             try {
                 BlockchainProcessorImpl.getInstance().generateBlock(secretPhrase, timestampToHit);

@@ -1773,7 +1773,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
             		+ " after " + (block.getTimestamp() - previousBlock.getTimestamp()) + " seconds"
                     + " height " + block.getHeight() 
                     + " timestamp " + block.getTimestamp()+"("+Time.getDateTimeStringInfo(block.getTimestamp()) + ")" 
-                    + " fee " + ((float)block.getTotalFeeNQT())/Constants.ONE_NXT + "\n");
+                    + " fee " + ((float)block.getTotalFeeNQT())/Constants.ONE_NXT);
             
             // show stats for block rate generation
             try {

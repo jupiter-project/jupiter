@@ -34,16 +34,18 @@ public final class Constants {
     public static final long ONE_NXT = 100000000;
     public static final long MAX_BALANCE_NXT = Long.MAX_VALUE / (100 * ONE_NXT) * 100;
     public static final long MAX_BALANCE_NQT = MAX_BALANCE_NXT * ONE_NXT;
+    
+    
+    // BLOCK GENERATION RATE CONSTANTS
     public static final long INITIAL_BASE_TARGET = BigInteger.valueOf(153722867).multiply(BigInteger.valueOf(1000000000))
             .divide(BigInteger.valueOf(MAX_BALANCE_NXT)).longValueExact();
     public static final long MAX_BASE_TARGET = INITIAL_BASE_TARGET * 50;
     public static final long MIN_BASE_TARGET = INITIAL_BASE_TARGET * 9 / 10;
-    public static final int MIN_BLOCKTIME_LIMIT = Nxt.getIntProperty("nxt.minBlockTimeLimit");
-    public static final int MAX_BLOCKTIME_LIMIT = Nxt.getIntProperty("nxt.maxBlockTimeLimit");
-    public static final int EXPECTED_AVERAGE_BLOCK_GENERATION_RATE = Nxt.getIntProperty("nxt.expectedAverageBaseTarget");
-    public static final int BASE_TARGET_GAMMA = Nxt.getIntProperty("nxt.baseTargetGamma");
-    public static final double BASE_TARGET_GAMMA_REDUCED = Nxt.getDoubleProperty("nxt.baseTargetGammaReduced");
-    
+    public static final int MIN_BLOCKTIME_LIMIT = 19;
+    public static final int MAX_BLOCKTIME_LIMIT = 27;
+    public static final int EXPECTED_AVERAGE_BLOCK_GENERATION_RATE = 25;
+    public static final int BASE_TARGET_GAMMA = 30;
+    public static final double BASE_TARGET_GAMMA_REDUCED = 1.023;
     public static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
     
     public static final int MAX_ROLLBACK = Math.max(Nxt.getIntProperty("nxt.maxRollback"), 720);

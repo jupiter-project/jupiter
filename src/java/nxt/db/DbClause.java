@@ -132,6 +132,22 @@ public abstract class DbClause {
             return index + 1;
         }
     }
+    
+    public static final class LikeBothClause extends DbClause {
+
+        private final String prefix;
+
+        public LikeBothClause(String columnName, String prefix) {
+            super(" " + columnName + " LIKE ? ");
+            this.prefix = '%' + prefix + '%';
+        }
+
+        @Override
+        protected int set(PreparedStatement pstmt, int index) throws SQLException {
+            pstmt.setString(index, prefix);
+            return index + 1;
+        }
+    }
 
     public static final class LongClause extends DbClause {
 

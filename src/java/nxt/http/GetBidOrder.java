@@ -18,9 +18,10 @@ package nxt.http;
 
 import nxt.NxtException;
 import nxt.Order;
-import org.json.simple.JSONStreamAware;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
 
 import static nxt.http.JSONResponses.UNKNOWN_ORDER;
 
@@ -29,17 +30,19 @@ public final class GetBidOrder extends APIServlet.APIRequestHandler {
     static final GetBidOrder instance = new GetBidOrder();
 
     private GetBidOrder() {
-        super(new APITag[] {APITag.AE}, "order");
+        super(new APITag[] {APITag.AE}, "order", "includeNTFInfo");
     }
 
     @Override
     protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
         long orderId = ParameterParser.getUnsignedLong(req, "order", true);
         Order.Bid bidOrder = Order.Bid.getBidOrder(orderId);
+        boolean includeNTFInfo = "true".equalsIgnoreCase(req.getParameter("includeNTFInfo"));
         if (bidOrder == null) {
             return UNKNOWN_ORDER;
         }
-        return JSONData.bidOrder(bidOrder);
+        
+        return JSONData.bidOrder(bidOrder, includeNTFInfo);
     }
 
 }

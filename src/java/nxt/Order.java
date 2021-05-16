@@ -215,6 +215,10 @@ public abstract class Order {
             return askOrderTable.get(askOrderDbKeyFactory.newKey(orderId));
         }
 
+        public static DbIterator<Ask> getAll() {
+            return askOrderTable.getAll();
+        }
+        
         public static DbIterator<Ask> getAll(int from, int to) {
             return askOrderTable.getAll(from, to);
         }

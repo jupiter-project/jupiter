@@ -82,10 +82,15 @@ public final class Asset {
         return assetTable.get(assetDbKeyFactory.newKey(id), height);
     }
 
-    public static DbIterator<Asset> getAssetsIssuedBy(long accountId, int from, int to) {
-        return assetTable.getManyBy(new DbClause.LongClause("account_id", accountId), from, to);
+    public static DbIterator<Asset> getAssetsIssuedBy(String query, long accountId, int from, int to) {
+    	if (query != null && !query.isEmpty()) {
+    		return assetTable.getManyBy(new DbClause.LikeBothClause("name", query), 
+    				new DbClause.LongClause("account_id", accountId), from, to);
+    	} else {
+    		return assetTable.getManyBy(new DbClause.LongClause("account_id", accountId), from, to);
+    	}
     }
-
+    
     public static DbIterator<Asset> searchAssets(String query, int from, int to) {
         return assetTable.search(query, DbClause.EMPTY_CLAUSE, from, to, " ORDER BY ft.score DESC ");
     }

@@ -281,7 +281,11 @@ public enum APIEnum {
     SEND_TRANSACTION("sendTransaction", SendTransaction.instance),
     GET_ASSET_DIVIDENDS("getAssetDividends", GetAssetDividends.instance),
     BLACKLIST_API_PROXY_PEER("blacklistAPIProxyPeer", BlacklistAPIProxyPeer.instance),
-    GET_NEXT_BLOCK_GENERATORS("getNextBlockGenerators", GetNextBlockGeneratorsTemp.instance);
+    GET_NEXT_BLOCK_GENERATORS("getNextBlockGenerators", GetNextBlockGeneratorsTemp.instance),
+    SEARCH_ALL_OPEN_ASK_ORDERS("searchAllOpenAskOrders", SearchAllOpenAskOrders.instance),
+	SEARCH_ALL_TRADES_ORDERS("searchAllTrades", SearchAllTrades.instance),
+	SEARCH_ALL_ACCOUNT_ASSETS("searchAccountAssets", SearchAccountAssets.instance);
+
 
     private static final Map<String, APIEnum> apiByName = new HashMap<>();
 

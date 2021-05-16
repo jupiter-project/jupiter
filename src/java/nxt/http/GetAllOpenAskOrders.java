@@ -16,12 +16,8 @@
 
 package nxt.http;
 
-import nxt.Nxt;
 import nxt.Order;
-import nxt.Transaction;
 import nxt.db.DbIterator;
-import nxt.util.Convert;
-import nxt.util.Logger;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -34,7 +30,7 @@ public final class GetAllOpenAskOrders extends APIServlet.APIRequestHandler {
     static final GetAllOpenAskOrders instance = new GetAllOpenAskOrders();
     
     private GetAllOpenAskOrders() {
-        super(new APITag[] {APITag.AE}, "query", "firstIndex", "lastIndex");
+        super(new APITag[] {APITag.AE}, "firstIndex", "lastIndex", "includeNTFInfo");
     }
     
 
@@ -45,50 +41,15 @@ public final class GetAllOpenAskOrders extends APIServlet.APIRequestHandler {
 
         int firstIndex = ParameterParser.getFirstIndex(req);
         int lastIndex = ParameterParser.getLastIndex(req);
-        String query = Convert.nullToEmpty(req.getParameter("query")).toLowerCase();
+        boolean includeNTFInfo = "true".equalsIgnoreCase(req.getParameter("includeNTFInfo"));
 
         try (DbIterator<Order.Ask> askOrders = Order.Ask.getAll(firstIndex, lastIndex)) {
             while (askOrders.hasNext()) {
-            	Order.Ask askOrder = askOrders.next();
-            	
-            	Transaction transaction = Nxt.getBlockchain().getTransaction(askOrder.getAssetId());
-            	JSONObject askOrderJSON = JSONData.askOrder(askOrder);
-            	if (transaction != null) {
-            		if (transaction.getMessage() != null) {
-            			String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
-            			askOrderJSON.put(MESSAGE_FIELD, messageString);
-            		}
-            		if (transaction.getAttachment().getJSONObject().containsKey(NAME_FIELD)){
-            			String nameString = (String) transaction.getAttachment().getJSONObject().get(NAME_FIELD);
-            			askOrderJSON.put(NAME_FIELD, nameString);
-            		}
-            		if (transaction.getAttachment().getJSONObject().containsKey(DESCRIPTION_FIELD)){
-            			String descriptionString = (String) transaction.getAttachment().getJSONObject().get(DESCRIPTION_FIELD);
-            			askOrderJSON.put(DESCRIPTION_FIELD, descriptionString);
-            		}
-            	}
-            	
-            	// filter by name or description fields by the query parameter
-            	if (matchByNameOrDescription(askOrderJSON, query)) {
-            		ordersData.add(askOrderJSON);
-            	}
+            	ordersData.add(JSONData.askOrder(askOrders.next(), includeNTFInfo));
             }
         }
 
         response.put("openOrders", ordersData);
         return response;
-    }
-    
-    private boolean matchByNameOrDescription(JSONObject askOrderJSON, String query) {
-    	if (query.isEmpty()) {
-    		return true;
-    	}
-    	
-		if ((askOrderJSON.containsKey(NAME_FIELD) && ((String)askOrderJSON.get(NAME_FIELD)).toLowerCase().indexOf(query) != -1) ||
-		(askOrderJSON.containsKey(DESCRIPTION_FIELD) && ((String)askOrderJSON.get(DESCRIPTION_FIELD)).toLowerCase().indexOf(query) != -1)){
-			return true;
-		} 
-
-		return false;
     }
 }

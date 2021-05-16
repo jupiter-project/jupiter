@@ -33,7 +33,7 @@ public final class GetAssetsByIssuer extends APIServlet.APIRequestHandler {
     static final GetAssetsByIssuer instance = new GetAssetsByIssuer();
 
     private GetAssetsByIssuer() {
-        super(new APITag[] {APITag.AE, APITag.ACCOUNTS}, "query", "account", "account", "account", "firstIndex", "lastIndex", "includeCounts");
+        super(new APITag[] {APITag.AE, APITag.ACCOUNTS}, "query", "account", "account", "account", "firstIndex", "lastIndex", "includeCounts", "includeNTFInfo");
     }
 
     @Override
@@ -43,48 +43,34 @@ public final class GetAssetsByIssuer extends APIServlet.APIRequestHandler {
         int lastIndex = ParameterParser.getLastIndex(req);
         boolean includeCounts = "true".equalsIgnoreCase(req.getParameter("includeCounts"));
         String query = Convert.nullToEmpty(req.getParameter("query")).toLowerCase();
+        boolean includeNTFInfo = "true".equalsIgnoreCase(req.getParameter("includeNTFInfo"));
 
         JSONObject response = new JSONObject();
         JSONArray accountsJSONArray = new JSONArray();
         response.put("assets", accountsJSONArray);
         for (long accountId : accountIds) {
             JSONArray assetsJSONArray = new JSONArray();
-            try (DbIterator<Asset> assets = Asset.getAssetsIssuedBy(accountId, firstIndex, lastIndex)) {
+            try (DbIterator<Asset> assets = Asset.getAssetsIssuedBy(query, accountId, firstIndex, lastIndex)) {
                 while (assets.hasNext()) {
                 	Asset asset = assets.next();
                 	JSONObject assetJSON = JSONData.asset(asset, includeCounts);
                 	
-                	Transaction transaction = Nxt.getBlockchain().getTransaction(asset.getId());
-                	if (transaction != null) {
-                		if (transaction.getMessage() != null) {
-                			String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
-                			assetJSON.put(MESSAGE_FIELD, messageString);
-                		}
+                	if (includeNTFInfo) {
+                		Transaction transaction = Nxt.getBlockchain().getTransaction(asset.getId());
+                	
+	                	if (transaction != null) {
+	                		if (transaction.getMessage() != null) {
+	                			String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
+	                			assetJSON.put(MESSAGE_FIELD, messageString);
+	                		}
+	                	}
                 	}
                 	
-                	// filter by name or description fields by the query parameter
-                	if (matchByNameOrDescription(assetJSON, query)) {
-                		assetsJSONArray.add(assetJSON);
-                	}
-                    
+                	assetsJSONArray.add(assetJSON);
                 }
             }
             accountsJSONArray.add(assetsJSONArray);
         }
         return response;
     }
-    
-    private boolean matchByNameOrDescription(JSONObject assetJSON, String query) {
-    	if (query.isEmpty()) {
-    		return true;
-    	}
-    	
-		if ((assetJSON.containsKey(NAME_FIELD) && ((String)assetJSON.get(NAME_FIELD)).toLowerCase().indexOf(query) != -1) ||
-		(assetJSON.containsKey(DESCRIPTION_FIELD) && ((String)assetJSON.get(DESCRIPTION_FIELD)).toLowerCase().indexOf(query) != -1)){
-			return true;
-		} 
-
-		return false;
-    }
-
 }

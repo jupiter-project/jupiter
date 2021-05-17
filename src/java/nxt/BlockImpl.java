@@ -431,29 +431,43 @@ final class BlockImpl implements Block {
         long prevBaseTarget = previousBlock.baseTarget;
         int blockchainHeight = previousBlock.height;
         
+        int expectedAverageBlockGenerationRate = Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE;
+        int baseTargetGamma = Constants.BASE_TARGET_GAMMA;
+        double baseTargetGammaReduced = Constants.BASE_TARGET_GAMMA_REDUCED;
+        int maxBlocktimeLimit = Constants.MAX_BLOCKTIME_LIMIT;
+        int minBlockTimeLimit = Constants.MIN_BLOCKTIME_LIMIT;
+        if (previousBlock.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME) {
+        	baseTargetGamma = Constants.ORIGINAL_BASE_TARGET_GAMMA;
+        	expectedAverageBlockGenerationRate = Constants.ORIGINAL_EXPECTED_AVERAGE_BLOCK_GENERATION_RATE;
+            baseTargetGammaReduced = Constants.ORIGINAL_BASE_TARGET_GAMMA_REDUCED;
+            maxBlocktimeLimit = Constants.ORIGINAL_MAX_BLOCKTIME_LIMIT;
+            minBlockTimeLimit = Constants.ORIGINAL_MIN_BLOCKTIME_LIMIT;
+        }
+        
+        
         if (blockchainHeight > 2 && blockchainHeight % 2 == 0) {
             BlockImpl block = BlockDb.findBlockAtHeight(blockchainHeight - 2);
             int blocktimeAverage = (this.timestamp - block.timestamp) / 3;
             
-            if (blocktimeAverage > Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE) {
-            	double reducedFactor = Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE*Constants.BASE_TARGET_GAMMA_REDUCED;
-                baseTarget = Math.round((prevBaseTarget * Math.min(blocktimeAverage, Constants.MAX_BLOCKTIME_LIMIT)) / reducedFactor);
+            if (blocktimeAverage > expectedAverageBlockGenerationRate) {
+            	double reducedFactor = expectedAverageBlockGenerationRate * baseTargetGammaReduced;
+                baseTarget = Math.round((prevBaseTarget * Math.min(blocktimeAverage, maxBlocktimeLimit)) / reducedFactor);
                 if (showBlockTimeGenerationRateLogs) {
                 	double percentage = ((double) baseTarget/prevBaseTarget)*100 - 100;
                     Logger.logDebugMessage("BGR average for the last 2 blocks ("+blocktimeAverage+"s) > expected (" + 
-                    		Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE+"s)");
+                    		expectedAverageBlockGenerationRate+"s)");
                     Logger.logDebugMessage("Increased base target value from " + prevBaseTarget + " to " + 
                     		baseTarget + " ("+ Constants.DECIMAL_FORMAT.format(percentage) +"%)");
                 }
                 
             } else {
-                baseTarget = prevBaseTarget - prevBaseTarget * Constants.BASE_TARGET_GAMMA
-                        * (Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE - Math.max(blocktimeAverage, Constants.MIN_BLOCKTIME_LIMIT))
-                        / (100*Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE);
+                baseTarget = prevBaseTarget - prevBaseTarget * baseTargetGamma
+                        * (expectedAverageBlockGenerationRate - Math.max(blocktimeAverage, minBlockTimeLimit))
+                        / (100*expectedAverageBlockGenerationRate);
                 if (showBlockTimeGenerationRateLogs) {
 	                double percentage = 100 - ((double)baseTarget/prevBaseTarget)*100;
 	                Logger.logDebugMessage("BGR average for the last 2 blocks ("+blocktimeAverage+"s) < expected (" +
-	                		Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE+"s)");
+	                		expectedAverageBlockGenerationRate+"s)");
 	                Logger.logDebugMessage("Decreased base target value from " + prevBaseTarget + " to " + 
 	                		baseTarget + " ("+ Constants.DECIMAL_FORMAT.format(percentage) +"%)");
                 }

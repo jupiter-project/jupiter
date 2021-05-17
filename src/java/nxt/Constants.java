@@ -41,11 +41,20 @@ public final class Constants {
             .divide(BigInteger.valueOf(MAX_BALANCE_NXT)).longValueExact();
     public static final long MAX_BASE_TARGET = INITIAL_BASE_TARGET * 50;
     public static final long MIN_BASE_TARGET = INITIAL_BASE_TARGET * 9 / 10;
+    
+    public static final int BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME = Nxt.getIntProperty("nxt.hardBlockHeight");
+    // new values after block XXXX
     public static final int MIN_BLOCKTIME_LIMIT = 19;
     public static final int MAX_BLOCKTIME_LIMIT = 27;
     public static final int EXPECTED_AVERAGE_BLOCK_GENERATION_RATE = 25;
     public static final int BASE_TARGET_GAMMA = 30;
     public static final double BASE_TARGET_GAMMA_REDUCED = 1.023;
+    // original values
+    public static final int ORIGINAL_MIN_BLOCKTIME_LIMIT = 53;
+    public static final int ORIGINAL_MAX_BLOCKTIME_LIMIT = 67;
+    public static final int ORIGINAL_EXPECTED_AVERAGE_BLOCK_GENERATION_RATE = 60;
+    public static final int ORIGINAL_BASE_TARGET_GAMMA = 64;
+    public static final double ORIGINAL_BASE_TARGET_GAMMA_REDUCED = 1;
     public static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
     
     public static final int MAX_ROLLBACK = Math.max(Nxt.getIntProperty("nxt.maxRollback"), 720);

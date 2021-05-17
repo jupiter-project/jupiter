@@ -243,11 +243,18 @@ public final class Generator implements Comparable<Generator> {
         BigInteger prevTarget = effectiveBaseTarget.multiply(BigInteger.valueOf(elapsedTimeToHit - 1));
         BigInteger target = prevTarget.add(effectiveBaseTarget);
         
-        return hit.compareTo(target) < 0
-    	        && (hit.compareTo(prevTarget) >= 0
-        		|| (elapsedTimeToHit <= MIN_BLOCK_TIME + 1)
-        		|| (elapsedTimeToHit > 3600)
-    	        || Constants.isOffline);
+        if (previousBlock.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME) {
+        	 return hit.compareTo(target) < 0
+         	        && (hit.compareTo(prevTarget) >= 0
+             		|| (elapsedTimeToHit <= MIN_BLOCK_TIME + 1)
+             		|| (elapsedTimeToHit > 3600)
+         	        || Constants.isOffline);
+        } else {
+        	 return hit.compareTo(target) < 0
+         	        && (hit.compareTo(prevTarget) >= 0
+             		|| (elapsedTimeToHit > 3600)
+         	        || Constants.isOffline);
+        }
     }
     
     static boolean allowsFakeForging(byte[] publicKey) {
@@ -266,7 +273,7 @@ public final class Generator implements Comparable<Generator> {
 
     static long getHitTime(BigInteger effectiveBalance, BigInteger hit, Block lastBlock) {
     	long delta = hit.divide(BigInteger.valueOf(lastBlock.getBaseTarget()).multiply(effectiveBalance)).longValue();
-    	if (delta < MIN_BLOCK_TIME) {
+    	if (lastBlock.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME && delta < MIN_BLOCK_TIME) {
     		delta = MIN_BLOCK_TIME;
     	}
     	

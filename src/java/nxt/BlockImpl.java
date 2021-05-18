@@ -439,7 +439,6 @@ final class BlockImpl implements Block {
         if (previousBlock.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME) {
         	baseTargetGamma = Constants.ORIGINAL_BASE_TARGET_GAMMA;
         	expectedAverageBlockGenerationRate = Constants.ORIGINAL_EXPECTED_AVERAGE_BLOCK_GENERATION_RATE;
-            baseTargetGammaReduced = Constants.ORIGINAL_BASE_TARGET_GAMMA_REDUCED;
             maxBlocktimeLimit = Constants.ORIGINAL_MAX_BLOCKTIME_LIMIT;
             minBlockTimeLimit = Constants.ORIGINAL_MIN_BLOCKTIME_LIMIT;
         }
@@ -450,8 +449,14 @@ final class BlockImpl implements Block {
             int blocktimeAverage = (this.timestamp - block.timestamp) / 3;
             
             if (blocktimeAverage > expectedAverageBlockGenerationRate) {
-            	double reducedFactor = expectedAverageBlockGenerationRate * baseTargetGammaReduced;
-                baseTarget = Math.round((prevBaseTarget * Math.min(blocktimeAverage, maxBlocktimeLimit)) / reducedFactor);
+            	
+                if (previousBlock.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME) {
+                    baseTarget = Math.round((prevBaseTarget * Math.min(blocktimeAverage, maxBlocktimeLimit)) / expectedAverageBlockGenerationRate);
+                } else {
+                	double reducedFactor = expectedAverageBlockGenerationRate * baseTargetGammaReduced;
+                    baseTarget = Math.round((prevBaseTarget * Math.min(blocktimeAverage, maxBlocktimeLimit)) / reducedFactor);
+                }
+                
                 if (showBlockTimeGenerationRateLogs) {
                 	double percentage = ((double) baseTarget/prevBaseTarget)*100 - 100;
                     Logger.logDebugMessage("BGR average for the last 2 blocks ("+blocktimeAverage+"s) > expected (" + 

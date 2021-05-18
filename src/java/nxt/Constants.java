@@ -54,7 +54,6 @@ public final class Constants {
     public static final int ORIGINAL_MAX_BLOCKTIME_LIMIT = 67;
     public static final int ORIGINAL_EXPECTED_AVERAGE_BLOCK_GENERATION_RATE = 60;
     public static final int ORIGINAL_BASE_TARGET_GAMMA = 64;
-    public static final double ORIGINAL_BASE_TARGET_GAMMA_REDUCED = 1;
     public static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
     
     public static final int MAX_ROLLBACK = Math.max(Nxt.getIntProperty("nxt.maxRollback"), 720);

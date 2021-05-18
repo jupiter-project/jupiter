@@ -246,13 +246,13 @@ public final class Generator implements Comparable<Generator> {
         if (previousBlock.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME) {
         	 return hit.compareTo(target) < 0
           	        && (hit.compareTo(prevTarget) >= 0
-              		|| (elapsedTimeToHit > 3600)
+  	                || (Constants.isTestnet ? elapsedTimeToHit > 300 : elapsedTimeToHit > 3600)
           	        || Constants.isOffline);
         } else {
         	return hit.compareTo(target) < 0
          	        && (hit.compareTo(prevTarget) >= 0
              		|| (elapsedTimeToHit <= MIN_BLOCK_TIME + 1)
-             		|| (elapsedTimeToHit > 3600)
+  	                || (Constants.isTestnet ? elapsedTimeToHit > 300 : elapsedTimeToHit > 3600)
          	        || Constants.isOffline);
         }
     }
@@ -357,9 +357,11 @@ public final class Generator implements Comparable<Generator> {
     boolean forge(Block lastBlock, int generationLimit) throws BlockchainProcessor.BlockNotAcceptedException {
         int timestampToHit = getTimestamp(generationLimit);
         if (!verifyHit(hit, effectiveBalance, lastBlock, timestampToHit)) {
+        	int elapsedTimeToHit = timestampToHit - lastBlock.getTimestamp();
             Logger.logErrorMessage(this.toString() + " failed to forge at " + timestampToHit + "("+Time.getDateTimeStringInfo(timestampToHit)+")"
-            		+ " height " + lastBlock.getHeight() 
-            		+ " last timestamp " + lastBlock.getTimestamp() + "("+Time.getDateTimeStringInfo(lastBlock.getTimestamp())+")");
+            		+ " height:" + lastBlock.getHeight() 
+            		+ " last timestamp:" + lastBlock.getTimestamp() + "("+Time.getDateTimeStringInfo(lastBlock.getTimestamp())+")+"
+            				+ " elapsedTimeToHit:"+elapsedTimeToHit);
             return false;
         }
         int start = Nxt.getEpochTime();

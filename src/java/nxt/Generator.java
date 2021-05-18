@@ -245,13 +245,13 @@ public final class Generator implements Comparable<Generator> {
         
         if (previousBlock.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME) {
         	 return hit.compareTo(target) < 0
+          	        && (hit.compareTo(prevTarget) >= 0
+              		|| (elapsedTimeToHit > 3600)
+          	        || Constants.isOffline);
+        } else {
+        	return hit.compareTo(target) < 0
          	        && (hit.compareTo(prevTarget) >= 0
              		|| (elapsedTimeToHit <= MIN_BLOCK_TIME + 1)
-             		|| (elapsedTimeToHit > 3600)
-         	        || Constants.isOffline);
-        } else {
-        	 return hit.compareTo(target) < 0
-         	        && (hit.compareTo(prevTarget) >= 0
              		|| (elapsedTimeToHit > 3600)
          	        || Constants.isOffline);
         }

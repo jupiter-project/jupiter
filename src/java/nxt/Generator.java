@@ -273,7 +273,7 @@ public final class Generator implements Comparable<Generator> {
 
     static long getHitTime(BigInteger effectiveBalance, BigInteger hit, Block lastBlock) {
     	long delta = hit.divide(BigInteger.valueOf(lastBlock.getBaseTarget()).multiply(effectiveBalance)).longValue();
-    	if (lastBlock.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME && delta < MIN_BLOCK_TIME) {
+    	if (lastBlock.getHeight() >= Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME && delta < MIN_BLOCK_TIME) {
     		delta = MIN_BLOCK_TIME;
     	}
     	

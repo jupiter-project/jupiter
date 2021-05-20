@@ -127,7 +127,7 @@ public final class Constants {
     public static final int MAX_REFERENCED_TRANSACTION_TIMESPAN = 60 * 1440 * 60;
     public static final int CHECKSUM_BLOCK_1 = Integer.MAX_VALUE;
     // First fork prior to exchange listing
-    public static final int CHECKSUM_BLOCK_2 = isTestnet ? 100 : 1105000;
+    public static final int CHECKSUM_BLOCK_2 = isTestnet ? 0: 1105000;
 
     public static final int LAST_CHECKSUM_BLOCK = CHECKSUM_BLOCK_2;
     // LAST_KNOWN_BLOCK must also be set in html/www/js/nrs.constants.js

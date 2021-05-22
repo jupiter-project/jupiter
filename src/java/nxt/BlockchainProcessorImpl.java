@@ -1715,6 +1715,10 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                 break;
             }
         }
+        if (sortedTransactions.size() > 0) {
+        	Logger.logDebugMessage("Selected " + sortedTransactions.size() + " unconfirmed txs for the new block, pending " 
+        			+ (orderedUnconfirmedTransactions.size() - sortedTransactions.size()) + " to process");
+        }
         return sortedTransactions;
     }
 
@@ -1765,8 +1769,8 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
         try {
             pushBlock(block);
             blockListeners.notify(block, Event.BLOCK_GENERATED);
-            Logger.logDebugMessage("Account " + Long.toUnsignedString(block.getGeneratorId()) + " generated block " + block.getStringId()
-            		+ " after " + (block.getTimestamp() - previousBlock.getTimestamp()) + " seconds"
+            Logger.logDebugMessage("  Account " + Long.toUnsignedString(block.getGeneratorId()) + " generated block " + block.getStringId()
+            		+ " after " + (block.getTimestamp() - previousBlock.getTimestamp()) + "s"
                     + " height " + block.getHeight() 
                     + " timestamp " + block.getTimestamp()+"("+Time.getDateTimeStringInfo(block.getTimestamp()) + ")" 
                     + " fee " + ((float)block.getTotalFeeNQT())/Constants.ONE_NXT);

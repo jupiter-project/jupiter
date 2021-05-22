@@ -152,7 +152,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
 
         try {
             try {
-                if (Nxt.getBlockchainProcessor().isDownloading() && ! testUnconfirmedTransactions) {
+                if (Nxt.getBlockchainProcessor().isDownloading() && !testUnconfirmedTransactions) {
                     return;
                 }
                 List<UnconfirmedTransaction> expiredTransactions = new ArrayList<>();
@@ -197,7 +197,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
 
         try {
             try {
-                if (Nxt.getBlockchainProcessor().isDownloading() && ! testUnconfirmedTransactions) {
+                if (Nxt.getBlockchainProcessor().isDownloading() && !testUnconfirmedTransactions) {
                     return;
                 }
                 List<Transaction> transactionList = new ArrayList<>();
@@ -229,7 +229,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
 
         try {
             try {
-                if (Nxt.getBlockchainProcessor().isDownloading() && ! testUnconfirmedTransactions) {
+                if (Nxt.getBlockchainProcessor().isDownloading() && !testUnconfirmedTransactions) {
                     return;
                 }
                 Peer peer = Peers.getAnyPeer(Peer.State.CONNECTED, true);
@@ -270,7 +270,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
 
         try {
             try {
-                if (Nxt.getBlockchainProcessor().isDownloading() && ! testUnconfirmedTransactions) {
+                if (Nxt.getBlockchainProcessor().isDownloading() && !testUnconfirmedTransactions) {
                     return;
                 }
                 processWaitingTransactions();
@@ -418,7 +418,6 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                 Logger.logDebugMessage("Will broadcast new transaction later " + transaction.getStringId());
             } else {
                 processTransaction(unconfirmedTransaction);
-                Logger.logDebugMessage("Accepted new transaction " + transaction.getStringId());
                 List<Transaction> acceptedTransactions = Collections.singletonList(transaction);
                 Peers.sendToSomePeers(acceptedTransactions);
                 transactionListeners.notify(acceptedTransactions, Event.ADDED_UNCONFIRMED_TRANSACTIONS);
@@ -598,6 +597,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                     }
                 }
                 if (addedUnconfirmedTransactions.size() > 0) {
+                	Logger.logDebugMessage("Added " + addedUnconfirmedTransactions.size() + " unconfirmed transactions");
                     transactionListeners.notify(addedUnconfirmedTransactions, Event.ADDED_UNCONFIRMED_TRANSACTIONS);
                 }
             }

@@ -1716,7 +1716,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
             }
         }
         if (sortedTransactions.size() > 0) {
-        	Logger.logDebugMessage("Selected " + sortedTransactions.size() + " unconfirmed txs for the new block, pending " 
+        	Logger.logDebugMessage("Selected " + sortedTransactions.size() + " unconfirmed txs, payload " + payloadLength + ", pending " 
         			+ (orderedUnconfirmedTransactions.size() - sortedTransactions.size()) + " to process");
         }
         return sortedTransactions;

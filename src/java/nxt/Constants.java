@@ -28,7 +28,7 @@ public final class Constants {
     public static final String COIN_SYMBOL = "JUP";
     public static final String ACCOUNT_PREFIX = "JUP";
     public static final String PROJECT_NAME = "Jupiter";
-    public static final int MAX_NUMBER_OF_TRANSACTIONS = 255;
+    public static final int MAX_NUMBER_OF_TRANSACTIONS = 750;
     public static final int MIN_TRANSACTION_SIZE = 176;
     public static final int MAX_PAYLOAD_LENGTH = MAX_NUMBER_OF_TRANSACTIONS * MIN_TRANSACTION_SIZE;
     public static final long ONE_NXT = 100000000;

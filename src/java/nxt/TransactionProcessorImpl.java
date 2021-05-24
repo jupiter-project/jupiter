@@ -597,7 +597,6 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                     }
                 }
                 if (addedUnconfirmedTransactions.size() > 0) {
-                	Logger.logDebugMessage("Added " + addedUnconfirmedTransactions.size() + " unconfirmed transactions");
                     transactionListeners.notify(addedUnconfirmedTransactions, Event.ADDED_UNCONFIRMED_TRANSACTIONS);
                 }
             }

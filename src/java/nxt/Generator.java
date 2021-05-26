@@ -105,9 +105,13 @@ public final class Generator implements Comparable<Generator> {
              generator.setLastBlock(previousBlock);
              int timestamp = generator.getTimestamp(generationLimit);
              if (timestamp != generationLimit && generator.getHitTime() > 0 && timestamp < lastBlock.getTimestamp()) {
-                 Logger.logDebugMessage("Pop off: " + generator.toString() + " will pop off last block, height:" + lastBlock.getHeight());
+                 Logger.logDebugMessage("Pop off: " + generator.toString() + " will pop off last block,"+
+                		 "with height:" + lastBlock.getHeight() + 
+                		 " and timestamp " + Time.getDateTimeStringInfo(lastBlock.getTimestamp()) + ". " + 
+                		 " Current timestamp " + Time.getDateTimeStringInfo(timestamp));
                  List<BlockImpl> poppedOffBlock = BlockchainProcessorImpl.getInstance().popOffTo(previousBlock);
                  for (BlockImpl block : poppedOffBlock) {
+                	 // Put transactions as unconfirmed for the new next block
                      TransactionProcessorImpl.getInstance().processLater(block.getTransactions());
                  }
                  lastBlock = previousBlock;
@@ -359,8 +363,8 @@ public final class Generator implements Comparable<Generator> {
         if (!verifyHit(hit, effectiveBalance, lastBlock, timestampToHit)) {
         	int elapsedTimeToHit = timestampToHit - lastBlock.getTimestamp();
             Logger.logErrorMessage(this.toString() + " failed to forge at " + timestampToHit + "("+Time.getDateTimeStringInfo(timestampToHit)+")"
-            		+ " height:" + lastBlock.getHeight() 
-            		+ " last timestamp:" + lastBlock.getTimestamp() + "("+Time.getDateTimeStringInfo(lastBlock.getTimestamp())+")+"
+            		+ " last height:" + lastBlock.getHeight() 
+            		+ " last timestamp:" + lastBlock.getTimestamp() + "("+Time.getDateTimeStringInfo(lastBlock.getTimestamp())+")"
             				+ " elapsedTimeToHit:"+elapsedTimeToHit);
             return false;
         }

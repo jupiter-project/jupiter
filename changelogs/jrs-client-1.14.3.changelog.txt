@@ -1,0 +1,5 @@
+Bugfixing for Leda release
+
+* Fixing a NumberFormatException in GetAsset
+* Adding feature to hide/show the passphrase in the login page
+* Changing "Details" account label for "Info"

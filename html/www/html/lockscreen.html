@@ -65,10 +65,23 @@
                             </div>
                         </div>
                         <div class="input-group" style="display:none">
-                            <input type="password" class="form-control" id="login_password" name="login_password" placeholder="Your Passphrase" data-i18n="[placeholder]your_passphrase" autofocus />
+                            <input type="password" class="form-control" 
+                            	id="login_password" 
+                            	name="login_password" 
+                            	placeholder="Your Passphrase" 
+                            	data-i18n="[placeholder]your_passphrase" autofocus />
+                            
                             <div class="input-group-btn" style="border:1px solid #fff;">
-                                <button class="btn btn-flat" onclick="NRS.login(1,$('#login_password').val())"><i class="fa fa-arrow-right text-muted"></i></button>
+                                <button class="btn btn-flat" onclick="NRS.showHidePasswordField('login_password')">
+                                	<i class="password-eye fa fa-eye text-muted"></i>
+                                </button>
                             </div>
+                            <div class="input-group-btn" style="border:1px solid #fff;">
+                                <button class="btn btn-flat" onclick="NRS.login(1,$('#login_password').val())">
+                                	<i class="fa fa-arrow-right text-muted"></i>
+                                </button>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>

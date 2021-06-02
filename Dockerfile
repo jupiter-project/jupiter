@@ -21,10 +21,12 @@ ENV LC_ALL C.UTF-8
 COPY . .
 
 # compile Jupiter
-RUN chmod + compile.sh && ./compile.sh
+RUN sed -i 's/\r//g' *.sh
+RUN chmod +x compile.sh
+RUN bash ./compile.sh
 
 # make start script executable
-RUN chmod + run.sh
+RUN chmod +x run.sh
 
 # both Jupiter ports get exposed
 EXPOSE 7864 7876

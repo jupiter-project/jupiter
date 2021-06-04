@@ -985,7 +985,11 @@ final class TransactionImpl implements Transaction {
             }
         }
 
-        if (getFullSize() > Constants.MAX_PAYLOAD_LENGTH) {
+    	int maxPayloadLength = Constants.MAX_NUMBER_OF_TRANSACTIONS;
+    	if (block.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK) {
+    		maxPayloadLength = Constants.ORIGINAL_MAX_PAYLOAD_LENGTH;
+    	}
+        if (getFullSize() > maxPayloadLength) {
             throw new NxtException.NotValidException("Transaction size " + getFullSize() + " exceeds maximum payload size");
         }
 

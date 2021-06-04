@@ -1393,10 +1393,10 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
         if (!block.verifyBlockSignature()) {
             throw new BlockNotAcceptedException("Block signature verification failed", block);
         }
-        if (block.getTransactions().size() > Constants.MAX_NUMBER_OF_TRANSACTIONS) {
+        if (block.getTransactions().size() > getMaxNumberOfTransactions(block.getHeight())) {
             throw new BlockNotAcceptedException("Invalid block transaction count " + block.getTransactions().size(), block);
         }
-        if (block.getPayloadLength() > Constants.MAX_PAYLOAD_LENGTH || block.getPayloadLength() < 0) {
+        if (block.getPayloadLength() > getMaxPayloadLength(block.getHeight()) || block.getPayloadLength() < 0) {
             throw new BlockNotAcceptedException("Invalid block payload length " + block.getPayloadLength(), block);
         }
     }
@@ -1686,11 +1686,11 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
         }
         SortedSet<UnconfirmedTransaction> sortedTransactions = new TreeSet<>(transactionArrivalComparator);
         int payloadLength = 0;
-        while (payloadLength <= Constants.MAX_PAYLOAD_LENGTH && sortedTransactions.size() <= Constants.MAX_NUMBER_OF_TRANSACTIONS) {
+        while (payloadLength <= getMaxPayloadLength(previousBlock.getHeight()) && sortedTransactions.size() <= getMaxNumberOfTransactions(previousBlock.getHeight())) {
             int prevNumberOfNewTransactions = sortedTransactions.size();
             for (UnconfirmedTransaction unconfirmedTransaction : orderedUnconfirmedTransactions) {
                 int transactionLength = unconfirmedTransaction.getTransaction().getFullSize();
-                if (sortedTransactions.contains(unconfirmedTransaction) || payloadLength + transactionLength > Constants.MAX_PAYLOAD_LENGTH) {
+                if (sortedTransactions.contains(unconfirmedTransaction) || payloadLength + transactionLength > getMaxPayloadLength(previousBlock.getHeight())) {
                     continue;
                 }
                 if (unconfirmedTransaction.getVersion() != getTransactionVersion(previousBlock.getHeight())) {
@@ -1721,7 +1721,22 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
         }
         return sortedTransactions;
     }
-
+    
+    private int getMaxPayloadLength(int blockHeight) {
+    	if (blockHeight >= Constants.BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK) {
+    		return Constants.MAX_PAYLOAD_LENGTH;
+    	} else {
+    		return Constants.ORIGINAL_MAX_PAYLOAD_LENGTH;
+    	}
+    }
+    
+    private int getMaxNumberOfTransactions(int blockHeight) {
+    	if (blockHeight >= Constants.BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK) {
+    		return Constants.MAX_NUMBER_OF_TRANSACTIONS;
+    	} else {
+    		return Constants.ORIGINAL_MAX_NUMBER_OF_TRANSACTIONS;
+    	}
+    }
 
     private static final Comparator<UnconfirmedTransaction> transactionArrivalComparator = Comparator
             .comparingLong(UnconfirmedTransaction::getArrivalTimestamp)

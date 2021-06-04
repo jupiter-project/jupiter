@@ -42,8 +42,9 @@ public final class Constants {
     public static final long MAX_BASE_TARGET = INITIAL_BASE_TARGET * 50;
     public static final long MIN_BASE_TARGET = INITIAL_BASE_TARGET * 9 / 10;
     
-    public static final int BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME = Nxt.getIntProperty("nxt.hardBlockHeight");
-    // new values after block XXXX
+    public static final int BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME = isTestnet ? Nxt.getIntProperty("nxt.hardBlockHeight", 0) : 1800000;
+    
+    // new values after block 1800000
     public static final int MIN_BLOCKTIME_LIMIT = 19;
     public static final int MAX_BLOCKTIME_LIMIT = 27;
     public static final int EXPECTED_AVERAGE_BLOCK_GENERATION_RATE = 25;
@@ -143,7 +144,7 @@ public final class Constants {
     public static final int MAX_REFERENCED_TRANSACTION_TIMESPAN = 60 * 1440 * 60;
     public static final int CHECKSUM_BLOCK_1 = Integer.MAX_VALUE;
     // First fork prior to exchange listing
-    public static final int CHECKSUM_BLOCK_2 = isTestnet ? 100 : 1105000;
+    public static final int CHECKSUM_BLOCK_2 = isTestnet ? 0: 1105000;
 
     public static final int LAST_CHECKSUM_BLOCK = CHECKSUM_BLOCK_2;
     // LAST_KNOWN_BLOCK must also be set in html/www/js/nrs.constants.js

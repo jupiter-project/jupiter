@@ -60,8 +60,6 @@ public final class Generator implements Comparable<Generator> {
 
     private static final Runnable generateBlocksThread = new Runnable() {
 
-        private volatile boolean logged;
-
         @Override
         public void run() {
 
@@ -106,15 +104,9 @@ public final class Generator implements Comparable<Generator> {
                             }
                             Collections.sort(forgers);
                             sortedForgers = Collections.unmodifiableList(forgers);
-                            logged = false;
-                        }
-                        if (!logged) {
-                            for (Generator generator : sortedForgers) {
-                                if (generator.getHitTime() - generationLimit > 60) {
-                                    break;
-                                }
-                                Logger.logDebugMessage(generator.toString());
-                                logged = true;
+                            
+                            if (!sortedForgers.isEmpty()) {
+                            	Logger.logDebugMessage("Candidate forge for the new block: " + sortedForgers.get(0).toString());
                             }
                         }
                         for (Generator generator : sortedForgers) {

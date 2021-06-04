@@ -328,7 +328,9 @@ public final class Generator implements Comparable<Generator> {
 
     @Override
     public String toString() {
-        return "Forger " + Long.toUnsignedString(accountId) + " deadline " + getDeadline() + " hit " + hitTime;
+    	String dateInfo = Time.getDateTimeStringInfo(hitTime);
+        return "Forger " + Long.toUnsignedString(accountId) + " deadline " + getDeadline() + " hit " 
+    			+ hitTime + "("+dateInfo+")";
     }
 
     private void setLastBlock(Block lastBlock) {

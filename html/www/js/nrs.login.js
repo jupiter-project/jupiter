@@ -269,6 +269,21 @@ var NRS = (function(NRS, $, undefined) {
         }
         NRS.setStrItem("savedNxtAccounts", accountsStr + account + ";");
     }
+    
+    NRS.showHidePasswordField = function(passwordFieldId){
+    	var passwordField = document.getElementById(passwordFieldId);
+    	if (!passwordField) return;
+    	
+    	if (passwordField.type === "password") {
+    		$(".password-eye").addClass('fa-eye-slash');
+    		$(".password-eye").removeClass('fa-eye');
+    		passwordField.type = "text";
+    	} else {
+    		$(".password-eye").removeClass('fa-eye-slash');
+    		$(".password-eye").addClass('fa-eye');
+    		passwordField.type = "password";
+    	}
+    }
 
     // id can be either account id or passphrase
     NRS.login = function(isPassphraseLogin, id, callback, isAccountSwitch, isSavedPassphrase) {
@@ -375,7 +390,7 @@ var NRS = (function(NRS, $, undefined) {
                     }
 					NRS.disablePluginsDuringSession = $("#disable_all_plugins").is(":checked");
 					$("#sidebar_account_id").html(String(NRS.accountRS).escapeHTML());
-					$("#sidebar_account_link").html(NRS.getAccountLink(NRS, "account", NRS.accountRS, "details", false, "btn btn-default btn-xs"));
+					$("#sidebar_account_link").html(NRS.getAccountLink(NRS, "account", NRS.accountRS, "info", false, "btn btn-default btn-xs"));
 					if (NRS.lastBlockHeight == 0 && NRS.state.numberOfBlocks) {
 						NRS.checkBlockHeight(NRS.state.numberOfBlocks - 1);
 					}

@@ -1393,10 +1393,10 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
         if (!block.verifyBlockSignature()) {
             throw new BlockNotAcceptedException("Block signature verification failed", block);
         }
-        if (block.getTransactions().size() > getMaxNumberOfTransactions(block.getHeight())) {
+        if (block.getTransactions().size() > getMaxNumberOfTransactions(previousLastBlock.getHeight())) {
             throw new BlockNotAcceptedException("Invalid block transaction count " + block.getTransactions().size(), block);
         }
-        if (block.getPayloadLength() > getMaxPayloadLength(block.getHeight()) || block.getPayloadLength() < 0) {
+        if (block.getPayloadLength() > getMaxPayloadLength(previousLastBlock.getHeight()) || block.getPayloadLength() < 0) {
             throw new BlockNotAcceptedException("Invalid block payload length " + block.getPayloadLength(), block);
         }
     }

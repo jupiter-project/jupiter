@@ -1,4 +1,4 @@
 Scale Jupiter blockchain
 
 * Increase the rate of block generation to an average of 25 seconds per block from the current 60 seconds on average.
-* Mandatory upgrade, it implies a hard fork on the block number XXX
+* Mandatory upgrade, it implies a hard fork on the block number 1718000

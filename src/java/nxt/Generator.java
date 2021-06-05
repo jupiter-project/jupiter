@@ -22,6 +22,7 @@ import nxt.util.Listener;
 import nxt.util.Listeners;
 import nxt.util.Logger;
 import nxt.util.ThreadPool;
+import nxt.util.Time;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -54,10 +55,10 @@ public final class Generator implements Comparable<Generator> {
     private static volatile List<Generator> sortedForgers = null;
     private static long lastBlockId;
     private static int delayTime = Constants.FORGING_DELAY;
+    private static final int MIN_BLOCK_TIME = 8;
+
 
     private static final Runnable generateBlocksThread = new Runnable() {
-
-        private volatile boolean logged;
 
         @Override
         public void run() {
@@ -67,7 +68,7 @@ public final class Generator implements Comparable<Generator> {
                     BlockchainImpl.getInstance().updateLock();
                     try {
                         Block lastBlock = Nxt.getBlockchain().getLastBlock();
-                        if (lastBlock == null || lastBlock.getHeight() < Constants.LAST_KNOWN_BLOCK) {
+                        if (lastBlock == null) {
                             return;
                         }
                         final int generationLimit = Nxt.getEpochTime() - delayTime;
@@ -79,7 +80,11 @@ public final class Generator implements Comparable<Generator> {
                                     generator.setLastBlock(previousBlock);
                                     int timestamp = generator.getTimestamp(generationLimit);
                                     if (timestamp != generationLimit && generator.getHitTime() > 0 && timestamp < lastBlock.getTimestamp()) {
-                                        Logger.logDebugMessage("Pop off: " + generator.toString() + " will pop off last block " + lastBlock.getStringId());
+                                    	 Logger.logDebugMessage("Pop off: " + generator.toString() + " will pop off last block,"+
+											" with height:" + lastBlock.getHeight() +
+											" and timestamp " + Time.getDateTimeStringInfo(lastBlock.getTimestamp()) + ". " +
+											" Current timestamp " + Time.getDateTimeStringInfo(timestamp));
+
                                         List<BlockImpl> poppedOffBlock = BlockchainProcessorImpl.getInstance().popOffTo(previousBlock);
                                         for (BlockImpl block : poppedOffBlock) {
                                             TransactionProcessorImpl.getInstance().processLater(block.getTransactions());
@@ -99,15 +104,9 @@ public final class Generator implements Comparable<Generator> {
                             }
                             Collections.sort(forgers);
                             sortedForgers = Collections.unmodifiableList(forgers);
-                            logged = false;
-                        }
-                        if (!logged) {
-                            for (Generator generator : sortedForgers) {
-                                if (generator.getHitTime() - generationLimit > 60) {
-                                    break;
-                                }
-                                Logger.logDebugMessage(generator.toString());
-                                logged = true;
+                            
+                            if (!sortedForgers.isEmpty()) {
+                            	Logger.logDebugMessage("Candidate forge for the new block: " + sortedForgers.get(0).toString());
                             }
                         }
                         for (Generator generator : sortedForgers) {
@@ -240,10 +239,20 @@ public final class Generator implements Comparable<Generator> {
         BigInteger effectiveBaseTarget = BigInteger.valueOf(previousBlock.getBaseTarget()).multiply(effectiveBalance);
         BigInteger prevTarget = effectiveBaseTarget.multiply(BigInteger.valueOf(elapsedTime - 1));
         BigInteger target = prevTarget.add(effectiveBaseTarget);
-        return hit.compareTo(target) < 0
-                && (hit.compareTo(prevTarget) >= 0
-                || (Constants.isTestnet ? elapsedTime > 300 : elapsedTime > 3600)
-                || Constants.isOffline);
+        
+        
+		if (previousBlock.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME) {
+			return hit.compareTo(target) < 0
+			   && (hit.compareTo(prevTarget) >= 0
+			   || (Constants.isTestnet ? elapsedTime > 300 : elapsedTime > 3600)
+			   || Constants.isOffline);
+		} else {
+			return hit.compareTo(target) < 0
+			   && (hit.compareTo(prevTarget) >= 0
+			   || (elapsedTime <= MIN_BLOCK_TIME + 1)
+			   || (Constants.isTestnet ? elapsedTime > 300 : elapsedTime > 3600)
+			   || Constants.isOffline);
+		}
     }
 
     static boolean allowsFakeForging(byte[] publicKey) {
@@ -260,9 +269,12 @@ public final class Generator implements Comparable<Generator> {
         return new BigInteger(1, new byte[] {generationSignatureHash[7], generationSignatureHash[6], generationSignatureHash[5], generationSignatureHash[4], generationSignatureHash[3], generationSignatureHash[2], generationSignatureHash[1], generationSignatureHash[0]});
     }
 
-    static long getHitTime(BigInteger effectiveBalance, BigInteger hit, Block block) {
-        return block.getTimestamp()
-                + hit.divide(BigInteger.valueOf(block.getBaseTarget()).multiply(effectiveBalance)).longValue();
+    static long getHitTime(BigInteger effectiveBalance, BigInteger hit, Block lastBlock) {
+		long delta = hit.divide(BigInteger.valueOf(lastBlock.getBaseTarget()).multiply(effectiveBalance)).longValue();
+		if (lastBlock.getHeight() >= Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME && delta < MIN_BLOCK_TIME) {
+			delta = MIN_BLOCK_TIME;
+		}
+		return lastBlock.getTimestamp() + delta;
     }
 
 
@@ -316,7 +328,9 @@ public final class Generator implements Comparable<Generator> {
 
     @Override
     public String toString() {
-        return "Forger " + Long.toUnsignedString(accountId) + " deadline " + getDeadline() + " hit " + hitTime;
+    	String dateInfo = Time.getDateTimeStringInfo(hitTime);
+        return "Forger " + Long.toUnsignedString(accountId) + " deadline " + getDeadline() + " hit " 
+    			+ hitTime + "("+dateInfo+")";
     }
 
     private void setLastBlock(Block lastBlock) {

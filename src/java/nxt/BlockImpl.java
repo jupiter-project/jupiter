@@ -351,16 +351,21 @@ final class BlockImpl implements Block {
             digest.update(previousBlock.generationSignature);
             byte[] generationSignatureHash = digest.digest(getGeneratorPublicKey());
             if (!Arrays.equals(generationSignature, generationSignatureHash)) {
+            	Logger.logMessage("Error verifying the signature, is not the same");
                 return false;
             }
 
             BigInteger hit = new BigInteger(1, new byte[]{generationSignatureHash[7], generationSignatureHash[6], generationSignatureHash[5], generationSignatureHash[4], generationSignatureHash[3], generationSignatureHash[2], generationSignatureHash[1], generationSignatureHash[0]});
 
-            return Generator.verifyHit(hit, BigInteger.valueOf(effectiveBalance), previousBlock, timestamp);
+            boolean verifyHit = Generator.verifyHit(hit, BigInteger.valueOf(effectiveBalance), previousBlock, timestamp);
+            if (!verifyHit) {
+            	Logger.logMessage("Error verifying the block hit");
+            }
+            
+            return verifyHit;
 
         } catch (RuntimeException e) {
-
-            Logger.logMessage("Error verifying block generation signature", e);
+            Logger.logMessage("RuntimeException, Error verifying block generation signature", e);
             return false;
 
         }

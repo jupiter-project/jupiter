@@ -29,6 +29,8 @@ import nxt.util.Listener;
 import nxt.util.Listeners;
 import nxt.util.Logger;
 import nxt.util.ThreadPool;
+import nxt.util.Time;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
@@ -100,7 +102,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
     private volatile boolean isRestoring;
     private volatile boolean alreadyInitialized = false;
     private volatile long genesisBlockId;
-
+    
     private final Runnable getMoreBlocksThread = new Runnable() {
 
         private final JSONStreamAware getCumulativeDifficultyRequest;
@@ -1764,7 +1766,11 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
             pushBlock(block);
             blockListeners.notify(block, Event.BLOCK_GENERATED);
             Logger.logDebugMessage("Account " + Long.toUnsignedString(block.getGeneratorId()) + " generated block " + block.getStringId()
-                    + " at height " + block.getHeight() + " timestamp " + block.getTimestamp() + " fee " + ((float)block.getTotalFeeNQT())/Constants.ONE_NXT);
+            		+ " after " + (block.getTimestamp() - previousBlock.getTimestamp()) + " seconds"
+                    + " height " + block.getHeight() 
+                    + " timestamp " + block.getTimestamp()+"("+Time.getDateTimeStringInfo(block.getTimestamp()) + ")" 
+                    + " fee " + ((float)block.getTotalFeeNQT())/Constants.ONE_NXT);
+            
         } catch (TransactionNotAcceptedException e) {
             Logger.logDebugMessage("Generate block failed: " + e.getMessage());
             TransactionProcessorImpl.getInstance().processWaitingTransactions();

@@ -17,6 +17,7 @@
 package nxt;
 
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 
 public final class Constants {
 
@@ -33,13 +34,29 @@ public final class Constants {
     public static final long ONE_NXT = 100000000;
     public static final long MAX_BALANCE_NXT = Long.MAX_VALUE / (100 * ONE_NXT) * 100;
     public static final long MAX_BALANCE_NQT = MAX_BALANCE_NXT * ONE_NXT;
+    
+    
+    // BLOCK GENERATION RATE CONSTANTS
     public static final long INITIAL_BASE_TARGET = BigInteger.valueOf(153722867).multiply(BigInteger.valueOf(1000000000))
             .divide(BigInteger.valueOf(MAX_BALANCE_NXT)).longValueExact();
     public static final long MAX_BASE_TARGET = INITIAL_BASE_TARGET * 50;
     public static final long MIN_BASE_TARGET = INITIAL_BASE_TARGET * 9 / 10;
-    public static final int MIN_BLOCKTIME_LIMIT = 53;
-    public static final int MAX_BLOCKTIME_LIMIT = 67;
-    public static final int BASE_TARGET_GAMMA = 64;
+    
+    public static final int BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME = isTestnet ? Nxt.getIntProperty("nxt.hardBlockHeight", 0) : 1718000;
+    
+    // new values after block 1718000
+    public static final int MIN_BLOCKTIME_LIMIT = 19;
+    public static final int MAX_BLOCKTIME_LIMIT = 27;
+    public static final int EXPECTED_AVERAGE_BLOCK_GENERATION_RATE = 25;
+    public static final int BASE_TARGET_GAMMA = 30;
+    public static final double BASE_TARGET_GAMMA_REDUCED = 1.023;
+    // original values
+    public static final int ORIGINAL_MIN_BLOCKTIME_LIMIT = 53;
+    public static final int ORIGINAL_MAX_BLOCKTIME_LIMIT = 67;
+    public static final int ORIGINAL_EXPECTED_AVERAGE_BLOCK_GENERATION_RATE = 60;
+    public static final int ORIGINAL_BASE_TARGET_GAMMA = 64;
+    public static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
+    
     public static final int MAX_ROLLBACK = Math.max(Nxt.getIntProperty("nxt.maxRollback"), 720);
     public static final int GUARANTEED_BALANCE_CONFIRMATIONS = isTestnet ? Nxt.getIntProperty("nxt.testnetGuaranteedBalanceConfirmations", 1440) : 1440;
     public static final int LEASING_DELAY = isTestnet ? Nxt.getIntProperty("nxt.testnetLeasingDelay", 1440) : 1440;
@@ -133,8 +150,8 @@ public final class Constants {
     // LAST_KNOWN_BLOCK must also be set in html/www/js/nrs.constants.js
     public static final int LAST_KNOWN_BLOCK = CHECKSUM_BLOCK_2;
 
-    public static final int[] MIN_VERSION = new int[] {1, 13, 0};
-    public static final int[] MIN_PROXY_VERSION = new int[] {1, 13, 0};
+    public static final int[] MIN_VERSION = new int[] {1, 14, 3};
+    public static final int[] MIN_PROXY_VERSION = new int[] {1, 14, 3};
 
     static final long UNCONFIRMED_POOL_DEPOSIT_NQT = (isTestnet ? 50 : 100) * ONE_NXT;
     public static final long SHUFFLING_DEPOSIT_NQT = (isTestnet ? 7 : 1000) * ONE_NXT;

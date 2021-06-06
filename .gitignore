@@ -4,8 +4,10 @@ logs/nxt.log.lck
 nxt_db/
 html/www/html/pages/sources.tmp
 conf/nxt.properties
+conf/logging.properties
 .DS_Store
 html/.DS_Store
 html/www/.DS_Store
 html/www/img/.DS_Store
 html/www/img/brand/.DS_Store
+classes/**

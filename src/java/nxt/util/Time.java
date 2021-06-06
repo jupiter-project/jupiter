@@ -16,6 +16,8 @@
 
 package nxt.util;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public interface Time {
@@ -23,11 +25,29 @@ public interface Time {
     int getTime();
 
     final class EpochTime implements Time {
-
         public int getTime() {
             return Convert.toEpochTime(System.currentTimeMillis());
         }
-
+    }
+    
+    static String getDateTimeStringInfo(long timestamp) {
+    	Date hitTimeDate  = new Date(Convert.fromEpochTime(new Long(timestamp).intValue()));
+    	Calendar hitTimeCalendar = Calendar.getInstance();
+    	hitTimeCalendar.setTime(hitTimeDate);
+    	int hours = hitTimeCalendar.get(Calendar.HOUR_OF_DAY);
+    	int minutes = hitTimeCalendar.get(Calendar.MINUTE);
+    	int seconds = hitTimeCalendar.get(Calendar.SECOND);
+    	int ms = hitTimeCalendar.get(Calendar.MILLISECOND);
+    	String dateInfo = twoNumberPlaces(hours)+":"+twoNumberPlaces(minutes)+":"+twoNumberPlaces(seconds)+":"+ms;
+    	
+    	return dateInfo;
+    }
+    static String twoNumberPlaces(int number) {
+    	if (number < 10) {
+    		return "0"+number;
+    	}else {
+    		return String.valueOf(number);
+    	}
     }
 
     final class ConstantTime implements Time {
@@ -41,7 +61,6 @@ public interface Time {
         public int getTime() {
             return time;
         }
-
     }
 
     final class FasterTime implements Time {
@@ -62,7 +81,6 @@ public interface Time {
         public int getTime() {
             return time + (int)((System.currentTimeMillis() - systemStartTime) / (1000 / multiplier));
         }
-
     }
 
     final class CounterTime implements Time {
@@ -76,7 +94,5 @@ public interface Time {
         public int getTime() {
             return counter.incrementAndGet();
         }
-
     }
-
 }

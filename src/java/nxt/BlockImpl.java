@@ -456,7 +456,7 @@ final class BlockImpl implements Block {
             if (blocktimeAverage > expectedAverageBlockGenerationRate) {
             	
                 if (previousBlock.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME) {
-                    baseTarget = Math.round((prevBaseTarget * Math.min(blocktimeAverage, maxBlocktimeLimit)) / expectedAverageBlockGenerationRate);
+                    baseTarget = (prevBaseTarget * Math.min(blocktimeAverage, maxBlocktimeLimit)) / expectedAverageBlockGenerationRate;
                 } else {
                 	double reducedFactor = expectedAverageBlockGenerationRate * baseTargetGammaReduced;
                     baseTarget = Math.round((prevBaseTarget * Math.min(blocktimeAverage, maxBlocktimeLimit)) / reducedFactor);
@@ -484,7 +484,6 @@ final class BlockImpl implements Block {
             }
             
             if (baseTarget < 0 || baseTarget > Constants.MAX_BASE_TARGET) {
-            	Logger.logDebugMessage("- baseTarget "+baseTarget+ " > MAX_BASE_TARGET " + Constants.MAX_BASE_TARGET);
                 baseTarget = Constants.MAX_BASE_TARGET;
             }
             if (baseTarget < Constants.MIN_BASE_TARGET) {

@@ -44,7 +44,7 @@ public final class Constants {
     
     public static final int BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME = isTestnet ? Nxt.getIntProperty("nxt.hardBlockHeight", 0) : 1718000;
     
-    // new values after block 1800000
+    // new values after block 1718000
     public static final int MIN_BLOCKTIME_LIMIT = 19;
     public static final int MAX_BLOCKTIME_LIMIT = 27;
     public static final int EXPECTED_AVERAGE_BLOCK_GENERATION_RATE = 25;

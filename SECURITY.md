@@ -4,12 +4,13 @@
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.13.1   | :white_check_mark: |
-| 1.13.2   | :white_check_mark: |
-| 1.14.0   | :white_check_mark: |
-| 1.14.1   | :white_check_mark: |
-| 1.14.2   | :white_check_mark: |
-| 1.14.3   | :white_check_mark: |
+| 1.13.1   | :x: |
+| 1.13.2   | :x: |
+| 1.14.0   | :x: |
+| 1.14.1   | :x: |
+| 1.14.2   | :x: |
+| 1.14.3   | :x: |
+| 2.0.0   | :white_check_mark: |
 
 ## Reporting a Vulnerability
 

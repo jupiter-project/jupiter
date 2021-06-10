@@ -1686,13 +1686,22 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
         }
         SortedSet<UnconfirmedTransaction> sortedTransactions = new TreeSet<>(transactionArrivalComparator);
         int payloadLength = 0;
-        while (payloadLength <= getMaxPayloadLength(previousBlock.getHeight()) && sortedTransactions.size() <= getMaxNumberOfTransactions(previousBlock.getHeight())) {
+        
+        while (payloadLength <= getMaxPayloadLength(previousBlock.getHeight()) && 
+        		sortedTransactions.size() <= getMaxNumberOfTransactions(previousBlock.getHeight())) {
             int prevNumberOfNewTransactions = sortedTransactions.size();
             for (UnconfirmedTransaction unconfirmedTransaction : orderedUnconfirmedTransactions) {
                 int transactionLength = unconfirmedTransaction.getTransaction().getFullSize();
-                if (sortedTransactions.contains(unconfirmedTransaction) || payloadLength + transactionLength > getMaxPayloadLength(previousBlock.getHeight())) {
+                
+                if (sortedTransactions.contains(unconfirmedTransaction) || 
+                		payloadLength + transactionLength > getMaxPayloadLength(previousBlock.getHeight())) {
                     continue;
                 }
+                
+                if(sortedTransactions.size() >= getMaxNumberOfTransactions(previousBlock.getHeight())) {
+                	continue;
+                }
+                
                 if (unconfirmedTransaction.getVersion() != getTransactionVersion(previousBlock.getHeight())) {
                     continue;
                 }

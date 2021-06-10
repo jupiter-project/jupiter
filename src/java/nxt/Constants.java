@@ -51,11 +51,13 @@ public final class Constants {
     public static final long MAX_BASE_TARGET = INITIAL_BASE_TARGET * 50;
     public static final long MIN_BASE_TARGET = INITIAL_BASE_TARGET * 9 / 10;
     
+    // new values after block 1718000
     public static final int MIN_BLOCKTIME_LIMIT = 19;
     public static final int MAX_BLOCKTIME_LIMIT = 27;
     public static final int EXPECTED_AVERAGE_BLOCK_GENERATION_RATE = 25;
     public static final int BASE_TARGET_GAMMA = 30;
     public static final double BASE_TARGET_GAMMA_REDUCED = 1.023;
+    
     // original values
     public static final int ORIGINAL_MIN_BLOCKTIME_LIMIT = 53;
     public static final int ORIGINAL_MAX_BLOCKTIME_LIMIT = 67;

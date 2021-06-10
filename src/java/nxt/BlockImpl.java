@@ -351,16 +351,21 @@ final class BlockImpl implements Block {
             digest.update(previousBlock.generationSignature);
             byte[] generationSignatureHash = digest.digest(getGeneratorPublicKey());
             if (!Arrays.equals(generationSignature, generationSignatureHash)) {
+            	Logger.logMessage("Error verifying the signature, is not the same");
                 return false;
             }
 
             BigInteger hit = new BigInteger(1, new byte[]{generationSignatureHash[7], generationSignatureHash[6], generationSignatureHash[5], generationSignatureHash[4], generationSignatureHash[3], generationSignatureHash[2], generationSignatureHash[1], generationSignatureHash[0]});
 
-            return Generator.verifyHit(hit, BigInteger.valueOf(effectiveBalance), previousBlock, timestamp);
+            boolean verifyHit = Generator.verifyHit(hit, BigInteger.valueOf(effectiveBalance), previousBlock, timestamp);
+            if (!verifyHit) {
+            	Logger.logMessage("Error verifying the block hit");
+            }
+            
+            return verifyHit;
 
         } catch (RuntimeException e) {
-
-            Logger.logMessage("Error verifying block generation signature", e);
+            Logger.logMessage("RuntimeException, Error verifying block generation signature", e);
             return false;
 
         }
@@ -451,7 +456,7 @@ final class BlockImpl implements Block {
             if (blocktimeAverage > expectedAverageBlockGenerationRate) {
             	
                 if (previousBlock.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME) {
-                    baseTarget = Math.round((prevBaseTarget * Math.min(blocktimeAverage, maxBlocktimeLimit)) / expectedAverageBlockGenerationRate);
+                    baseTarget = (prevBaseTarget * Math.min(blocktimeAverage, maxBlocktimeLimit)) / expectedAverageBlockGenerationRate;
                 } else {
                 	double reducedFactor = expectedAverageBlockGenerationRate * baseTargetGammaReduced;
                     baseTarget = Math.round((prevBaseTarget * Math.min(blocktimeAverage, maxBlocktimeLimit)) / reducedFactor);
@@ -479,7 +484,6 @@ final class BlockImpl implements Block {
             }
             
             if (baseTarget < 0 || baseTarget > Constants.MAX_BASE_TARGET) {
-            	Logger.logDebugMessage("- baseTarget "+baseTarget+ " > MAX_BASE_TARGET " + Constants.MAX_BASE_TARGET);
                 baseTarget = Constants.MAX_BASE_TARGET;
             }
             if (baseTarget < Constants.MIN_BASE_TARGET) {

@@ -1,3 +1,4 @@
 Scale Jupiter blockchain
 
 * Blacklist nodes with version previous to 2.0.0
+* Increase the default values for nxt.maxNumberOfOutboundConnections and nxt.maxNumberOfInboundConnections to support a higher number of nodes

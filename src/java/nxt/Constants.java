@@ -35,7 +35,7 @@ public final class Constants {
     public static final int MIN_TRANSACTION_SIZE = 176;
     
     public static final int MAX_NUMBER_OF_TRANSACTIONS = 750;
-    public static final int MAX_PAYLOAD_LENGTH = MAX_NUMBER_OF_TRANSACTIONS * MIN_TRANSACTION_SIZE;
+    public static final int MAX_PAYLOAD_LENGTH = 5 * 1024 * 1024;
     
     public static final int ORIGINAL_MAX_NUMBER_OF_TRANSACTIONS = 255;
     public static final int ORIGINAL_MAX_PAYLOAD_LENGTH = ORIGINAL_MAX_NUMBER_OF_TRANSACTIONS * MIN_TRANSACTION_SIZE;

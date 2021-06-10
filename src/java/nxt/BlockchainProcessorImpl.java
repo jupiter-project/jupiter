@@ -1690,6 +1690,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
         while (payloadLength <= getMaxPayloadLength(previousBlock.getHeight()) && 
         		sortedTransactions.size() <= getMaxNumberOfTransactions(previousBlock.getHeight())) {
             int prevNumberOfNewTransactions = sortedTransactions.size();
+            
             for (UnconfirmedTransaction unconfirmedTransaction : orderedUnconfirmedTransactions) {
                 int transactionLength = unconfirmedTransaction.getTransaction().getFullSize();
                 
@@ -1698,7 +1699,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                     continue;
                 }
                 
-                if(sortedTransactions.size() >= getMaxNumberOfTransactions(previousBlock.getHeight())) {
+                if (sortedTransactions.size() >= getMaxNumberOfTransactions(previousBlock.getHeight())) {
                 	continue;
                 }
                 
@@ -1720,6 +1721,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                 sortedTransactions.add(unconfirmedTransaction);
                 payloadLength += transactionLength;
             }
+            
             if (sortedTransactions.size() == prevNumberOfNewTransactions) {
                 break;
             }

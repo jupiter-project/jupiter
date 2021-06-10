@@ -28,9 +28,18 @@ public final class Constants {
     public static final String COIN_SYMBOL = "JUP";
     public static final String ACCOUNT_PREFIX = "JUP";
     public static final String PROJECT_NAME = "Jupiter";
-    public static final int MAX_NUMBER_OF_TRANSACTIONS = 255;
+    
+    public static final int BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK = isTestnet ? Nxt.getIntProperty("nxt.hardBlockTx", 0) : 1725000;
+    public static final int BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME = isTestnet ? Nxt.getIntProperty("nxt.hardBlockHeight", 0) : 1718000;
+
     public static final int MIN_TRANSACTION_SIZE = 176;
+    
+    public static final int MAX_NUMBER_OF_TRANSACTIONS = 750;
     public static final int MAX_PAYLOAD_LENGTH = MAX_NUMBER_OF_TRANSACTIONS * MIN_TRANSACTION_SIZE;
+    
+    public static final int ORIGINAL_MAX_NUMBER_OF_TRANSACTIONS = 255;
+    public static final int ORIGINAL_MAX_PAYLOAD_LENGTH = ORIGINAL_MAX_NUMBER_OF_TRANSACTIONS * MIN_TRANSACTION_SIZE;
+    
     public static final long ONE_NXT = 100000000;
     public static final long MAX_BALANCE_NXT = Long.MAX_VALUE / (100 * ONE_NXT) * 100;
     public static final long MAX_BALANCE_NQT = MAX_BALANCE_NXT * ONE_NXT;
@@ -42,14 +51,13 @@ public final class Constants {
     public static final long MAX_BASE_TARGET = INITIAL_BASE_TARGET * 50;
     public static final long MIN_BASE_TARGET = INITIAL_BASE_TARGET * 9 / 10;
     
-    public static final int BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME = isTestnet ? Nxt.getIntProperty("nxt.hardBlockHeight", 0) : 1718000;
-    
     // new values after block 1718000
     public static final int MIN_BLOCKTIME_LIMIT = 19;
     public static final int MAX_BLOCKTIME_LIMIT = 27;
     public static final int EXPECTED_AVERAGE_BLOCK_GENERATION_RATE = 25;
     public static final int BASE_TARGET_GAMMA = 30;
     public static final double BASE_TARGET_GAMMA_REDUCED = 1.023;
+    
     // original values
     public static final int ORIGINAL_MIN_BLOCKTIME_LIMIT = 53;
     public static final int ORIGINAL_MAX_BLOCKTIME_LIMIT = 67;

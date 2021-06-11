@@ -35,7 +35,7 @@ public final class Constants {
     public static final int MIN_TRANSACTION_SIZE = 176;
     
     public static final int MAX_NUMBER_OF_TRANSACTIONS = 750;
-    public static final int MAX_PAYLOAD_LENGTH = MAX_NUMBER_OF_TRANSACTIONS * MIN_TRANSACTION_SIZE;
+    public static final int MAX_PAYLOAD_LENGTH = 5 * 1024 * 1024;
     
     public static final int ORIGINAL_MAX_NUMBER_OF_TRANSACTIONS = 255;
     public static final int ORIGINAL_MAX_PAYLOAD_LENGTH = ORIGINAL_MAX_NUMBER_OF_TRANSACTIONS * MIN_TRANSACTION_SIZE;
@@ -48,7 +48,7 @@ public final class Constants {
     // BLOCK GENERATION RATE CONSTANTS
     public static final long INITIAL_BASE_TARGET = BigInteger.valueOf(153722867).multiply(BigInteger.valueOf(1000000000))
             .divide(BigInteger.valueOf(MAX_BALANCE_NXT)).longValueExact();
-    public static final long MAX_BASE_TARGET = INITIAL_BASE_TARGET * 50;
+    public static final long MAX_BASE_TARGET = INITIAL_BASE_TARGET * 70;
     public static final long MIN_BASE_TARGET = INITIAL_BASE_TARGET * 9 / 10;
     
     // new values after block 1718000

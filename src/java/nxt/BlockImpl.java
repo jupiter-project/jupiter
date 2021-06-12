@@ -483,9 +483,12 @@ final class BlockImpl implements Block {
                 }
             }
             
+            Logger.logDebugMessage(String.valueOf(getMaxBaseTarget(previousBlock)));
+            Logger.logDebugMessage(String.valueOf(Constants.ORIGINAL_MAX_BASE_TARGET));
+            Logger.logDebugMessage(String.valueOf(Constants.MAX_BASE_TARGET));
             if (baseTarget < 0 || baseTarget > getMaxBaseTarget(previousBlock)) {
             	Logger.logDebugMessage("BASE TARGET MAX VALUE");
-                baseTarget = Constants.MAX_BASE_TARGET;
+                baseTarget = getMaxBaseTarget(previousBlock);
             }
             if (baseTarget < Constants.MIN_BASE_TARGET) {
                 baseTarget = Constants.MIN_BASE_TARGET;

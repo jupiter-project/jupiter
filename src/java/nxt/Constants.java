@@ -48,7 +48,8 @@ public final class Constants {
     // BLOCK GENERATION RATE CONSTANTS
     public static final long INITIAL_BASE_TARGET = BigInteger.valueOf(153722867).multiply(BigInteger.valueOf(1000000000))
             .divide(BigInteger.valueOf(MAX_BALANCE_NXT)).longValueExact();
-    public static final long MAX_BASE_TARGET = INITIAL_BASE_TARGET * 30;
+    public static final int BASE_TARGET_MULTIPLIER = isTestnet ? Nxt.getIntProperty("nxt.bsmultiplier", 50) : 50;
+    public static final long MAX_BASE_TARGET = INITIAL_BASE_TARGET * BASE_TARGET_MULTIPLIER;
     public static final long MIN_BASE_TARGET = INITIAL_BASE_TARGET * 9 / 10;
     
     // new values after block 1718000

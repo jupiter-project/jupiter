@@ -29,6 +29,7 @@ public final class Constants {
     public static final String ACCOUNT_PREFIX = "JUP";
     public static final String PROJECT_NAME = "Jupiter";
     
+    public static final int BLOCK_HEIGHT_HARD_FORK_INCREASE_MAX_BASE_TARGET = isTestnet ? Nxt.getIntProperty("nxt.hardBlockBaseTarget", 0) : 1730000;
     public static final int BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK = isTestnet ? Nxt.getIntProperty("nxt.hardBlockTx", 0) : 1725000;
     public static final int BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME = isTestnet ? Nxt.getIntProperty("nxt.hardBlockHeight", 0) : 1718000;
 
@@ -49,7 +50,8 @@ public final class Constants {
     public static final long INITIAL_BASE_TARGET = BigInteger.valueOf(153722867).multiply(BigInteger.valueOf(1000000000))
             .divide(BigInteger.valueOf(MAX_BALANCE_NXT)).longValueExact();
     public static final int BASE_TARGET_MULTIPLIER = isTestnet ? Nxt.getIntProperty("nxt.bsmultiplier", 50) : 50;
-    public static final long MAX_BASE_TARGET = INITIAL_BASE_TARGET * BASE_TARGET_MULTIPLIER;
+    public static final long MAX_BASE_TARGET = INITIAL_BASE_TARGET * 70;
+    public static final long ORIGINAL_MAX_BASE_TARGET = INITIAL_BASE_TARGET * BASE_TARGET_MULTIPLIER;
     public static final long MIN_BASE_TARGET = INITIAL_BASE_TARGET * 9 / 10;
     
     // new values after block 1718000

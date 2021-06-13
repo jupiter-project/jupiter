@@ -1,0 +1,3 @@
+Scale Jupiter blockchain
+
+* Rollback MAX_BASE_TARGET to its original value of INITIAL_BASE_TARGET * 50;

@@ -29,7 +29,7 @@ public final class Constants {
     public static final String ACCOUNT_PREFIX = "JUP";
     public static final String PROJECT_NAME = "Jupiter";
     
-    public static final int BLOCK_HEIGHT_HARD_FORK_INCREASE_MAX_BASE_TARGET = isTestnet ? Nxt.getIntProperty("nxt.hardBlockBaseTarget", 0) : 1735000;
+    public static final int BLOCK_HEIGHT_HARD_FORK_INCREASE_MAX_BASE_TARGET = isTestnet ? Nxt.getIntProperty("nxt.hardBlockBaseTarget", 0) : 1733000;
     public static final int BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK = isTestnet ? Nxt.getIntProperty("nxt.hardBlockTx", 0) : 1725000;
     public static final int BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME = isTestnet ? Nxt.getIntProperty("nxt.hardBlockHeight", 0) : 1718000;
 

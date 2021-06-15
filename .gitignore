@@ -2,6 +2,7 @@ nohup.out
 logs/nxt.log
 logs/nxt.log.lck
 nxt_db/
+nxt_test_db/
 html/www/html/pages/sources.tmp
 conf/nxt.properties
 conf/logging.properties

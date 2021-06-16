@@ -1,5 +1,5 @@
 Scale Jupiter blockchain
 
 * Increase the max target value to target 25 seconds for block time generation rate.
-* Mandatory upgrade, it implies a hard fork on the block height 1735000
+* Mandatory upgrade, it implies a hard fork on the block height 1731000
 * Upgrade Jetty dependency libs to version 9.3.17, release notes on https://www.eclipse.org/lists/jetty-announce/msg00102.html 

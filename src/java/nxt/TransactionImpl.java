@@ -989,6 +989,10 @@ final class TransactionImpl implements Transaction {
     	if (Nxt.getBlockchain().getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK) {
     		maxPayloadLength = Constants.ORIGINAL_MAX_PAYLOAD_LENGTH;
     	}
+    	if (Nxt.getBlockchain().getHeight() > Constants.BLOCK_HEIGHT_HARD_FORK_INCREASE_MAX_BASE_TARGET) {
+    		maxPayloadLength = Constants.MAX_PAYLOAD_LENGTH;
+    	}
+    	
         if (getFullSize() > maxPayloadLength) {
             throw new NxtException.NotValidException("Transaction size " + getFullSize() + " exceeds maximum payload size");
         }

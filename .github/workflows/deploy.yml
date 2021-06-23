@@ -1,0 +1,42 @@
+name: Build and publish Jupiter
+
+on:
+  push:
+    branches: [ main, dev, feature/devops ]
+  workflow_dispatch:
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Build image
+        run: docker build -t jupiter .
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Log in to DO Container Registry
+        run: doctl registry login --expiry-seconds 600
+      - name: Tag image
+        run: docker tag jupiter ${{ secrets.DIGITALOCEAN_REGISTRY }}:${{ secrets.DIGITALOCEAN_APP_TAG }}
+      - name: Push image to DO Container Registry
+        run: docker push ${{ secrets.DIGITALOCEAN_REGISTRY }}:${{ secrets.DIGITALOCEAN_APP_TAG }}
+      - name: Launch image
+        run: doctl apps create-deployment ${{ secrets.DIGITALOCEAN_APP_ID }} --wait
+
+      - name: Channel specific notification Slack
+        uses: adamkdean/simple-slack-notify@master
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          channel: '#general'
+          text: 'A new version of Jupiter has been deployed'
+#      - name: send custom message to Telegram
+#        uses: appleboy/telegram-action@master
+#        with:
+#          to: ${{ secrets.TELEGRAM_TO }}
+#          token: ${{ secrets.TELEGRAM_TOKEN }}
+#          message: |
+#            The ${{ github.event_name }} event triggered final step. This is only a test.

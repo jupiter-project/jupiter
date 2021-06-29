@@ -21,6 +21,7 @@ import nxt.db.DbIterator;
 import nxt.db.DerivedDbTable;
 import nxt.db.FilteringIterator;
 import nxt.db.FullTextTrigger;
+import nxt.http.MetisServers;
 import nxt.peer.Peer;
 import nxt.peer.Peers;
 import nxt.util.Convert;
@@ -1332,6 +1333,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
 
         if (block.getTimestamp() >= curTime - 600) {
             Peers.sendToSomePeers(block);
+            MetisServers.send(block);
         }
 
         blockListeners.notify(block, Event.BLOCK_PUSHED);

@@ -58,6 +58,8 @@ public final class JSONResponses {
     public static final JSONStreamAware UNKNOWN_BLOCK = unknown("block");
     public static final JSONStreamAware INCORRECT_BLOCK = incorrect("block");
     public static final JSONStreamAware UNKNOWN_ENTRY = unknown("entry");
+    public static final JSONStreamAware MISSING_METIS = missing("metis");
+    public static final JSONStreamAware UNKNOWN_METIS = unknown("metis");
     public static final JSONStreamAware MISSING_PEER = missing("peer");
     public static final JSONStreamAware UNKNOWN_PEER = unknown("peer");
     public static final JSONStreamAware MISSING_TRANSACTION = missing("transaction");

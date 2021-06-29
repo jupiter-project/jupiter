@@ -284,7 +284,10 @@ public enum APIEnum {
     GET_NEXT_BLOCK_GENERATORS("getNextBlockGenerators", GetNextBlockGeneratorsTemp.instance),
     SEARCH_ALL_OPEN_ASK_ORDERS("searchAllOpenAskOrders", SearchAllOpenAskOrders.instance),
 	SEARCH_ALL_TRADES_ORDERS("searchAllTrades", SearchAllTrades.instance),
-	SEARCH_ALL_ACCOUNT_ASSETS("searchAccountAssets", SearchAccountAssets.instance);
+	SEARCH_ALL_ACCOUNT_ASSETS("searchAccountAssets", SearchAccountAssets.instance),
+	ADD_METIS_SERVER("addMetisServer", AddMetis.instance),
+	GET_METIS_SERVER("getMetis", GetMetis.instance),
+	GET_METIS_SERVERS("getMetisServers", GetMetisServers.instance);
 
 
     private static final Map<String, APIEnum> apiByName = new HashMap<>();

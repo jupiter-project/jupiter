@@ -771,7 +771,7 @@ final class TransactionImpl implements Transaction {
         json.put("version", version);
         return json;
     }
-
+    
     @Override
     public JSONObject getPrunableAttachmentJSON() {
         JSONObject prunableJSON = null;

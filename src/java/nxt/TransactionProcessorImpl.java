@@ -21,11 +21,15 @@ import nxt.db.DbIterator;
 import nxt.db.DbKey;
 import nxt.db.EntityDbTable;
 import nxt.peer.Peer;
+import nxt.peer.PeerWebSocket;
 import nxt.peer.Peers;
 import nxt.util.*;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.StringWriter;
+import java.net.URI;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,6 +42,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
     private static final boolean enableTransactionRebroadcasting = Nxt.getBooleanProperty("nxt.enableTransactionRebroadcasting");
     private static final boolean testUnconfirmedTransactions = Nxt.getBooleanProperty("nxt.testUnconfirmedTransactions");
     private static final int maxUnconfirmedTransactions;
+    
     static {
         int n = Nxt.getIntProperty("nxt.maxUnconfirmedTransactions");
         maxUnconfirmedTransactions = n <= 0 ? Integer.MAX_VALUE : n;

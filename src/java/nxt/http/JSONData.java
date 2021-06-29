@@ -548,6 +548,16 @@ public final class JSONData {
         json.put("valid", token.isValid());
         return json;
     }
+    
+    static JSONObject peer(MetisServer metisServer) {
+    	 JSONObject json = new JSONObject();
+         json.put("address", metisServer.getHost());
+         json.put("port", metisServer.getPort());
+         json.put("state", metisServer.getState().ordinal());
+         json.put("announcedAddress", metisServer.getAnnouncedAddress());
+         
+         return json;
+    }
 
     static JSONObject peer(Peer peer) {
         JSONObject json = new JSONObject();

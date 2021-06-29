@@ -24,6 +24,7 @@ import nxt.env.RuntimeMode;
 import nxt.env.ServerStatus;
 import nxt.http.API;
 import nxt.http.APIProxy;
+import nxt.http.MetisServers;
 import nxt.peer.Peers;
 import nxt.util.Convert;
 import nxt.util.Logger;
@@ -333,6 +334,7 @@ public final class Nxt {
         ThreadPool.shutdown();
         BlockchainProcessorImpl.getInstance().shutdown();
         Peers.shutdown();
+        MetisServers.shutdown();
         Db.shutdown();
         Logger.logShutdownMessage(Nxt.APPLICATION + " server " + VERSION + " stopped.");
         Logger.shutdown();

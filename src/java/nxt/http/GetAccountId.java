@@ -16,12 +16,13 @@
 
 package nxt.http;
 
-import nxt.Account;
-import nxt.util.Convert;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.Account;
+import nxt.util.Convert;
 
 public final class GetAccountId extends APIServlet.APIRequestHandler {
 

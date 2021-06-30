@@ -16,20 +16,22 @@
 
 package nxt.http;
 
-import nxt.util.JSON;
-import nxt.util.Logger;
+import java.io.IOException;
+import java.io.Writer;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.client.api.Response;
 import org.eclipse.jetty.proxy.AsyncMiddleManServlet;
 import org.json.simple.JSONObject;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.Writer;
+import nxt.util.JSON;
+import nxt.util.Logger;
 
 public final class ShapeShiftProxyServlet extends AsyncMiddleManServlet {
 

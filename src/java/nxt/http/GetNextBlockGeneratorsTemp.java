@@ -16,16 +16,19 @@
 
 package nxt.http;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Block;
 import nxt.Blockchain;
 import nxt.Generator;
 import nxt.Nxt;
 import nxt.NxtException;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * <p>

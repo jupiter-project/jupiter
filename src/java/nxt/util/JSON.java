@@ -16,10 +16,6 @@
 
 package nxt.util;
 
-import org.json.simple.JSONAware;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -29,6 +25,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.json.simple.JSONAware;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
 
 public final class JSON {
 

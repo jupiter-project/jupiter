@@ -16,15 +16,16 @@
 
 package nxt.http;
 
-import nxt.Nxt;
-import nxt.util.Convert;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
+import static nxt.http.JSONResponses.INCORRECT_HEIGHT;
+import static nxt.http.JSONResponses.MISSING_HEIGHT;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static nxt.http.JSONResponses.INCORRECT_HEIGHT;
-import static nxt.http.JSONResponses.MISSING_HEIGHT;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
+import nxt.Nxt;
+import nxt.util.Convert;
 
 public final class GetBlockId extends APIServlet.APIRequestHandler {
 

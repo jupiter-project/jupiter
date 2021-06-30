@@ -16,10 +16,11 @@
 
 package nxt.http;
 
-import nxt.Alias;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.Alias;
 
 public final class GetAlias extends APIServlet.APIRequestHandler {
 

@@ -16,15 +16,16 @@
 
 package nxt.http;
 
-import nxt.Account;
-import nxt.NxtException;
-import nxt.db.DbIterator;
-import nxt.util.JSON;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.Account;
+import nxt.NxtException;
+import nxt.db.DbIterator;
+import nxt.util.JSON;
 
 public final class GetAccountCurrencies extends APIServlet.APIRequestHandler {
 

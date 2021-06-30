@@ -16,15 +16,15 @@
 
 package nxt.tools;
 
-import nxt.Constants;
-import nxt.Nxt;
-import nxt.util.Logger;
-
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+
+import nxt.Constants;
+import nxt.Nxt;
+import nxt.util.Logger;
 
 /**
  * Compact and reorganize the NRS database.  The NRS application must not be

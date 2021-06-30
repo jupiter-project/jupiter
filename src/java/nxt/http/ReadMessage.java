@@ -16,6 +16,17 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.NO_MESSAGE;
+import static nxt.http.JSONResponses.PRUNED_TRANSACTION;
+import static nxt.http.JSONResponses.UNKNOWN_TRANSACTION;
+
+import java.util.Arrays;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Appendix;
 import nxt.Nxt;
@@ -25,15 +36,6 @@ import nxt.crypto.Crypto;
 import nxt.crypto.EncryptedData;
 import nxt.util.Convert;
 import nxt.util.Logger;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-
-import static nxt.http.JSONResponses.NO_MESSAGE;
-import static nxt.http.JSONResponses.PRUNED_TRANSACTION;
-import static nxt.http.JSONResponses.UNKNOWN_TRANSACTION;
 
 public final class ReadMessage extends APIServlet.APIRequestHandler {
 

@@ -16,20 +16,22 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.EITHER_MESSAGE_ENCRYPTED_MESSAGE;
+import static nxt.http.JSONResponses.MISSING_MESSAGE_ENCRYPTED_MESSAGE;
+import static nxt.http.JSONResponses.UNKNOWN_TRANSACTION;
+
+import java.util.Arrays;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Appendix;
 import nxt.Nxt;
 import nxt.NxtException;
 import nxt.Transaction;
 import nxt.util.JSON;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-
-import static nxt.http.JSONResponses.EITHER_MESSAGE_ENCRYPTED_MESSAGE;
-import static nxt.http.JSONResponses.MISSING_MESSAGE_ENCRYPTED_MESSAGE;
-import static nxt.http.JSONResponses.UNKNOWN_TRANSACTION;
 
 public final class VerifyPrunableMessage extends APIServlet.APIRequestHandler {
 

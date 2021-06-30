@@ -16,14 +16,15 @@
 
 package nxt.http;
 
-import nxt.Currency;
+import static nxt.http.JSONResponses.UNKNOWN_CURRENCY;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.UNKNOWN_CURRENCY;
+import nxt.Currency;
 
 public final class GetCurrencies extends APIServlet.APIRequestHandler {
 

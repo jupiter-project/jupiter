@@ -16,10 +16,11 @@
 
 package nxt.http;
 
-import nxt.NxtException;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.NxtException;
 
 public final class GetDGSGood extends APIServlet.APIRequestHandler {
 

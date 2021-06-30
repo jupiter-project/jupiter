@@ -16,12 +16,13 @@
 
 package nxt.http;
 
-import nxt.DigitalGoodsStore;
-import nxt.NxtException;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.DigitalGoodsStore;
+import nxt.NxtException;
 
 public final class GetDGSGoodsPurchaseCount extends APIServlet.APIRequestHandler {
 

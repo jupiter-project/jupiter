@@ -16,15 +16,16 @@
 
 package nxt.http;
 
-import nxt.Block;
-import nxt.Nxt;
-import nxt.NxtException;
-import nxt.db.DbIterator;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.Block;
+import nxt.Nxt;
+import nxt.NxtException;
+import nxt.db.DbIterator;
 
 public final class GetBlocks extends APIServlet.APIRequestHandler {
 

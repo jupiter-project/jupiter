@@ -16,17 +16,15 @@
 
 package nxt.http;
 
-import nxt.Account;
-import nxt.Nxt;
-import nxt.Order;
-import nxt.Transaction;
-import nxt.db.DbIterator;
-import nxt.util.Convert;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.Account;
+import nxt.db.DbIterator;
+import nxt.util.Convert;
 
 public final class SearchAccountAssets extends APIServlet.APIRequestHandler {
 

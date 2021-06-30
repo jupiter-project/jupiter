@@ -16,14 +16,15 @@
 
 package nxt.http;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.NxtException;
 import nxt.Transaction;
 import nxt.util.Convert;
 import nxt.util.Logger;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
 
 public final class ParseTransaction extends APIServlet.APIRequestHandler {
 

@@ -16,15 +16,16 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.NOT_ENOUGH_CURRENCY;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Attachment;
 import nxt.Currency;
 import nxt.NxtException;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.NOT_ENOUGH_CURRENCY;
 
 public final class TransferCurrency extends CreateTransaction {
 

@@ -16,14 +16,14 @@
 
 package nxt.tools;
 
-import nxt.crypto.Crypto;
-import nxt.util.Convert;
-import nxt.util.Logger;
-
 import java.io.BufferedReader;
 import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import nxt.crypto.Crypto;
+import nxt.util.Convert;
+import nxt.util.Logger;
 
 public class GeneratePublicKey {
 

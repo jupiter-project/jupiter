@@ -16,18 +16,20 @@
 
 package nxt.http;
 
+import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Nxt;
 import nxt.NxtException;
 import nxt.Transaction;
 import nxt.util.Convert;
 import nxt.util.Filter;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Set;
 
 public final class GetExpectedTransactions extends APIServlet.APIRequestHandler {
 

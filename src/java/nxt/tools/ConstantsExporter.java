@@ -16,13 +16,13 @@
 
 package nxt.tools;
 
-import nxt.http.GetConstants;
-import nxt.util.JSON;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+
+import nxt.http.GetConstants;
+import nxt.util.JSON;
 
 public class ConstantsExporter {
     public static void main(String[] args) {

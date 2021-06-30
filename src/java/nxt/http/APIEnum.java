@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -286,6 +288,7 @@ public enum APIEnum {
 	SEARCH_ALL_TRADES_ORDERS("searchAllTrades", SearchAllTrades.instance),
 	SEARCH_ALL_ACCOUNT_ASSETS("searchAccountAssets", SearchAccountAssets.instance),
 	ADD_METIS_SERVER("addMetisServer", AddMetis.instance),
+	REMOVE_METIS_SERVER("removeMetisServer", RemoveMetis.instance),
 	GET_METIS_SERVER("getMetis", GetMetis.instance),
 	GET_METIS_SERVERS("getMetisServers", GetMetisServers.instance);
 

@@ -16,15 +16,17 @@
 
 package nxt.http;
 
+import java.math.BigInteger;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Currency;
 import nxt.CurrencyMinting;
 import nxt.NxtException;
 import nxt.util.Convert;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-import java.math.BigInteger;
 
 /**
  * Currency miners can use this API to obtain their target hash value for minting currency units

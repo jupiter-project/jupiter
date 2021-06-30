@@ -16,9 +16,6 @@
 
 package nxt.tools;
 
-import nxt.Genesis;
-import nxt.util.Convert;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -28,6 +25,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import nxt.Genesis;
+import nxt.util.Convert;
 
 public final class VerifyTraceFile {
 

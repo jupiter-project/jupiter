@@ -16,13 +16,15 @@
 
 package nxt.http;
 
-import nxt.util.Convert;
-import nxt.util.JSON;
+import java.math.BigInteger;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
-import java.math.BigInteger;
+import nxt.util.Convert;
+import nxt.util.JSON;
 
 public final class LongConvert extends APIServlet.APIRequestHandler {
 

@@ -16,6 +16,11 @@
 
 package nxt.http;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import nxt.AccountLedger;
 import nxt.Block;
 import nxt.BlockchainProcessor;
@@ -23,10 +28,6 @@ import nxt.Constants;
 import nxt.Nxt;
 import nxt.peer.Peer;
 import nxt.peer.Peers;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import javax.servlet.http.HttpServletRequest;
 
 public final class GetBlockchainStatus extends APIServlet.APIRequestHandler {
 

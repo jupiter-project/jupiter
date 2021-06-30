@@ -16,14 +16,15 @@
 
 package nxt.http;
 
-import nxt.peer.Peer;
-import nxt.peer.Peers;
-import org.json.simple.JSONStreamAware;
+import static nxt.http.JSONResponses.MISSING_PEER;
+import static nxt.http.JSONResponses.UNKNOWN_PEER;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static nxt.http.JSONResponses.MISSING_PEER;
-import static nxt.http.JSONResponses.UNKNOWN_PEER;
+import org.json.simple.JSONStreamAware;
+
+import nxt.peer.Peer;
+import nxt.peer.Peers;
 
 public final class GetPeer extends APIServlet.APIRequestHandler {
 

@@ -16,11 +16,6 @@
 
 package nxt.util;
 
-import nxt.Constants;
-import nxt.Genesis;
-import nxt.NxtException;
-import nxt.crypto.Crypto;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -36,6 +31,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+
+import nxt.Constants;
+import nxt.Genesis;
+import nxt.NxtException;
+import nxt.crypto.Crypto;
 
 public final class Convert {
 

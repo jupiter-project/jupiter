@@ -16,10 +16,6 @@
 
 package nxt.tools;
 
-import nxt.Nxt;
-import nxt.Transaction;
-import nxt.util.Convert;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.Console;
@@ -27,6 +23,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+
+import nxt.Nxt;
+import nxt.Transaction;
+import nxt.util.Convert;
 
 public final class SignTransactions {
 

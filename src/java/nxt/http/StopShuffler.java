@@ -16,13 +16,14 @@
 
 package nxt.http;
 
-import nxt.Account;
-import nxt.Shuffler;
-import nxt.crypto.Crypto;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.Account;
+import nxt.Shuffler;
+import nxt.crypto.Crypto;
 
 
 public final class StopShuffler extends APIServlet.APIRequestHandler {

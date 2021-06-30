@@ -16,13 +16,14 @@
 
 package nxt.http;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Attachment;
 import nxt.NxtException;
 import nxt.Shuffling;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
 
 public final class ShufflingCancel extends CreateTransaction {
 

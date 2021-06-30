@@ -16,15 +16,16 @@
 
 package nxt.http;
 
-import nxt.Exchange;
-import nxt.NxtException;
-import nxt.db.DbIterator;
-import nxt.db.DbUtils;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.Exchange;
+import nxt.NxtException;
+import nxt.db.DbIterator;
+import nxt.db.DbUtils;
 
 public final class GetExchanges extends APIServlet.APIRequestHandler {
 

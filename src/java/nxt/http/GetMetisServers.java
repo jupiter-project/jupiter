@@ -16,12 +16,13 @@
 
 package nxt.http;
 
+import java.util.Collection;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
-import javax.servlet.http.HttpServletRequest;
-
-import java.util.Collection;
 
 public final class GetMetisServers extends APIServlet.APIRequestHandler {
 

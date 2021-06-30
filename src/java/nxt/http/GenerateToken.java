@@ -16,15 +16,16 @@
 
 package nxt.http;
 
-import nxt.Token;
-import nxt.util.Convert;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
+import static nxt.http.JSONResponses.INCORRECT_WEBSITE;
+import static nxt.http.JSONResponses.MISSING_WEBSITE;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static nxt.http.JSONResponses.INCORRECT_WEBSITE;
-import static nxt.http.JSONResponses.MISSING_WEBSITE;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
+import nxt.Token;
+import nxt.util.Convert;
 
 
 public final class GenerateToken extends APIServlet.APIRequestHandler {

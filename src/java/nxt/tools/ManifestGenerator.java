@@ -16,9 +16,6 @@
 
 package nxt.tools;
 
-import nxt.Nxt;
-import nxt.env.service.NxtService_ServiceManagement;
-
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.FileVisitResult;
@@ -31,6 +28,9 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.EnumSet;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
+
+import nxt.Nxt;
+import nxt.env.service.NxtService_ServiceManagement;
 
 public class ManifestGenerator {
 

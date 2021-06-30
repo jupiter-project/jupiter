@@ -16,14 +16,16 @@
 
 package nxt.http;
 
-import nxt.peer.Peer;
-import nxt.peer.Peers;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import nxt.peer.Peer;
+import nxt.peer.Peers;
 
 /**
  * <p>The GetInboundPeers API will return a list of inbound peers.

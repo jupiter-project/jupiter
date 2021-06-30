@@ -16,17 +16,18 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.INCORRECT_MESSAGE_TO_ENCRYPT;
+import static nxt.http.JSONResponses.INCORRECT_RECIPIENT;
+import static nxt.http.JSONResponses.MISSING_MESSAGE_TO_ENCRYPT;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.NxtException;
 import nxt.crypto.EncryptedData;
 import nxt.util.Convert;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.INCORRECT_MESSAGE_TO_ENCRYPT;
-import static nxt.http.JSONResponses.INCORRECT_RECIPIENT;
-import static nxt.http.JSONResponses.MISSING_MESSAGE_TO_ENCRYPT;
 
 public final class EncryptTo extends APIServlet.APIRequestHandler {
 

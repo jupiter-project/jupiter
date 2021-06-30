@@ -16,13 +16,14 @@
 
 package nxt.peer;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Block;
 import nxt.Nxt;
 import nxt.util.Convert;
 import nxt.util.Logger;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
 
 final class GetMilestoneBlockIds extends PeerServlet.PeerRequestHandler {
 

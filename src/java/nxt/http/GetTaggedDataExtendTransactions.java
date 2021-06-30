@@ -16,6 +16,14 @@
 
 package nxt.http;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Appendix;
 import nxt.Attachment;
 import nxt.Blockchain;
@@ -23,12 +31,6 @@ import nxt.Nxt;
 import nxt.NxtException;
 import nxt.TaggedData;
 import nxt.util.Filter;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 public final class GetTaggedDataExtendTransactions extends APIServlet.APIRequestHandler {
 

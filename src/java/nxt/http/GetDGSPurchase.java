@@ -16,19 +16,21 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.DECRYPTION_FAILED;
+
+import java.util.Arrays;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.DigitalGoodsStore;
 import nxt.NxtException;
 import nxt.crypto.Crypto;
 import nxt.util.Convert;
 import nxt.util.Logger;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-
-import static nxt.http.JSONResponses.DECRYPTION_FAILED;
 
 public final class GetDGSPurchase extends APIServlet.APIRequestHandler {
 

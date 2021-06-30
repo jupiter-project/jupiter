@@ -16,11 +16,12 @@
 
 package nxt.http;
 
-import nxt.Account;
-import nxt.NxtException;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.Account;
+import nxt.NxtException;
 
 public final class SendMoney extends CreateTransaction {
 

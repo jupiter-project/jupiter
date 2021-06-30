@@ -17,16 +17,17 @@
 package nxt.http;
 
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Nxt;
 import nxt.NxtException;
 import nxt.Poll;
 import nxt.db.DbIterator;
 import nxt.db.DbUtils;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class GetPolls extends APIServlet.APIRequestHandler {
 

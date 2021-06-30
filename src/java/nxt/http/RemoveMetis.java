@@ -1,8 +1,6 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
- * Copyright © 2017-2020 Sigwo Technologies
- * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -25,15 +23,15 @@ import org.json.simple.JSONStreamAware;
 import nxt.NxtException;
 import nxt.util.JSON;
 
-public class AddMetis extends APIServlet.APIRequestHandler {
+public class RemoveMetis extends APIServlet.APIRequestHandler {
 
     /** AddMetis instance */
-    static final AddMetis instance = new AddMetis();
+    static final RemoveMetis instance = new RemoveMetis();
 
     /**
      * Create the AddMetis instance
      */
-    private AddMetis() {
+    private RemoveMetis() {
         super(new APITag[] {APITag.METIS}, "metisHostServer");
     }
 
@@ -49,9 +47,9 @@ public class AddMetis extends APIServlet.APIRequestHandler {
     	String announcedAddress = request.getParameter("metisHostServer");
 
     	MetisServers.metisService.submit(() -> {
-            MetisServer newMetisServer = MetisServers.findOrCreateMetisServer(announcedAddress, true);
+            MetisServer newMetisServer = MetisServers.findOrCreateMetisServer(announcedAddress, false);
             if (newMetisServer != null) {
-            	MetisServers.add(newMetisServer);
+            	MetisServers.removeMetisServer(newMetisServer);
             }
         });
         return JSON.emptyJSON;

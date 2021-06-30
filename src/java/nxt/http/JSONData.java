@@ -16,6 +16,13 @@
 
 package nxt.http;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import nxt.Account;
 import nxt.AccountLedger;
 import nxt.AccountLedger.LedgerEntry;
@@ -63,14 +70,6 @@ import nxt.peer.Hallmark;
 import nxt.peer.Peer;
 import nxt.util.Convert;
 import nxt.util.Filter;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 public final class JSONData {
 

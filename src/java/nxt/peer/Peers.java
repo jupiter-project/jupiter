@@ -16,36 +16,6 @@
 
 package nxt.peer;
 
-import nxt.Account;
-import nxt.Block;
-import nxt.Constants;
-import nxt.Db;
-import nxt.Nxt;
-import nxt.Transaction;
-import nxt.http.API;
-import nxt.http.APIEnum;
-import nxt.util.Convert;
-import nxt.util.Filter;
-import nxt.util.JSON;
-import nxt.util.Listener;
-import nxt.util.Listeners;
-import nxt.util.Logger;
-import nxt.util.QueuedThreadPool;
-import nxt.util.ThreadPool;
-import nxt.util.UPnP;
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.gzip.GzipHandler;
-import org.eclipse.jetty.servlet.FilterHolder;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.servlets.DoSFilter;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.DispatcherType;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
@@ -74,6 +44,38 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import javax.servlet.DispatcherType;
+
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.handler.gzip.GzipHandler;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlets.DoSFilter;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
+import nxt.Account;
+import nxt.Block;
+import nxt.Constants;
+import nxt.Db;
+import nxt.Nxt;
+import nxt.Transaction;
+import nxt.http.API;
+import nxt.http.APIEnum;
+import nxt.util.Convert;
+import nxt.util.Filter;
+import nxt.util.JSON;
+import nxt.util.Listener;
+import nxt.util.Listeners;
+import nxt.util.Logger;
+import nxt.util.QueuedThreadPool;
+import nxt.util.ThreadPool;
+import nxt.util.UPnP;
+
 public final class Peers {
 
     public enum Event {
@@ -91,8 +93,8 @@ public final class Peers {
     private static final List<String> wellKnownPeers;
     static final Set<String> knownBlacklistedPeers;
 
-    static final int connectTimeout;
-    static final int readTimeout;
+    public static final int connectTimeout;
+    public static final int readTimeout;
     static final int blacklistingPeriod;
     static final boolean getMorePeers;
     static final int MAX_REQUEST_SIZE = 1024 * 1024;

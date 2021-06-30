@@ -16,15 +16,16 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.NOT_ENOUGH_FUNDS;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Asset;
 import nxt.Attachment;
 import nxt.NxtException;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.NOT_ENOUGH_FUNDS;
 
 public final class PlaceBidOrder extends CreateTransaction {
 

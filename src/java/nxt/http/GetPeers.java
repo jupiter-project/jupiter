@@ -16,15 +16,17 @@
 
 package nxt.http;
 
-import nxt.peer.Peer;
-import nxt.peer.Peers;
-import nxt.util.Convert;
+import java.util.Collection;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Collection;
+import nxt.peer.Peer;
+import nxt.peer.Peers;
+import nxt.util.Convert;
 
 public final class GetPeers extends APIServlet.APIRequestHandler {
 

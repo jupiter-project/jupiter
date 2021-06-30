@@ -16,11 +16,12 @@
 
 package nxt.http;
 
-import nxt.AccountRestrictions.PhasingOnly;
-import nxt.util.JSON;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.AccountRestrictions.PhasingOnly;
+import nxt.util.JSON;
 
 /**
  * Returns the phasing control certain account. The result contains the following entries similar to the control* parameters of {@link SetPhasingOnlyControl}

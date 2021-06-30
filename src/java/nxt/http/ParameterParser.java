@@ -16,6 +16,55 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.INCORRECT_ACCOUNT;
+import static nxt.http.JSONResponses.INCORRECT_ALIAS;
+import static nxt.http.JSONResponses.INCORRECT_ARBITRARY_MESSAGE;
+import static nxt.http.JSONResponses.INCORRECT_DATA;
+import static nxt.http.JSONResponses.INCORRECT_HEIGHT;
+import static nxt.http.JSONResponses.INCORRECT_MESSAGE_TO_ENCRYPT;
+import static nxt.http.JSONResponses.INCORRECT_PURCHASE;
+import static nxt.http.JSONResponses.INCORRECT_TAGGED_DATA_CHANNEL;
+import static nxt.http.JSONResponses.INCORRECT_TAGGED_DATA_DESCRIPTION;
+import static nxt.http.JSONResponses.INCORRECT_TAGGED_DATA_FILE;
+import static nxt.http.JSONResponses.INCORRECT_TAGGED_DATA_FILENAME;
+import static nxt.http.JSONResponses.INCORRECT_TAGGED_DATA_NAME;
+import static nxt.http.JSONResponses.INCORRECT_TAGGED_DATA_TAGS;
+import static nxt.http.JSONResponses.INCORRECT_TAGGED_DATA_TYPE;
+import static nxt.http.JSONResponses.MISSING_ACCOUNT;
+import static nxt.http.JSONResponses.MISSING_ALIAS_OR_ALIAS_NAME;
+import static nxt.http.JSONResponses.MISSING_NAME;
+import static nxt.http.JSONResponses.MISSING_PROPERTY;
+import static nxt.http.JSONResponses.MISSING_RECIPIENT_PUBLIC_KEY;
+import static nxt.http.JSONResponses.MISSING_SECRET_PHRASE;
+import static nxt.http.JSONResponses.MISSING_TRANSACTION_BYTES_OR_JSON;
+import static nxt.http.JSONResponses.UNKNOWN_ACCOUNT;
+import static nxt.http.JSONResponses.UNKNOWN_ALIAS;
+import static nxt.http.JSONResponses.UNKNOWN_ASSET;
+import static nxt.http.JSONResponses.UNKNOWN_CURRENCY;
+import static nxt.http.JSONResponses.UNKNOWN_GOODS;
+import static nxt.http.JSONResponses.UNKNOWN_OFFER;
+import static nxt.http.JSONResponses.UNKNOWN_POLL;
+import static nxt.http.JSONResponses.UNKNOWN_SHUFFLING;
+import static nxt.http.JSONResponses.either;
+import static nxt.http.JSONResponses.incorrect;
+import static nxt.http.JSONResponses.missing;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.StringJoiner;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.ParseException;
+
 import nxt.Account;
 import nxt.Alias;
 import nxt.Appendix;
@@ -37,22 +86,6 @@ import nxt.crypto.EncryptedData;
 import nxt.util.Convert;
 import nxt.util.Logger;
 import nxt.util.Search;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-import org.json.simple.parser.ParseException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringJoiner;
-
-import static nxt.http.JSONResponses.*;
 
 public final class ParameterParser {
 

@@ -16,15 +16,16 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.PRUNED_TRANSACTION;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
 import nxt.Nxt;
 import nxt.NxtException;
 import nxt.PrunableMessage;
 import nxt.util.JSON;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.PRUNED_TRANSACTION;
 
 public final class GetPrunableMessage extends APIServlet.APIRequestHandler {
 

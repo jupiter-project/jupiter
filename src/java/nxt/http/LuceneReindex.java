@@ -16,14 +16,16 @@
 
 package nxt.http;
 
-import nxt.Db;
-import nxt.db.FullTextTrigger;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
-import java.sql.Connection;
-import java.sql.SQLException;
+import nxt.Db;
+import nxt.db.FullTextTrigger;
 
 public final class LuceneReindex extends APIServlet.APIRequestHandler {
 

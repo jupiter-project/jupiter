@@ -16,6 +16,15 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.MONITOR_ALREADY_STARTED;
+import static nxt.http.JSONResponses.UNKNOWN_ACCOUNT;
+import static nxt.http.JSONResponses.incorrect;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Asset;
 import nxt.Currency;
@@ -23,14 +32,6 @@ import nxt.FundingMonitor;
 import nxt.HoldingType;
 import nxt.NxtException;
 import nxt.crypto.Crypto;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.MONITOR_ALREADY_STARTED;
-import static nxt.http.JSONResponses.UNKNOWN_ACCOUNT;
-import static nxt.http.JSONResponses.incorrect;
 
 /**
  * Start a funding monitor

@@ -16,11 +16,12 @@
 
 package nxt.http;
 
-import nxt.util.Convert;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.util.Convert;
 
 public final class FullHashToId extends APIServlet.APIRequestHandler {
 

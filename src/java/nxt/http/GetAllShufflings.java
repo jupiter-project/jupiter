@@ -16,14 +16,15 @@
 
 package nxt.http;
 
-import nxt.Shuffling;
-import nxt.db.DbIterator;
-import nxt.db.DbUtils;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.Shuffling;
+import nxt.db.DbIterator;
+import nxt.db.DbUtils;
 
 public final class GetAllShufflings extends APIServlet.APIRequestHandler {
 

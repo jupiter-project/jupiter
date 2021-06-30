@@ -16,8 +16,9 @@
 
 package nxt.http;
 
-import nxt.NxtException;
 import org.json.simple.JSONStreamAware;
+
+import nxt.NxtException;
 
 public final class ParameterException extends NxtException {
 

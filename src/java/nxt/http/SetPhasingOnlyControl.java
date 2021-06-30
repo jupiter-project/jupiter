@@ -16,14 +16,15 @@
 
 package nxt.http;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Attachment;
 import nxt.Constants;
 import nxt.NxtException;
 import nxt.PhasingParams;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
 /**
  * Sets an account control that blocks transactions unless they are phased with certain parameters
  * 

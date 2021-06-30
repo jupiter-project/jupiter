@@ -16,14 +16,15 @@
 
 package nxt.http;
 
+import java.util.Arrays;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Constants;
 import nxt.HoldingType;
 import nxt.util.Convert;
 import nxt.util.JSON;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import java.util.Arrays;
 
 public final class JSONResponses {
 

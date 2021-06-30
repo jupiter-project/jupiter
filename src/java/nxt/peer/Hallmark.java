@@ -16,16 +16,16 @@
 
 package nxt.peer;
 
-import nxt.Account;
-import nxt.Constants;
-import nxt.crypto.Crypto;
-import nxt.util.Convert;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.concurrent.ThreadLocalRandom;
+
+import nxt.Account;
+import nxt.Constants;
+import nxt.crypto.Crypto;
+import nxt.util.Convert;
 
 public final class Hallmark {
 

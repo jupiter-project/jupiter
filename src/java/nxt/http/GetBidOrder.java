@@ -16,14 +16,14 @@
 
 package nxt.http;
 
-import nxt.NxtException;
-import nxt.Order;
+import static nxt.http.JSONResponses.UNKNOWN_ORDER;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONStreamAware;
 
-import static nxt.http.JSONResponses.UNKNOWN_ORDER;
+import nxt.NxtException;
+import nxt.Order;
 
 public final class GetBidOrder extends APIServlet.APIRequestHandler {
 

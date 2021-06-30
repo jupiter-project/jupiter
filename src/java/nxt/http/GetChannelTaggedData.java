@@ -16,15 +16,16 @@
 
 package nxt.http;
 
-import nxt.NxtException;
-import nxt.TaggedData;
-import nxt.db.DbIterator;
-import nxt.util.Convert;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.NxtException;
+import nxt.TaggedData;
+import nxt.db.DbIterator;
+import nxt.util.Convert;
 
 public final class GetChannelTaggedData extends APIServlet.APIRequestHandler {
 

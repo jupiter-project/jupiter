@@ -16,17 +16,19 @@
 
 package nxt.http;
 
-import nxt.Token;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
+import static nxt.http.JSONResponses.INCORRECT_FILE;
+import static nxt.http.JSONResponses.INCORRECT_TOKEN;
+
+import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
-import java.io.IOException;
 
-import static nxt.http.JSONResponses.INCORRECT_FILE;
-import static nxt.http.JSONResponses.INCORRECT_TOKEN;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
+import nxt.Token;
 
 
 public final class GenerateFileToken extends APIServlet.APIRequestHandler {

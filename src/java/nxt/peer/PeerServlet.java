@@ -16,13 +16,19 @@
 
 package nxt.peer;
 
-import nxt.BlockchainProcessor;
-import nxt.Constants;
-import nxt.Nxt;
-import nxt.util.CountingInputReader;
-import nxt.util.CountingOutputWriter;
-import nxt.util.JSON;
-import nxt.util.Logger;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.net.InetSocketAddress;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.eclipse.jetty.websocket.servlet.ServletUpgradeRequest;
 import org.eclipse.jetty.websocket.servlet.ServletUpgradeResponse;
 import org.eclipse.jetty.websocket.servlet.WebSocketCreator;
@@ -33,17 +39,13 @@ import org.json.simple.JSONStreamAware;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.net.InetSocketAddress;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import nxt.BlockchainProcessor;
+import nxt.Constants;
+import nxt.Nxt;
+import nxt.util.CountingInputReader;
+import nxt.util.CountingOutputWriter;
+import nxt.util.JSON;
+import nxt.util.Logger;
 
 public final class PeerServlet extends WebSocketServlet {
 

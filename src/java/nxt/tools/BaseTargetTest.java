@@ -16,10 +16,6 @@
 
 package nxt.tools;
 
-import nxt.Constants;
-import nxt.util.Convert;
-import nxt.util.Logger;
-
 import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,6 +23,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+
+import nxt.Constants;
+import nxt.util.Convert;
+import nxt.util.Logger;
 
 public final class BaseTargetTest {
 

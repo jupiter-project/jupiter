@@ -16,16 +16,17 @@
 
 package nxt.peer;
 
-import nxt.Block;
-import nxt.Nxt;
-import nxt.util.Convert;
-import nxt.util.JSON;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import java.util.ArrayList;
-import java.util.List;
+import nxt.Block;
+import nxt.Nxt;
+import nxt.util.Convert;
+import nxt.util.JSON;
 
 final class GetNextBlocks extends PeerServlet.PeerRequestHandler {
 

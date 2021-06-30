@@ -16,6 +16,13 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.INCORRECT_PUBLIC_KEY;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Attachment;
 import nxt.NxtException;
@@ -23,12 +30,6 @@ import nxt.Shuffling;
 import nxt.ShufflingParticipant;
 import nxt.util.Convert;
 import nxt.util.JSON;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.INCORRECT_PUBLIC_KEY;
 
 public final class ShufflingProcess extends CreateTransaction {
 

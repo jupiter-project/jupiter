@@ -16,14 +16,15 @@
 
 package nxt.http;
 
-import nxt.NxtException;
-import nxt.PrunableMessage;
-import nxt.db.DbIterator;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.NxtException;
+import nxt.PrunableMessage;
+import nxt.db.DbIterator;
 
 public final class GetPrunableMessages extends APIServlet.APIRequestHandler {
 

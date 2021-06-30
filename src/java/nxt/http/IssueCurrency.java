@@ -16,15 +16,16 @@
 
 package nxt.http;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Attachment;
 import nxt.Constants;
 import nxt.CurrencyType;
 import nxt.NxtException;
 import nxt.util.Convert;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Issue a currency on the NXT blockchain

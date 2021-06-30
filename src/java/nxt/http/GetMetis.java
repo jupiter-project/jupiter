@@ -16,12 +16,12 @@
 
 package nxt.http;
 
-import org.json.simple.JSONStreamAware;
+import static nxt.http.JSONResponses.MISSING_METIS;
+import static nxt.http.JSONResponses.UNKNOWN_METIS;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static nxt.http.JSONResponses.MISSING_METIS;
-import static nxt.http.JSONResponses.UNKNOWN_METIS;
+import org.json.simple.JSONStreamAware;
 
 public final class GetMetis extends APIServlet.APIRequestHandler {
 

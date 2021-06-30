@@ -16,13 +16,14 @@
 
 package nxt.peer;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Blockchain;
 import nxt.Constants;
 import nxt.Nxt;
 import nxt.Transaction;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
 
 /**
  * Get the transactions

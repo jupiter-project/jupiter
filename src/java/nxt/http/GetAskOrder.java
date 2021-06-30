@@ -16,18 +16,14 @@
 
 package nxt.http;
 
-import nxt.Nxt;
-import nxt.NxtException;
-import nxt.Order;
-import nxt.Transaction;
-import nxt.util.Convert;
-
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
+import static nxt.http.JSONResponses.UNKNOWN_ORDER;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static nxt.http.JSONResponses.UNKNOWN_ORDER;
+import org.json.simple.JSONStreamAware;
+
+import nxt.NxtException;
+import nxt.Order;
 
 public final class GetAskOrder extends APIServlet.APIRequestHandler {
 

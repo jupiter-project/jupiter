@@ -16,14 +16,15 @@
 
 package nxt.http;
 
-import nxt.Asset;
+import static nxt.http.JSONResponses.UNKNOWN_ASSET;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.UNKNOWN_ASSET;
+import nxt.Asset;
 
 public final class GetAssets extends APIServlet.APIRequestHandler {
 

@@ -5,14 +5,10 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
-import org.json.simple.JSONValue;
-import org.json.simple.parser.ParseException;
 
-import nxt.peer.PeerWebSocket;
 import nxt.peer.Peer.State;
-import nxt.util.JSON;
+import nxt.peer.PeerWebSocket;
 import nxt.util.Logger;
 
 public class MetisServer {
@@ -86,41 +82,26 @@ public class MetisServer {
         return announcedAddress;
     }
     
-    public JSONObject send(final JSONStreamAware request) {
-        JSONObject response = null;
-
+    public void send(final JSONStreamAware request) {
         try {
-            //
+        	//String metisServerUrl = "ws://" + host+ "/jupiter";
+        	String metisServerUrl = "ws://localhost:8083";
+        	//String metisServerUrl = "ws://3eb945e75133.ngrok.io/jupiter";
+        	
             // Create a new WebSocket session if we don't have one
-            //
-            if (useWebSocket && !webSocket.isOpen())
-                useWebSocket = webSocket.startClient(URI.create("ws://" + host + ":" + getPort() + "/nxt"));
-            //
-            // Send the request and process the response
-            //
+            if (!webSocket.isOpen())
+            	useWebSocket = webSocket.startClient(URI.create(metisServerUrl));
+
             if (useWebSocket) {
-                //
-                // Send the request using the WebSocket session
-                //
+            	// Send the request using the WebSocket session
                 StringWriter wsWriter = new StringWriter(1000);
                 request.writeJSONString(wsWriter);
-                String wsRequest = wsWriter.toString();
-                String wsResponse = webSocket.doPost(wsRequest);
-                response = (JSONObject)JSONValue.parseWithException(wsResponse);
-            } 
-            //
-            // Check for an error response
-            //
-            if (response != null && response.get("error") != null) {
-                deactivate();
-                Logger.logDebugMessage("Failed to notify to metis server, returned error: " +
-                        response.toJSONString() + ", request was: " + JSON.toString(request) +
-                        ", disconnecting");
+                webSocket.doMetisPost(wsWriter.toString());
+                Logger.logDebugMessage("Metis Server " + metisServerUrl + " have been notified");
             }
-        } catch (RuntimeException|ParseException|IOException e) {
+        } catch (RuntimeException | IOException e) {
+        	Logger.logDebugMessage("Deactivating metis server due to send exception, " + e.getMessage());
             deactivate();
         }
-
-        return response;
     }
 }

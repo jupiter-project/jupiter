@@ -16,15 +16,16 @@
 
 package nxt.http;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
 import nxt.Nxt;
 import nxt.NxtException;
 import nxt.Poll;
 import nxt.Vote;
 import nxt.VoteWeighting;
 import nxt.util.JSON;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class GetPollVote extends APIServlet.APIRequestHandler  {
     static final GetPollVote instance = new GetPollVote();

@@ -16,11 +16,11 @@
 
 package nxt.util;
 
-import nxt.NxtException;
-
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import nxt.NxtException;
 
 public class CountingInputStream extends FilterInputStream {
 

@@ -16,11 +16,11 @@
 
 package nxt.util;
 
-import nxt.NxtException.NxtIOException;
-
 import java.io.FilterReader;
 import java.io.IOException;
 import java.io.Reader;
+
+import nxt.NxtException.NxtIOException;
 
 /**
  * CountingInputReader extends Reader to count the number of characters read

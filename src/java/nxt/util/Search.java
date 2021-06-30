@@ -16,15 +16,15 @@
 
 package nxt.util;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.tika.Tika;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public final class Search {
 

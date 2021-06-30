@@ -16,17 +16,18 @@
 
 package nxt.http;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.DigitalGoodsStore;
 import nxt.NxtException;
 import nxt.db.DbIterator;
 import nxt.db.DbUtils;
 import nxt.db.FilteringIterator;
 import nxt.util.Filter;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
 
 public final class SearchDGSGoods extends APIServlet.APIRequestHandler {
 

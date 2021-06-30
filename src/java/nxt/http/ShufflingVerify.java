@@ -16,14 +16,16 @@
 
 package nxt.http;
 
+import java.util.Arrays;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Attachment;
 import nxt.NxtException;
 import nxt.Shuffling;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 
 public final class ShufflingVerify extends CreateTransaction {
 

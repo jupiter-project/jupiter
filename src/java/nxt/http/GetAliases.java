@@ -16,14 +16,15 @@
 
 package nxt.http;
 
-import nxt.Alias;
-import nxt.NxtException;
-import nxt.db.FilteringIterator;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.Alias;
+import nxt.NxtException;
+import nxt.db.FilteringIterator;
 
 public final class GetAliases extends APIServlet.APIRequestHandler {
 

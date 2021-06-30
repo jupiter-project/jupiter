@@ -16,13 +16,14 @@
 
 package nxt.http;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Attachment;
 import nxt.Currency;
 import nxt.NxtException;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Publish exchange offer for {@link nxt.CurrencyType#EXCHANGEABLE} currency

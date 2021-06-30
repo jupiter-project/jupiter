@@ -17,16 +17,18 @@
 package nxt.http;
 
 
+import static nxt.http.JSONResponses.POLL_RESULTS_NOT_AVAILABLE;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
 import nxt.NxtException;
 import nxt.Poll;
 import nxt.VoteWeighting;
 import nxt.util.Convert;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-
-import static nxt.http.JSONResponses.POLL_RESULTS_NOT_AVAILABLE;
 
 public class GetPollResult extends APIServlet.APIRequestHandler {
 

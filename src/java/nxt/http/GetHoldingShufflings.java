@@ -16,16 +16,17 @@
 
 package nxt.http;
 
-import nxt.Shuffling;
-import nxt.db.DbIterator;
-import nxt.util.Convert;
+import static nxt.http.JSONResponses.incorrect;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.incorrect;
+import nxt.Shuffling;
+import nxt.db.DbIterator;
+import nxt.util.Convert;
 
 public final class GetHoldingShufflings extends APIServlet.APIRequestHandler {
 

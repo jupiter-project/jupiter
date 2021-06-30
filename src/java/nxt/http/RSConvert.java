@@ -16,14 +16,15 @@
 
 package nxt.http;
 
-import nxt.util.Convert;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
+import static nxt.http.JSONResponses.INCORRECT_ACCOUNT;
+import static nxt.http.JSONResponses.MISSING_ACCOUNT;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static nxt.http.JSONResponses.INCORRECT_ACCOUNT;
-import static nxt.http.JSONResponses.MISSING_ACCOUNT;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
+import nxt.util.Convert;
 
 public final class RSConvert extends APIServlet.APIRequestHandler {
 

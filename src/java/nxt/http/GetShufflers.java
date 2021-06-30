@@ -16,16 +16,18 @@
 
 package nxt.http;
 
-import nxt.Account;
-import nxt.Shuffler;
-import nxt.crypto.Crypto;
+import java.util.Collections;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
-import java.util.List;
+import nxt.Account;
+import nxt.Shuffler;
+import nxt.crypto.Crypto;
 
 
 public final class GetShufflers extends APIServlet.APIRequestHandler {

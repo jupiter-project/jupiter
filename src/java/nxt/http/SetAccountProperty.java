@@ -16,17 +16,18 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.INCORRECT_ACCOUNT_PROPERTY_NAME_LENGTH;
+import static nxt.http.JSONResponses.INCORRECT_ACCOUNT_PROPERTY_VALUE_LENGTH;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Attachment;
 import nxt.Constants;
 import nxt.NxtException;
 import nxt.util.Convert;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.INCORRECT_ACCOUNT_PROPERTY_NAME_LENGTH;
-import static nxt.http.JSONResponses.INCORRECT_ACCOUNT_PROPERTY_VALUE_LENGTH;
 
 public final class SetAccountProperty extends CreateTransaction {
 

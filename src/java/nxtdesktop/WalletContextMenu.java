@@ -16,7 +16,10 @@
 
 package nxtdesktop;
 
+import java.util.Iterator;
+
 import com.sun.javafx.scene.control.skin.ContextMenuContent;
+
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -24,8 +27,6 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
-
-import java.util.Iterator;
 
 /**
  * Show only the standard cut/copy/paste context menu for edit fields and labels

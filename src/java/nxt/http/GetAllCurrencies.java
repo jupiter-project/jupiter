@@ -16,13 +16,14 @@
 
 package nxt.http;
 
-import nxt.Currency;
-import nxt.db.DbIterator;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.Currency;
+import nxt.db.DbIterator;
 
 public final class GetAllCurrencies extends APIServlet.APIRequestHandler {
 

@@ -16,14 +16,15 @@
 
 package nxt.http;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.NxtException;
 import nxt.Shuffler;
 import nxt.Shuffling;
 import nxt.util.JSON;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
 
 public final class StartShuffler extends APIServlet.APIRequestHandler {
 

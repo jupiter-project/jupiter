@@ -16,11 +16,12 @@
 
 package nxt.http;
 
-import nxt.Nxt;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.Nxt;
 
 /**
  * <p>RetrievePrunedData will schedule a background task to retrieve data which

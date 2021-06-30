@@ -16,11 +16,12 @@
 
 package nxt.http;
 
-import nxt.NxtException;
-import nxt.Poll;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.NxtException;
+import nxt.Poll;
 
 
 public final class GetPoll extends APIServlet.APIRequestHandler {

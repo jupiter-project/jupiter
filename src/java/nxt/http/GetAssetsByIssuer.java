@@ -16,17 +16,17 @@
 
 package nxt.http;
 
-import nxt.Asset;
-import nxt.Nxt;
-import nxt.Transaction;
-import nxt.db.DbIterator;
-import nxt.util.Convert;
+import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.Asset;
+import nxt.Nxt;
+import nxt.Transaction;
+import nxt.db.DbIterator;
+import nxt.util.Convert;
 
 public final class GetAssetsByIssuer extends APIServlet.APIRequestHandler {
 

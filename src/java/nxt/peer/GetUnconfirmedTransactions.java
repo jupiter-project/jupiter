@@ -16,15 +16,16 @@
 
 package nxt.peer;
 
-import nxt.Nxt;
-import nxt.Transaction;
-import nxt.util.JSON;
+import java.util.List;
+import java.util.SortedSet;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import java.util.List;
-import java.util.SortedSet;
+import nxt.Nxt;
+import nxt.Transaction;
+import nxt.util.JSON;
 
 final class GetUnconfirmedTransactions extends PeerServlet.PeerRequestHandler {
 

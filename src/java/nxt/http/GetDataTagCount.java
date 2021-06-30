@@ -16,12 +16,13 @@
 
 package nxt.http;
 
-import nxt.NxtException;
-import nxt.TaggedData;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.NxtException;
+import nxt.TaggedData;
 
 public final class GetDataTagCount extends APIServlet.APIRequestHandler {
 

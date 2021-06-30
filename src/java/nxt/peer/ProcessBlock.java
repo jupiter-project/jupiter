@@ -16,13 +16,14 @@
 
 package nxt.peer;
 
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Block;
 import nxt.Nxt;
 import nxt.NxtException;
 import nxt.util.Convert;
 import nxt.util.JSON;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
 
 final class ProcessBlock extends PeerServlet.PeerRequestHandler {
 

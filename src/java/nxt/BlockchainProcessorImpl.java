@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -15,27 +17,6 @@
  */
 
 package nxt;
-
-import nxt.crypto.Crypto;
-import nxt.db.DbIterator;
-import nxt.db.DerivedDbTable;
-import nxt.db.FilteringIterator;
-import nxt.db.FullTextTrigger;
-import nxt.http.MetisServers;
-import nxt.peer.Peer;
-import nxt.peer.Peers;
-import nxt.util.Convert;
-import nxt.util.JSON;
-import nxt.util.Listener;
-import nxt.util.Listeners;
-import nxt.util.Logger;
-import nxt.util.ThreadPool;
-import nxt.util.Time;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-import org.json.simple.JSONValue;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -63,6 +44,26 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+import org.json.simple.JSONValue;
+
+import nxt.crypto.Crypto;
+import nxt.db.DbIterator;
+import nxt.db.DerivedDbTable;
+import nxt.db.FilteringIterator;
+import nxt.db.FullTextTrigger;
+import nxt.peer.Peer;
+import nxt.peer.Peers;
+import nxt.util.Convert;
+import nxt.util.JSON;
+import nxt.util.Listener;
+import nxt.util.Listeners;
+import nxt.util.Logger;
+import nxt.util.ThreadPool;
+import nxt.util.Time;
 
 final class BlockchainProcessorImpl implements BlockchainProcessor {
 
@@ -1333,11 +1334,9 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
 
         if (block.getTimestamp() >= curTime - 600) {
             Peers.sendToSomePeers(block);
-            MetisServers.send(block);
         }
 
         blockListeners.notify(block, Event.BLOCK_PUSHED);
-
     }
 
     private void validatePhasedTransactions(int height, List<TransactionImpl> validPhasedTransactions, List<TransactionImpl> invalidPhasedTransactions,

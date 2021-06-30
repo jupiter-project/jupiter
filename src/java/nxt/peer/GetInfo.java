@@ -16,12 +16,13 @@
 
 package nxt.peer;
 
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Nxt;
 import nxt.util.Convert;
 import nxt.util.JSON;
 import nxt.util.Logger;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
 
 final class GetInfo extends PeerServlet.PeerRequestHandler {
 

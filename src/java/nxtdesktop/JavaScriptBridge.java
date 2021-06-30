@@ -16,6 +16,15 @@
 
 package nxtdesktop;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import org.json.simple.JSONObject;
+
 import javafx.application.Platform;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -23,14 +32,6 @@ import nxt.Nxt;
 import nxt.http.API;
 import nxt.util.JSON;
 import nxt.util.Logger;
-import org.json.simple.JSONObject;
-
-import java.awt.*;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 /**
  * The class itself and methods in this class are invoked from JavaScript therefore has to be public

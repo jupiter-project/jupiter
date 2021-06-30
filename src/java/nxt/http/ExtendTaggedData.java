@@ -16,6 +16,12 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.UNKNOWN_TRANSACTION;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Attachment;
 import nxt.Nxt;
@@ -23,11 +29,6 @@ import nxt.NxtException;
 import nxt.TaggedData;
 import nxt.Transaction;
 import nxt.TransactionType;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.UNKNOWN_TRANSACTION;
 
 public final class ExtendTaggedData extends CreateTransaction {
 

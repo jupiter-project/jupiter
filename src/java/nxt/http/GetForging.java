@@ -16,18 +16,19 @@
 
 package nxt.http;
 
-import nxt.Account;
-import nxt.Generator;
-import nxt.Nxt;
-import nxt.crypto.Crypto;
+import static nxt.http.JSONResponses.NOT_FORGING;
+import static nxt.http.JSONResponses.UNKNOWN_ACCOUNT;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.NOT_FORGING;
-import static nxt.http.JSONResponses.UNKNOWN_ACCOUNT;
+import nxt.Account;
+import nxt.Generator;
+import nxt.Nxt;
+import nxt.crypto.Crypto;
 
 
 public final class GetForging extends APIServlet.APIRequestHandler {

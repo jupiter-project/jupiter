@@ -16,17 +16,18 @@
 
 package nxt.http;
 
-import nxt.Block;
-import nxt.Nxt;
-import nxt.util.Convert;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-
 import static nxt.http.JSONResponses.INCORRECT_BLOCK;
 import static nxt.http.JSONResponses.INCORRECT_HEIGHT;
 import static nxt.http.JSONResponses.INCORRECT_TIMESTAMP;
 import static nxt.http.JSONResponses.UNKNOWN_BLOCK;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
+import nxt.Block;
+import nxt.Nxt;
+import nxt.util.Convert;
 
 public final class GetBlock extends APIServlet.APIRequestHandler {
 

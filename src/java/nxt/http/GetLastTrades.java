@@ -16,13 +16,15 @@
 
 package nxt.http;
 
-import nxt.Trade;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import nxt.Trade;
 
 public final class GetLastTrades extends APIServlet.APIRequestHandler {
 

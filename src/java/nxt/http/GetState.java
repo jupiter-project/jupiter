@@ -16,6 +16,13 @@
 
 package nxt.http;
 
+import java.net.InetAddress;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.AccountRestrictions;
 import nxt.Alias;
@@ -39,11 +46,6 @@ import nxt.Trade;
 import nxt.Vote;
 import nxt.peer.Peers;
 import nxt.util.UPnP;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-import java.net.InetAddress;
 
 public final class GetState extends APIServlet.APIRequestHandler {
 

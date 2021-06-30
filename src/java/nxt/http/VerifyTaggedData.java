@@ -16,19 +16,21 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.HASHES_MISMATCH;
+import static nxt.http.JSONResponses.INCORRECT_TRANSACTION;
+import static nxt.http.JSONResponses.UNKNOWN_TRANSACTION;
+
+import java.util.Arrays;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Attachment;
 import nxt.Nxt;
 import nxt.NxtException;
 import nxt.Transaction;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-
-import static nxt.http.JSONResponses.HASHES_MISMATCH;
-import static nxt.http.JSONResponses.INCORRECT_TRANSACTION;
-import static nxt.http.JSONResponses.UNKNOWN_TRANSACTION;
 
 public final class VerifyTaggedData extends APIServlet.APIRequestHandler {
 

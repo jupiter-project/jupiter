@@ -16,20 +16,21 @@
 
 package nxt.http;
 
-import nxt.Account;
-import nxt.Attachment;
-import nxt.Constants;
-import nxt.NxtException;
-import nxt.util.Convert;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-
 import static nxt.http.JSONResponses.INCORRECT_ASSET_DESCRIPTION;
 import static nxt.http.JSONResponses.INCORRECT_ASSET_NAME;
 import static nxt.http.JSONResponses.INCORRECT_ASSET_NAME_LENGTH;
 import static nxt.http.JSONResponses.INCORRECT_DECIMALS;
 import static nxt.http.JSONResponses.MISSING_NAME;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
+import nxt.Account;
+import nxt.Attachment;
+import nxt.Constants;
+import nxt.NxtException;
+import nxt.util.Convert;
 
 public final class IssueAsset extends CreateTransaction {
 

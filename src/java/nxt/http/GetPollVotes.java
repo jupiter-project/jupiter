@@ -16,17 +16,18 @@
 
 package nxt.http;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Nxt;
 import nxt.NxtException;
 import nxt.Poll;
 import nxt.Vote;
 import nxt.VoteWeighting;
 import nxt.db.DbIterator;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class GetPollVotes extends APIServlet.APIRequestHandler  {
     static final GetPollVotes instance = new GetPollVotes();

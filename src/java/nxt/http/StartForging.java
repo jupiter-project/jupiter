@@ -16,11 +16,12 @@
 
 package nxt.http;
 
-import nxt.Generator;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.Generator;
 
 
 public final class StartForging extends APIServlet.APIRequestHandler {

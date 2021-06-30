@@ -16,18 +16,19 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.INCORRECT_ALIAS_OWNER;
+import static nxt.http.JSONResponses.INCORRECT_RECIPIENT;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Alias;
 import nxt.Attachment;
 import nxt.Constants;
 import nxt.NxtException;
 import nxt.util.Convert;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.INCORRECT_ALIAS_OWNER;
-import static nxt.http.JSONResponses.INCORRECT_RECIPIENT;
 
 
 public final class SellAlias extends CreateTransaction {

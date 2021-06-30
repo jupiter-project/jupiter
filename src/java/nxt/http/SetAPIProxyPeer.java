@@ -16,18 +16,19 @@
 
 package nxt.http;
 
-import nxt.NxtException;
-import nxt.peer.Peer;
-import nxt.peer.Peers;
-import nxt.util.Convert;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-
 import static nxt.http.JSONResponses.API_PROXY_NO_OPEN_API_PEERS;
 import static nxt.http.JSONResponses.PEER_NOT_CONNECTED;
 import static nxt.http.JSONResponses.PEER_NOT_OPEN_API;
 import static nxt.http.JSONResponses.UNKNOWN_PEER;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
+import nxt.NxtException;
+import nxt.peer.Peer;
+import nxt.peer.Peers;
+import nxt.util.Convert;
 
 public class SetAPIProxyPeer extends APIServlet.APIRequestHandler {
 

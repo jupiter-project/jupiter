@@ -24,33 +24,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.ServerConnector;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
 
 import nxt.Block;
+import nxt.BlockchainProcessor;
+import nxt.Nxt;
 import nxt.Transaction;
-import nxt.peer.Peer;
-import nxt.peer.Peers;
-import nxt.util.Convert;
+import nxt.TransactionProcessor;
 import nxt.util.JSON;
 import nxt.util.Listeners;
 import nxt.util.Logger;
 import nxt.util.QueuedThreadPool;
 import nxt.util.ThreadPool;
-import nxt.util.UPnP;
 
 public final class MetisServers {
 	
 	private static final int DEFAULT_METIS_PORT = 8083;
-
+	
+	private static final TransactionProcessor transactionProcessor = Nxt.getTransactionProcessor();
+	private static final BlockchainProcessor blockchainProcessor = Nxt.getBlockchainProcessor();
+	
     public enum Event {
     	ADDED_ACTIVE_METISSERVER, CHANGED_ACTIVE_METISSERVER, DEACTIVATE, REMOVE, NEW_METIS_SERVER
     }
@@ -62,7 +59,21 @@ public final class MetisServers {
     static final ExecutorService metisService = new QueuedThreadPool(2, 15);
     private static final ExecutorService sendingService = Executors.newFixedThreadPool(10);
 
-    private MetisServers() {} // never
+    private MetisServers() {} 
+    
+    public static void init() {
+    	transactionProcessor.addListener(transactions -> {
+    		if (!metisServers.isEmpty()) {
+     			send(transactions);
+     		}
+         }, TransactionProcessor.Event.ADDED_UNCONFIRMED_TRANSACTIONS);
+     	
+     	blockchainProcessor.addListener(block -> {
+     		if (!metisServers.isEmpty()) {
+     			send(block);
+     		}
+          }, BlockchainProcessor.Event.BLOCK_PUSHED);
+    }
     
     static void notifyListeners(MetisServer peer, Event eventType) {
     	MetisServers.listeners.notify(peer, eventType);
@@ -83,7 +94,7 @@ public final class MetisServers {
         }
         
         try {
-            URI uri = new URI("http://" + announcedAddress);
+            URI uri = new URI("ws://" + announcedAddress);
             host = uri.getHost();
             if (host == null) {
                 return null;
@@ -142,7 +153,17 @@ public final class MetisServers {
     }
     
     public static MetisServer removeMetisServer(MetisServer metisServer) {
-        return metisServers.remove(metisServer.getHost());
+    	 if (metisServer.getAnnouncedAddress() != null) {
+             selfAnnouncedAddresses.remove(metisServer.getAnnouncedAddress());
+         }
+    	 
+    	 if(metisServers.get(metisServer.getHost()) != null) {
+    		 Logger.logDebugMessage("Removed Metis Server, host " + metisServer.getHost() + ", announcedAddress " + metisServer.getAnnouncedAddress());
+    		 MetisServers.notifyListeners(metisServers.get(metisServer.getHost()), MetisServers.Event.REMOVE);
+             return metisServers.remove(metisServer.getHost());
+    	 } else {
+    		 return null;
+    	 }
     }
     
     static String addressWithPort(String address) {
@@ -150,7 +171,7 @@ public final class MetisServers {
             return null;
         }
         try {
-            URI uri = new URI("http://" + address);
+            URI uri = new URI("ws://" + address);
             String host = uri.getHost();
             int port = uri.getPort();
             return port > 0 && port != MetisServers.getDefaultMetisPort() ? host + ":" + port : host;
@@ -173,7 +194,7 @@ public final class MetisServers {
     }
     
     private static final int sendTransactionsBatchSize = 10;
-    public static void send(List<? extends Transaction> transactions) {
+    private static void send(List<? extends Transaction> transactions) {
         int nextBatchStart = 0;
         while (nextBatchStart < transactions.size()) {
             JSONObject request = new JSONObject();
@@ -184,28 +205,38 @@ public final class MetisServers {
             	transactionsData.add(getSmallTransactionJSON(tx));
             }
             
-            request.put("requestType", "processTransactions");
+            request.put("requestType", "unconfirmedTransactions");
             request.put("transactions", transactionsData);
             send(request);
             nextBatchStart += sendTransactionsBatchSize;
         }
     }
     
-    public static void send(Block block) {
-        JSONObject request = block.getJSONObject();
-        request.put("requestType", "processBlock");
+    private static void send(Block block) {
+    	if(metisServers.isEmpty()) {
+    		return;
+    	}
+    	
+        JSONObject request = new JSONObject();
+        request.put("requestType", "acceptedBlock");
         request.put("timestamp", block.getTimestamp());
         request.put("previousBlock", Long.toUnsignedString(block.getPreviousBlockId()));
         request.put("heigh", block.getHeight());
         JSONArray transactionsData = new JSONArray();
-        block.getTransactions().forEach(transaction -> transactionsData.add(getSmallTransactionJSON(transaction)));
+        block.getTransactions().forEach(transaction -> {
+        	String type = "" + transaction.getType().getType();
+        	String subtype = "" + transaction.getType().getSubtype();
+        	if (type.equals("1") && (subtype.equals("0") || subtype.equals("1") || subtype.equals("10"))) {
+        		transactionsData.add(getSmallTransactionJSON(transaction));
+        	}
+        });
         request.put("transactions", transactionsData);
+        
         send(request);
     }
     
     private static JSONObject getSmallTransactionJSON(Transaction tx) {
     	JSONObject txJSON = new JSONObject();
-    	//txJSON.put("event", eventType.name());
     	txJSON.put("transactionId", tx.getId());
     	txJSON.put("type", tx.getType().getType());
     	txJSON.put("subtype", tx.getType().getSubtype());
@@ -215,28 +246,8 @@ public final class MetisServers {
     
     private static void send(final JSONObject request) {
         sendingService.submit(() -> {
-            final JSONStreamAware jsonRequest = JSON.prepareRequest(request);
-
-            List<Future<JSONObject>> expectedResponses = new ArrayList<>();
             for (final MetisServer metis : metisServers.values()) {
-
-                if (metis.getState() == Peer.State.CONNECTED && metis.getAnnouncedAddress() != null) {
-                    Future<JSONObject> futureResponse = metisService.submit(() -> metis.send(jsonRequest));
-                    expectedResponses.add(futureResponse);
-                }
-                for (Future<JSONObject> future : expectedResponses) {
-                    try {
-                        JSONObject response = future.get();
-                        if (response.get("error") != null) {
-                            Logger.logErrorMessage("Error sending to Metis " + (String)response.get("error"));
-                        }
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    } catch (ExecutionException e) {
-                        Logger.logDebugMessage("Error in sendToSomePeers", e);
-                    }
-
-                }
+               metis.send(JSON.prepareRequest(request));
             }
         });
     }

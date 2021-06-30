@@ -16,11 +16,12 @@
 
 package nxt.peer;
 
-import nxt.http.APIEnum;
+import java.util.Set;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import java.util.Set;
+import nxt.http.APIEnum;
 
 public interface Peer extends Comparable<Peer> {
 

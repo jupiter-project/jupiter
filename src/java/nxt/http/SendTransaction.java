@@ -16,15 +16,17 @@
 
 package nxt.http;
 
+import java.util.Collections;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.NxtException;
 import nxt.Transaction;
 import nxt.peer.Peers;
 import nxt.util.Convert;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
 
 /**
  * Sends a transaction to some peers.

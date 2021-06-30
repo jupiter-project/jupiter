@@ -16,11 +16,12 @@
 
 package nxt.http;
 
-import nxt.NxtException;
-import nxt.PhasingPoll;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.NxtException;
+import nxt.PhasingPoll;
 
 public class GetPhasingPoll extends APIServlet.APIRequestHandler {
 

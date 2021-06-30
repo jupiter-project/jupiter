@@ -16,12 +16,13 @@
 
 package nxt.http;
 
-import nxt.CurrencyBuyOffer;
-import nxt.CurrencySellOffer;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.CurrencyBuyOffer;
+import nxt.CurrencySellOffer;
 
 public final class GetOffer extends APIServlet.APIRequestHandler {
 

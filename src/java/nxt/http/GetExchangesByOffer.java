@@ -16,17 +16,18 @@
 
 package nxt.http;
 
-import nxt.Exchange;
-import nxt.db.DbIterator;
-import nxt.util.Convert;
+import static nxt.http.JSONResponses.INCORRECT_OFFER;
+import static nxt.http.JSONResponses.MISSING_OFFER;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.INCORRECT_OFFER;
-import static nxt.http.JSONResponses.MISSING_OFFER;
+import nxt.Exchange;
+import nxt.db.DbIterator;
+import nxt.util.Convert;
 
 public final class GetExchangesByOffer extends APIServlet.APIRequestHandler {
 

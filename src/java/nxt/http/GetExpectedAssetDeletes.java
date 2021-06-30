@@ -16,18 +16,20 @@
 
 package nxt.http;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Attachment;
 import nxt.Nxt;
 import nxt.NxtException;
 import nxt.Transaction;
 import nxt.TransactionType;
 import nxt.util.Filter;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 public final class GetExpectedAssetDeletes extends APIServlet.APIRequestHandler {
 

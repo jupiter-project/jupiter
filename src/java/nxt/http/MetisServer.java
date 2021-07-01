@@ -85,7 +85,7 @@ public class MetisServer {
     public void send(final JSONStreamAware request) {
         try {
         	//String metisServerUrl = "ws://" + host+ "/jupiter";
-        	String metisServerUrl = "ws://localhost:8083";
+        	String metisServerUrl = "wss://metis-dev-5qk3s.ondigitalocean.app/jupiter";
         	//String metisServerUrl = "ws://3eb945e75133.ngrok.io/jupiter";
         	
             // Create a new WebSocket session if we don't have one

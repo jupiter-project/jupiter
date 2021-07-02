@@ -94,6 +94,7 @@ public class MetisServer {
             	useWebSocket = webSocket.startClient(URI.create(metisServerUrl));
 
             if (useWebSocket) {
+            	setState(State.CONNECTED);
             	// Send the request using the WebSocket session
                 StringWriter wsWriter = new StringWriter(1000);
                 request.writeJSONString(wsWriter);

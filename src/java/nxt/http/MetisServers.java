@@ -79,6 +79,16 @@ public final class MetisServers {
     	MetisServers.listeners.notify(peer, eventType);
     }
     
+    static MetisServer createMetisServer(String protocol, String port, String host) {
+    	String announcedAddress;
+    	if (port != null && !port.isEmpty()) {
+    		announcedAddress = protocol + "://" + host + ":" + port;
+    	} else {
+    		announcedAddress = protocol + "://" + host;
+    	}
+    	return findOrCreateMetisServer(announcedAddress, true);
+    }
+    
     static MetisServer findOrCreateMetisServer(String announcedAddress, boolean create) {
     	if (announcedAddress == null) {
             return null;
@@ -94,7 +104,6 @@ public final class MetisServers {
         }
         
         try {
-        	
         	URI uri;
         	if(announcedAddress.indexOf("ws://") != -1 || announcedAddress.indexOf("wss://") != -1) {
         		uri = new URI(announcedAddress);
@@ -122,10 +131,6 @@ public final class MetisServers {
     }
     
     static MetisServer findOrCreateMetisServer(final InetAddress inetAddress, final String announcedAddress, final boolean create) {
-
-        if (inetAddress.isAnyLocalAddress() || inetAddress.isLoopbackAddress() || inetAddress.isLinkLocalAddress()) {
-            return null;
-        }
 
         String host = inetAddress.getHostAddress();
         //re-add the [] to ipv6 addresses lost in getHostAddress() above

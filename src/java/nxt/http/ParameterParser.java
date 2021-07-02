@@ -198,6 +198,15 @@ public final class ParameterParser {
         }
         return Convert.parseHexString(paramValue);
     }
+    
+    
+    public static String getString(HttpServletRequest req, String name, boolean isMandatory) throws ParameterException {
+    	String paramValue = req.getParameter(name);
+    	if (isMandatory && (paramValue == null || paramValue.isEmpty())) {
+    		throw new ParameterException(missing(name));
+    	}
+    	return paramValue;
+    }
 
     public static long getAccountId(HttpServletRequest req, boolean isMandatory) throws ParameterException {
         return getAccountId(req, "account", isMandatory);

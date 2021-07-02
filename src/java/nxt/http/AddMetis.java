@@ -18,12 +18,15 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.incorrect;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONStreamAware;
 
 import nxt.NxtException;
 import nxt.util.JSON;
+import nxt.util.Logger;
 
 public class AddMetis extends APIServlet.APIRequestHandler {
 
@@ -34,7 +37,7 @@ public class AddMetis extends APIServlet.APIRequestHandler {
      * Create the AddMetis instance
      */
     private AddMetis() {
-        super(new APITag[] {APITag.METIS}, "metisHostServer");
+        super(new APITag[] {APITag.METIS}, "host", "protocol", "port");
     }
 
     /**
@@ -46,10 +49,17 @@ public class AddMetis extends APIServlet.APIRequestHandler {
      */
     @Override
     protected JSONStreamAware processRequest(HttpServletRequest request) throws NxtException {
-    	String announcedAddress = request.getParameter("metisHostServer");
+    	String host = ParameterParser.getString(request, "host", true);
+    	String protocol = ParameterParser.getString(request, "protocol", true);
+    	if (!protocol.equals("ws") && !protocol.equals("wss")) {
+    		Logger.logDebugMessage(protocol);
+    		throw new ParameterException(incorrect("protocol"));
+    	}
+    	String port = ParameterParser.getString(request, "port", false);
+    	
 
     	MetisServers.metisService.submit(() -> {
-            MetisServer newMetisServer = MetisServers.findOrCreateMetisServer(announcedAddress, true);
+            MetisServer newMetisServer = MetisServers.createMetisServer(protocol, port, host);
             if (newMetisServer != null) {
             	MetisServers.add(newMetisServer);
             }
@@ -60,5 +70,20 @@ public class AddMetis extends APIServlet.APIRequestHandler {
     @Override
     protected final boolean requirePost() {
         return true;
+    }
+
+    @Override
+    protected boolean requirePassword() {
+        return true;
+    }
+
+    @Override
+    protected boolean allowRequiredBlockParameters() {
+        return false;
+    }
+
+    @Override
+    protected boolean requireBlockchain() {
+        return false;
     }
 }

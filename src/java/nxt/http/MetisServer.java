@@ -2,36 +2,41 @@ package nxt.http;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 import org.json.simple.JSONStreamAware;
 
+import nxt.peer.MetisWebSocket;
 import nxt.peer.Peer.State;
 import nxt.peer.PeerWebSocket;
 import nxt.util.Logger;
 
 public class MetisServer {
 
-	private final PeerWebSocket webSocket;
+	private final MetisWebSocket webSocket;
 	private volatile boolean useWebSocket;
 	private volatile String announcedAddress;
 	private volatile State state;
-	private volatile int port;
+	private String protocol;
 	private final String host;
 	
 	MetisServer(String host, String announcedAddress){
+		
 		this.host = host;
 		this.announcedAddress = announcedAddress;
-		try {
-	        this.port = new URI("http://" + announcedAddress).getPort();
-		} catch (URISyntaxException ignore) {}
-		this.webSocket = new PeerWebSocket();
+		
+		if(announcedAddress.indexOf("wss://") != -1) {
+    		this.protocol = "wss";
+    	}else {
+    		this.protocol = "ws";
+    	}
+		
+		this.webSocket = new MetisWebSocket();
 		this.useWebSocket = true;
 		this.state = State.NON_CONNECTED;
-		try {
-		   this.port = new URI(host).getPort();
-		} catch (URISyntaxException ignore) {}
 	}
 	
 	public String getHost() {
@@ -59,10 +64,6 @@ public class MetisServer {
         }
     }
     
-    public int getPort() {
-        return port <= 0 ? MetisServers.getDefaultMetisPort() : port;
-    }
-    
     public void deactivate() {
         if (state == State.CONNECTED) {
             setState(State.DISCONNECTED);
@@ -84,9 +85,9 @@ public class MetisServer {
     
     public void send(final JSONStreamAware request) {
         try {
-        	//String metisServerUrl = "ws://" + host+ "/jupiter";
-        	String metisServerUrl = "wss://metis-dev-5qk3s.ondigitalocean.app/jupiter";
-        	//String metisServerUrl = "ws://3eb945e75133.ngrok.io/jupiter";
+        	
+        	//String metisServerUrl = protocol + "://" + host+ "/jupiter";
+        	String metisServerUrl = announcedAddress + "/jupiter";
         	
             // Create a new WebSocket session if we don't have one
             if (!webSocket.isOpen())

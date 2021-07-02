@@ -94,7 +94,14 @@ public final class MetisServers {
         }
         
         try {
-            URI uri = new URI("ws://" + announcedAddress);
+        	
+        	URI uri;
+        	if(announcedAddress.indexOf("ws://") != -1 || announcedAddress.indexOf("wss://") != -1) {
+        		uri = new URI(announcedAddress);
+        	} else {
+        		uri = new URI("ws://" + announcedAddress);
+        	}
+            
             host = uri.getHost();
             if (host == null) {
                 return null;
@@ -107,7 +114,7 @@ public final class MetisServers {
                 return metisServer;
             }
             InetAddress inetAddress = InetAddress.getByName(host);
-            return findOrCreateMetisServer(inetAddress, addressWithPort(announcedAddress), create);
+            return findOrCreateMetisServer(inetAddress, announcedAddress, create);
         } catch (URISyntaxException | UnknownHostException e) {
             Logger.logDebugMessage("Invalid metis address: " + announcedAddress + ", " + e.toString());
             return null;
@@ -164,20 +171,6 @@ public final class MetisServers {
     	 } else {
     		 return null;
     	 }
-    }
-    
-    static String addressWithPort(String address) {
-        if (address == null) {
-            return null;
-        }
-        try {
-            URI uri = new URI("ws://" + address);
-            String host = uri.getHost();
-            int port = uri.getPort();
-            return port > 0 && port != MetisServers.getDefaultMetisPort() ? host + ":" + port : host;
-        } catch (URISyntaxException e) {
-            return null;
-        }
     }
     
     public static List<MetisServer> getMetisServers() {

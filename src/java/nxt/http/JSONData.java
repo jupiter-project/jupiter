@@ -551,7 +551,6 @@ public final class JSONData {
     static JSONObject peer(MetisServer metisServer) {
     	 JSONObject json = new JSONObject();
          json.put("address", metisServer.getHost());
-         json.put("port", metisServer.getPort());
          json.put("state", metisServer.getState().ordinal());
          json.put("announcedAddress", metisServer.getAnnouncedAddress());
          

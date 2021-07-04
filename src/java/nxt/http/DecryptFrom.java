@@ -59,7 +59,7 @@ public final class DecryptFrom extends APIServlet.APIRequestHandler {
             response.put("decryptedMessage", isText ? Convert.toString(decrypted) : Convert.toHexString(decrypted));
             return response;
         } catch (RuntimeException e) {
-            Logger.logDebugMessage(e.toString());
+            Logger.logDebugMessage("Error trying to decrypt in DecryptFrom" + e.toString(), e);
             return DECRYPTION_FAILED;
         }
     }

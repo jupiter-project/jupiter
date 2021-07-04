@@ -209,7 +209,7 @@ public abstract class TransactionType {
 
     abstract void validateAttachment(Transaction transaction) throws NxtException.ValidationException;
 
-    // return false iff double spending
+    // return false if double spending
     final boolean applyUnconfirmed(TransactionImpl transaction, Account senderAccount) {
         long amountNQT = transaction.getAmountNQT();
         long feeNQT = transaction.getFeeNQT();
@@ -219,6 +219,8 @@ public abstract class TransactionType {
         long totalAmountNQT = Math.addExact(amountNQT, feeNQT);
         if (senderAccount.getUnconfirmedBalanceNQT() < totalAmountNQT
                 && !(transaction.getTimestamp() == 0 && Arrays.equals(transaction.getSenderPublicKey(), Genesis.CREATOR_PUBLIC_KEY))) {
+        	Logger.logDebugMessage("Double spending for senderAccount " + senderAccount.getId() + ", getUnconfirmedBalanceNQT:" + 
+        			senderAccount.getUnconfirmedBalanceNQT() + " totalAmountNQT:" + totalAmountNQT);
             return false;
         }
         senderAccount.addToUnconfirmedBalanceNQT(getLedgerEvent(), transaction.getId(), -amountNQT, -feeNQT);

@@ -699,7 +699,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                     throw new NxtException.ExistingTransactionException("Transaction already processed");
                 }
 
-                if (! transaction.verifySignature()) {
+                if (!transaction.verifySignature()) {
                     if (Account.getAccount(transaction.getSenderId()) != null) {
                         throw new NxtException.NotValidException("Transaction signature verification failed");
                     } else {
@@ -707,7 +707,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                     }
                 }
 
-                if (! transaction.applyUnconfirmed()) {
+                if (!transaction.applyUnconfirmed()) {
                     throw new NxtException.InsufficientBalanceException("Insufficient balance");
                 }
 

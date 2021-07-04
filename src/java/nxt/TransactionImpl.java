@@ -1026,7 +1026,7 @@ final class TransactionImpl implements Transaction {
         AccountRestrictions.checkTransaction(this, validatingAtFinish);
     }
 
-    // returns false iff double spending
+    // returns false if double spending
     boolean applyUnconfirmed() {
         Account senderAccount = Account.getAccount(getSenderId());
         return senderAccount != null && type.applyUnconfirmed(this, senderAccount);

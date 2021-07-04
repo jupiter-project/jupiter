@@ -76,7 +76,7 @@ public final class GetDGSPurchase extends APIServlet.APIRequestHandler {
                 }
                 response.put("decryptedGoods", Convert.toString(decrypted, purchase.goodsIsText()));
             } catch (RuntimeException e) {
-                Logger.logDebugMessage(e.toString());
+                Logger.logDebugMessage("Error trying to decrypt in GetDGSPurchase " + e.toString(), e);
                 return DECRYPTION_FAILED;
             }
         }

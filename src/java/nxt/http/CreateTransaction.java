@@ -44,6 +44,7 @@ import nxt.PhasingParams;
 import nxt.Transaction;
 import nxt.crypto.Crypto;
 import nxt.util.Convert;
+import nxt.util.Logger;
 
 abstract class CreateTransaction extends APIServlet.APIRequestHandler {
 
@@ -222,7 +223,10 @@ abstract class CreateTransaction extends APIServlet.APIRequestHandler {
             }
             Transaction transaction = builder.build(secretPhrase);
             try {
-                if (Math.addExact(amountNQT, transaction.getFeeNQT()) > senderAccount.getUnconfirmedBalanceNQT()) {
+            	long sum = Math.addExact(amountNQT, transaction.getFeeNQT());
+            	long unconfirmed = senderAccount.getUnconfirmedBalanceNQT();
+                if (sum > unconfirmed) {
+                	Logger.logDebugMessage("NOT_ENOUGH_FUNDS creating transaction, sum ("+sum+") > unconfirmed("+unconfirmed+")");
                     return NOT_ENOUGH_FUNDS;
                 }
             } catch (ArithmeticException e) {

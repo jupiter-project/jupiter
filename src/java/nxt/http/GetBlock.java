@@ -83,7 +83,7 @@ public final class GetBlock extends APIServlet.APIRequestHandler {
         boolean includeTransactions = "true".equalsIgnoreCase(req.getParameter("includeTransactions"));
         boolean includeExecutedPhased = "true".equalsIgnoreCase(req.getParameter("includeExecutedPhased"));
 
-        return JSONData.block(blockData, includeTransactions, includeExecutedPhased);
+        return JSONData.block(blockData, includeTransactions, false, includeExecutedPhased);
 
     }
 

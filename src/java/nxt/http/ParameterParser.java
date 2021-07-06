@@ -209,6 +209,19 @@ public final class ParameterParser {
     	}
     	return paramValue;
     }
+    
+    public static boolean getBoolean(HttpServletRequest req, String name, boolean isMandatory) throws ParameterException {
+    	String paramValue = req.getParameter(name);
+    	if (isMandatory && (paramValue == null || paramValue.isEmpty())) {
+    		throw new ParameterException(missing(name));
+    	}
+    	
+    	if ("true".equalsIgnoreCase(paramValue)) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
 
     public static long getAccountId(HttpServletRequest req, boolean isMandatory) throws ParameterException {
         return getAccountId(req, "account", isMandatory);

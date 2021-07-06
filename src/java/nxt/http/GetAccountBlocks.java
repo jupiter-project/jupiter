@@ -45,13 +45,14 @@ public final class GetAccountBlocks extends APIServlet.APIRequestHandler {
         int firstIndex = ParameterParser.getFirstIndex(req);
         int lastIndex = ParameterParser.getLastIndex(req);
 
-        boolean includeTransactions = "true".equalsIgnoreCase(req.getParameter("includeTransactions"));
+        boolean includeTransactions = ParameterParser.getBoolean(req, "includeTransactions", false);
+        boolean includeTransactionIds = ParameterParser.getBoolean(req, "includeTransactionIds", false);
 
         JSONArray blocks = new JSONArray();
         try (DbIterator<? extends Block> iterator = Nxt.getBlockchain().getBlocks(accountId, timestamp, firstIndex, lastIndex)) {
             while (iterator.hasNext()) {
                 Block block = iterator.next();
-                blocks.add(JSONData.block(block, includeTransactions, false));
+                blocks.add(JSONData.block(block, includeTransactions, includeTransactionIds, false));
             }
         }
 

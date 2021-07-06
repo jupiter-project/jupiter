@@ -38,6 +38,7 @@ public final class Constants {
     public static final int MIN_TRANSACTION_SIZE = 176;
     
     public static final int MAX_NUMBER_OF_TRANSACTIONS = 750;
+    
     public static final int MAX_PAYLOAD_LENGTH = 5 * 1024 * 1024;
     
     public static final int ORIGINAL_MAX_NUMBER_OF_TRANSACTIONS = 255;
@@ -87,6 +88,7 @@ public final class Constants {
     public static final int MAX_ALIAS_URI_LENGTH = 1000;
     public static final int MAX_ALIAS_LENGTH = 100;
 
+    // Max length, 43008 bytes
     public static final int MAX_ARBITRARY_MESSAGE_LENGTH = 42 * 1024;
     public static final int MAX_ENCRYPTED_MESSAGE_LENGTH = 42 * 1024;
 

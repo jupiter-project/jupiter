@@ -445,7 +445,7 @@ public final class JSONData {
         return json;
     }
 
-    static JSONObject block(Block block, boolean includeTransactions, boolean includeExecutedPhased) {
+    static JSONObject block(Block block, boolean includeTransactions, boolean includeTransactionIds, boolean includeExecutedPhased) {
         JSONObject json = new JSONObject();
         json.put("block", block.getStringId());
         json.put("height", block.getHeight());
@@ -470,11 +470,11 @@ public final class JSONData {
         json.put("previousBlockHash", Convert.toHexString(block.getPreviousBlockHash()));
         json.put("blockSignature", Convert.toHexString(block.getBlockSignature()));
         JSONArray transactions = new JSONArray();
-        if (includeTransactions) {
-            block.getTransactions().forEach(transaction -> transactions.add(transaction(transaction)));
-        } else {
-            block.getTransactions().forEach(transaction -> transactions.add(transaction.getStringId()));
-        }
+		if (includeTransactions) {
+		    block.getTransactions().forEach(transaction -> transactions.add(transaction(transaction)));
+		} else if (includeTransactionIds){
+		    block.getTransactions().forEach(transaction -> transactions.add(transaction.getStringId()));
+		}
         json.put("transactions", transactions);
         if (includeExecutedPhased) {
             JSONArray phasedTransactions = new JSONArray();

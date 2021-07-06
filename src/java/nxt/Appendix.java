@@ -539,7 +539,8 @@ public interface Appendix {
         @Override
         void validate(Transaction transaction) throws NxtException.ValidationException {
             if (getEncryptedDataLength() > Constants.MAX_ENCRYPTED_MESSAGE_LENGTH) {
-                throw new NxtException.NotValidException("Max encrypted message length exceeded");
+                throw new NxtException.NotValidException("Max encrypted message length exceeded, " + 
+                		getEncryptedDataLength() + " > " + Constants.MAX_ENCRYPTED_MESSAGE_LENGTH);
             }
             if (encryptedData != null) {
                 if ((encryptedData.getNonce().length != 32 && encryptedData.getData().length > 0)

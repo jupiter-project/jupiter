@@ -63,7 +63,7 @@ public final class PopOff extends APIServlet.APIRequestHandler {
             Nxt.getBlockchainProcessor().setGetMoreBlocks(true);
         }
         JSONArray blocksJSON = new JSONArray();
-        blocks.forEach(block -> blocksJSON.add(JSONData.block(block, true, false)));
+        blocks.forEach(block -> blocksJSON.add(JSONData.block(block, true, false, false)));
         JSONObject response = new JSONObject();
         response.put("blocks", blocksJSON);
         if (keepTransactions) {

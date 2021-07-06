@@ -53,6 +53,11 @@ public final class ReadMessage extends APIServlet.APIRequestHandler {
         long transactionId = ParameterParser.getUnsignedLong(req, "transaction", true);
         boolean retrieve = "true".equalsIgnoreCase(req.getParameter("retrieve"));
         Transaction transaction = Nxt.getBlockchain().getTransaction(transactionId);
+        
+        if (transaction == null) {
+            transaction = Nxt.getTransactionProcessor().getUnconfirmedTransaction(transactionId);
+        } 
+        
         if (transaction == null) {
             return UNKNOWN_TRANSACTION;
         }

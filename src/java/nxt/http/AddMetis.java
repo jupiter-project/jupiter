@@ -49,7 +49,6 @@ public class AddMetis extends APIServlet.APIRequestHandler {
     	String host = ParameterParser.getString(request, "host", true);
     	String protocol = ParameterParser.getString(request, "protocol", true);
     	if (!protocol.equals("ws") && !protocol.equals("wss")) {
-    		Logger.logDebugMessage(protocol);
     		throw new ParameterException(incorrect("protocol"));
     	}
     	String port = ParameterParser.getString(request, "port", false);

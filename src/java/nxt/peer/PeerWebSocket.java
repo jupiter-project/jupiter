@@ -278,54 +278,6 @@ public class PeerWebSocket {
         return response;
     }
     
-    /**
-     * Process a POST request by sending the request message and then
-     * waiting for a response.  This method is used by the connection
-     * originator.
-     *
-     * @param   request             Request message
-     * @return                      Response message
-     * @throws  IOException         I/O error occurred
-     */
-    public void doMetisPost(String request) throws IOException {
-        long requestId;
-        //
-        // Send the POST request
-        //
-        lock.lock();
-        try {
-            if (session == null || !session.isOpen()) {
-                throw new IOException("WebSocket session is not open");
-            }
-            requestId = nextRequestId++;
-            byte[] requestBytes = request.getBytes("UTF-8");
-            int requestLength = requestBytes.length;
-            int flags = 0;
-            if (Peers.isGzipEnabled && requestLength >= Peers.MIN_COMPRESS_SIZE) {
-                flags |= FLAG_COMPRESSED;
-                ByteArrayOutputStream outStream = new ByteArrayOutputStream(requestLength);
-                try (GZIPOutputStream gzipStream = new GZIPOutputStream(outStream)) {
-                    gzipStream.write(requestBytes);
-                }
-                requestBytes = outStream.toByteArray();
-            }
-            ByteBuffer buf = ByteBuffer.allocate(requestBytes.length + 20);
-            buf.putInt(version)
-               .putLong(requestId)
-               .putInt(flags)
-               .putInt(requestLength)
-               .put(requestBytes)
-               .flip();
-            if (buf.limit() > Peers.MAX_MESSAGE_SIZE) {
-                throw new ProtocolException("POST request length exceeds max message size");
-            }
-            session.getRemote().sendBytes(buf);
-        } catch (WebSocketException exc) {
-            throw new SocketException(exc.getMessage());
-        } finally {
-            lock.unlock();
-        }
-    }
 
     /**
      * Send POST response

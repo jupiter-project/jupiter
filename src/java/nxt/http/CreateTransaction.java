@@ -226,7 +226,7 @@ abstract class CreateTransaction extends APIServlet.APIRequestHandler {
             	long sum = Math.addExact(amountNQT, transaction.getFeeNQT());
             	long unconfirmed = senderAccount.getUnconfirmedBalanceNQT();
                 if (sum > unconfirmed) {
-                	Logger.logDebugMessage("NOT_ENOUGH_FUNDS creating transaction, sum ("+sum+") > unconfirmed("+unconfirmed+")");
+                	Logger.logDebugMessage("NOT_ENOUGH_FUNDS creating transaction, transaction fee ("+sum+") > unconfirmedBalance("+unconfirmed+")");
                     return NOT_ENOUGH_FUNDS;
                 }
             } catch (ArithmeticException e) {

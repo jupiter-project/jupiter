@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,10 +18,20 @@
 
 package nxt.http;
 
-import nxt.peer.Peer;
-import nxt.util.Convert;
-import nxt.util.JSON;
-import nxt.util.Logger;
+import static nxt.http.JSONResponses.ERROR_NOT_ALLOWED;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.Writer;
+import java.net.URI;
+import java.nio.ByteBuffer;
+import java.util.List;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.client.api.Response;
@@ -29,18 +41,10 @@ import org.eclipse.jetty.util.MultiMap;
 import org.eclipse.jetty.util.UrlEncoded;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.Writer;
-import java.net.URI;
-import java.nio.ByteBuffer;
-import java.util.List;
-
-import static nxt.http.JSONResponses.ERROR_NOT_ALLOWED;
+import nxt.peer.Peer;
+import nxt.util.Convert;
+import nxt.util.JSON;
+import nxt.util.Logger;
 
 public final class APIProxyServlet extends AsyncMiddleManServlet {
 

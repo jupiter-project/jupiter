@@ -1,0 +1,6 @@
+* Upgraded Jetty dependency libs to version 9.3.20, release notes on https://www.eclipse.org/lists/jetty-announce/msg00108.html
+* Updated header licenses
+* Created Metis Server Entity to subscribe and notify them for accepted blocks and unconfirmed transactions via websocket
+* Changed default behaviour in getBlocks and GetAccountBlocks request, transactions info is not included by default.
+* Read Message by transactionId changed, if transactionId is not found, look for in the unconfirmed transactions
+

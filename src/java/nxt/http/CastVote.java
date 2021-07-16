@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,18 +18,19 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.INCORRECT_VOTE;
+import static nxt.http.JSONResponses.POLL_FINISHED;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Attachment;
 import nxt.Constants;
 import nxt.NxtException;
 import nxt.Poll;
 import nxt.util.Convert;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.INCORRECT_VOTE;
-import static nxt.http.JSONResponses.POLL_FINISHED;
 
 
 public final class CastVote extends CreateTransaction {

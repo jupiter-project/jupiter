@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,6 +18,16 @@
 
 package nxt;
 
+import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.tika.Tika;
+import org.apache.tika.mime.MediaType;
+import org.json.simple.JSONObject;
+
 import nxt.Account.ControlType;
 import nxt.AccountLedger.LedgerEvent;
 import nxt.Attachment.AbstractAttachment;
@@ -23,16 +35,6 @@ import nxt.NxtException.ValidationException;
 import nxt.VoteWeighting.VotingModel;
 import nxt.util.Convert;
 import nxt.util.Logger;
-
-import org.apache.tika.Tika;
-import org.apache.tika.mime.MediaType;
-import org.json.simple.JSONObject;
-
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 public abstract class TransactionType {
@@ -207,7 +209,7 @@ public abstract class TransactionType {
 
     abstract void validateAttachment(Transaction transaction) throws NxtException.ValidationException;
 
-    // return false iff double spending
+    // return false if double spending
     final boolean applyUnconfirmed(TransactionImpl transaction, Account senderAccount) {
         long amountNQT = transaction.getAmountNQT();
         long feeNQT = transaction.getFeeNQT();
@@ -217,6 +219,8 @@ public abstract class TransactionType {
         long totalAmountNQT = Math.addExact(amountNQT, feeNQT);
         if (senderAccount.getUnconfirmedBalanceNQT() < totalAmountNQT
                 && !(transaction.getTimestamp() == 0 && Arrays.equals(transaction.getSenderPublicKey(), Genesis.CREATOR_PUBLIC_KEY))) {
+        	Logger.logDebugMessage("Double spending for senderAccount " + senderAccount.getId() + ", getUnconfirmedBalanceNQT:" + 
+        			senderAccount.getUnconfirmedBalanceNQT() + " totalAmountNQT:" + totalAmountNQT);
             return false;
         }
         senderAccount.addToUnconfirmedBalanceNQT(getLedgerEvent(), transaction.getId(), -amountNQT, -feeNQT);

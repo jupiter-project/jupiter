@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,16 +18,17 @@
 
 package nxt.peer;
 
-import nxt.Block;
-import nxt.Nxt;
-import nxt.util.Convert;
-import nxt.util.JSON;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import java.util.ArrayList;
-import java.util.List;
+import nxt.Block;
+import nxt.Nxt;
+import nxt.util.Convert;
+import nxt.util.JSON;
 
 final class GetNextBlocks extends PeerServlet.PeerRequestHandler {
 

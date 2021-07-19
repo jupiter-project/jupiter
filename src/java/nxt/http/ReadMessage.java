@@ -113,6 +113,8 @@ public final class ReadMessage extends APIServlet.APIRequestHandler {
                         byte[] publicKey = Arrays.equals(senderPublicKey, readerPublicKey) ? recipientPublicKey : senderPublicKey;
                         if (publicKey != null) {
                             decrypted = Account.decryptFrom(publicKey, encryptedData, secretPhrase, uncompress);
+                        } else {
+                        	Logger.logErrorMessage("Trying to read a message for an account without a public key");
                         }
                     } else {
                         decrypted = Crypto.aesDecrypt(encryptedData.getData(), sharedKey);

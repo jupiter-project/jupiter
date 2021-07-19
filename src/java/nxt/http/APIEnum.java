@@ -208,6 +208,7 @@ public enum APIEnum {
     RS_CONVERT("rsConvert", RSConvert.instance),
     READ_MESSAGE("readMessage", ReadMessage.instance),
     SEND_MESSAGE("sendMessage", SendMessage.instance),
+    SEND_METIS_MESSAGE("sendMetisMessage", SendMetisMessage.instance),
     SEND_MONEY("sendMoney", SendMoney.instance),
     SET_ACCOUNT_INFO("setAccountInfo", SetAccountInfo.instance),
     SET_ACCOUNT_PROPERTY("setAccountProperty", SetAccountProperty.instance),

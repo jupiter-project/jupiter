@@ -154,7 +154,15 @@ public interface Attachment extends Appendix {
 
         @Override
         public TransactionType getTransactionType() {
-            return TransactionType.Messaging.METIS_DATA;
+            return TransactionType.DataFS.METIS_DATA;
+        }
+    };
+    
+    EmptyAttachment METIS_METADATA = new EmptyAttachment() {
+
+        @Override
+        public TransactionType getTransactionType() {
+            return TransactionType.DataFS.METIS_METADATA;
         }
     };
     

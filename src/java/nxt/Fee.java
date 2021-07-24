@@ -18,11 +18,15 @@
 
 package nxt;
 
+import nxt.util.Logger;
+
 public interface Fee {
 
     long getFee(TransactionImpl transaction, Appendix appendage);
 
     long MIN_FEE = 10L;
+    long MIN_DATA_FEE = 100L;
+    long MIN_CONSTANT_DATA_FEE = 500L;
     long MIN_PRUNABLE_FEE = 1L;
 
     Fee DEFAULT_FEE = new Fee.ConstantFee(MIN_FEE);
@@ -71,7 +75,8 @@ public interface Fee {
             if (size < 0) {
                 return constantFee;
             }
-            return Math.addExact(constantFee, Math.multiplyExact((long) (size / unitSize), feePerSize));
+            long totalFee = Math.addExact(constantFee, Math.multiplyExact((long) (size / unitSize), feePerSize));
+            return totalFee;
         }
 
         public abstract int getSize(TransactionImpl transaction, Appendix appendage);

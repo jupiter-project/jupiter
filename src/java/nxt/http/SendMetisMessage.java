@@ -25,12 +25,14 @@ import org.json.simple.JSONStreamAware;
 import nxt.Account;
 import nxt.Attachment;
 import nxt.NxtException;
-import nxt.Transaction;
 import nxt.TransactionType;
 
 public final class SendMetisMessage extends CreateTransaction {
 
     static final SendMetisMessage instance = new SendMetisMessage();
+    
+    private static final byte SUBTYPE_MESSAGING_METIS_DATA = 16;
+    private static final byte SUBTYPE_MESSAGING_METIS_METADATA = 17;
 
     private SendMetisMessage() {
         super(new APITag[] {APITag.MESSAGES, APITag.CREATE_TRANSACTION}, "recipient", "subtype");
@@ -39,7 +41,7 @@ public final class SendMetisMessage extends CreateTransaction {
     @Override
     protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
         long recipientId = ParameterParser.getAccountId(req, "recipient", false);
-        int subtype = ParameterParser.getInt(req, "subtype", 12, 15, false);
+        int subtype = ParameterParser.getInt(req, "subtype", 12, 17, false);
         Account account = ParameterParser.getSenderAccount(req);
         Attachment attachement;
         
@@ -51,8 +53,10 @@ public final class SendMetisMessage extends CreateTransaction {
         	attachement = Attachment.METIS_CHANNEL_INVITATION;
         } else if (subtype == TransactionType.SUBTYPE_MESSAGING_METIS_CHANNEL_MEMBER) {
         	attachement = Attachment.METIS_CHANNEL_MEMBER;
-        } else if (subtype == TransactionType.SUBTYPE_MESSAGING_METIS_DATA) {
+        } else if (subtype == SUBTYPE_MESSAGING_METIS_DATA) {
         	attachement = Attachment.METIS_DATA;
+        } else if (subtype == SUBTYPE_MESSAGING_METIS_METADATA) {
+        	attachement = Attachment.METIS_METADATA;
         } else {
         	attachement = Attachment.ARBITRARY_MESSAGE;
         }

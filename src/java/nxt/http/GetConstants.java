@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,18 +18,30 @@
 
 package nxt.http;
 
-import nxt.*;
-import nxt.crypto.HashFunction;
-import nxt.peer.Peer;
-import nxt.util.JSON;
-import nxt.util.Logger;
+import java.util.Collections;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
-import java.util.Map;
+import nxt.Constants;
+import nxt.CurrencyMinting;
+import nxt.CurrencyType;
+import nxt.Genesis;
+import nxt.HoldingType;
+import nxt.Nxt;
+import nxt.PhasingPoll;
+import nxt.Shuffling;
+import nxt.ShufflingParticipant;
+import nxt.TransactionType;
+import nxt.VoteWeighting;
+import nxt.crypto.HashFunction;
+import nxt.peer.Peer;
+import nxt.util.JSON;
+import nxt.util.Logger;
 
 public final class GetConstants extends APIServlet.APIRequestHandler {
 

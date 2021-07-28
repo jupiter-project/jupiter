@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,10 +18,6 @@
 
 package nxt.util;
 
-import org.json.simple.JSONAware;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -29,6 +27,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.json.simple.JSONAware;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
 
 public final class JSON {
 

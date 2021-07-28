@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,14 +18,6 @@
 
 package nxt;
 
-import nxt.crypto.Crypto;
-import nxt.util.Convert;
-import nxt.util.Listener;
-import nxt.util.Listeners;
-import nxt.util.Logger;
-import nxt.util.ThreadPool;
-import nxt.util.Time;
-
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -37,6 +31,14 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
+
+import nxt.crypto.Crypto;
+import nxt.util.Convert;
+import nxt.util.Listener;
+import nxt.util.Listeners;
+import nxt.util.Logger;
+import nxt.util.ThreadPool;
+import nxt.util.Time;
 
 public final class Generator implements Comparable<Generator> {
 

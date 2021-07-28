@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,16 +18,6 @@
 
 package nxt;
 
-import nxt.crypto.Crypto;
-import nxt.db.DbIterator;
-import nxt.util.Convert;
-import nxt.util.Filter;
-import nxt.util.Listener;
-import nxt.util.Logger;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-import org.json.simple.parser.ParseException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,6 +25,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Semaphore;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.ParseException;
+
+import nxt.crypto.Crypto;
+import nxt.db.DbIterator;
+import nxt.util.Convert;
+import nxt.util.Filter;
+import nxt.util.Listener;
+import nxt.util.Logger;
 
 /**
  * Monitor account balances based on account properties

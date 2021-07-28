@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,12 +18,13 @@
 
 package nxt;
 
+import java.util.List;
+
+import org.json.simple.JSONObject;
+
 import nxt.db.DerivedDbTable;
 import nxt.peer.Peer;
 import nxt.util.Observable;
-import org.json.simple.JSONObject;
-
-import java.util.List;
 
 public interface BlockchainProcessor extends Observable<Block,BlockchainProcessor.Event> {
 

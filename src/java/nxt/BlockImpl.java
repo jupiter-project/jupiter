@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,15 +18,6 @@
 
 package nxt;
 
-import nxt.AccountLedger.LedgerEvent;
-import nxt.crypto.Crypto;
-import nxt.util.Convert;
-import nxt.util.Logger;
-import nxt.util.Time;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -33,6 +26,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import nxt.AccountLedger.LedgerEvent;
+import nxt.crypto.Crypto;
+import nxt.util.Convert;
+import nxt.util.Logger;
 
 final class BlockImpl implements Block {
 

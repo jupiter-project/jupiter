@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,6 +18,15 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.MONITOR_ALREADY_STARTED;
+import static nxt.http.JSONResponses.UNKNOWN_ACCOUNT;
+import static nxt.http.JSONResponses.incorrect;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Asset;
 import nxt.Currency;
@@ -23,14 +34,6 @@ import nxt.FundingMonitor;
 import nxt.HoldingType;
 import nxt.NxtException;
 import nxt.crypto.Crypto;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.MONITOR_ALREADY_STARTED;
-import static nxt.http.JSONResponses.UNKNOWN_ACCOUNT;
-import static nxt.http.JSONResponses.incorrect;
 
 /**
  * Start a funding monitor

@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,15 +18,16 @@
 
 package nxt.http;
 
-import nxt.NxtException;
-import nxt.PhasingPoll;
-import nxt.PhasingVote;
-import nxt.db.DbIterator;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.NxtException;
+import nxt.PhasingPoll;
+import nxt.PhasingVote;
+import nxt.db.DbIterator;
 
 public class GetPhasingPollVotes extends APIServlet.APIRequestHandler  {
     static final GetPhasingPollVotes instance = new GetPhasingPollVotes();

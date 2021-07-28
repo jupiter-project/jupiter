@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -15,6 +17,13 @@
  */
 
 package nxt.http;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import nxt.Account;
 import nxt.AccountLedger;
@@ -63,14 +72,6 @@ import nxt.peer.Hallmark;
 import nxt.peer.Peer;
 import nxt.util.Convert;
 import nxt.util.Filter;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 public final class JSONData {
 
@@ -444,7 +445,7 @@ public final class JSONData {
         return json;
     }
 
-    static JSONObject block(Block block, boolean includeTransactions, boolean includeExecutedPhased) {
+    static JSONObject block(Block block, boolean includeTransactions, boolean includeTransactionIds, boolean includeExecutedPhased) {
         JSONObject json = new JSONObject();
         json.put("block", block.getStringId());
         json.put("height", block.getHeight());
@@ -469,11 +470,11 @@ public final class JSONData {
         json.put("previousBlockHash", Convert.toHexString(block.getPreviousBlockHash()));
         json.put("blockSignature", Convert.toHexString(block.getBlockSignature()));
         JSONArray transactions = new JSONArray();
-        if (includeTransactions) {
-            block.getTransactions().forEach(transaction -> transactions.add(transaction(transaction)));
-        } else {
-            block.getTransactions().forEach(transaction -> transactions.add(transaction.getStringId()));
-        }
+		if (includeTransactions) {
+		    block.getTransactions().forEach(transaction -> transactions.add(transaction(transaction)));
+		} else if (includeTransactionIds){
+		    block.getTransactions().forEach(transaction -> transactions.add(transaction.getStringId()));
+		}
         json.put("transactions", transactions);
         if (includeExecutedPhased) {
             JSONArray phasedTransactions = new JSONArray();
@@ -547,6 +548,15 @@ public final class JSONData {
         json.put("timestamp", token.getTimestamp());
         json.put("valid", token.isValid());
         return json;
+    }
+    
+    static JSONObject peer(MetisServer metisServer) {
+    	 JSONObject json = new JSONObject();
+         json.put("address", metisServer.getHost());
+         json.put("state", metisServer.getState().ordinal());
+         json.put("announcedAddress", metisServer.getAnnouncedAddress());
+         
+         return json;
     }
 
     static JSONObject peer(Peer peer) {

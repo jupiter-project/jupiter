@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,17 +18,19 @@
 
 package nxt.http;
 
-import nxt.Token;
-import org.json.simple.JSONStreamAware;
+import static nxt.http.JSONResponses.INCORRECT_FILE;
+import static nxt.http.JSONResponses.INCORRECT_TOKEN;
+import static nxt.http.JSONResponses.MISSING_TOKEN;
+
+import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
-import java.io.IOException;
 
-import static nxt.http.JSONResponses.INCORRECT_FILE;
-import static nxt.http.JSONResponses.INCORRECT_TOKEN;
-import static nxt.http.JSONResponses.MISSING_TOKEN;
+import org.json.simple.JSONStreamAware;
+
+import nxt.Token;
 
 public final class DecodeFileToken extends APIServlet.APIRequestHandler {
 

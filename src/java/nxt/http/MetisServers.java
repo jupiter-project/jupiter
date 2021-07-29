@@ -35,6 +35,7 @@ import nxt.Nxt;
 import nxt.Transaction;
 import nxt.TransactionProcessor;
 import nxt.TransactionType;
+import nxt.util.Convert;
 import nxt.util.JSON;
 import nxt.util.Listeners;
 import nxt.util.Logger;
@@ -243,7 +244,9 @@ public final class MetisServers {
     	txJSON.put("subtype", tx.getType().getSubtype());
     	txJSON.put("ecBlockHeight", tx.getECBlockHeight());
     	txJSON.put("senderId", Long.toUnsignedString(tx.getSenderId()));
+    	txJSON.put("senderRS", Convert.rsAccount(tx.getSenderId()));
     	txJSON.put("recipientId", Long.toUnsignedString(tx.getRecipientId()));
+    	txJSON.put("recipientRS", tx.getRecipientId());
     	return txJSON;
     }
     

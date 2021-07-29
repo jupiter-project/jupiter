@@ -42,7 +42,7 @@ import nxt.util.Logger;
 public abstract class TransactionType {
 
     private static final byte TYPE_PAYMENT = 0;
-    private static final byte TYPE_MESSAGING = 1;
+    public static final byte TYPE_MESSAGING = 1;
     private static final byte TYPE_COLORED_COINS = 2;
     private static final byte TYPE_DIGITAL_GOODS = 3;
     private static final byte TYPE_ACCOUNT_CONTROL = 4;
@@ -53,18 +53,18 @@ public abstract class TransactionType {
 
     private static final byte SUBTYPE_PAYMENT_ORDINARY_PAYMENT = 0;
 
-    private static final byte SUBTYPE_MESSAGING_ARBITRARY_MESSAGE = 0;
-    private static final byte SUBTYPE_MESSAGING_ALIAS_ASSIGNMENT = 1;
-    private static final byte SUBTYPE_MESSAGING_POLL_CREATION = 2;
-    private static final byte SUBTYPE_MESSAGING_VOTE_CASTING = 3;
-    private static final byte SUBTYPE_MESSAGING_HUB_ANNOUNCEMENT = 4;
-    private static final byte SUBTYPE_MESSAGING_ACCOUNT_INFO = 5;
-    private static final byte SUBTYPE_MESSAGING_ALIAS_SELL = 6;
-    private static final byte SUBTYPE_MESSAGING_ALIAS_BUY = 7;
-    private static final byte SUBTYPE_MESSAGING_ALIAS_DELETE = 8;
-    private static final byte SUBTYPE_MESSAGING_PHASING_VOTE_CASTING = 9;
-    private static final byte SUBTYPE_MESSAGING_ACCOUNT_PROPERTY = 10;
-    private static final byte SUBTYPE_MESSAGING_ACCOUNT_PROPERTY_DELETE = 11;
+    public static final byte SUBTYPE_MESSAGING_ARBITRARY_MESSAGE = 0;
+    public static final byte SUBTYPE_MESSAGING_ALIAS_ASSIGNMENT = 1;
+    public static final byte SUBTYPE_MESSAGING_POLL_CREATION = 2;
+    public static final byte SUBTYPE_MESSAGING_VOTE_CASTING = 3;
+    public static final byte SUBTYPE_MESSAGING_HUB_ANNOUNCEMENT = 4;
+    public static final byte SUBTYPE_MESSAGING_ACCOUNT_INFO = 5;
+    public static final byte SUBTYPE_MESSAGING_ALIAS_SELL = 6;
+    public static final byte SUBTYPE_MESSAGING_ALIAS_BUY = 7;
+    public static final byte SUBTYPE_MESSAGING_ALIAS_DELETE = 8;
+    public static final byte SUBTYPE_MESSAGING_PHASING_VOTE_CASTING = 9;
+    public static final byte SUBTYPE_MESSAGING_ACCOUNT_PROPERTY = 10;
+    public static final byte SUBTYPE_MESSAGING_ACCOUNT_PROPERTY_DELETE = 11;
     
     public static final byte SUBTYPE_MESSAGING_METIS_ACCOUNT_INFO = 12;
     public static final byte SUBTYPE_MESSAGING_METIS_CHANNEL_INVITATION = 13;

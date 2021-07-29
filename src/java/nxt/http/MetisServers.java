@@ -29,6 +29,7 @@ import java.util.concurrent.Executors;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import nxt.Appendix;
 import nxt.Block;
 import nxt.BlockchainProcessor;
 import nxt.Nxt;
@@ -246,7 +247,14 @@ public final class MetisServers {
     	txJSON.put("senderId", Long.toUnsignedString(tx.getSenderId()));
     	txJSON.put("senderRS", Convert.rsAccount(tx.getSenderId()));
     	txJSON.put("recipientId", Long.toUnsignedString(tx.getRecipientId()));
-    	txJSON.put("recipientRS", tx.getRecipientId());
+    	txJSON.put("recipientRS", Convert.rsAccount(tx.getRecipientId()));
+    	JSONObject attachmentJSON = new JSONObject();
+        for (Appendix appendage : tx.getAppendages()) {
+            attachmentJSON.putAll(appendage.getJSONObject());
+        }
+        if (!attachmentJSON.isEmpty()) {
+        	txJSON.put("attachment", attachmentJSON);
+        }
     	return txJSON;
     }
     

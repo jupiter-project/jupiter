@@ -3,4 +3,6 @@
 * Created Metis Server Entity to subscribe and notify them for accepted blocks and unconfirmed transactions via websocket
 * Changed default behaviour in getBlocks and GetAccountBlocks request, transactions info is not included by default.
 * Read Message by transactionId changed, if transactionId is not found, look for in the unconfirmed transactions
-
+* Defined new messaging subtypes for metis
+* Defined a new type and subtypes for jupiter-fs transactions
+* Defined a new ENCRYPTED_DATA_MESSAGE_FEE for jupiter-fs transactions

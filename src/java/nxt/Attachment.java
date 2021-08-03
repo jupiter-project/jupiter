@@ -140,7 +140,46 @@ public interface Attachment extends Appendix {
         public TransactionType getTransactionType() {
             return TransactionType.Messaging.ARBITRARY_MESSAGE;
         }
+    };
+    
+    EmptyAttachment METIS_ACCOUNT_INFO = new EmptyAttachment() {
 
+        @Override
+        public TransactionType getTransactionType() {
+            return TransactionType.Messaging.METIS_ACCOUNT_INFO;
+        }
+    };
+    
+    EmptyAttachment METIS_DATA = new EmptyAttachment() {
+
+        @Override
+        public TransactionType getTransactionType() {
+            return TransactionType.DataFS.METIS_DATA;
+        }
+    };
+    
+    EmptyAttachment METIS_METADATA = new EmptyAttachment() {
+
+        @Override
+        public TransactionType getTransactionType() {
+            return TransactionType.DataFS.METIS_METADATA;
+        }
+    };
+    
+    EmptyAttachment METIS_CHANNEL_MEMBER = new EmptyAttachment() {
+
+        @Override
+        public TransactionType getTransactionType() {
+            return TransactionType.Messaging.METIS_CHANNEL_MEMBER;
+        }
+    };
+    
+    EmptyAttachment METIS_CHANNEL_INVITATION = new EmptyAttachment() {
+
+        @Override
+        public TransactionType getTransactionType() {
+            return TransactionType.Messaging.METIS_CHANNEL_INVITATION;
+        }
     };
 
     final class MessagingAliasAssignment extends AbstractAttachment {

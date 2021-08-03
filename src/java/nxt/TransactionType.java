@@ -30,6 +30,8 @@ import org.json.simple.JSONObject;
 
 import nxt.Account.ControlType;
 import nxt.AccountLedger.LedgerEvent;
+import nxt.Appendix.AbstractEncryptedMessage;
+import nxt.Appendix.Message;
 import nxt.Attachment.AbstractAttachment;
 import nxt.NxtException.ValidationException;
 import nxt.VoteWeighting.VotingModel;
@@ -40,28 +42,36 @@ import nxt.util.Logger;
 public abstract class TransactionType {
 
     private static final byte TYPE_PAYMENT = 0;
-    private static final byte TYPE_MESSAGING = 1;
+    public static final byte TYPE_MESSAGING = 1;
     private static final byte TYPE_COLORED_COINS = 2;
     private static final byte TYPE_DIGITAL_GOODS = 3;
     private static final byte TYPE_ACCOUNT_CONTROL = 4;
     static final byte TYPE_MONETARY_SYSTEM = 5;
     private static final byte TYPE_DATA = 6;
     static final byte TYPE_SHUFFLING = 7;
+    static final byte TYPE_DATA_FS = 8;
 
     private static final byte SUBTYPE_PAYMENT_ORDINARY_PAYMENT = 0;
 
-    private static final byte SUBTYPE_MESSAGING_ARBITRARY_MESSAGE = 0;
-    private static final byte SUBTYPE_MESSAGING_ALIAS_ASSIGNMENT = 1;
-    private static final byte SUBTYPE_MESSAGING_POLL_CREATION = 2;
-    private static final byte SUBTYPE_MESSAGING_VOTE_CASTING = 3;
-    private static final byte SUBTYPE_MESSAGING_HUB_ANNOUNCEMENT = 4;
-    private static final byte SUBTYPE_MESSAGING_ACCOUNT_INFO = 5;
-    private static final byte SUBTYPE_MESSAGING_ALIAS_SELL = 6;
-    private static final byte SUBTYPE_MESSAGING_ALIAS_BUY = 7;
-    private static final byte SUBTYPE_MESSAGING_ALIAS_DELETE = 8;
-    private static final byte SUBTYPE_MESSAGING_PHASING_VOTE_CASTING = 9;
-    private static final byte SUBTYPE_MESSAGING_ACCOUNT_PROPERTY = 10;
-    private static final byte SUBTYPE_MESSAGING_ACCOUNT_PROPERTY_DELETE = 11;
+    public static final byte SUBTYPE_MESSAGING_ARBITRARY_MESSAGE = 0;
+    public static final byte SUBTYPE_MESSAGING_ALIAS_ASSIGNMENT = 1;
+    public static final byte SUBTYPE_MESSAGING_POLL_CREATION = 2;
+    public static final byte SUBTYPE_MESSAGING_VOTE_CASTING = 3;
+    public static final byte SUBTYPE_MESSAGING_HUB_ANNOUNCEMENT = 4;
+    public static final byte SUBTYPE_MESSAGING_ACCOUNT_INFO = 5;
+    public static final byte SUBTYPE_MESSAGING_ALIAS_SELL = 6;
+    public static final byte SUBTYPE_MESSAGING_ALIAS_BUY = 7;
+    public static final byte SUBTYPE_MESSAGING_ALIAS_DELETE = 8;
+    public static final byte SUBTYPE_MESSAGING_PHASING_VOTE_CASTING = 9;
+    public static final byte SUBTYPE_MESSAGING_ACCOUNT_PROPERTY = 10;
+    public static final byte SUBTYPE_MESSAGING_ACCOUNT_PROPERTY_DELETE = 11;
+    
+    public static final byte SUBTYPE_MESSAGING_METIS_ACCOUNT_INFO = 12;
+    public static final byte SUBTYPE_MESSAGING_METIS_CHANNEL_INVITATION = 13;
+    public static final byte SUBTYPE_MESSAGING_METIS_CHANNEL_MEMBER = 14;
+    
+    public static final byte SUBTYPE_DATA_FS_METADATA = 0;
+    public static final byte SUBTYPE_DATA_FS_BINARY = 1;
 
     private static final byte SUBTYPE_COLORED_COINS_ASSET_ISSUANCE = 0;
     private static final byte SUBTYPE_COLORED_COINS_ASSET_TRANSFER = 1;
@@ -122,6 +132,12 @@ public abstract class TransactionType {
                         return Messaging.ACCOUNT_PROPERTY;
                     case SUBTYPE_MESSAGING_ACCOUNT_PROPERTY_DELETE:
                         return Messaging.ACCOUNT_PROPERTY_DELETE;
+                    case SUBTYPE_MESSAGING_METIS_ACCOUNT_INFO:
+                        return Messaging.METIS_ACCOUNT_INFO;
+                    case SUBTYPE_MESSAGING_METIS_CHANNEL_INVITATION:
+                        return Messaging.METIS_CHANNEL_INVITATION;
+                    case SUBTYPE_MESSAGING_METIS_CHANNEL_MEMBER:
+                        return Messaging.METIS_CHANNEL_MEMBER;
                     default:
                         return null;
                 }
@@ -189,6 +205,15 @@ public abstract class TransactionType {
                 }
             case TYPE_SHUFFLING:
                 return ShufflingTransaction.findTransactionType(subtype);
+            case TYPE_DATA_FS:
+                switch (subtype) {
+	                case SUBTYPE_DATA_FS_METADATA:
+	                    return DataFS.METIS_METADATA;
+	                case SUBTYPE_DATA_FS_BINARY:
+	                    return DataFS.METIS_DATA;
+	                default:
+                        return null;
+                }
             default:
                 return null;
         }
@@ -416,6 +441,155 @@ public abstract class TransactionType {
         };
 
     }
+    
+    public static abstract class DataFS extends TransactionType {
+
+        private DataFS() {
+        }
+
+        @Override
+        public byte getType() {
+            return TransactionType.TYPE_DATA_FS;
+        }
+
+        @Override
+        final boolean applyAttachmentUnconfirmed(Transaction transaction, Account senderAccount) {
+            return true;
+        }
+
+        @Override
+        final void undoAttachmentUnconfirmed(Transaction transaction, Account senderAccount) {
+        }
+
+        public final static TransactionType METIS_METADATA = new Messaging() {
+
+        	@Override
+            public final byte getType() {
+                return TransactionType.TYPE_DATA_FS;
+            }
+        	
+            @Override
+            public final byte getSubtype() {
+                return TransactionType.SUBTYPE_DATA_FS_METADATA;
+            }
+
+            @Override
+            public LedgerEvent getLedgerEvent() {
+                return LedgerEvent.ARBITRARY_MESSAGE;
+            }
+
+            @Override
+            public String getName() {
+                return "MetisMetaData";
+            }
+
+            @Override
+            Attachment.EmptyAttachment parseAttachment(ByteBuffer buffer) throws NxtException.NotValidException {
+                return Attachment.METIS_METADATA;
+            }
+
+            @Override
+            Attachment.EmptyAttachment parseAttachment(JSONObject attachmentData) throws NxtException.NotValidException {
+                return Attachment.METIS_METADATA;
+            }
+
+            @Override
+            void applyAttachment(Transaction transaction, Account senderAccount, Account recipientAccount) {
+            }
+
+            @Override
+            void validateAttachment(Transaction transaction) throws NxtException.ValidationException {
+                Attachment attachment = transaction.getAttachment();
+                if (transaction.getAmountNQT() != 0) {
+                    throw new NxtException.NotValidException("Invalid arbitrary message: " + attachment.getJSONObject());
+                }
+                if (transaction.getRecipientId() == Genesis.CREATOR_ID) {
+                    throw new NxtException.NotValidException("Sending messages to Genesis not allowed.");
+                }
+            }
+
+            @Override
+            public boolean canHaveRecipient() {
+                return true;
+            }
+
+            @Override
+            public boolean mustHaveRecipient() {
+                return false;
+            }
+
+            @Override
+            public boolean isPhasingSafe() {
+                return false;
+            }
+
+        };
+        
+        public final static TransactionType METIS_DATA = new Messaging() {
+        	
+        	@Override
+            public final byte getType() {
+                return TransactionType.TYPE_DATA_FS;
+            }
+        	
+        	
+            @Override
+            public final byte getSubtype() {
+                return TransactionType.SUBTYPE_DATA_FS_BINARY;
+            }
+
+            @Override
+            public LedgerEvent getLedgerEvent() {
+                return LedgerEvent.ARBITRARY_MESSAGE;
+            }
+
+            @Override
+            public String getName() {
+                return "MetisData";
+            }
+
+            @Override
+            Attachment.EmptyAttachment parseAttachment(ByteBuffer buffer) throws NxtException.NotValidException {
+                return Attachment.METIS_DATA;
+            }
+
+            @Override
+            Attachment.EmptyAttachment parseAttachment(JSONObject attachmentData) throws NxtException.NotValidException {
+                return Attachment.METIS_DATA;
+            }
+
+            @Override
+            void applyAttachment(Transaction transaction, Account senderAccount, Account recipientAccount) {
+            }
+
+            @Override
+            void validateAttachment(Transaction transaction) throws NxtException.ValidationException {
+                Attachment attachment = transaction.getAttachment();
+                if (transaction.getAmountNQT() != 0) {
+                    throw new NxtException.NotValidException("Invalid arbitrary message: " + attachment.getJSONObject());
+                }
+                if (transaction.getRecipientId() == Genesis.CREATOR_ID) {
+                    throw new NxtException.NotValidException("Sending messages to Genesis not allowed.");
+                }
+            }
+
+            @Override
+            public boolean canHaveRecipient() {
+                return true;
+            }
+
+            @Override
+            public boolean mustHaveRecipient() {
+                return false;
+            }
+
+            @Override
+            public boolean isPhasingSafe() {
+                return false;
+            }
+
+        };
+    }
 
     public static abstract class Messaging extends TransactionType {
 
@@ -423,7 +597,7 @@ public abstract class TransactionType {
         }
 
         @Override
-        public final byte getType() {
+        public byte getType() {
             return TransactionType.TYPE_MESSAGING;
         }
 
@@ -436,6 +610,184 @@ public abstract class TransactionType {
         final void undoAttachmentUnconfirmed(Transaction transaction, Account senderAccount) {
         }
 
+        
+        public final static TransactionType METIS_CHANNEL_INVITATION = new Messaging() {
+
+            @Override
+            public final byte getSubtype() {
+                return TransactionType.SUBTYPE_MESSAGING_METIS_CHANNEL_INVITATION;
+            }
+
+            @Override
+            public LedgerEvent getLedgerEvent() {
+                return LedgerEvent.ARBITRARY_MESSAGE;
+            }
+
+            @Override
+            public String getName() {
+                return "MetisChannelInvitation";
+            }
+
+            @Override
+            Attachment.EmptyAttachment parseAttachment(ByteBuffer buffer) throws NxtException.NotValidException {
+                return Attachment.METIS_CHANNEL_INVITATION;
+            }
+
+            @Override
+            Attachment.EmptyAttachment parseAttachment(JSONObject attachmentData) throws NxtException.NotValidException {
+                return Attachment.METIS_CHANNEL_INVITATION;
+            }
+
+            @Override
+            void applyAttachment(Transaction transaction, Account senderAccount, Account recipientAccount) {
+            }
+
+            @Override
+            void validateAttachment(Transaction transaction) throws NxtException.ValidationException {
+                Attachment attachment = transaction.getAttachment();
+                if (transaction.getAmountNQT() != 0) {
+                    throw new NxtException.NotValidException("Invalid arbitrary message: " + attachment.getJSONObject());
+                }
+                if (transaction.getRecipientId() == Genesis.CREATOR_ID) {
+                    throw new NxtException.NotValidException("Sending messages to Genesis not allowed.");
+                }
+            }
+
+            @Override
+            public boolean canHaveRecipient() {
+                return true;
+            }
+
+            @Override
+            public boolean mustHaveRecipient() {
+                return false;
+            }
+
+            @Override
+            public boolean isPhasingSafe() {
+                return false;
+            }
+
+        };
+        
+        public final static TransactionType METIS_CHANNEL_MEMBER = new Messaging() {
+
+            @Override
+            public final byte getSubtype() {
+                return TransactionType.SUBTYPE_MESSAGING_METIS_CHANNEL_MEMBER;
+            }
+
+            @Override
+            public LedgerEvent getLedgerEvent() {
+                return LedgerEvent.ARBITRARY_MESSAGE;
+            }
+
+            @Override
+            public String getName() {
+                return "MetisChannelMember";
+            }
+
+            @Override
+            Attachment.EmptyAttachment parseAttachment(ByteBuffer buffer) throws NxtException.NotValidException {
+                return Attachment.METIS_CHANNEL_MEMBER;
+            }
+
+            @Override
+            Attachment.EmptyAttachment parseAttachment(JSONObject attachmentData) throws NxtException.NotValidException {
+                return Attachment.METIS_CHANNEL_MEMBER;
+            }
+
+            @Override
+            void applyAttachment(Transaction transaction, Account senderAccount, Account recipientAccount) {
+            }
+
+            @Override
+            void validateAttachment(Transaction transaction) throws NxtException.ValidationException {
+                Attachment attachment = transaction.getAttachment();
+                if (transaction.getAmountNQT() != 0) {
+                    throw new NxtException.NotValidException("Invalid arbitrary message: " + attachment.getJSONObject());
+                }
+                if (transaction.getRecipientId() == Genesis.CREATOR_ID) {
+                    throw new NxtException.NotValidException("Sending messages to Genesis not allowed.");
+                }
+            }
+
+            @Override
+            public boolean canHaveRecipient() {
+                return true;
+            }
+
+            @Override
+            public boolean mustHaveRecipient() {
+                return false;
+            }
+
+            @Override
+            public boolean isPhasingSafe() {
+                return false;
+            }
+
+        };
+        
+        public final static TransactionType METIS_ACCOUNT_INFO = new Messaging() {
+
+            @Override
+            public final byte getSubtype() {
+                return TransactionType.SUBTYPE_MESSAGING_METIS_ACCOUNT_INFO;
+            }
+
+            @Override
+            public LedgerEvent getLedgerEvent() {
+                return LedgerEvent.ARBITRARY_MESSAGE;
+            }
+
+            @Override
+            public String getName() {
+                return "MetisAccountInfo";
+            }
+
+            @Override
+            Attachment.EmptyAttachment parseAttachment(ByteBuffer buffer) throws NxtException.NotValidException {
+                return Attachment.METIS_ACCOUNT_INFO;
+            }
+
+            @Override
+            Attachment.EmptyAttachment parseAttachment(JSONObject attachmentData) throws NxtException.NotValidException {
+                return Attachment.METIS_ACCOUNT_INFO;
+            }
+
+            @Override
+            void applyAttachment(Transaction transaction, Account senderAccount, Account recipientAccount) {
+            }
+
+            @Override
+            void validateAttachment(Transaction transaction) throws NxtException.ValidationException {
+                Attachment attachment = transaction.getAttachment();
+                if (transaction.getAmountNQT() != 0) {
+                    throw new NxtException.NotValidException("Invalid arbitrary message: " + attachment.getJSONObject());
+                }
+                if (transaction.getRecipientId() == Genesis.CREATOR_ID) {
+                    throw new NxtException.NotValidException("Sending messages to Genesis not allowed.");
+                }
+            }
+
+            @Override
+            public boolean canHaveRecipient() {
+                return true;
+            }
+
+            @Override
+            public boolean mustHaveRecipient() {
+                return false;
+            }
+
+            @Override
+            public boolean isPhasingSafe() {
+                return false;
+            }
+
+        };
+        
         public final static TransactionType ARBITRARY_MESSAGE = new Messaging() {
 
             @Override
@@ -494,7 +846,7 @@ public abstract class TransactionType {
             }
 
         };
-
+        
         public static final TransactionType ALIAS_ASSIGNMENT = new Messaging() {
 
             private final Fee ALIAS_FEE = new Fee.SizeBasedFee(2 * Fee.MIN_FEE, 2 * Fee.MIN_FEE, 32) {

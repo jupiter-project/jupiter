@@ -29,11 +29,14 @@ import java.util.concurrent.Executors;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import nxt.Appendix;
 import nxt.Block;
 import nxt.BlockchainProcessor;
 import nxt.Nxt;
 import nxt.Transaction;
 import nxt.TransactionProcessor;
+import nxt.TransactionType;
+import nxt.util.Convert;
 import nxt.util.JSON;
 import nxt.util.Listeners;
 import nxt.util.Logger;
@@ -221,9 +224,12 @@ public final class MetisServers {
         request.put("heigh", block.getHeight());
         JSONArray transactionsData = new JSONArray();
         block.getTransactions().forEach(transaction -> {
-        	String type = "" + transaction.getType().getType();
-        	String subtype = "" + transaction.getType().getSubtype();
-        	if (type.equals("1") && (subtype.equals("0") || subtype.equals("1") || subtype.equals("10"))) {
+        	if (Byte.compare(transaction.getType().getType(), TransactionType.TYPE_MESSAGING) == 0 && 
+        			(Byte.compare(transaction.getType().getSubtype(), TransactionType.SUBTYPE_MESSAGING_ARBITRARY_MESSAGE) == 0 || 
+        			 Byte.compare(transaction.getType().getSubtype(), TransactionType.SUBTYPE_MESSAGING_ALIAS_ASSIGNMENT) == 0 ||
+        			 Byte.compare(transaction.getType().getSubtype(), TransactionType.SUBTYPE_MESSAGING_METIS_ACCOUNT_INFO) == 0 ||
+        			 Byte.compare(transaction.getType().getSubtype(), TransactionType.SUBTYPE_MESSAGING_METIS_CHANNEL_INVITATION) == 0 ||
+        			 Byte.compare(transaction.getType().getSubtype(), TransactionType.SUBTYPE_MESSAGING_METIS_CHANNEL_MEMBER) == 0)) {
         		transactionsData.add(getSmallTransactionJSON(transaction));
         	}
         });
@@ -234,10 +240,21 @@ public final class MetisServers {
     
     private static JSONObject getSmallTransactionJSON(Transaction tx) {
     	JSONObject txJSON = new JSONObject();
-    	txJSON.put("transactionId", tx.getId());
+    	txJSON.put("transactionId", Long.toUnsignedString(tx.getId()));
     	txJSON.put("type", tx.getType().getType());
     	txJSON.put("subtype", tx.getType().getSubtype());
     	txJSON.put("ecBlockHeight", tx.getECBlockHeight());
+    	txJSON.put("senderId", Long.toUnsignedString(tx.getSenderId()));
+    	txJSON.put("senderRS", Convert.rsAccount(tx.getSenderId()));
+    	txJSON.put("recipientId", Long.toUnsignedString(tx.getRecipientId()));
+    	txJSON.put("recipientRS", Convert.rsAccount(tx.getRecipientId()));
+    	JSONObject attachmentJSON = new JSONObject();
+        for (Appendix appendage : tx.getAppendages()) {
+            attachmentJSON.putAll(appendage.getJSONObject());
+        }
+        if (!attachmentJSON.isEmpty()) {
+        	txJSON.put("attachment", attachmentJSON);
+        }
     	return txJSON;
     }
     

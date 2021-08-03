@@ -478,6 +478,13 @@ public interface Appendix {
                 return ((AbstractEncryptedMessage)appendage).getEncryptedDataLength() - 16;
             }
         };
+        
+        private static final Fee ENCRYPTED_DATA_MESSAGE_FEE = new Fee.SizeBasedFee(Fee.MIN_CONSTANT_DATA_FEE, Fee.MIN_DATA_FEE, 32) {
+            @Override
+            public int getSize(TransactionImpl transaction, Appendix appendage) {
+                return ((AbstractEncryptedMessage)appendage).getEncryptedDataLength() - 16;
+            }
+        };
 
         private EncryptedData encryptedData;
         private final boolean isText;
@@ -533,7 +540,12 @@ public interface Appendix {
 
         @Override
         public Fee getBaselineFee(Transaction transaction) {
-            return ENCRYPTED_MESSAGE_FEE;
+        	if (Byte.compare(TransactionType.TYPE_DATA_FS, transaction.getType().getType()) == 0 &&
+        		Byte.compare(TransactionType.SUBTYPE_DATA_FS_BINARY, transaction.getType().getSubtype()) == 0) {
+        		return ENCRYPTED_DATA_MESSAGE_FEE;
+        	} else {
+        		return ENCRYPTED_MESSAGE_FEE;
+        	}
         }
 
         @Override

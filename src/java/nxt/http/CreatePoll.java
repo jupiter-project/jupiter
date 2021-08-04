@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,6 +18,20 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.INCORRECT_POLL_DESCRIPTION_LENGTH;
+import static nxt.http.JSONResponses.INCORRECT_POLL_NAME_LENGTH;
+import static nxt.http.JSONResponses.INCORRECT_POLL_OPTION_LENGTH;
+import static nxt.http.JSONResponses.INCORRECT_ZEROOPTIONS;
+import static nxt.http.JSONResponses.MISSING_DESCRIPTION;
+import static nxt.http.JSONResponses.MISSING_NAME;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Attachment;
 import nxt.Attachment.MessagingPollCreation.PollBuilder;
@@ -23,18 +39,6 @@ import nxt.Constants;
 import nxt.Nxt;
 import nxt.NxtException;
 import nxt.util.Convert;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-
-import static nxt.http.JSONResponses.INCORRECT_POLL_DESCRIPTION_LENGTH;
-import static nxt.http.JSONResponses.INCORRECT_POLL_NAME_LENGTH;
-import static nxt.http.JSONResponses.INCORRECT_POLL_OPTION_LENGTH;
-import static nxt.http.JSONResponses.INCORRECT_ZEROOPTIONS;
-import static nxt.http.JSONResponses.MISSING_DESCRIPTION;
-import static nxt.http.JSONResponses.MISSING_NAME;
 
 public final class CreatePoll extends CreateTransaction {
 

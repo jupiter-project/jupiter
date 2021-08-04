@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,18 +18,23 @@
 
 package nxt;
 
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import org.json.simple.JSONObject;
+
 import nxt.crypto.Crypto;
 import nxt.db.DbKey;
 import nxt.util.Convert;
 import nxt.util.Filter;
 import nxt.util.Logger;
-import org.json.simple.JSONObject;
-
-import java.math.BigInteger;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.security.MessageDigest;
-import java.util.*;
 
 final class TransactionImpl implements Transaction {
 
@@ -771,7 +778,7 @@ final class TransactionImpl implements Transaction {
         json.put("version", version);
         return json;
     }
-
+    
     @Override
     public JSONObject getPrunableAttachmentJSON() {
         JSONObject prunableJSON = null;
@@ -985,7 +992,15 @@ final class TransactionImpl implements Transaction {
             }
         }
 
-        if (getFullSize() > Constants.MAX_PAYLOAD_LENGTH) {
+    	int maxPayloadLength = Constants.MAX_NUMBER_OF_TRANSACTIONS;
+    	if (Nxt.getBlockchain().getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK) {
+    		maxPayloadLength = Constants.ORIGINAL_MAX_PAYLOAD_LENGTH;
+    	}
+    	if (Nxt.getBlockchain().getHeight() > Constants.BLOCK_HEIGHT_HARD_FORK_INCREASE_MAX_BASE_TARGET) {
+    		maxPayloadLength = Constants.MAX_PAYLOAD_LENGTH;
+    	}
+    	
+        if (getFullSize() > maxPayloadLength) {
             throw new NxtException.NotValidException("Transaction size " + getFullSize() + " exceeds maximum payload size");
         }
 
@@ -994,8 +1009,13 @@ final class TransactionImpl implements Transaction {
             long minimumFeeNQT = getMinimumFeeNQT(blockchainHeight);
             if (feeNQT < minimumFeeNQT) {
                 throw new NxtException.NotCurrentlyValidException(String.format("Transaction fee %f %s less than minimum fee %f %s at height %d",
-                        ((double) feeNQT) / Constants.ONE_NXT, Constants.COIN_SYMBOL, ((double) minimumFeeNQT) / Constants.ONE_NXT, Constants.COIN_SYMBOL, blockchainHeight));
+                        ((double) feeNQT) / Constants.ONE_NXT, 
+                        Constants.COIN_SYMBOL, 
+                        ((double) minimumFeeNQT) / Constants.ONE_NXT, 
+                        Constants.COIN_SYMBOL, 
+                        blockchainHeight));
             }
+            
             if (ecBlockId != 0) {
                 if (blockchainHeight < ecBlockHeight) {
                     throw new NxtException.NotCurrentlyValidException("ecBlockHeight " + ecBlockHeight
@@ -1011,7 +1031,7 @@ final class TransactionImpl implements Transaction {
         AccountRestrictions.checkTransaction(this, validatingAtFinish);
     }
 
-    // returns false iff double spending
+    // returns false if double spending
     boolean applyUnconfirmed() {
         Account senderAccount = Account.getAccount(getSenderId());
         return senderAccount != null && type.applyUnconfirmed(this, senderAccount);

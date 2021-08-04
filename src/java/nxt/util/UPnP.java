@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,12 +18,13 @@
 
 package nxt.util;
 
-import nxt.Nxt;
+import java.net.InetAddress;
+import java.util.Map;
+
 import org.bitlet.weupnp.GatewayDevice;
 import org.bitlet.weupnp.GatewayDiscover;
 
-import java.net.InetAddress;
-import java.util.Map;
+import nxt.Nxt;
 
 /**
  * Forward ports using the UPnP protocol.

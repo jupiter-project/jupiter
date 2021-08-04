@@ -1,0 +1,4 @@
+[*] Limit old version connection to v1.13.0+
+[*] Changed default messages in wallet to unencrypted to help with sending to exchanges
+[*] Added warning to 'Send money' modal
+[*] Misc updates

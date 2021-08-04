@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,20 +18,14 @@
 
 package nxt.http;
 
-import nxt.Constants;
-import nxt.Db;
-import nxt.Nxt;
-import nxt.NxtException;
-import nxt.addons.AddOns;
-import nxt.util.JSON;
-import nxt.util.Logger;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
+import static nxt.http.JSONResponses.ERROR_DISABLED;
+import static nxt.http.JSONResponses.ERROR_INCORRECT_REQUEST;
+import static nxt.http.JSONResponses.ERROR_NOT_ALLOWED;
+import static nxt.http.JSONResponses.LIGHT_CLIENT_DISABLED_API;
+import static nxt.http.JSONResponses.POST_REQUIRED;
+import static nxt.http.JSONResponses.REQUIRED_BLOCK_NOT_FOUND;
+import static nxt.http.JSONResponses.REQUIRED_LAST_BLOCK_NOT_FOUND;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -42,17 +38,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static nxt.http.JSONResponses.ERROR_DISABLED;
-import static nxt.http.JSONResponses.ERROR_INCORRECT_REQUEST;
-import static nxt.http.JSONResponses.ERROR_NOT_ALLOWED;
-import static nxt.http.JSONResponses.LIGHT_CLIENT_DISABLED_API;
-import static nxt.http.JSONResponses.POST_REQUIRED;
-import static nxt.http.JSONResponses.REQUIRED_BLOCK_NOT_FOUND;
-import static nxt.http.JSONResponses.REQUIRED_LAST_BLOCK_NOT_FOUND;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
+import nxt.Constants;
+import nxt.Db;
+import nxt.Nxt;
+import nxt.NxtException;
+import nxt.addons.AddOns;
+import nxt.util.JSON;
+import nxt.util.Logger;
 
 public final class APIServlet extends HttpServlet {
 
     public abstract static class APIRequestHandler {
+    	
+    	protected static String NAME_FIELD = "name";
+    	protected static String DESCRIPTION_FIELD = "description";
+    	protected static String MESSAGE_FIELD = "message";
 
         private final List<String> parameters;
         private final String fileParameter;

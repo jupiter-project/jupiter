@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -124,6 +126,22 @@ public abstract class DbClause {
         public LikeClause(String columnName, String prefix) {
             super(" " + columnName + " LIKE ? ");
             this.prefix = prefix.replace("%", "\\%").replace("_", "\\_") + '%';
+        }
+
+        @Override
+        protected int set(PreparedStatement pstmt, int index) throws SQLException {
+            pstmt.setString(index, prefix);
+            return index + 1;
+        }
+    }
+    
+    public static final class LikeBothClause extends DbClause {
+
+        private final String prefix;
+
+        public LikeBothClause(String columnName, String prefix) {
+            super(" " + columnName + " LIKE ? ");
+            this.prefix = '%' + prefix + '%';
         }
 
         @Override

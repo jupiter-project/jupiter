@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,36 +18,6 @@
 
 package nxt.peer;
 
-import nxt.Account;
-import nxt.Block;
-import nxt.Constants;
-import nxt.Db;
-import nxt.Nxt;
-import nxt.Transaction;
-import nxt.http.API;
-import nxt.http.APIEnum;
-import nxt.util.Convert;
-import nxt.util.Filter;
-import nxt.util.JSON;
-import nxt.util.Listener;
-import nxt.util.Listeners;
-import nxt.util.Logger;
-import nxt.util.QueuedThreadPool;
-import nxt.util.ThreadPool;
-import nxt.util.UPnP;
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.gzip.GzipHandler;
-import org.eclipse.jetty.servlet.FilterHolder;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.servlets.DoSFilter;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.DispatcherType;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
@@ -74,6 +46,38 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import javax.servlet.DispatcherType;
+
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.handler.gzip.GzipHandler;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlets.DoSFilter;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
+import nxt.Account;
+import nxt.Block;
+import nxt.Constants;
+import nxt.Db;
+import nxt.Nxt;
+import nxt.Transaction;
+import nxt.http.API;
+import nxt.http.APIEnum;
+import nxt.util.Convert;
+import nxt.util.Filter;
+import nxt.util.JSON;
+import nxt.util.Listener;
+import nxt.util.Listeners;
+import nxt.util.Logger;
+import nxt.util.QueuedThreadPool;
+import nxt.util.ThreadPool;
+import nxt.util.UPnP;
+
 public final class Peers {
 
     public enum Event {
@@ -91,8 +95,8 @@ public final class Peers {
     private static final List<String> wellKnownPeers;
     static final Set<String> knownBlacklistedPeers;
 
-    static final int connectTimeout;
-    static final int readTimeout;
+    public static final int connectTimeout;
+    public static final int readTimeout;
     static final int blacklistingPeriod;
     static final boolean getMorePeers;
     static final int MAX_REQUEST_SIZE = 1024 * 1024;
@@ -105,7 +109,7 @@ public final class Peers {
     static final boolean isGzipEnabled;
 
     private static final int DEFAULT_PEER_PORT = 7864;
-    private static final int TESTNET_PEER_PORT = 6874;
+    private static final int TESTNET_PEER_PORT = 6864;
     private static final String myPlatform;
     private static final String myAddress;
     private static final int myPeerServerPort;
@@ -765,11 +769,14 @@ public final class Peers {
     }
 
     static {
-        Account.addListener(account -> peers.values().forEach(peer -> {
-            if (peer.getHallmark() != null && peer.getHallmark().getAccountId() == account.getId()) {
-                Peers.listeners.notify(peer, Event.WEIGHT);
-            }
-        }), Account.Event.BALANCE);
+    	if (peers != null && peers.values() != null && !peers.values().isEmpty()) {
+    		
+    		Account.addListener(account -> peers.values().forEach(peer -> {
+                if (peer.getHallmark() != null && peer.getHallmark().getAccountId() == account.getId()) {
+                    Peers.listeners.notify(peer, Event.WEIGHT);
+                }
+            }), Account.Event.BALANCE);
+    	}
     }
 
     static {

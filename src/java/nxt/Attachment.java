@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,18 +18,19 @@
 
 package nxt;
 
-import nxt.crypto.Crypto;
-import nxt.crypto.EncryptedData;
-import nxt.util.Convert;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import nxt.crypto.Crypto;
+import nxt.crypto.EncryptedData;
+import nxt.util.Convert;
 
 public interface Attachment extends Appendix {
 
@@ -137,7 +140,46 @@ public interface Attachment extends Appendix {
         public TransactionType getTransactionType() {
             return TransactionType.Messaging.ARBITRARY_MESSAGE;
         }
+    };
+    
+    EmptyAttachment METIS_ACCOUNT_INFO = new EmptyAttachment() {
 
+        @Override
+        public TransactionType getTransactionType() {
+            return TransactionType.Messaging.METIS_ACCOUNT_INFO;
+        }
+    };
+    
+    EmptyAttachment METIS_DATA = new EmptyAttachment() {
+
+        @Override
+        public TransactionType getTransactionType() {
+            return TransactionType.DataFS.METIS_DATA;
+        }
+    };
+    
+    EmptyAttachment METIS_METADATA = new EmptyAttachment() {
+
+        @Override
+        public TransactionType getTransactionType() {
+            return TransactionType.DataFS.METIS_METADATA;
+        }
+    };
+    
+    EmptyAttachment METIS_CHANNEL_MEMBER = new EmptyAttachment() {
+
+        @Override
+        public TransactionType getTransactionType() {
+            return TransactionType.Messaging.METIS_CHANNEL_MEMBER;
+        }
+    };
+    
+    EmptyAttachment METIS_CHANNEL_INVITATION = new EmptyAttachment() {
+
+        @Override
+        public TransactionType getTransactionType() {
+            return TransactionType.Messaging.METIS_CHANNEL_INVITATION;
+        }
     };
 
     final class MessagingAliasAssignment extends AbstractAttachment {

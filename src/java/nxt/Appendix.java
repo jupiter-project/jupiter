@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,13 +18,7 @@
 
 package nxt;
 
-import nxt.AccountLedger.LedgerEvent;
-import nxt.crypto.Crypto;
-import nxt.crypto.EncryptedData;
-import nxt.util.Convert;
-import nxt.util.Logger;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import static nxt.Appendix.hasAppendix;
 
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
@@ -31,6 +27,15 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import nxt.AccountLedger.LedgerEvent;
+import nxt.crypto.Crypto;
+import nxt.crypto.EncryptedData;
+import nxt.util.Convert;
+import nxt.util.Logger;
 
 public interface Appendix {
 
@@ -206,7 +211,7 @@ public interface Appendix {
             if (messageLength < 0) {
                 messageLength &= Integer.MAX_VALUE;
             }
-            if (messageLength > 1000) {
+            if (messageLength > Constants.MAX_ARBITRARY_MESSAGE_LENGTH) {
                 throw new NxtException.NotValidException("Invalid arbitrary message length: " + messageLength);
             }
             this.message = new byte[messageLength];
@@ -473,6 +478,13 @@ public interface Appendix {
                 return ((AbstractEncryptedMessage)appendage).getEncryptedDataLength() - 16;
             }
         };
+        
+        private static final Fee ENCRYPTED_DATA_MESSAGE_FEE = new Fee.SizeBasedFee(Fee.MIN_CONSTANT_DATA_FEE, Fee.MIN_DATA_FEE, 32) {
+            @Override
+            public int getSize(TransactionImpl transaction, Appendix appendage) {
+                return ((AbstractEncryptedMessage)appendage).getEncryptedDataLength() - 16;
+            }
+        };
 
         private EncryptedData encryptedData;
         private final boolean isText;
@@ -528,13 +540,19 @@ public interface Appendix {
 
         @Override
         public Fee getBaselineFee(Transaction transaction) {
-            return ENCRYPTED_MESSAGE_FEE;
+        	if (Byte.compare(TransactionType.TYPE_DATA_FS, transaction.getType().getType()) == 0 &&
+        		Byte.compare(TransactionType.SUBTYPE_DATA_FS_BINARY, transaction.getType().getSubtype()) == 0) {
+        		return ENCRYPTED_DATA_MESSAGE_FEE;
+        	} else {
+        		return ENCRYPTED_MESSAGE_FEE;
+        	}
         }
 
         @Override
         void validate(Transaction transaction) throws NxtException.ValidationException {
             if (getEncryptedDataLength() > Constants.MAX_ENCRYPTED_MESSAGE_LENGTH) {
-                throw new NxtException.NotValidException("Max encrypted message length exceeded");
+                throw new NxtException.NotValidException("Max encrypted message length exceeded, " + 
+                		getEncryptedDataLength() + " > " + Constants.MAX_ENCRYPTED_MESSAGE_LENGTH);
             }
             if (encryptedData != null) {
                 if ((encryptedData.getNonce().length != 32 && encryptedData.getData().length > 0)

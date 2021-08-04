@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,14 +18,14 @@
 
 package nxt.db;
 
-import nxt.Constants;
-import nxt.Nxt;
-import nxt.util.Logger;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import nxt.Constants;
+import nxt.Nxt;
+import nxt.util.Logger;
 
 public abstract class EntityDbTable<T> extends DerivedDbTable {
 
@@ -192,6 +194,10 @@ public abstract class EntityDbTable<T> extends DerivedDbTable {
     public final DbIterator<T> getManyBy(DbClause dbClause, int from, int to) {
         return getManyBy(dbClause, from, to, defaultSort());
     }
+    
+    public final DbIterator<T> getManyBy(DbClause dbClause1, DbClause dbClause2, int from, int to) {
+        return getManyBy(dbClause1, dbClause2, from, to, defaultSort());
+    }
 
     public final DbIterator<T> getManyBy(DbClause dbClause, int from, int to, String sort) {
         Connection con = null;
@@ -202,6 +208,27 @@ public abstract class EntityDbTable<T> extends DerivedDbTable {
                     + DbUtils.limitsClause(from, to));
             int i = 0;
             i = dbClause.set(pstmt, ++i);
+            i = DbUtils.setLimits(i, pstmt, from, to);
+            return getManyBy(con, pstmt, true);
+        } catch (SQLException e) {
+            DbUtils.close(con);
+            throw new RuntimeException(e.toString(), e);
+        }
+    }
+    
+    public final DbIterator<T> getManyBy(DbClause dbClause1, DbClause dbClause2, int from, int to, String sort) {
+        Connection con = null;
+        try {
+            con = db.getConnection();
+            
+            PreparedStatement pstmt = con.prepareStatement("SELECT * FROM " + table
+                    + " WHERE " + dbClause1.getClause() 
+                    + "AND " + dbClause2.getClause()
+                    + (multiversion ? " AND latest = TRUE " : " ") + sort
+                    + DbUtils.limitsClause(from, to));
+            int i = 1;
+            i = dbClause1.set(pstmt, i);
+            i = dbClause2.set(pstmt, i);
             i = DbUtils.setLimits(i, pstmt, from, to);
             return getManyBy(con, pstmt, true);
         } catch (SQLException e) {
@@ -286,6 +313,10 @@ public abstract class EntityDbTable<T> extends DerivedDbTable {
             DbUtils.close(con);
             throw new RuntimeException(e.toString(), e);
         }
+    }
+    
+    public final DbIterator<T> getAll() {
+        return getAll(0, Integer.MAX_VALUE, defaultSort());
     }
 
     public final DbIterator<T> getAll(int from, int to) {

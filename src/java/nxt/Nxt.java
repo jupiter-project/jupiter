@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -15,21 +17,6 @@
  */
 
 package nxt;
-
-import nxt.addons.AddOns;
-import nxt.crypto.Crypto;
-import nxt.env.DirProvider;
-import nxt.env.RuntimeEnvironment;
-import nxt.env.RuntimeMode;
-import nxt.env.ServerStatus;
-import nxt.http.API;
-import nxt.http.APIProxy;
-import nxt.peer.Peers;
-import nxt.util.Convert;
-import nxt.util.Logger;
-import nxt.util.ThreadPool;
-import nxt.util.Time;
-import org.json.simple.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,9 +35,26 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
+import org.json.simple.JSONObject;
+
+import nxt.addons.AddOns;
+import nxt.crypto.Crypto;
+import nxt.env.DirProvider;
+import nxt.env.RuntimeEnvironment;
+import nxt.env.RuntimeMode;
+import nxt.env.ServerStatus;
+import nxt.http.API;
+import nxt.http.APIProxy;
+import nxt.http.MetisServers;
+import nxt.peer.Peers;
+import nxt.util.Convert;
+import nxt.util.Logger;
+import nxt.util.ThreadPool;
+import nxt.util.Time;
+
 public final class Nxt {
 
-    public static final String VERSION = "1.12.2e";
+    public static final String VERSION = "2.3.0";
     public static final String APPLICATION = "JRS";
 
     private static volatile Time time = new Time.EpochTime();
@@ -208,6 +212,20 @@ public final class Nxt {
             return defaultValue;
         }
     }
+    
+    public static double getDoubleProperty(String name) {
+    	return getDoubleProperty(name, 1);
+    }
+    public static double getDoubleProperty(String name, double defaultValue) {
+        try {
+            double result = Double.parseDouble(properties.getProperty(name));
+            Logger.logMessage(name + " = \"" + result + "\"");
+            return result;
+        } catch (NumberFormatException e) {
+            Logger.logMessage(name + " not defined or not numeric, using default value " + defaultValue);
+            return defaultValue;
+        }
+    }
 
     public static String getStringProperty(String name) {
         return getStringProperty(name, null, false);
@@ -319,6 +337,7 @@ public final class Nxt {
         ThreadPool.shutdown();
         BlockchainProcessorImpl.getInstance().shutdown();
         Peers.shutdown();
+        MetisServers.shutdown();
         Db.shutdown();
         Logger.logShutdownMessage(Nxt.APPLICATION + " server " + VERSION + " stopped.");
         Logger.shutdown();
@@ -370,6 +389,7 @@ public final class Nxt {
                 PrunableMessage.init();
                 TaggedData.init();
                 Peers.init();
+                MetisServers.init();
                 APIProxy.init();
                 Generator.init();
                 AddOns.init();
@@ -391,6 +411,7 @@ public final class Nxt {
                 Logger.logMessage("Copyright © 2013-2016 The Nxt Core Developers.");
                 Logger.logMessage("Copyright © 2016-2017 Jelurida IP B.V.");
                 Logger.logMessage("Copyright © 2016-2020 Sigwo Technologies");
+                Logger.logMessage("Copyright © 2020-2021 Jupiter Project Developers");
                 Logger.logMessage("Distributed under GPLv2, with ABSOLUTELY NO WARRANTY.");
                 if (API.getWelcomePageUri() != null) {
                     Logger.logMessage("Client UI is at " + API.getWelcomePageUri());

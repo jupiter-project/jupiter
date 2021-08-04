@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,20 +18,24 @@
 
 package nxt.http;
 
-import nxt.Asset;
-import nxt.db.DbIterator;
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import javax.servlet.http.HttpServletRequest;
+import nxt.Asset;
+import nxt.Nxt;
+import nxt.Transaction;
+import nxt.db.DbIterator;
+import nxt.util.Convert;
 
 public final class GetAssetsByIssuer extends APIServlet.APIRequestHandler {
 
     static final GetAssetsByIssuer instance = new GetAssetsByIssuer();
 
     private GetAssetsByIssuer() {
-        super(new APITag[] {APITag.AE, APITag.ACCOUNTS}, "account", "account", "account", "firstIndex", "lastIndex", "includeCounts");
+        super(new APITag[] {APITag.AE, APITag.ACCOUNTS}, "query", "account", "account", "account", "firstIndex", "lastIndex", "includeCounts", "includeNTFInfo");
     }
 
     @Override
@@ -38,20 +44,35 @@ public final class GetAssetsByIssuer extends APIServlet.APIRequestHandler {
         int firstIndex = ParameterParser.getFirstIndex(req);
         int lastIndex = ParameterParser.getLastIndex(req);
         boolean includeCounts = "true".equalsIgnoreCase(req.getParameter("includeCounts"));
+        String query = Convert.nullToEmpty(req.getParameter("query")).toLowerCase();
+        boolean includeNTFInfo = "true".equalsIgnoreCase(req.getParameter("includeNTFInfo"));
 
         JSONObject response = new JSONObject();
         JSONArray accountsJSONArray = new JSONArray();
         response.put("assets", accountsJSONArray);
         for (long accountId : accountIds) {
             JSONArray assetsJSONArray = new JSONArray();
-            try (DbIterator<Asset> assets = Asset.getAssetsIssuedBy(accountId, firstIndex, lastIndex)) {
+            try (DbIterator<Asset> assets = Asset.getAssetsIssuedBy(query, accountId, firstIndex, lastIndex)) {
                 while (assets.hasNext()) {
-                    assetsJSONArray.add(JSONData.asset(assets.next(), includeCounts));
+                	Asset asset = assets.next();
+                	JSONObject assetJSON = JSONData.asset(asset, includeCounts);
+                	
+                	if (includeNTFInfo) {
+                		Transaction transaction = Nxt.getBlockchain().getTransaction(asset.getId());
+                	
+	                	if (transaction != null) {
+	                		if (transaction.getMessage() != null) {
+	                			String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
+	                			assetJSON.put(MESSAGE_FIELD, messageString);
+	                		}
+	                	}
+                	}
+                	
+                	assetsJSONArray.add(assetJSON);
                 }
             }
             accountsJSONArray.add(assetsJSONArray);
         }
         return response;
     }
-
 }

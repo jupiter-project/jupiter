@@ -1,0 +1,5 @@
+Scale Jupiter blockchain
+
+* Increase the number of transactions per block to 750.
+* Increase the max block payload to 5MB
+* Mandatory upgrade, it implies a hard fork on the block height 1725000

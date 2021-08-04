@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,18 +18,6 @@
 
 package nxt;
 
-import nxt.crypto.AnonymouslyEncryptedData;
-import nxt.crypto.Crypto;
-import nxt.db.DbClause;
-import nxt.db.DbIterator;
-import nxt.db.DbKey;
-import nxt.db.DbUtils;
-import nxt.db.VersionedEntityDbTable;
-import nxt.util.Convert;
-import nxt.util.Listener;
-import nxt.util.Listeners;
-import nxt.util.Logger;
-
 import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,6 +29,18 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import nxt.crypto.AnonymouslyEncryptedData;
+import nxt.crypto.Crypto;
+import nxt.db.DbClause;
+import nxt.db.DbIterator;
+import nxt.db.DbKey;
+import nxt.db.DbUtils;
+import nxt.db.VersionedEntityDbTable;
+import nxt.util.Convert;
+import nxt.util.Listener;
+import nxt.util.Listeners;
+import nxt.util.Logger;
 
 public final class Shuffling {
 
@@ -156,8 +158,18 @@ public final class Shuffling {
 
     static {
         Nxt.getBlockchainProcessor().addListener(block -> {
-            if (block.getTransactions().size() == Constants.MAX_NUMBER_OF_TRANSACTIONS
-                    || block.getPayloadLength() > Constants.MAX_PAYLOAD_LENGTH - Constants.MIN_TRANSACTION_SIZE) {
+        	int maxNumberOfTransactions = Constants.MAX_NUMBER_OF_TRANSACTIONS;
+        	if (block.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK) {
+        		maxNumberOfTransactions = Constants.ORIGINAL_MAX_NUMBER_OF_TRANSACTIONS;
+        	}
+        	
+        	int maxPayloadLength = Constants.MAX_PAYLOAD_LENGTH;
+        	if (block.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK) {
+        		maxPayloadLength = Constants.ORIGINAL_MAX_PAYLOAD_LENGTH;
+        	}
+        	
+            if (block.getTransactions().size() == maxNumberOfTransactions
+                    || block.getPayloadLength() > maxPayloadLength - Constants.MIN_TRANSACTION_SIZE) {
                 return;
             }
             List<Shuffling> shufflings = new ArrayList<>();

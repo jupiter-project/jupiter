@@ -79,7 +79,7 @@ close the browser but keep the java process running. If you want to keep
 forging, make sure you do not click on "stop forging" when logging out. You can
 also just close the browser without logging out.
 
-The java process communicates with peers on port 7874 tcp by default. If you are
+The java process communicates with peers on port 7864 tcp by default. If you are
 behind a router or a firewall and want to have your node accept incoming peer
 connections, you should setup port forwarding. The server will still work though
 even if only outgoing connections are allowed, so opening this port is optional.

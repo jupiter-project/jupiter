@@ -1,0 +1,3 @@
+Scale Jupiter blockchain
+
+* Tx per block is limited by block payload and by the number of tx

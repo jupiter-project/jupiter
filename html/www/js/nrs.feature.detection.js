@@ -173,6 +173,10 @@ var NRS = (function (NRS) {
         }
     };
 
+    NRS.isAnimationAllowed = function() {
+        return !isDesktopApplication;
+    };
+
     NRS.isForgingSupported = function() {
         return !NRS.isMobileApp() && !(NRS.state && NRS.state.apiProxy);
     };

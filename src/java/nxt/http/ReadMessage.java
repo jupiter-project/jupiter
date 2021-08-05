@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,6 +18,17 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.NO_MESSAGE;
+import static nxt.http.JSONResponses.PRUNED_TRANSACTION;
+import static nxt.http.JSONResponses.UNKNOWN_TRANSACTION;
+
+import java.util.Arrays;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Appendix;
 import nxt.Nxt;
@@ -25,15 +38,6 @@ import nxt.crypto.Crypto;
 import nxt.crypto.EncryptedData;
 import nxt.util.Convert;
 import nxt.util.Logger;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-
-import static nxt.http.JSONResponses.NO_MESSAGE;
-import static nxt.http.JSONResponses.PRUNED_TRANSACTION;
-import static nxt.http.JSONResponses.UNKNOWN_TRANSACTION;
 
 public final class ReadMessage extends APIServlet.APIRequestHandler {
 
@@ -49,6 +53,11 @@ public final class ReadMessage extends APIServlet.APIRequestHandler {
         long transactionId = ParameterParser.getUnsignedLong(req, "transaction", true);
         boolean retrieve = "true".equalsIgnoreCase(req.getParameter("retrieve"));
         Transaction transaction = Nxt.getBlockchain().getTransaction(transactionId);
+        
+        if (transaction == null) {
+            transaction = Nxt.getTransactionProcessor().getUnconfirmedTransaction(transactionId);
+        } 
+        
         if (transaction == null) {
             return UNKNOWN_TRANSACTION;
         }
@@ -104,6 +113,8 @@ public final class ReadMessage extends APIServlet.APIRequestHandler {
                         byte[] publicKey = Arrays.equals(senderPublicKey, readerPublicKey) ? recipientPublicKey : senderPublicKey;
                         if (publicKey != null) {
                             decrypted = Account.decryptFrom(publicKey, encryptedData, secretPhrase, uncompress);
+                        } else {
+                        	Logger.logErrorMessage("Trying to read a message for an account without a public key");
                         }
                     } else {
                         decrypted = Crypto.aesDecrypt(encryptedData.getData(), sharedKey);

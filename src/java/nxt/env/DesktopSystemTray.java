@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,6 +18,38 @@
 
 package nxt.env;
 
+import java.awt.AWTException;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Locale;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+
 import nxt.Block;
 import nxt.Constants;
 import nxt.Db;
@@ -25,16 +59,6 @@ import nxt.http.API;
 import nxt.peer.Peers;
 import nxt.util.Convert;
 import nxt.util.Logger;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Locale;
 
 public class DesktopSystemTray {
 

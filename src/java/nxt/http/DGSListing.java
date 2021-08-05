@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,6 +18,16 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.INCORRECT_DGS_LISTING_DESCRIPTION;
+import static nxt.http.JSONResponses.INCORRECT_DGS_LISTING_NAME;
+import static nxt.http.JSONResponses.INCORRECT_DGS_LISTING_TAGS;
+import static nxt.http.JSONResponses.MISSING_NAME;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.Appendix;
 import nxt.Attachment;
@@ -24,15 +36,6 @@ import nxt.NxtException;
 import nxt.util.Convert;
 import nxt.util.JSON;
 import nxt.util.Search;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.INCORRECT_DGS_LISTING_DESCRIPTION;
-import static nxt.http.JSONResponses.INCORRECT_DGS_LISTING_NAME;
-import static nxt.http.JSONResponses.INCORRECT_DGS_LISTING_TAGS;
-import static nxt.http.JSONResponses.MISSING_NAME;
 
 public final class DGSListing extends CreateTransaction {
 

@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,22 +18,6 @@
 
 package nxt.mint;
 
-import nxt.Attachment;
-import nxt.Constants;
-import nxt.CurrencyMinting;
-import nxt.Nxt;
-import nxt.NxtException;
-import nxt.Transaction;
-import nxt.crypto.Crypto;
-import nxt.crypto.HashFunction;
-import nxt.http.API;
-import nxt.util.Convert;
-import nxt.util.Logger;
-import nxt.util.TrustAllSSLProvider;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-
-import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -59,6 +45,24 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
+import javax.net.ssl.HttpsURLConnection;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+
+import nxt.Attachment;
+import nxt.Constants;
+import nxt.CurrencyMinting;
+import nxt.Nxt;
+import nxt.NxtException;
+import nxt.Transaction;
+import nxt.crypto.Crypto;
+import nxt.crypto.HashFunction;
+import nxt.http.API;
+import nxt.util.Convert;
+import nxt.util.Logger;
+import nxt.util.TrustAllSSLProvider;
 
 public class MintWorker {
 

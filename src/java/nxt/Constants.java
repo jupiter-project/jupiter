@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -36,6 +38,7 @@ public final class Constants {
     public static final int MIN_TRANSACTION_SIZE = 176;
     
     public static final int MAX_NUMBER_OF_TRANSACTIONS = 750;
+    
     public static final int MAX_PAYLOAD_LENGTH = 5 * 1024 * 1024;
     
     public static final int ORIGINAL_MAX_NUMBER_OF_TRANSACTIONS = 255;
@@ -85,6 +88,7 @@ public final class Constants {
     public static final int MAX_ALIAS_URI_LENGTH = 1000;
     public static final int MAX_ALIAS_LENGTH = 100;
 
+    // Max length, 43008 bytes
     public static final int MAX_ARBITRARY_MESSAGE_LENGTH = 42 * 1024;
     public static final int MAX_ENCRYPTED_MESSAGE_LENGTH = 42 * 1024;
 

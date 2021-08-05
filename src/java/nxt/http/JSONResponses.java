@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,14 +18,15 @@
 
 package nxt.http;
 
+import java.util.Arrays;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Constants;
 import nxt.HoldingType;
 import nxt.util.Convert;
 import nxt.util.JSON;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import java.util.Arrays;
 
 public final class JSONResponses {
 
@@ -58,6 +61,8 @@ public final class JSONResponses {
     public static final JSONStreamAware UNKNOWN_BLOCK = unknown("block");
     public static final JSONStreamAware INCORRECT_BLOCK = incorrect("block");
     public static final JSONStreamAware UNKNOWN_ENTRY = unknown("entry");
+    public static final JSONStreamAware MISSING_METIS = missing("metis");
+    public static final JSONStreamAware UNKNOWN_METIS = unknown("metis");
     public static final JSONStreamAware MISSING_PEER = missing("peer");
     public static final JSONStreamAware UNKNOWN_PEER = unknown("peer");
     public static final JSONStreamAware MISSING_TRANSACTION = missing("transaction");

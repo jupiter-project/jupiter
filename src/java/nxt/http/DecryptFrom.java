@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,18 +18,19 @@
 
 package nxt.http;
 
+import static nxt.http.JSONResponses.DECRYPTION_FAILED;
+import static nxt.http.JSONResponses.INCORRECT_ACCOUNT;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+
 import nxt.Account;
 import nxt.NxtException;
 import nxt.crypto.EncryptedData;
 import nxt.util.Convert;
 import nxt.util.Logger;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static nxt.http.JSONResponses.DECRYPTION_FAILED;
-import static nxt.http.JSONResponses.INCORRECT_ACCOUNT;
 
 public final class DecryptFrom extends APIServlet.APIRequestHandler {
 
@@ -56,7 +59,7 @@ public final class DecryptFrom extends APIServlet.APIRequestHandler {
             response.put("decryptedMessage", isText ? Convert.toString(decrypted) : Convert.toHexString(decrypted));
             return response;
         } catch (RuntimeException e) {
-            Logger.logDebugMessage(e.toString());
+            Logger.logDebugMessage("Error trying to decrypt in DecryptFrom " + e.toString());
             return DECRYPTION_FAILED;
         }
     }

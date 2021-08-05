@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,13 +18,13 @@
 
 package nxt.tools;
 
-import nxt.http.GetConstants;
-import nxt.util.JSON;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+
+import nxt.http.GetConstants;
+import nxt.util.JSON;
 
 public class ConstantsExporter {
     public static void main(String[] args) {

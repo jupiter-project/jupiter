@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,17 +18,18 @@
 
 package nxt.http;
 
-import nxt.Block;
-import nxt.Nxt;
-import nxt.util.Convert;
-import org.json.simple.JSONStreamAware;
-
-import javax.servlet.http.HttpServletRequest;
-
 import static nxt.http.JSONResponses.INCORRECT_BLOCK;
 import static nxt.http.JSONResponses.INCORRECT_HEIGHT;
 import static nxt.http.JSONResponses.INCORRECT_TIMESTAMP;
 import static nxt.http.JSONResponses.UNKNOWN_BLOCK;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONStreamAware;
+
+import nxt.Block;
+import nxt.Nxt;
+import nxt.util.Convert;
 
 public final class GetBlock extends APIServlet.APIRequestHandler {
 
@@ -80,7 +83,7 @@ public final class GetBlock extends APIServlet.APIRequestHandler {
         boolean includeTransactions = "true".equalsIgnoreCase(req.getParameter("includeTransactions"));
         boolean includeExecutedPhased = "true".equalsIgnoreCase(req.getParameter("includeExecutedPhased"));
 
-        return JSONData.block(blockData, includeTransactions, includeExecutedPhased);
+        return JSONData.block(blockData, includeTransactions, false, includeExecutedPhased);
 
     }
 

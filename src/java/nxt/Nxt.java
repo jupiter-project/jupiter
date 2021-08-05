@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -15,21 +17,6 @@
  */
 
 package nxt;
-
-import nxt.addons.AddOns;
-import nxt.crypto.Crypto;
-import nxt.env.DirProvider;
-import nxt.env.RuntimeEnvironment;
-import nxt.env.RuntimeMode;
-import nxt.env.ServerStatus;
-import nxt.http.API;
-import nxt.http.APIProxy;
-import nxt.peer.Peers;
-import nxt.util.Convert;
-import nxt.util.Logger;
-import nxt.util.ThreadPool;
-import nxt.util.Time;
-import org.json.simple.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,9 +35,26 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
+import org.json.simple.JSONObject;
+
+import nxt.addons.AddOns;
+import nxt.crypto.Crypto;
+import nxt.env.DirProvider;
+import nxt.env.RuntimeEnvironment;
+import nxt.env.RuntimeMode;
+import nxt.env.ServerStatus;
+import nxt.http.API;
+import nxt.http.APIProxy;
+import nxt.http.MetisServers;
+import nxt.peer.Peers;
+import nxt.util.Convert;
+import nxt.util.Logger;
+import nxt.util.ThreadPool;
+import nxt.util.Time;
+
 public final class Nxt {
 
-    public static final String VERSION = "2.2.1";
+    public static final String VERSION = "2.3.0";
     public static final String APPLICATION = "JRS";
 
     private static volatile Time time = new Time.EpochTime();
@@ -333,6 +337,7 @@ public final class Nxt {
         ThreadPool.shutdown();
         BlockchainProcessorImpl.getInstance().shutdown();
         Peers.shutdown();
+        MetisServers.shutdown();
         Db.shutdown();
         Logger.logShutdownMessage(Nxt.APPLICATION + " server " + VERSION + " stopped.");
         Logger.shutdown();
@@ -384,6 +389,7 @@ public final class Nxt {
                 PrunableMessage.init();
                 TaggedData.init();
                 Peers.init();
+                MetisServers.init();
                 APIProxy.init();
                 Generator.init();
                 AddOns.init();

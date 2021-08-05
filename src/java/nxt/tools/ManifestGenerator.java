@@ -1,6 +1,8 @@
 /*
  * Copyright © 2013-2016 The Nxt Core Developers.
  * Copyright © 2016-2017 Jelurida IP B.V.
+ * Copyright © 2017-2020 Sigwo Technologies
+ * Copyright © 2020-2021 Jupiter Project Developers
  *
  * See the LICENSE.txt file at the top-level directory of this distribution
  * for licensing information.
@@ -16,9 +18,6 @@
 
 package nxt.tools;
 
-import nxt.Nxt;
-import nxt.env.service.NxtService_ServiceManagement;
-
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.FileVisitResult;
@@ -31,6 +30,9 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.EnumSet;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
+
+import nxt.Nxt;
+import nxt.env.service.NxtService_ServiceManagement;
 
 public class ManifestGenerator {
 

@@ -492,7 +492,7 @@ final class PeerImpl implements Peer {
                         showLog = true;
                     }
                     if (wsResponse.length() > maxResponseSize)
-                        throw new NxtException.NxtIOException("Maximum size exceeded: " + wsResponse.length());
+                        throw new NxtException.NxtIOException("Maximum size + ("+maxResponseSize+") exceeded: " + wsResponse.length());
                     response = (JSONObject)JSONValue.parseWithException(wsResponse);
                     updateDownloadedVolume(wsResponse.length());
                 }

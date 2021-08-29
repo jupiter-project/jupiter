@@ -499,6 +499,8 @@ final class BlockImpl implements Block {
     private long getMaxBaseTarget(Block previousBlock) {
     	if (previousBlock.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_INCREASE_MAX_BASE_TARGET) {
     		return Constants.ORIGINAL_MAX_BASE_TARGET;
+    	} else if (previousBlock.getHeight() > Constants.BLOCK_HEIGHT_HARD_FORK_REMOVE_MAX_BASE_TARGET) {
+    		return Long.MAX_VALUE;
     	} else {
     		return Constants.MAX_BASE_TARGET;
     	}

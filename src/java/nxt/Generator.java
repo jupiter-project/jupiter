@@ -251,6 +251,7 @@ public final class Generator implements Comparable<Generator> {
 		} else if (previousBlock.getHeight() > Constants.BLOCK_HEIGHT_HARD_FORK_REMOVE_MAX_BASE_TARGET) {
 			return hit.compareTo(target) < 0
 			   && (hit.compareTo(prevTarget) >= 0
+			   || (elapsedTime <= MIN_BLOCK_TIME + 1)
 			   || (elapsedTime >= MAX_BLOCK_TIME + 1)
 			   || (Constants.isTestnet ? elapsedTime > 300 : elapsedTime > 3600)
 			   || Constants.isOffline);

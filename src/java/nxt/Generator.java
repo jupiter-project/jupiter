@@ -58,8 +58,6 @@ public final class Generator implements Comparable<Generator> {
     private static long lastBlockId;
     private static int delayTime = Constants.FORGING_DELAY;
     private static final int MIN_BLOCK_TIME = 8;
-    private static final int MAX_BLOCK_TIME = 60;
-
 
     private static final Runnable generateBlocksThread = new Runnable() {
 
@@ -248,13 +246,6 @@ public final class Generator implements Comparable<Generator> {
 			   && (hit.compareTo(prevTarget) >= 0
 			   || (Constants.isTestnet ? elapsedTime > 300 : elapsedTime > 3600)
 			   || Constants.isOffline);
-		} else if (previousBlock.getHeight() > Constants.BLOCK_HEIGHT_HARD_FORK_REMOVE_MAX_BASE_TARGET) {
-			return hit.compareTo(target) < 0
-			   && (hit.compareTo(prevTarget) >= 0
-			   || (elapsedTime <= MIN_BLOCK_TIME + 1)
-			   || (elapsedTime >= MAX_BLOCK_TIME + 1)
-			   || (Constants.isTestnet ? elapsedTime > 300 : elapsedTime > 3600)
-			   || Constants.isOffline);
 		} else {
 			return hit.compareTo(target) < 0
 			   && (hit.compareTo(prevTarget) >= 0
@@ -283,12 +274,8 @@ public final class Generator implements Comparable<Generator> {
 		if (lastBlock.getHeight() >= Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME && delta < MIN_BLOCK_TIME) {
 			delta = MIN_BLOCK_TIME;
 		}
-		if (lastBlock.getHeight() >= Constants.BLOCK_HEIGHT_HARD_FORK_REMOVE_MAX_BASE_TARGET && delta > MAX_BLOCK_TIME) {
-			delta = MAX_BLOCK_TIME;
-		}
 		return lastBlock.getTimestamp() + delta;
     }
-
 
     private final long accountId;
     private final String secretPhrase;

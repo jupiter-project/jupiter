@@ -69,6 +69,7 @@ public abstract class TransactionType {
     public static final byte SUBTYPE_MESSAGING_METIS_ACCOUNT_INFO = 12;
     public static final byte SUBTYPE_MESSAGING_METIS_CHANNEL_INVITATION = 13;
     public static final byte SUBTYPE_MESSAGING_METIS_CHANNEL_MEMBER = 14;
+    public static final byte SUBTYPE_MESSAGING_METIS_ARBITRARY_MESSAGE = 15;
     
     public static final byte SUBTYPE_DATA_FS_METADATA = 0;
     public static final byte SUBTYPE_DATA_FS_BINARY = 1;
@@ -138,6 +139,8 @@ public abstract class TransactionType {
                         return Messaging.METIS_CHANNEL_INVITATION;
                     case SUBTYPE_MESSAGING_METIS_CHANNEL_MEMBER:
                         return Messaging.METIS_CHANNEL_MEMBER;
+                    case SUBTYPE_MESSAGING_METIS_ARBITRARY_MESSAGE:
+                    	return Messaging.METIS_ARBITRARY_MESSAGE;
                     default:
                         return null;
                 }
@@ -706,6 +709,65 @@ public abstract class TransactionType {
                 Attachment attachment = transaction.getAttachment();
                 if (transaction.getAmountNQT() != 0) {
                     throw new NxtException.NotValidException("Invalid arbitrary message: " + attachment.getJSONObject());
+                }
+                if (transaction.getRecipientId() == Genesis.CREATOR_ID) {
+                    throw new NxtException.NotValidException("Sending messages to Genesis not allowed.");
+                }
+            }
+
+            @Override
+            public boolean canHaveRecipient() {
+                return true;
+            }
+
+            @Override
+            public boolean mustHaveRecipient() {
+                return false;
+            }
+
+            @Override
+            public boolean isPhasingSafe() {
+                return false;
+            }
+
+        };
+        
+        public final static TransactionType METIS_ARBITRARY_MESSAGE = new Messaging() {
+
+            @Override
+            public final byte getSubtype() {
+                return TransactionType.SUBTYPE_MESSAGING_METIS_ARBITRARY_MESSAGE;
+            }
+
+            @Override
+            public LedgerEvent getLedgerEvent() {
+                return LedgerEvent.ARBITRARY_MESSAGE;
+            }
+
+            @Override
+            public String getName() {
+                return "MetisArbitraryMessage";
+            }
+
+            @Override
+            Attachment.EmptyAttachment parseAttachment(ByteBuffer buffer) throws NxtException.NotValidException {
+                return Attachment.METIS_ARBITRARY_MESSAGE;
+            }
+
+            @Override
+            Attachment.EmptyAttachment parseAttachment(JSONObject attachmentData) throws NxtException.NotValidException {
+                return Attachment.METIS_ARBITRARY_MESSAGE;
+            }
+
+            @Override
+            void applyAttachment(Transaction transaction, Account senderAccount, Account recipientAccount) {
+            }
+
+            @Override
+            void validateAttachment(Transaction transaction) throws NxtException.ValidationException {
+                Attachment attachment = transaction.getAttachment();
+                if (transaction.getAmountNQT() != 0) {
+                    throw new NxtException.NotValidException("Invalid metis arbitrary message: " + attachment.getJSONObject());
                 }
                 if (transaction.getRecipientId() == Genesis.CREATOR_ID) {
                     throw new NxtException.NotValidException("Sending messages to Genesis not allowed.");

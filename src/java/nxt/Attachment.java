@@ -142,6 +142,14 @@ public interface Attachment extends Appendix {
         }
     };
     
+    EmptyAttachment METIS_ARBITRARY_MESSAGE = new EmptyAttachment() {
+
+        @Override
+        public TransactionType getTransactionType() {
+            return TransactionType.Messaging.METIS_ARBITRARY_MESSAGE;
+        }
+    };
+    
     EmptyAttachment METIS_ACCOUNT_INFO = new EmptyAttachment() {
 
         @Override

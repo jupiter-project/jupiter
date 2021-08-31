@@ -3264,9 +3264,9 @@ public abstract class TransactionType {
                     throw new NxtException.NotValidException("Invalid voting model " + votingModel + " for account control");
                 }
                 long maxFees = attachment.getMaxFees();
-                long maxFeesLimit = (attachment.getPhasingParams().getVoteWeighting().isBalanceIndependent() ? 3 : 22) * Constants.ONE_NXT;
+                long maxFeesLimit = (attachment.getPhasingParams().getVoteWeighting().isBalanceIndependent() ? 3 : 22) * Constants.ONE_JUP;
                 if (maxFees < 0 || (maxFees > 0 && maxFees < maxFeesLimit) || maxFees > Constants.MAX_BALANCE_NQT) {
-                    throw new NxtException.NotValidException(String.format("Invalid max fees %f %s", ((double)maxFees)/Constants.ONE_NXT, Constants.COIN_SYMBOL));
+                    throw new NxtException.NotValidException(String.format("Invalid max fees %f %s", ((double)maxFees)/Constants.ONE_JUP, Constants.COIN_SYMBOL));
                 }
                 short minDuration = attachment.getMinDuration();
                 if (minDuration < 0 || (minDuration > 0 && minDuration < 3) || minDuration >= Constants.MAX_PHASING_DURATION) {

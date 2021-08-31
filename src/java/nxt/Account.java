@@ -1210,7 +1210,7 @@ public final class Account {
             if (activeLesseeId == 0) {
                 effectiveBalanceNQT += getGuaranteedBalanceNQT(Constants.GUARANTEED_BALANCE_CONFIRMATIONS, height);
             }
-	        return effectiveBalanceNQT < Constants.MIN_FORGING_BALANCE_NQT ? 0 : effectiveBalanceNQT / Constants.ONE_NXT;
+	        return effectiveBalanceNQT < Constants.MIN_FORGING_BALANCE_NQT ? 0 : effectiveBalanceNQT / Constants.ONE_JUP;
         } finally {
             Nxt.getBlockchain().readUnlock();
         }

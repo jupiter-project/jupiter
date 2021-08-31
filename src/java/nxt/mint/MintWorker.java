@@ -182,7 +182,7 @@ public class MintWorker {
     private JSONObject currencyMint(String secretPhrase, long currencyId, long nonce, long units, long counter) {
         JSONObject ecBlock = getECBlock();
         Attachment attachment = new Attachment.MonetarySystemCurrencyMinting(nonce, currencyId, units, counter);
-        Transaction.Builder builder = Nxt.newTransactionBuilder(Crypto.getPublicKey(secretPhrase), 0, Constants.ONE_NXT,
+        Transaction.Builder builder = Nxt.newTransactionBuilder(Crypto.getPublicKey(secretPhrase), 0, Constants.ONE_JUP,
                 (short) 120, attachment)
                 .timestamp(((Long) ecBlock.get("timestamp")).intValue())
                 .ecBlockHeight(((Long) ecBlock.get("ecBlockHeight")).intValue())

@@ -356,7 +356,7 @@ public abstract class TransactionType {
     }
 
     int getNextFeeHeight() {
-        return Integer.MAX_VALUE;
+    	 return Constants.BLOCK_HEIGHT_HARD_FORK_UPDATE_FEE;
     }
 
     long[] getBackFees(Transaction transaction) {
@@ -918,6 +918,14 @@ public abstract class TransactionType {
                     return attachment.getAliasName().length() + attachment.getAliasURI().length();
                 }
             };
+            
+            private final Fee NEW_ALIAS_FEE = new Fee.SizeBasedFee(2 * Fee.NEW_MIN_FEE, 2 * Fee.NEW_MIN_FEE, 32) {
+                @Override
+                public int getSize(TransactionImpl transaction, Appendix appendage) {
+                    Attachment.MessagingAliasAssignment attachment = (Attachment.MessagingAliasAssignment) transaction.getAttachment();
+                    return attachment.getAliasName().length() + attachment.getAliasURI().length();
+                }
+            };
 
             @Override
             public final byte getSubtype() {
@@ -937,6 +945,11 @@ public abstract class TransactionType {
             @Override
             Fee getBaselineFee(Transaction transaction) {
                 return ALIAS_FEE;
+            }
+            
+            @Override
+            public Fee getNextFee(Transaction transaction) {
+                return NEW_ALIAS_FEE;
             }
 
             @Override
@@ -1593,6 +1606,14 @@ public abstract class TransactionType {
                     return attachment.getName().length() + attachment.getDescription().length();
                 }
             };
+            
+            private final Fee NEW_ACCOUNT_INFO_FEE = new Fee.SizeBasedFee(Fee.NEW_MIN_MESSAGE_FEE, 2 * Fee.NEW_MIN_MESSAGE_FEE, 32) {
+                @Override
+                public int getSize(TransactionImpl transaction, Appendix appendage) {
+                    Attachment.MessagingAccountInfo attachment = (Attachment.MessagingAccountInfo) transaction.getAttachment();
+                    return attachment.getName().length() + attachment.getDescription().length();
+                }
+            };
 
             @Override
             public byte getSubtype() {
@@ -1612,6 +1633,11 @@ public abstract class TransactionType {
             @Override
             Fee getBaselineFee(Transaction transaction) {
                 return ACCOUNT_INFO_FEE;
+            }
+            
+            @Override
+            public Fee getNextFee(Transaction transaction) {
+                return NEW_ACCOUNT_INFO_FEE;
             }
 
             @Override
@@ -1665,6 +1691,14 @@ public abstract class TransactionType {
                     return attachment.getValue().length();
                 }
             };
+            
+            private final Fee NEW_ACCOUNT_PROPERTY_FEE = new Fee.SizeBasedFee(Fee.NEW_MIN_MESSAGE_FEE, Fee.NEW_MIN_MESSAGE_FEE, 32) {
+                @Override
+                public int getSize(TransactionImpl transaction, Appendix appendage) {
+                    Attachment.MessagingAccountProperty attachment = (Attachment.MessagingAccountProperty) transaction.getAttachment();
+                    return attachment.getValue().length();
+                }
+            };
 
             @Override
             public byte getSubtype() {
@@ -1684,6 +1718,11 @@ public abstract class TransactionType {
             @Override
             Fee getBaselineFee(Transaction transaction) {
                 return ACCOUNT_PROPERTY_FEE;
+            }
+            
+            @Override
+            public Fee getNextFee(Transaction transaction) {
+                return NEW_ACCOUNT_PROPERTY_FEE;
             }
 
             @Override
@@ -1817,9 +1856,19 @@ public abstract class TransactionType {
                     return attachment.getDescription().length();
                 }
             };
+            
+            private final Fee NEW_SINGLETON_ASSET_FEE = new Fee.SizeBasedFee(Fee.NEW_MIN_FEE, Fee.NEW_MIN_FEE, 32) {
+                public int getSize(TransactionImpl transaction, Appendix appendage) {
+                    Attachment.ColoredCoinsAssetIssuance attachment = (Attachment.ColoredCoinsAssetIssuance) transaction.getAttachment();
+                    return attachment.getDescription().length();
+                }
+            };
 
             private final Fee ASSET_ISSUANCE_FEE = (transaction, appendage) -> isSingletonIssuance(transaction) ?
                     SINGLETON_ASSET_FEE.getFee(transaction, appendage) : 1000 * Fee.MIN_FEE;
+                    
+            private final Fee NEW_ASSET_ISSUANCE_FEE = (transaction, appendage) -> isSingletonIssuance(transaction) ?
+            		NEW_SINGLETON_ASSET_FEE.getFee(transaction, appendage) : 1000 * Fee.NEW_MIN_FEE;
 
             @Override
             public final byte getSubtype() {
@@ -1839,6 +1888,11 @@ public abstract class TransactionType {
             @Override
             Fee getBaselineFee(Transaction transaction) {
                 return ASSET_ISSUANCE_FEE;
+            }
+            
+            @Override
+            public Fee getNextFee(Transaction transaction) {
+            	return NEW_ASSET_ISSUANCE_FEE;
             }
 
             @Override
@@ -2517,6 +2571,14 @@ public abstract class TransactionType {
                     return attachment.getName().length() + attachment.getDescription().length();
                 }
             };
+            
+            private final Fee NEW_DGS_LISTING_FEE = new Fee.SizeBasedFee(2 * Fee.NEW_MIN_FEE, 2 * Fee.NEW_MIN_FEE, 32) {
+                @Override
+                public int getSize(TransactionImpl transaction, Appendix appendage) {
+                    Attachment.DigitalGoodsListing attachment = (Attachment.DigitalGoodsListing) transaction.getAttachment();
+                    return attachment.getName().length() + attachment.getDescription().length();
+                }
+            };
 
             @Override
             public final byte getSubtype() {
@@ -2536,6 +2598,11 @@ public abstract class TransactionType {
             @Override
             Fee getBaselineFee(Transaction transaction) {
                 return DGS_LISTING_FEE;
+            }
+            
+            @Override
+            public Fee getNextFee(Transaction transaction) {
+                return NEW_DGS_LISTING_FEE;
             }
 
             @Override
@@ -2903,6 +2970,14 @@ public abstract class TransactionType {
                     return attachment.getGoodsDataLength() - 16;
                 }
             };
+            
+            private final Fee NEW_DGS_DELIVERY_FEE = new Fee.SizeBasedFee(Fee.NEW_MIN_FEE, 2 * Fee.NEW_MIN_FEE, 32) {
+                @Override
+                public int getSize(TransactionImpl transaction, Appendix appendage) {
+                    Attachment.DigitalGoodsDelivery attachment = (Attachment.DigitalGoodsDelivery) transaction.getAttachment();
+                    return attachment.getGoodsDataLength() - 16;
+                }
+            };
 
             @Override
             public final byte getSubtype() {
@@ -2922,6 +2997,11 @@ public abstract class TransactionType {
             @Override
             Fee getBaselineFee(Transaction transaction) {
                 return DGS_DELIVERY_FEE;
+            }
+            
+            @Override
+            public Fee getNextFee(Transaction transaction) {
+                return NEW_DGS_DELIVERY_FEE;
             }
 
             @Override
@@ -3320,6 +3400,13 @@ public abstract class TransactionType {
                 return appendix.getFullSize();
             }
         };
+        
+        private static final Fee NEW_TAGGED_DATA_FEE = new Fee.SizeBasedFee(Fee.NEW_MIN_FEE, Fee.NEW_MIN_PRUNABLE_FEE) {
+            @Override
+            public int getSize(TransactionImpl transaction, Appendix appendix) {
+                return appendix.getFullSize();
+            }
+        };
 
         private Data() {
         }
@@ -3332,6 +3419,11 @@ public abstract class TransactionType {
         @Override
         final Fee getBaselineFee(Transaction transaction) {
             return TAGGED_DATA_FEE;
+        }
+        
+        @Override
+        public Fee getNextFee(Transaction transaction) {
+            return NEW_TAGGED_DATA_FEE;
         }
 
         @Override

@@ -59,8 +59,7 @@ public abstract class ShufflingTransaction extends TransactionType {
 
     private final static Fee SHUFFLING_PROCESSING_FEE = new Fee.ConstantFee(10 * Constants.ONE_JUP);
     private final static Fee SHUFFLING_RECIPIENTS_FEE = new Fee.ConstantFee(11 * Constants.ONE_JUP);
-
-
+    
     private ShufflingTransaction() {}
 
     @Override
@@ -113,7 +112,7 @@ public abstract class ShufflingTransaction extends TransactionType {
             long amount = attachment.getAmount();
             if (holdingType == HoldingType.NXT) {
                 if (amount < Constants.SHUFFLING_DEPOSIT_NQT || amount > Constants.MAX_BALANCE_NQT) {
-                    throw new NxtException.NotValidException("Invalid NQT amount " + amount
+                    throw new NxtException.NotValidException("Invalid JUP amount " + amount
                             + ", minimum is " + Constants.SHUFFLING_DEPOSIT_NQT);
                 }
             } else if (holdingType == HoldingType.ASSET) {
@@ -326,6 +325,11 @@ public abstract class ShufflingTransaction extends TransactionType {
         Fee getBaselineFee(Transaction transaction) {
             return SHUFFLING_PROCESSING_FEE;
         }
+        
+        @Override
+        public Fee getNextFee(Transaction transaction) {
+            return SHUFFLING_PROCESSING_FEE;
+        }
 
         @Override
         Attachment.AbstractAttachment parseAttachment(ByteBuffer buffer) throws NxtException.NotValidException {
@@ -447,6 +451,11 @@ public abstract class ShufflingTransaction extends TransactionType {
         @Override
         Fee getBaselineFee(Transaction transaction) {
             return SHUFFLING_RECIPIENTS_FEE;
+        }
+        
+        @Override
+        public Fee getNextFee(Transaction transaction) {
+            return SHUFFLING_PROCESSING_FEE;
         }
 
         @Override
@@ -640,6 +649,11 @@ public abstract class ShufflingTransaction extends TransactionType {
 
         @Override
         Fee getBaselineFee(Transaction transaction) {
+            return SHUFFLING_PROCESSING_FEE;
+        }
+        
+        @Override
+        public Fee getNextFee(Transaction transaction) {
             return SHUFFLING_PROCESSING_FEE;
         }
 

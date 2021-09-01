@@ -440,7 +440,16 @@ public abstract class TransactionType {
                     throw new NxtException.NotValidException("Invalid ordinary payment");
                 }
             }
+            
+            @Override
+            Fee getBaselineFee(Transaction transaction) {
+                return Fee.DEFAULT_FEE;
+            }
 
+            @Override
+            Fee getNextFee(Transaction transaction) {
+            	return Fee.NEW_DEFAULT_FEE;
+            }
         };
 
     }
@@ -611,6 +620,16 @@ public abstract class TransactionType {
 
         @Override
         final void undoAttachmentUnconfirmed(Transaction transaction, Account senderAccount) {
+        }
+        
+        @Override
+        Fee getBaselineFee(Transaction transaction) {
+            return Fee.DEFAULT_FEE;
+        }
+
+        @Override
+        Fee getNextFee(Transaction transaction) {
+        	return Fee.NEW_DEFAULT_FEE;
         }
 
         
@@ -1098,6 +1117,16 @@ public abstract class TransactionType {
             @Override
             public boolean isPhasingSafe() {
                 return false;
+            }
+            
+            @Override
+            Fee getBaselineFee(Transaction transaction) {
+                return Fee.DEFAULT_FEE;
+            }
+
+            @Override
+            Fee getNextFee(Transaction transaction) {
+            	return Fee.NEW_DEFAULT_FEE;
             }
 
         };
@@ -1847,6 +1876,16 @@ public abstract class TransactionType {
         public final byte getType() {
             return TransactionType.TYPE_COLORED_COINS;
         }
+        
+        @Override
+        Fee getBaselineFee(Transaction transaction) {
+            return Fee.DEFAULT_FEE;
+        }
+
+        @Override
+        Fee getNextFee(Transaction transaction) {
+        	return Fee.NEW_DEFAULT_FEE;
+        }
 
         public static final TransactionType ASSET_ISSUANCE = new ColoredCoins() {
 
@@ -2558,6 +2597,16 @@ public abstract class TransactionType {
             }
             doValidateAttachment(transaction);
         }
+        
+        @Override
+        Fee getBaselineFee(Transaction transaction) {
+            return Fee.DEFAULT_FEE;
+        }
+
+        @Override
+        Fee getNextFee(Transaction transaction) {
+        	return Fee.NEW_DEFAULT_FEE;
+        }
 
         abstract void doValidateAttachment(Transaction transaction) throws NxtException.ValidationException;
 
@@ -3239,6 +3288,16 @@ public abstract class TransactionType {
 
         @Override
         final void undoAttachmentUnconfirmed(Transaction transaction, Account senderAccount) {
+        }
+        
+        @Override
+        Fee getBaselineFee(Transaction transaction) {
+            return Fee.DEFAULT_FEE;
+        }
+
+        @Override
+        Fee getNextFee(Transaction transaction) {
+        	return Fee.NEW_DEFAULT_FEE;
         }
 
         public static final TransactionType EFFECTIVE_BALANCE_LEASING = new AccountControl() {

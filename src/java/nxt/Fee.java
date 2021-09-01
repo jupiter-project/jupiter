@@ -35,6 +35,7 @@ public interface Fee {
     
 
     Fee DEFAULT_FEE = new Fee.ConstantFee(MIN_FEE);
+    Fee NEW_DEFAULT_FEE = new Fee.ConstantFee(NEW_MIN_FEE);
 
     Fee NONE = new Fee.ConstantFee(0L);
 

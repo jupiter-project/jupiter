@@ -1907,7 +1907,7 @@ public abstract class TransactionType {
                     SINGLETON_ASSET_FEE.getFee(transaction, appendage) : 1000 * Fee.MIN_FEE;
                     
             private final Fee NEW_ASSET_ISSUANCE_FEE = (transaction, appendage) -> isSingletonIssuance(transaction) ?
-            		NEW_SINGLETON_ASSET_FEE.getFee(transaction, appendage) : 1000 * Fee.NEW_MIN_FEE;
+            		NEW_SINGLETON_ASSET_FEE.getFee(transaction, appendage) : 50 * Constants.ONE_JUP;
 
             @Override
             public final byte getSubtype() {

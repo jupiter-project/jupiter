@@ -35,7 +35,7 @@ public final class Constants {
     public static final int BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK = isTestnet ? Nxt.getIntProperty("nxt.hardBlockTx", 0) : 1725000;
     public static final int BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME = isTestnet ? Nxt.getIntProperty("nxt.hardBlockHeight", 0) : 1718000;
     public static final int BLOCK_HEIGHT_HARD_FORK_REMOVE_MAX_BASE_TARGET = isTestnet ? Nxt.getIntProperty("nxt.hardRemoveBaseTarget", 0) : 1948750;
-    public static final int BLOCK_HEIGHT_HARD_FORK_UPDATE_FEE = isTestnet ? Nxt.getIntProperty("nxt.hardUpdateFee", 0) : 6000;
+    public static final int BLOCK_HEIGHT_HARD_FORK_UPDATE_FEE = isTestnet ? Nxt.getIntProperty("nxt.hardUpdateFee", 0) : 1948750;
 
     public static final int MIN_TRANSACTION_SIZE = 176;
     

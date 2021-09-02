@@ -1,0 +1,3 @@
+* Upgrade base fee for all the transactions
+* Filter transactions for clear messages as a tag feature for Metis
+* Add custom subtype for Metis encrypted messages

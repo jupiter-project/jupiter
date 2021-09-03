@@ -12,6 +12,6 @@ if [ -e ~/.${APPLICATION}/nxt.pid ]; then
         STATUS=$?
     done
     rm -f ~/.${APPLICATION}/nxt.pid
-    echo "Jupiter server stopped"
+    echo "Jupiter server stopped."
 fi
 

@@ -1,0 +1,1 @@
+* Blacklist nodes with version previous to 2.4.0

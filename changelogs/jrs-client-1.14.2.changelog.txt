@@ -1,2 +1,0 @@
-Release for Leda - Jupiter NFT Market
-* Administrative version update, update MIN_VERSION value

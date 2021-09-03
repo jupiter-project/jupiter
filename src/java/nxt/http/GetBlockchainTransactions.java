@@ -28,6 +28,7 @@ import nxt.Nxt;
 import nxt.NxtException;
 import nxt.Transaction;
 import nxt.db.DbIterator;
+import nxt.util.Convert;
 
 public final class GetBlockchainTransactions extends APIServlet.APIRequestHandler {
 
@@ -36,7 +37,7 @@ public final class GetBlockchainTransactions extends APIServlet.APIRequestHandle
     private GetBlockchainTransactions() {
         super(new APITag[] {APITag.ACCOUNTS, APITag.TRANSACTIONS}, "account", "timestamp", "type", "subtype",
                 "firstIndex", "lastIndex", "numberOfConfirmations", "withMessage", "phasedOnly", "nonPhasedOnly",
-                "includeExpiredPrunable", "includePhasingResult", "executedOnly");
+                "includeExpiredPrunable", "includePhasingResult", "executedOnly", "message");
     }
 
     @Override
@@ -51,6 +52,7 @@ public final class GetBlockchainTransactions extends APIServlet.APIRequestHandle
         boolean includeExpiredPrunable = "true".equalsIgnoreCase(req.getParameter("includeExpiredPrunable"));
         boolean includePhasingResult = "true".equalsIgnoreCase(req.getParameter("includePhasingResult"));
         boolean executedOnly = "true".equalsIgnoreCase(req.getParameter("executedOnly"));
+        String messageToFilter = req.getParameter("message");
 
         byte type;
         byte subtype;
@@ -74,6 +76,13 @@ public final class GetBlockchainTransactions extends APIServlet.APIRequestHandle
                 includeExpiredPrunable, executedOnly)) {
             while (iterator.hasNext()) {
                 Transaction transaction = iterator.next();
+                if (withMessage && messageToFilter != null && !messageToFilter.isEmpty()) {
+                	String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
+                	if (!messageString.contains(messageToFilter)) {
+                		break;
+                	}
+                }
+               
                 transactions.add(JSONData.transaction(transaction, includePhasingResult));
             }
         }

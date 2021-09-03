@@ -18,8 +18,6 @@
 
 package nxt;
 
-import static nxt.Appendix.hasAppendix;
-
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.Arrays;
@@ -145,7 +143,7 @@ public interface Appendix {
 
         @Override
         public int getNextFeeHeight() {
-            return Integer.MAX_VALUE;
+            return Constants.BLOCK_HEIGHT_HARD_FORK_UPDATE_FEE;
         }
 
         @Override
@@ -200,7 +198,14 @@ public interface Appendix {
                 return ((Message)appendage).getMessage().length;
             }
         };
-
+        
+        private static final Fee NEW_MESSAGE_FEE = new Fee.SizeBasedFee(0, Fee.NEW_MIN_MESSAGE_FEE, 32) {
+            @Override
+            public int getSize(TransactionImpl transaction, Appendix appendage) {
+                return ((Message)appendage).getMessage().length;
+            }
+        };
+        
         private final byte[] message;
         private final boolean isText;
 
@@ -271,6 +276,11 @@ public interface Appendix {
         public Fee getBaselineFee(Transaction transaction) {
             return MESSAGE_FEE;
         }
+        
+        @Override
+        public Fee getNextFee(Transaction transaction) {
+            return NEW_MESSAGE_FEE;
+        }
 
         @Override
         void validate(Transaction transaction) throws NxtException.ValidationException {
@@ -302,6 +312,13 @@ public interface Appendix {
         private static final String appendixName = "PrunablePlainMessage";
 
         private static final Fee PRUNABLE_MESSAGE_FEE = new Fee.SizeBasedFee(Fee.MIN_PRUNABLE_FEE) {
+            @Override
+            public int getSize(TransactionImpl transaction, Appendix appendix) {
+                return appendix.getFullSize();
+            }
+        };
+        
+        private static final Fee NEW_PRUNABLE_MESSAGE_FEE = new Fee.SizeBasedFee(Fee.NEW_MIN_PRUNABLE_FEE) {
             @Override
             public int getSize(TransactionImpl transaction, Appendix appendix) {
                 return appendix.getFullSize();
@@ -369,6 +386,11 @@ public interface Appendix {
         @Override
         public Fee getBaselineFee(Transaction transaction) {
             return PRUNABLE_MESSAGE_FEE;
+        }
+        
+        @Override
+        public Fee getNextFee(Transaction transaction) {
+            return NEW_PRUNABLE_MESSAGE_FEE;
         }
 
         @Override
@@ -479,7 +501,21 @@ public interface Appendix {
             }
         };
         
+        private static final Fee NEW_ENCRYPTED_MESSAGE_FEE = new Fee.SizeBasedFee(Fee.NEW_MIN_FEE, Fee.NEW_MIN_FEE, 32) {
+            @Override
+            public int getSize(TransactionImpl transaction, Appendix appendage) {
+                return ((AbstractEncryptedMessage)appendage).getEncryptedDataLength() - 16;
+            }
+        };
+        
         private static final Fee ENCRYPTED_DATA_MESSAGE_FEE = new Fee.SizeBasedFee(Fee.MIN_CONSTANT_DATA_FEE, Fee.MIN_DATA_FEE, 32) {
+            @Override
+            public int getSize(TransactionImpl transaction, Appendix appendage) {
+                return ((AbstractEncryptedMessage)appendage).getEncryptedDataLength() - 16;
+            }
+        };
+        
+        private static final Fee NEW_ENCRYPTED_DATA_MESSAGE_FEE = new Fee.SizeBasedFee(Fee.NEW_MIN_CONSTANT_DATA_FEE, Fee.NEW_MIN_DATA_FEE, 32) {
             @Override
             public int getSize(TransactionImpl transaction, Appendix appendage) {
                 return ((AbstractEncryptedMessage)appendage).getEncryptedDataLength() - 16;
@@ -547,6 +583,16 @@ public interface Appendix {
         		return ENCRYPTED_MESSAGE_FEE;
         	}
         }
+        
+        @Override
+        public Fee getNextFee(Transaction transaction) {
+        	if (Byte.compare(TransactionType.TYPE_DATA_FS, transaction.getType().getType()) == 0 &&
+            		Byte.compare(TransactionType.SUBTYPE_DATA_FS_BINARY, transaction.getType().getSubtype()) == 0) {
+            		return NEW_ENCRYPTED_DATA_MESSAGE_FEE;
+            	} else {
+            		return NEW_ENCRYPTED_MESSAGE_FEE;
+            	}
+        }
 
         @Override
         void validate(Transaction transaction) throws NxtException.ValidationException {
@@ -610,6 +656,13 @@ public interface Appendix {
                 return appendix.getFullSize();
             }
         };
+        
+        private static final Fee NEW_PRUNABLE_ENCRYPTED_DATA_FEE = new Fee.SizeBasedFee(Fee.NEW_MIN_PRUNABLE_FEE) {
+            @Override
+            public int getSize(TransactionImpl transaction, Appendix appendix) {
+                return appendix.getFullSize();
+            }
+        };
 
         static PrunableEncryptedMessage parse(JSONObject attachmentData) {
             if (!hasAppendix(appendixName, attachmentData)) {
@@ -666,6 +719,11 @@ public interface Appendix {
         @Override
         public final Fee getBaselineFee(Transaction transaction) {
             return PRUNABLE_ENCRYPTED_DATA_FEE;
+        }
+        
+        @Override
+        public Fee getNextFee(Transaction transaction) {
+            return NEW_PRUNABLE_ENCRYPTED_DATA_FEE;
         }
 
         @Override
@@ -1223,7 +1281,7 @@ public interface Appendix {
             fee += Fee.MIN_FEE * phasing.linkedFullHashes.length;
             return fee;
         };
-
+        
         static Phasing parse(JSONObject attachmentData) {
             if (!hasAppendix(appendixName, attachmentData)) {
                 return null;
@@ -1411,6 +1469,11 @@ public interface Appendix {
 
         @Override
         public Fee getBaselineFee(Transaction transaction) {
+            return PHASING_FEE;
+        }
+        
+        @Override
+        public Fee getNextFee(Transaction transaction) {
             return PHASING_FEE;
         }
 

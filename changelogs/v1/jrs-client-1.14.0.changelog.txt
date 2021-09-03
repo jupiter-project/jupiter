@@ -1,0 +1,12 @@
+Release for Leda - Jupiter NFT Market
+Updated following apis:
+[*] GetAllOpenAskOrders - Added message, name and description from the the Order.Ask transaction
+[*] SearchAllOpenAskOrders - Filter all the Order.Ask by name and description
+[*] GetAsset - Added message from the the Order.Ask transaction
+[*] GetAccountCurrentAskOrders - Added message, name and description from the the Order.Ask transaction
+[*] GetAccountCurrentBidOrders - Added message, name and description from the the Order.Ask transaction
+[*] GetAssetsByIssuer - Added message from the the Asset transaction
+[*] GetAskOrder - Added message, name and description from the the Order.Ask transaction
+[*] getBidOrder - Added message, name and description from the the Order.Bid transaction
+[*] SearchAllTrades - Added message, name and description from the the Trade transaction. Add filter by name
+[*] SearchAccountAssets - Added message, name and description from the the ccount.AccountAsset transaction. Add filter by name

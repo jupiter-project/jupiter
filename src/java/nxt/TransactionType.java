@@ -69,6 +69,7 @@ public abstract class TransactionType {
     public static final byte SUBTYPE_MESSAGING_METIS_ACCOUNT_INFO = 12;
     public static final byte SUBTYPE_MESSAGING_METIS_CHANNEL_INVITATION = 13;
     public static final byte SUBTYPE_MESSAGING_METIS_CHANNEL_MEMBER = 14;
+    public static final byte SUBTYPE_MESSAGING_METIS_ARBITRARY_MESSAGE = 15;
     
     public static final byte SUBTYPE_DATA_FS_METADATA = 0;
     public static final byte SUBTYPE_DATA_FS_BINARY = 1;
@@ -138,6 +139,8 @@ public abstract class TransactionType {
                         return Messaging.METIS_CHANNEL_INVITATION;
                     case SUBTYPE_MESSAGING_METIS_CHANNEL_MEMBER:
                         return Messaging.METIS_CHANNEL_MEMBER;
+                    case SUBTYPE_MESSAGING_METIS_ARBITRARY_MESSAGE:
+                    	return Messaging.METIS_ARBITRARY_MESSAGE;
                     default:
                         return null;
                 }
@@ -353,7 +356,7 @@ public abstract class TransactionType {
     }
 
     int getNextFeeHeight() {
-        return Integer.MAX_VALUE;
+    	 return Constants.BLOCK_HEIGHT_HARD_FORK_UPDATE_FEE;
     }
 
     long[] getBackFees(Transaction transaction) {
@@ -437,7 +440,16 @@ public abstract class TransactionType {
                     throw new NxtException.NotValidException("Invalid ordinary payment");
                 }
             }
+            
+            @Override
+            Fee getBaselineFee(Transaction transaction) {
+                return Fee.DEFAULT_FEE;
+            }
 
+            @Override
+            Fee getNextFee(Transaction transaction) {
+            	return Fee.NEW_DEFAULT_FEE;
+            }
         };
 
     }
@@ -609,6 +621,16 @@ public abstract class TransactionType {
         @Override
         final void undoAttachmentUnconfirmed(Transaction transaction, Account senderAccount) {
         }
+        
+        @Override
+        Fee getBaselineFee(Transaction transaction) {
+            return Fee.DEFAULT_FEE;
+        }
+
+        @Override
+        Fee getNextFee(Transaction transaction) {
+        	return Fee.NEW_DEFAULT_FEE;
+        }
 
         
         public final static TransactionType METIS_CHANNEL_INVITATION = new Messaging() {
@@ -706,6 +728,65 @@ public abstract class TransactionType {
                 Attachment attachment = transaction.getAttachment();
                 if (transaction.getAmountNQT() != 0) {
                     throw new NxtException.NotValidException("Invalid arbitrary message: " + attachment.getJSONObject());
+                }
+                if (transaction.getRecipientId() == Genesis.CREATOR_ID) {
+                    throw new NxtException.NotValidException("Sending messages to Genesis not allowed.");
+                }
+            }
+
+            @Override
+            public boolean canHaveRecipient() {
+                return true;
+            }
+
+            @Override
+            public boolean mustHaveRecipient() {
+                return false;
+            }
+
+            @Override
+            public boolean isPhasingSafe() {
+                return false;
+            }
+
+        };
+        
+        public final static TransactionType METIS_ARBITRARY_MESSAGE = new Messaging() {
+
+            @Override
+            public final byte getSubtype() {
+                return TransactionType.SUBTYPE_MESSAGING_METIS_ARBITRARY_MESSAGE;
+            }
+
+            @Override
+            public LedgerEvent getLedgerEvent() {
+                return LedgerEvent.ARBITRARY_MESSAGE;
+            }
+
+            @Override
+            public String getName() {
+                return "MetisArbitraryMessage";
+            }
+
+            @Override
+            Attachment.EmptyAttachment parseAttachment(ByteBuffer buffer) throws NxtException.NotValidException {
+                return Attachment.METIS_ARBITRARY_MESSAGE;
+            }
+
+            @Override
+            Attachment.EmptyAttachment parseAttachment(JSONObject attachmentData) throws NxtException.NotValidException {
+                return Attachment.METIS_ARBITRARY_MESSAGE;
+            }
+
+            @Override
+            void applyAttachment(Transaction transaction, Account senderAccount, Account recipientAccount) {
+            }
+
+            @Override
+            void validateAttachment(Transaction transaction) throws NxtException.ValidationException {
+                Attachment attachment = transaction.getAttachment();
+                if (transaction.getAmountNQT() != 0) {
+                    throw new NxtException.NotValidException("Invalid metis arbitrary message: " + attachment.getJSONObject());
                 }
                 if (transaction.getRecipientId() == Genesis.CREATOR_ID) {
                     throw new NxtException.NotValidException("Sending messages to Genesis not allowed.");
@@ -856,6 +937,14 @@ public abstract class TransactionType {
                     return attachment.getAliasName().length() + attachment.getAliasURI().length();
                 }
             };
+            
+            private final Fee NEW_ALIAS_FEE = new Fee.SizeBasedFee(2 * Fee.NEW_MIN_FEE, 2 * Fee.NEW_MIN_FEE, 32) {
+                @Override
+                public int getSize(TransactionImpl transaction, Appendix appendage) {
+                    Attachment.MessagingAliasAssignment attachment = (Attachment.MessagingAliasAssignment) transaction.getAttachment();
+                    return attachment.getAliasName().length() + attachment.getAliasURI().length();
+                }
+            };
 
             @Override
             public final byte getSubtype() {
@@ -875,6 +964,11 @@ public abstract class TransactionType {
             @Override
             Fee getBaselineFee(Transaction transaction) {
                 return ALIAS_FEE;
+            }
+            
+            @Override
+            public Fee getNextFee(Transaction transaction) {
+                return NEW_ALIAS_FEE;
             }
 
             @Override
@@ -1023,6 +1117,16 @@ public abstract class TransactionType {
             @Override
             public boolean isPhasingSafe() {
                 return false;
+            }
+            
+            @Override
+            Fee getBaselineFee(Transaction transaction) {
+                return Fee.DEFAULT_FEE;
+            }
+
+            @Override
+            Fee getNextFee(Transaction transaction) {
+            	return Fee.NEW_DEFAULT_FEE;
             }
 
         };
@@ -1531,6 +1635,14 @@ public abstract class TransactionType {
                     return attachment.getName().length() + attachment.getDescription().length();
                 }
             };
+            
+            private final Fee NEW_ACCOUNT_INFO_FEE = new Fee.SizeBasedFee(Fee.NEW_MIN_MESSAGE_FEE, 2 * Fee.NEW_MIN_MESSAGE_FEE, 32) {
+                @Override
+                public int getSize(TransactionImpl transaction, Appendix appendage) {
+                    Attachment.MessagingAccountInfo attachment = (Attachment.MessagingAccountInfo) transaction.getAttachment();
+                    return attachment.getName().length() + attachment.getDescription().length();
+                }
+            };
 
             @Override
             public byte getSubtype() {
@@ -1550,6 +1662,11 @@ public abstract class TransactionType {
             @Override
             Fee getBaselineFee(Transaction transaction) {
                 return ACCOUNT_INFO_FEE;
+            }
+            
+            @Override
+            public Fee getNextFee(Transaction transaction) {
+                return NEW_ACCOUNT_INFO_FEE;
             }
 
             @Override
@@ -1603,6 +1720,14 @@ public abstract class TransactionType {
                     return attachment.getValue().length();
                 }
             };
+            
+            private final Fee NEW_ACCOUNT_PROPERTY_FEE = new Fee.SizeBasedFee(Fee.NEW_MIN_MESSAGE_FEE, Fee.NEW_MIN_MESSAGE_FEE, 32) {
+                @Override
+                public int getSize(TransactionImpl transaction, Appendix appendage) {
+                    Attachment.MessagingAccountProperty attachment = (Attachment.MessagingAccountProperty) transaction.getAttachment();
+                    return attachment.getValue().length();
+                }
+            };
 
             @Override
             public byte getSubtype() {
@@ -1622,6 +1747,11 @@ public abstract class TransactionType {
             @Override
             Fee getBaselineFee(Transaction transaction) {
                 return ACCOUNT_PROPERTY_FEE;
+            }
+            
+            @Override
+            public Fee getNextFee(Transaction transaction) {
+                return NEW_ACCOUNT_PROPERTY_FEE;
             }
 
             @Override
@@ -1746,6 +1876,16 @@ public abstract class TransactionType {
         public final byte getType() {
             return TransactionType.TYPE_COLORED_COINS;
         }
+        
+        @Override
+        Fee getBaselineFee(Transaction transaction) {
+            return Fee.DEFAULT_FEE;
+        }
+
+        @Override
+        Fee getNextFee(Transaction transaction) {
+        	return Fee.NEW_DEFAULT_FEE;
+        }
 
         public static final TransactionType ASSET_ISSUANCE = new ColoredCoins() {
 
@@ -1755,9 +1895,19 @@ public abstract class TransactionType {
                     return attachment.getDescription().length();
                 }
             };
+            
+            private final Fee NEW_SINGLETON_ASSET_FEE = new Fee.SizeBasedFee(Fee.NEW_MIN_FEE, Fee.NEW_MIN_FEE, 32) {
+                public int getSize(TransactionImpl transaction, Appendix appendage) {
+                    Attachment.ColoredCoinsAssetIssuance attachment = (Attachment.ColoredCoinsAssetIssuance) transaction.getAttachment();
+                    return attachment.getDescription().length();
+                }
+            };
 
             private final Fee ASSET_ISSUANCE_FEE = (transaction, appendage) -> isSingletonIssuance(transaction) ?
                     SINGLETON_ASSET_FEE.getFee(transaction, appendage) : 1000 * Fee.MIN_FEE;
+                    
+            private final Fee NEW_ASSET_ISSUANCE_FEE = (transaction, appendage) -> isSingletonIssuance(transaction) ?
+            		NEW_SINGLETON_ASSET_FEE.getFee(transaction, appendage) : 50 * Constants.ONE_JUP;
 
             @Override
             public final byte getSubtype() {
@@ -1777,6 +1927,11 @@ public abstract class TransactionType {
             @Override
             Fee getBaselineFee(Transaction transaction) {
                 return ASSET_ISSUANCE_FEE;
+            }
+            
+            @Override
+            public Fee getNextFee(Transaction transaction) {
+            	return NEW_ASSET_ISSUANCE_FEE;
             }
 
             @Override
@@ -2442,6 +2597,16 @@ public abstract class TransactionType {
             }
             doValidateAttachment(transaction);
         }
+        
+        @Override
+        Fee getBaselineFee(Transaction transaction) {
+            return Fee.DEFAULT_FEE;
+        }
+
+        @Override
+        Fee getNextFee(Transaction transaction) {
+        	return Fee.NEW_DEFAULT_FEE;
+        }
 
         abstract void doValidateAttachment(Transaction transaction) throws NxtException.ValidationException;
 
@@ -2449,6 +2614,14 @@ public abstract class TransactionType {
         public static final TransactionType LISTING = new DigitalGoods() {
 
             private final Fee DGS_LISTING_FEE = new Fee.SizeBasedFee(2 * Fee.MIN_FEE, 2 * Fee.MIN_FEE, 32) {
+                @Override
+                public int getSize(TransactionImpl transaction, Appendix appendage) {
+                    Attachment.DigitalGoodsListing attachment = (Attachment.DigitalGoodsListing) transaction.getAttachment();
+                    return attachment.getName().length() + attachment.getDescription().length();
+                }
+            };
+            
+            private final Fee NEW_DGS_LISTING_FEE = new Fee.SizeBasedFee(2 * Fee.NEW_MIN_FEE, 2 * Fee.NEW_MIN_FEE, 32) {
                 @Override
                 public int getSize(TransactionImpl transaction, Appendix appendage) {
                     Attachment.DigitalGoodsListing attachment = (Attachment.DigitalGoodsListing) transaction.getAttachment();
@@ -2474,6 +2647,11 @@ public abstract class TransactionType {
             @Override
             Fee getBaselineFee(Transaction transaction) {
                 return DGS_LISTING_FEE;
+            }
+            
+            @Override
+            public Fee getNextFee(Transaction transaction) {
+                return NEW_DGS_LISTING_FEE;
             }
 
             @Override
@@ -2841,6 +3019,14 @@ public abstract class TransactionType {
                     return attachment.getGoodsDataLength() - 16;
                 }
             };
+            
+            private final Fee NEW_DGS_DELIVERY_FEE = new Fee.SizeBasedFee(Fee.NEW_MIN_FEE, 2 * Fee.NEW_MIN_FEE, 32) {
+                @Override
+                public int getSize(TransactionImpl transaction, Appendix appendage) {
+                    Attachment.DigitalGoodsDelivery attachment = (Attachment.DigitalGoodsDelivery) transaction.getAttachment();
+                    return attachment.getGoodsDataLength() - 16;
+                }
+            };
 
             @Override
             public final byte getSubtype() {
@@ -2860,6 +3046,11 @@ public abstract class TransactionType {
             @Override
             Fee getBaselineFee(Transaction transaction) {
                 return DGS_DELIVERY_FEE;
+            }
+            
+            @Override
+            public Fee getNextFee(Transaction transaction) {
+                return NEW_DGS_DELIVERY_FEE;
             }
 
             @Override
@@ -3098,6 +3289,16 @@ public abstract class TransactionType {
         @Override
         final void undoAttachmentUnconfirmed(Transaction transaction, Account senderAccount) {
         }
+        
+        @Override
+        Fee getBaselineFee(Transaction transaction) {
+            return Fee.DEFAULT_FEE;
+        }
+
+        @Override
+        Fee getNextFee(Transaction transaction) {
+        	return Fee.NEW_DEFAULT_FEE;
+        }
 
         public static final TransactionType EFFECTIVE_BALANCE_LEASING = new AccountControl() {
 
@@ -3202,9 +3403,9 @@ public abstract class TransactionType {
                     throw new NxtException.NotValidException("Invalid voting model " + votingModel + " for account control");
                 }
                 long maxFees = attachment.getMaxFees();
-                long maxFeesLimit = (attachment.getPhasingParams().getVoteWeighting().isBalanceIndependent() ? 3 : 22) * Constants.ONE_NXT;
+                long maxFeesLimit = (attachment.getPhasingParams().getVoteWeighting().isBalanceIndependent() ? 3 : 22) * Constants.ONE_JUP;
                 if (maxFees < 0 || (maxFees > 0 && maxFees < maxFeesLimit) || maxFees > Constants.MAX_BALANCE_NQT) {
-                    throw new NxtException.NotValidException(String.format("Invalid max fees %f %s", ((double)maxFees)/Constants.ONE_NXT, Constants.COIN_SYMBOL));
+                    throw new NxtException.NotValidException(String.format("Invalid max fees %f %s", ((double)maxFees)/Constants.ONE_JUP, Constants.COIN_SYMBOL));
                 }
                 short minDuration = attachment.getMinDuration();
                 if (minDuration < 0 || (minDuration > 0 && minDuration < 3) || minDuration >= Constants.MAX_PHASING_DURATION) {
@@ -3258,6 +3459,13 @@ public abstract class TransactionType {
                 return appendix.getFullSize();
             }
         };
+        
+        private static final Fee NEW_TAGGED_DATA_FEE = new Fee.SizeBasedFee(Fee.NEW_MIN_FEE, Fee.NEW_MIN_PRUNABLE_FEE) {
+            @Override
+            public int getSize(TransactionImpl transaction, Appendix appendix) {
+                return appendix.getFullSize();
+            }
+        };
 
         private Data() {
         }
@@ -3270,6 +3478,11 @@ public abstract class TransactionType {
         @Override
         final Fee getBaselineFee(Transaction transaction) {
             return TAGGED_DATA_FEE;
+        }
+        
+        @Override
+        public Fee getNextFee(Transaction transaction) {
+            return NEW_TAGGED_DATA_FEE;
         }
 
         @Override

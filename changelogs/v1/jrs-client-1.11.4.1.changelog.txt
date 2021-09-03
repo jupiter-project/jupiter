@@ -1,0 +1,7 @@
+Multiple branding, UI and stylesheet improvements.
+
+Added firstIndex and lastIndex parameters to getUnconfirmedTransactions and
+getUnconfirmedTransactionIds APIs to support pagination.
+
+Updated H2 to version 1.4.194.
+

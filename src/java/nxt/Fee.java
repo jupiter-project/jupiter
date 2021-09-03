@@ -18,8 +18,6 @@
 
 package nxt;
 
-import nxt.util.Logger;
-
 public interface Fee {
 
     long getFee(TransactionImpl transaction, Appendix appendage);
@@ -28,8 +26,16 @@ public interface Fee {
     long MIN_DATA_FEE = 100L;
     long MIN_CONSTANT_DATA_FEE = 500L;
     long MIN_PRUNABLE_FEE = 1L;
+    
+    long NEW_MIN_FEE = 5000L;
+    long NEW_MIN_DATA_FEE = 5000L;
+    long NEW_MIN_CONSTANT_DATA_FEE = 7000L;
+    long NEW_MIN_PRUNABLE_FEE = 1000L;
+    long NEW_MIN_MESSAGE_FEE = 1000L;
+    
 
     Fee DEFAULT_FEE = new Fee.ConstantFee(MIN_FEE);
+    Fee NEW_DEFAULT_FEE = new Fee.ConstantFee(NEW_MIN_FEE);
 
     Fee NONE = new Fee.ConstantFee(0L);
 

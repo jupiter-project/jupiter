@@ -1240,7 +1240,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
             List<TransactionImpl> transactions = new ArrayList<>();
             for (int i = 0; i < Genesis.GENESIS_RECIPIENTS.length; i++) {
                 TransactionImpl transaction = new TransactionImpl.BuilderImpl((byte) 0, Genesis.CREATOR_PUBLIC_KEY,
-                        Genesis.GENESIS_AMOUNTS.get(Genesis.GENESIS_RECIPIENTS[i]) * Constants.ONE_NXT, 0, (short) 0,
+                        Genesis.GENESIS_AMOUNTS.get(Genesis.GENESIS_RECIPIENTS[i]) * Constants.ONE_JUP, 0, (short) 0,
                         Attachment.ORDINARY_PAYMENT)
                         .timestamp(0)
                         .recipientId(Genesis.GENESIS_RECIPIENTS[i])
@@ -1800,7 +1800,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
             		+ " after " + (block.getTimestamp() - previousBlock.getTimestamp()) + "s"
                     + " height " + block.getHeight() 
                     + " timestamp " + block.getTimestamp()+"("+Time.getDateTimeStringInfo(block.getTimestamp()) + ")" 
-                    + " fee " + ((float)block.getTotalFeeNQT())/Constants.ONE_NXT);
+                    + " fee " + ((float)block.getTotalFeeNQT())/Constants.ONE_JUP);
             
         } catch (TransactionNotAcceptedException e) {
             Logger.logDebugMessage("Generate block failed: " + e.getMessage());

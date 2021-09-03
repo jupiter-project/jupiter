@@ -59,7 +59,6 @@ public final class Generator implements Comparable<Generator> {
     private static int delayTime = Constants.FORGING_DELAY;
     private static final int MIN_BLOCK_TIME = 8;
 
-
     private static final Runnable generateBlocksThread = new Runnable() {
 
         @Override
@@ -242,7 +241,6 @@ public final class Generator implements Comparable<Generator> {
         BigInteger prevTarget = effectiveBaseTarget.multiply(BigInteger.valueOf(elapsedTime - 1));
         BigInteger target = prevTarget.add(effectiveBaseTarget);
         
-        
 		if (previousBlock.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME) {
 			return hit.compareTo(target) < 0
 			   && (hit.compareTo(prevTarget) >= 0
@@ -278,7 +276,6 @@ public final class Generator implements Comparable<Generator> {
 		}
 		return lastBlock.getTimestamp() + delta;
     }
-
 
     private final long accountId;
     private final String secretPhrase;

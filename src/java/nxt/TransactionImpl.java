@@ -1009,9 +1009,9 @@ final class TransactionImpl implements Transaction {
             long minimumFeeNQT = getMinimumFeeNQT(blockchainHeight);
             if (feeNQT < minimumFeeNQT) {
                 throw new NxtException.NotCurrentlyValidException(String.format("Transaction fee %f %s less than minimum fee %f %s at height %d",
-                        ((double) feeNQT) / Constants.ONE_NXT, 
+                        ((double) feeNQT) / Constants.ONE_JUP, 
                         Constants.COIN_SYMBOL, 
-                        ((double) minimumFeeNQT) / Constants.ONE_NXT, 
+                        ((double) minimumFeeNQT) / Constants.ONE_JUP, 
                         Constants.COIN_SYMBOL, 
                         blockchainHeight));
             }
@@ -1104,7 +1104,7 @@ final class TransactionImpl implements Transaction {
             totalFee = Math.addExact(totalFee, fee.getFee(this, appendage));
         }
         if (referencedTransactionFullHash != null) {
-            totalFee = Math.addExact(totalFee, Constants.ONE_NXT);
+            totalFee = Math.addExact(totalFee, Constants.ONE_JUP);
         }
         return totalFee;
     }

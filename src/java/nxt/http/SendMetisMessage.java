@@ -41,11 +41,11 @@ public final class SendMetisMessage extends CreateTransaction {
     @Override
     protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
         long recipientId = ParameterParser.getAccountId(req, "recipient", false);
-        int subtype = ParameterParser.getInt(req, "subtype", 12, 17, false);
+        int subtype = ParameterParser.getInt(req, "subtype", 0, 17, false);
         Account account = ParameterParser.getSenderAccount(req);
         Attachment attachement;
         
-        if (subtype == 0 ) {
+        if (subtype == 0) {
         	attachement = Attachment.ARBITRARY_MESSAGE;
         } else if (subtype == TransactionType.SUBTYPE_MESSAGING_METIS_ACCOUNT_INFO) {
         	attachement = Attachment.METIS_ACCOUNT_INFO;
@@ -58,7 +58,7 @@ public final class SendMetisMessage extends CreateTransaction {
         } else if (subtype == SUBTYPE_MESSAGING_METIS_METADATA) {
         	attachement = Attachment.METIS_METADATA;
         } else {
-        	attachement = Attachment.ARBITRARY_MESSAGE;
+        	attachement = Attachment.METIS_ARBITRARY_MESSAGE;
         }
         
         return createTransaction(req, account, recipientId, 0, attachement);

@@ -34,6 +34,8 @@ public final class Constants {
     public static final int BLOCK_HEIGHT_HARD_FORK_INCREASE_MAX_BASE_TARGET = isTestnet ? Nxt.getIntProperty("nxt.hardBlockBaseTarget", 0) : 1731000;
     public static final int BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK = isTestnet ? Nxt.getIntProperty("nxt.hardBlockTx", 0) : 1725000;
     public static final int BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME = isTestnet ? Nxt.getIntProperty("nxt.hardBlockHeight", 0) : 1718000;
+    public static final int BLOCK_HEIGHT_HARD_FORK_REMOVE_MAX_BASE_TARGET = isTestnet ? Nxt.getIntProperty("nxt.hardRemoveBaseTarget", 0) : 1948750;
+    public static final int BLOCK_HEIGHT_HARD_FORK_UPDATE_FEE = isTestnet ? Nxt.getIntProperty("nxt.hardUpdateFee", 0) : 1948750;
 
     public static final int MIN_TRANSACTION_SIZE = 176;
     
@@ -44,9 +46,9 @@ public final class Constants {
     public static final int ORIGINAL_MAX_NUMBER_OF_TRANSACTIONS = 255;
     public static final int ORIGINAL_MAX_PAYLOAD_LENGTH = ORIGINAL_MAX_NUMBER_OF_TRANSACTIONS * MIN_TRANSACTION_SIZE;
     
-    public static final long ONE_NXT = 100000000;
-    public static final long MAX_BALANCE_NXT = Long.MAX_VALUE / (100 * ONE_NXT) * 100;
-    public static final long MAX_BALANCE_NQT = MAX_BALANCE_NXT * ONE_NXT;
+    public static final long ONE_JUP = 100000000;
+    public static final long MAX_BALANCE_NXT = Long.MAX_VALUE / (100 * ONE_JUP) * 100;
+    public static final long MAX_BALANCE_NQT = MAX_BALANCE_NXT * ONE_JUP;
     
     
     // BLOCK GENERATION RATE CONSTANTS
@@ -73,7 +75,7 @@ public final class Constants {
     public static final int MAX_ROLLBACK = Math.max(Nxt.getIntProperty("nxt.maxRollback"), 720);
     public static final int GUARANTEED_BALANCE_CONFIRMATIONS = isTestnet ? Nxt.getIntProperty("nxt.testnetGuaranteedBalanceConfirmations", 1440) : 1440;
     public static final int LEASING_DELAY = isTestnet ? Nxt.getIntProperty("nxt.testnetLeasingDelay", 1440) : 1440;
-    public static final long MIN_FORGING_BALANCE_NQT = 1000 * ONE_NXT;
+    public static final long MIN_FORGING_BALANCE_NQT = 1000 * ONE_JUP;
 
     public static final int MAX_TIMEDRIFT = 15; // allow up to 15 s clock difference
     public static final int FORGING_DELAY = Nxt.getIntProperty("nxt.forgingDelay");
@@ -167,8 +169,8 @@ public final class Constants {
     public static final int[] MIN_VERSION = new int[] {2, 3, 1};
     public static final int[] MIN_PROXY_VERSION = new int[] {2, 3, 1};
 
-    static final long UNCONFIRMED_POOL_DEPOSIT_NQT = (isTestnet ? 50 : 100) * ONE_NXT;
-    public static final long SHUFFLING_DEPOSIT_NQT = (isTestnet ? 7 : 1000) * ONE_NXT;
+    static final long UNCONFIRMED_POOL_DEPOSIT_NQT = (isTestnet ? 50 : 100) * ONE_JUP;
+    public static final long SHUFFLING_DEPOSIT_NQT = (isTestnet ? 7 : 1000) * ONE_JUP;
 
     public static final boolean correctInvalidFees = Nxt.getBooleanProperty("nxt.correctInvalidFees");
 

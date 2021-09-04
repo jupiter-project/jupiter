@@ -117,7 +117,7 @@ var NRS = (function(NRS, $) {
             })(),
             holdingFormatted: (function () {
                 switch (response.holdingType) {
-                    case 0: return 'NXT';
+                    case 0: return 'JUP';
                     case 1: return NRS.getTransactionLink(response.holding) + " (" + $.t('asset') + ")";
                     case 2: return NRS.getTransactionLink(response.holding, response.holdingInfo.code)  + " (" + $.t('currency') + ")";
                 }

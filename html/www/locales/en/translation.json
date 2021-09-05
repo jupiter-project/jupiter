@@ -1856,5 +1856,6 @@
   "update_available": "A new release is available. It is recommended that you update.",
   "update_testnet": "Version cannot be updated whilst connected to the testnet.",
   "token_generation_validation": "Token Generation / Validation",
-  "branding_message": "is a customized version of the Nxt Reference Software (NRS)"
+  "branding_message": "JRS is a customized version of the Nxt Reference Software (NRS)",
+  "swap": "Swap"
 }

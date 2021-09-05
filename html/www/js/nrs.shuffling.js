@@ -1,6 +1,8 @@
 /******************************************************************************
  * Copyright © 2013-2016 The Nxt Core Developers.                             *
  * Copyright © 2016-2017 Jelurida IP B.V.                                     *
+ * Copyright © 2017-2020 Sigwo Technologies                                   *
+ * Copyright © 2020-2021 Jupiter Project Developers                           *
  *                                                                            *
  * See the LICENSE.txt file at the top-level directory of this distribution   *
  * for licensing information.                                                 *
@@ -117,7 +119,7 @@ var NRS = (function(NRS, $) {
             })(),
             holdingFormatted: (function () {
                 switch (response.holdingType) {
-                    case 0: return 'NXT';
+                    case 0: return 'JUP';
                     case 1: return NRS.getTransactionLink(response.holding) + " (" + $.t('asset') + ")";
                     case 2: return NRS.getTransactionLink(response.holding, response.holdingInfo.code)  + " (" + $.t('currency') + ")";
                 }

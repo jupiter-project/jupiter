@@ -34,8 +34,18 @@
                         <span data-i18n="send">Send</span> <span class="coin-symbol"></span>
                     </a>
                 </li>
-                <li id="header_send_message" class="dropdown">
+                <!-- <li id="header_send_message" class="dropdown">
                     <a href="#" data-toggle="modal" data-target="#send_message_modal" data-i18n="send_message">Send Message</a>
+                </li> -->
+                <li id="header_send_message" class="dropdown">
+                    <div style="margin-bottom:5px;">
+                        <div>
+                            <a id="sideBalance" data-target="#account_details_modal" data-toggle="modal" href="#">
+                                <span class="badge-active" style="padding:3px;" id="account_balance_sidebar"></span>
+                                <span class="coin-symbol"></span>
+                            </a>
+                        </div>
+                    </div>
                 </li>
                 <li class="client_options dropdown">
                     <a href="#" data-toggle="modal" data-target="#client_status_modal" id="header_client_options_link" ></a>

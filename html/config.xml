@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ~ Copyright © 2013-2016 The Nxt Core Developers.                            ~
-  ~ Copyright © 2016-2017 Jelurida IP B.V.                                         ~
+  ~ Copyright © 2016-2017 Jelurida IP B.V.                                    ~
+  ~ Copyright © 2017-2020 Sigwo Technologies                                  ~
+  ~ Copyright © 2020-2021 Jupiter Project Developers                          ~
   ~                                                                           ~
   ~ See the LICENSE.txt file at the top-level directory of this distribution  ~
   ~ for licensing information.                                                ~
@@ -15,16 +17,16 @@
   ~                                                                           ~
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
-<widget id="tech.gojupiter.jpr" version="1.13.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.jup.nodes" version="2.5.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Jupiter Mobile Wallet</name>
     <description>
         Reference implementation mobile wallet for Jupiter.
     </description>
-    <author email="info@gojupiter.tech" href="https://gojupiter.tech/">
+    <author email="info@jup.io" href="https://jup.io/">
         Riker
         Sigwo
     </author>
-	<version>110.3.1</version>
+	<version>110.4.0</version>
     <content src="index.html"/>
     <access origin="*"/>
     <preference name="webviewbounce" value="false"/>

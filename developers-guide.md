@@ -1,23 +1,23 @@
-# DEVELOPERS-GUIDE
+# Developer's Guide
 
-## DEVELOPERS GUIDE \#
+## DEVELOPERS GUIDE
 
-### How can you contribute? \#\#
+### How can you contribute?
 
 * create pull requests
 * review pull requests
 * help users on issues
-* ask us, the dev team
+* ask us, info@jup.io
 
-### Tools and Tips \#\#
+### Tools and Tips
 
-#### Usable URLs \#\#\#
+#### Usable URLs
 
 * **API** - [http://localhost:7876/test](http://localhost:7876/test)
 * **DB Interface** - [http://localhost:7876/dbshell](http://localhost:7876/dbshell)
 * **Java Class Browser** - [http://localhost:7876/doc](http://localhost:7876/doc)
 
-#### Database \#\#\#
+#### Database
 
 * H2 embedded database
 * main database: `nxt_db/`
@@ -26,22 +26,23 @@
 * but no need to delete them on upgrade, the DbVersion code takes care of schema updates
 * use the nxt.db framework when accessing the database from your code
 
-### Coding Process \#\#
+### Coding Process
 
-#### Branching Model \#\#\#
+#### Branching Model
 
 * [Vincent Driessen's Branching Model](http://nvie.com/posts/a-successful-git-branching-model/)
 * **tl;dr:**
   * master is release branch
   * dev is maintained by sigwo
+  * releases/abc is maintained by Jupiter developers
   * feature/abc is yours
 
-#### Design \#\#\#
+#### Design 
 
 * better think twice than code twice
 * communicate with community and us
 
-#### Implementation \#\#\#
+#### Implementation 
 
 * Coding Style
   * use the existing code as example for whitespace and indentation
@@ -52,26 +53,26 @@
 * The "Effective Java" book is a must read
 * Some of the advice in "Clean Code" is good
 
-#### Testing \#\#\#
+#### Testing
 
 * all API calls can be tested manually from the auto-generated [http://localhost:7876/test](http://localhost:7876/test) page
 * many tests need blocks to be generated, see the examples how to fake the forging process
 * write your tests against the http API or the public java API, which are relatively stable
 
-#### Documentation \#\#\#
+#### Documentation
 
 * API calls should be documented first \(because if you don't, you never will\)
 
-### UI Developers \#\#
+### UI Developers
 
-#### Where to Look \#\#\#
+#### Where to Look
 
 * index.html: all of the html markup for pages and modals 
 * js/nrs.\*.js: corresponding js files for each task the file name displays, one roughly for each page
 * js/nrs.modals.\*.js: The modal js \(popups\) for each set of popups, one for each set of modals
 * any CSS: Bootstrap is used for the design, so changes to CSS rules should be generally avoided
 
-#### Programming Style \#\#\#
+#### Programming Style
 
 * HTML style
   * Make sure to use the i18n for any text data, internationalization
@@ -86,9 +87,9 @@
   * Create a new html modal also in index.html, the modals start around line 1750 at time of writing
   * It is fairly easy to make a modal based upon the information from other modals already created.
 
-#### Translation \#\#\#
+#### Translation 
 
-**Language Translations \#\#\#\#**
+**Language Translations** 
 
 Translation of the client UI to other languages is done by the community within a crowdsourced process on the platform **Crowdin**:
 
@@ -96,7 +97,7 @@ Translation of the client UI to other languages is done by the community within 
 
 If you feel comfortable translating you are very welcome to join and help with translations.
 
-**Coding \#\#\#\#**
+**Coding** 
 
 On the development side, the `i18next` Javascript translation library is used for translation. Translations and associated translation keys can be added to the code in the following way:
 
@@ -114,39 +115,51 @@ When adding new text/labeling visible in the UI do the following:
 * If you later change the english text in the HTML please also change the text within the english translation file, otherwise the new english text is overwritten with the old english text from translation file
 * DON'T USE TRANSLATION TEXTS CONTAINING HTML \(TAGGED WITH `[html]`\) FOR SECURITY REASONS!
 
-**Updating base translation file \#\#\#\#\#**
+**Updating base translation file**
 
-The basis for other translations is the **english translation** file in `ui/locales/en/translation.json`. From time to time it might be necessary to collect translation keys forgotten to be added by developers systematically by using the i18next parser. To update the file with the latest keys and english base translations do the following:
+The basis for other translations is the **English translation** file in `ui/locales/en/translation.json`. From time to time it might be necessary to collect translation keys forgotten to be added by developers systematically by using the i18next parser. To update the file with the latest keys and English base translations do the following:
 
 1. Make a permanent backup of your `locales` folder outside of your Git repository
-2. Count the rows of the english translation file, e.g. `wc -l ui/locales/en/translation.json`
+2. Count the rows of the English translation file, e.g. `wc -l ui/locales/en/translation.json`
 3. To avoid intervening with 3rd party files create a temporary folder for files to be parsed `mkdir ui/trans-tmp/` \(`cp ui/js/*.* ui/trans-tmp/`, `cp -R ui/html ui/trans-tmp/`, `cp ui/*.html ui/trans-tmp/`\)
-4. Parse translation strings not yet included in the english translation file with the i18next parser \(extra install\) with `i18next ui/trans-tmp -r -l en -o ui/locales/` \(if there is a strange "reuseSuffix" entry at the top of the file: this is a bug, delete!\)
+4. Parse translation strings not yet included in the English translation file with the i18next parser \(extra install\) with `i18next ui/trans-tmp -r -l en -o ui/locales/` \(if there is a strange "reuseSuffix" entry at the top of the file: this is a bug, delete!\)
 5. There are dynamic uses of the `$.t()` function in the code base causing `i18next` to not detect all keys. If there is a generated `translation_old.json` file, don't throw these away. Instead add these strings manually to the `translation.json` file \(keep an eye on commas at the end of the lines!\)
-6. Search for empty translation strings in english translation file forgotten by developers \(by searching for empty string ""\), full-text search in client folders for associated key and manually fill-in english string to translation file.
+6. Search for empty translation strings in English translation file forgotten by developers \(by searching for empty string ""\), full-text search in client folders for associated key and manually fill-in english string to translation file.
 
-**Publish new base translations \#\#\#\#**
+**Publish new base translations**
 
 For providing new translation strings on the platform for the community to translate do the following:
 
-1. Update the english base translation file \(see above guide\)
+1. Update the English base translation file \(see above guide\)
 2. Build the Crowdin project \(permissions needed\) and make a backup download of the latest translations
 3. Compare the number of translation keys in your generated file with the number of keys in the file on the Crowdin website and make sure, these fit together and there weren't any misses in the creation process \(don't be confused by Crowdin actually displaying "Words" count, you have to look at the "Settings -&gt; Reports" tab for comparison\)
 4. Update the `translation.json` file on Crowdin
 5. Inform the community about new translation tasks
 
-**Integrating new translations into the client \#\#\#\#**
+**Integrating new translations into the client**
 
-1. Build/download the latest translation files from Crowdin \(permissions needed\) and replace the language folders like `fa`, `pt-BR`,... with the folders downloaded. Please make sure to NOT touch the english folder `en`.
+1. Build/download the latest translation files from Crowdin \(permissions needed\) and replace the language folders like `fa`, `pt-BR`,... with the folders downloaded. Please make sure to NOT touch the English folder `en`.
 2. Rename all folder names to lowercase, e.g. `es-ES` to `es-es`.
 3. Make some consistency checks \(lengths of old/new files, "git diff" on language files\)
 4. New languages can be added to `NRS.languages` in `ui/js/nrs.settings.js` file. Review the status of the languages \(40-50%+ Experimental, 70-80%+ Beta, 90-95%+ Stable\), eventually add new languages
 
-#### Mobile App \#\#\#
+#### Mobile App
 
-The JUP wallet UI run as a mobile app.
+The Jupiter wallet UI run as a mobile app.
 
-To build the Android APK application follow these steps \(Tested on Windows 7 64 bit\): 1. Install node.js \(tested with Node 4.4.7 and npm 2.15.8\), Apache Cordova \(tested with Cordova 6.3.1\) - see [https://cordova.apache.org/](https://cordova.apache.org/) 2. Install Android SDK Manager \(tested with version 25.2.2\) - follow the guidelines regarding necessary USB device drivers and modules to install 3. Make sure the commands: node, npm and cordova are available from the command prompt 4. On Windows make sure the adb.exe is in your search path \(c:\Users\\AppData\Local\Android\sdk\platform-tools\), probably also required on Linux 5. Special care should be taken in order to work without root privileges on Linux and Mac \(the current procedure assumes Windows administrator permissions\), we recommend that you work with root privileges initially. 6. Under the \mobile\app folder execute the command: createapp.bat See that the process completes without errors and that a default Cordova application is deployed to your connected mobile device or the Android emulator
+To build the Android APK application follow these steps \(Tested on Windows 10 64 bit\): 
+
+1. Install node.js \(tested with Node 4.4.7 and npm 2.15.8\), Apache Cordova \(tested with Cordova 6.3.1\) - see [https://cordova.apache.org/](https://cordova.apache.org/) 
+
+2. Install Android SDK Manager \(tested with version 25.2.2\) - follow the guidelines regarding necessary USB device drivers and modules to install 
+
+3. Make sure the commands: node, npm and cordova are available from the command prompt 
+
+4. On Windows make sure the adb.exe is in your search path \(c:\Users\\AppData\Local\Android\sdk\platform-tools\), probably also required on Linux 
+
+5. Special care should be taken in order to work without root privileges on Linux and Mac \(the current procedure assumes Windows administrator permissions\), we recommend that you work with root privileges initially. 
+
+6. Under the \mobile\app folder execute the command: createapp.bat See that the process completes without errors and that a default Cordova application is deployed to your connected mobile device or the Android emulator
 
 1. To run the app invoke runapp.bat and to update the app resources after making changes to the web wallet use the updateapp.bat
 2. Debug the application on the device or emulator using Chrome desktop development tools, open the options menu, more tools --&gt; Inspect Devices choose the device and click inspect

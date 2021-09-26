@@ -1,6 +1,8 @@
-# Welcome
+---
+description: The people's blockchain
+---
 
-## Welcome to Jupiter!
+# Welcome
 
 ### What is Jupiter?
 

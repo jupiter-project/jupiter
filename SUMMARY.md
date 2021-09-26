@@ -12,3 +12,7 @@
 * [DEVELOPERS-GUIDE](developers-guide.md)
 * [USERS-GUIDE](users-guide.md)
 
+## Learning Jupiter
+
+* [Get started with Jupiter](learning-jupiter/get-started-with-jupiter.md)
+

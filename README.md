@@ -1,6 +1,8 @@
 # Welcome
 
-### What is Jupiter?
+## What is Jupiter?
+
+Our main product is our L1 blockchain, Jupiter. Jupiter is the base platform needed to run the [Gravity](https://github.com/jupiter-project/gravity) framework for information storage and decentralized application building. Jupiter is built from [Nxt's](https://nxt.org) system based on cryptography and blockchain technology. On top of this platform, anyone can have assets, currencies, aliases, data, messaging, a DEX, and NFTs.
 
 Our main product is our L1 blockchain, Jupiter. Jupiter is the base platform needed to run the [Gravity](https://github.com/jupiter-project/gravity) framework for information storage and decentralized application building. Jupiter is built from [Nxt's](https://nxt.org) system based on cryptography and blockchain technology. On top of this anyone can have assets, currencies, aliases, data, messaging, a DEX, and NFTs.
 

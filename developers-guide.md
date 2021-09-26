@@ -149,18 +149,12 @@ The Jupiter wallet UI run as a mobile app.
 
 To build the Android APK application follow these steps \(Tested on Windows 10 64 bit\): 
 
-1. Install node.js \(tested with Node 4.4.7 and npm 2.15.8\), Apache Cordova \(tested with Cordova 6.3.1\) - see [https://cordova.apache.org/](https://cordova.apache.org/) 
-
-2. Install Android SDK Manager \(tested with version 25.2.2\) - follow the guidelines regarding necessary USB device drivers and modules to install 
-
-3. Make sure the commands: node, npm and cordova are available from the command prompt 
-
-4. On Windows make sure the adb.exe is in your search path \(c:\Users\\AppData\Local\Android\sdk\platform-tools\), probably also required on Linux 
-
-5. Special care should be taken in order to work without root privileges on Linux and Mac \(the current procedure assumes Windows administrator permissions\), we recommend that you work with root privileges initially. 
-
-6. Under the \mobile\app folder execute the command: createapp.bat See that the process completes without errors and that a default Cordova application is deployed to your connected mobile device or the Android emulator
-
-1. To run the app invoke runapp.bat and to update the app resources after making changes to the web wallet use the updateapp.bat
-2. Debug the application on the device or emulator using Chrome desktop development tools, open the options menu, more tools --&gt; Inspect Devices choose the device and click inspect
+* Install node.js \(tested with Node 4.4.7 and npm 2.15.8\), Apache Cordova \(tested with Cordova 6.3.1\) - see [https://cordova.apache.org/](https://cordova.apache.org/) 
+* Install Android SDK Manager \(tested with version 25.2.2\) - follow the guidelines regarding necessary USB device drivers and modules to install 
+* Make sure the commands: node, npm and cordova are available from the command prompt 
+* On Windows make sure the adb.exe is in your search path \(c:\Users\\AppData\Local\Android\sdk\platform-tools\), probably also required on Linux 
+* Special care should be taken in order to work without root privileges on Linux and Mac \(the current procedure assumes Windows administrator permissions\), we recommend that you work with root privileges initially. 
+* Under the \mobile\app folder execute the command: createapp.bat See that the process completes without errors and that a default Cordova application is deployed to your connected mobile device or the Android emulator
+  * To run the app invoke runapp.bat and to update the app resources after making changes to the web wallet use the updateapp.bat
+  * Debug the application on the device or emulator using Chrome desktop development tools, open the options menu, more tools --&gt; Inspect Devices choose the device and click inspect
 

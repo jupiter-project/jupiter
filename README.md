@@ -1,7 +1,3 @@
----
-description: The people's blockchain
----
-
 # Welcome
 
 ### What is Jupiter?

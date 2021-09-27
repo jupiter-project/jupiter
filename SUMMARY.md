@@ -5,6 +5,7 @@
 ## Jupiter Documentation
 
 * [FAQs](jupiter-documentation/faqs.md)
+* [Metis](jupiter-documentation/metis.md)
 
 ## How to guides
 

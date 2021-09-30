@@ -1,0 +1,1 @@
+* Add info for new transaction type and subtypes in the transaction dashboard

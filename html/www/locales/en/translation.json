@@ -1857,5 +1857,12 @@
   "update_testnet": "Version cannot be updated whilst connected to the testnet.",
   "token_generation_validation": "Token Generation / Validation",
   "branding_message": "JRS is a customized version of the Nxt Reference Software (NRS)",
-  "swap": "Swap"
+  "swap": "Swap",
+  "metis_arbitrary_message": "Metis arbitrary message",
+  "metis_channel_member": "Metis channel member",
+  "metis_channel_invitation": "Metis channel invitation",
+  "metis_account_info": "Metis account info",
+  "data_fs": "Jupiter FS Data",
+  "fs_metadata": "Jupiter FS metadata",
+  "fs_binary_data": "Jupiter FS binary data"
 }

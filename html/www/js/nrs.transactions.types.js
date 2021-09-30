@@ -104,7 +104,31 @@ var NRS = (function(NRS, $, undefined) {
                     'i18nKeyTitle': 'account_property_delete',
                     'iconHTML': "<i class='fa fa-question'></i>",
                     'receiverPage': "transactions"
-                }
+                },
+                12: {
+                    'title': "Metis Account Info",
+                    'i18nKeyTitle': 'metis_account_info',
+                    'iconHTML': "<i class='fa fa-info'></i>",
+                    'receiverPage': 'messages'
+                },
+                13: {
+                    'title': "Metis Channel Invitation",
+                    'i18nKeyTitle': 'metis_channel_invitation',
+                    'iconHTML': "<i class='fa fa-envelope-o'></i>",
+                    'receiverPage': 'messages'
+                },
+                14: {
+                    'title': "Metis Channel Member",
+                    'i18nKeyTitle': 'metis_channel_member',
+                    'iconHTML': "<i class='fa fa-envelope-o'></i>",
+                    'receiverPage': 'messages'
+                },
+                15: {
+                    'title': "Metis Arbitrary Message",
+                    'i18nKeyTitle': 'metis_arbitrary_message',
+                    'iconHTML': "<i class='fa fa-envelope-o'></i>",
+                    'receiverPage': 'messages'
+                },
             }
         },
         2: {
@@ -339,6 +363,23 @@ var NRS = (function(NRS, $, undefined) {
                     'title': "Shuffling Cancellation",
                     'i18nKeyTitle': 'shuffling_cancellation',
                     'iconHTML': '<i class="fa fa-thumbs-down"></i>'
+                }
+            }
+        },
+        8: {
+            'title': "Data FS",
+            'i18nKeyTitle': 'data_fs',
+            'iconHTML': '<i class="fa fa-upload"></i>',
+            'subTypes': {
+                0: {
+                    'title': "FS Metadata",
+                    'i18nKeyTitle': 'fs_metadata',
+                    'iconHTML': '<i class="fa fa-info"></i>'
+                },
+                1: {
+                    'title': "FS Binary Data",
+                    'i18nKeyTitle': 'fs_binary_data',
+                    'iconHTML': '<i class="fa fa-upload"></i>'
                 }
             }
         }

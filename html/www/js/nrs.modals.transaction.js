@@ -243,6 +243,10 @@ var NRS = (function (NRS, $, undefined) {
             } else if (transaction.type == 1) {
                 switch (transaction.subtype) {
                     case 0:
+                    case 12:
+                    case 13:
+                    case 14:
+                    case 15:	
                         var $output = $("#transaction_info_output_top");
                         if (transaction.attachment) {
                             if (transaction.attachment.message) {

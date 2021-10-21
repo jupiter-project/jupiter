@@ -76,7 +76,7 @@ public final class GetBlockchainTransactions extends APIServlet.APIRequestHandle
                 includeExpiredPrunable, executedOnly)) {
             while (iterator.hasNext()) {
                 Transaction transaction = iterator.next();
-                if (withMessage && messageToFilter != null && !messageToFilter.isEmpty()) {
+                if (withMessage && transaction.getMessage() != null  && messageToFilter != null && !messageToFilter.isEmpty()) {
                 	String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
                 	if (!messageString.contains(messageToFilter)) {
                 		break;

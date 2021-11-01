@@ -445,7 +445,6 @@ final class BlockchainImpl implements Blockchain {
             con = Db.db.getConnection();
             PreparedStatement pstmt;
             int i = 0;
-            Logger.logDebugMessage("Query = " + buf.toString());
             pstmt = con.prepareStatement(buf.toString());
             pstmt.setLong(++i, accountId);
             pstmt.setLong(++i, accountId);

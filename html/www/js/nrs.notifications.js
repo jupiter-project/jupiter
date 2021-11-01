@@ -150,7 +150,7 @@ var NRS = (function(NRS, $, undefined) {
 			"account": NRS.account,
 			"timestamp": fromTS,
 			"firstIndex": 0,
-			"lastIndex": 99
+			"lastIndex": 50
 		}, function(response) {
 			if (response.transactions && response.transactions.length) {
 				for (var i=0; i<response.transactions.length; i++) {

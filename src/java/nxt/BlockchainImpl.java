@@ -34,6 +34,7 @@ import nxt.db.DbIterator;
 import nxt.db.DbUtils;
 import nxt.util.Convert;
 import nxt.util.Filter;
+import nxt.util.Logger;
 import nxt.util.ReadWriteUpdateLock;
 
 final class BlockchainImpl implements Blockchain {
@@ -414,7 +415,7 @@ final class BlockchainImpl implements Blockchain {
             if (executedOnly && !nonPhasedOnly) {
                 buf.append(" LEFT JOIN phasing_poll_result ON transaction.id = phasing_poll_result.id ");
             }
-            buf.append("WHERE recipient_id = ? AND sender_id <> ? ");
+            buf.append("WHERE recipient_id = ? or sender_id = ? ");
             if (blockTimestamp > 0) {
                 buf.append("AND block_timestamp >= ? ");
             }
@@ -439,37 +440,7 @@ final class BlockchainImpl implements Blockchain {
             if (executedOnly && !nonPhasedOnly) {
                 buf.append("AND (phased = FALSE OR approved = TRUE) ");
             }
-            buf.append("UNION ALL SELECT transaction.* FROM transaction ");
-            if (executedOnly && !nonPhasedOnly) {
-                buf.append(" LEFT JOIN phasing_poll_result ON transaction.id = phasing_poll_result.id ");
-            }
-            buf.append("WHERE sender_id = ? ");
-            if (blockTimestamp > 0) {
-                buf.append("AND block_timestamp >= ? ");
-            }
-            if (type >= 0) {
-                buf.append("AND type = ? ");
-                if (subtype >= 0) {
-                    buf.append("AND subtype = ? ");
-                }
-            }
-            if (height < Integer.MAX_VALUE) {
-                buf.append("AND transaction.height <= ? ");
-            }
-            if (withMessage) {
-                buf.append("AND (has_message = TRUE OR has_encrypted_message = TRUE OR has_encrypttoself_message = TRUE ");
-                buf.append("OR ((has_prunable_message = TRUE OR has_prunable_encrypted_message = TRUE) AND timestamp > ?)) ");
-            }
-            if (phasedOnly) {
-                buf.append("AND phased = TRUE ");
-            } else if (nonPhasedOnly) {
-                buf.append("AND phased = FALSE ");
-            }
-            if (executedOnly && !nonPhasedOnly) {
-                buf.append("AND (phased = FALSE OR approved = TRUE) ");
-            }
-
-            buf.append("ORDER BY block_timestamp DESC, transaction_index DESC");
+            buf.append("ORDER BY block_timestamp DESC");
             buf.append(DbUtils.limitsClause(from, to));
             con = Db.db.getConnection();
             PreparedStatement pstmt;
@@ -492,22 +463,6 @@ final class BlockchainImpl implements Blockchain {
             int prunableExpiration = Math.max(0, Constants.INCLUDE_EXPIRED_PRUNABLE && includeExpiredPrunable ?
                                         Nxt.getEpochTime() - Constants.MAX_PRUNABLE_LIFETIME :
                                         Nxt.getEpochTime() - Constants.MIN_PRUNABLE_LIFETIME);
-            if (withMessage) {
-                pstmt.setInt(++i, prunableExpiration);
-            }
-            pstmt.setLong(++i, accountId);
-            if (blockTimestamp > 0) {
-                pstmt.setInt(++i, blockTimestamp);
-            }
-            if (type >= 0) {
-                pstmt.setByte(++i, type);
-                if (subtype >= 0) {
-                    pstmt.setByte(++i, subtype);
-                }
-            }
-            if (height < Integer.MAX_VALUE) {
-                pstmt.setInt(++i, height);
-            }
             if (withMessage) {
                 pstmt.setInt(++i, prunableExpiration);
             }

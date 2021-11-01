@@ -1230,11 +1230,11 @@ NRS.addPagination = function () {
                         "type": 1,
                         "subtype": 0,
                         "firstIndex": 0,
-                        "lastIndex": 99
+                        "lastIndex": 50
                     }, function (response) {
                         if (response.transactions && response.transactions.length) {
-                            if (response.transactions.length > 99)
-                                $("#account_message_count").empty().append("99+");
+                            if (response.transactions.length > 50)
+                                $("#account_message_count").empty().append("50+");
                             else
                                 $("#account_message_count").empty().append(response.transactions.length);
                         } else {

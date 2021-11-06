@@ -23,7 +23,6 @@ import org.json.simple.JSONStreamAware;
 
 import nxt.NxtException;
 import nxt.util.JSON;
-import nxt.util.Logger;
 
 public class AddMetis extends APIServlet.APIRequestHandler {
 

@@ -34,7 +34,6 @@ import nxt.db.DbIterator;
 import nxt.db.DbUtils;
 import nxt.util.Convert;
 import nxt.util.Filter;
-import nxt.util.Logger;
 import nxt.util.ReadWriteUpdateLock;
 
 final class BlockchainImpl implements Blockchain {

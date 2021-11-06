@@ -18,6 +18,8 @@
 
 package nxt;
 
+import static nxt.Appendix.hasAppendix;
+
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.Arrays;

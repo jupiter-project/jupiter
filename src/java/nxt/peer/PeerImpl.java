@@ -18,24 +18,6 @@
 
 package nxt.peer;
 
-import nxt.Account;
-import nxt.BlockchainProcessor;
-import nxt.Constants;
-import nxt.Nxt;
-import nxt.NxtException;
-import nxt.http.API;
-import nxt.http.APIEnum;
-import nxt.util.Convert;
-import nxt.util.CountingInputReader;
-import nxt.util.CountingInputStream;
-import nxt.util.CountingOutputWriter;
-import nxt.util.JSON;
-import nxt.util.Logger;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONStreamAware;
-import org.json.simple.JSONValue;
-import org.json.simple.parser.ParseException;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -55,8 +37,31 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
 import java.util.zip.GZIPInputStream;
+
+import org.json.simple.JSONObject;
+import org.json.simple.JSONStreamAware;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.ParseException;
+
+import nxt.Account;
+import nxt.BlockchainProcessor;
+import nxt.Constants;
+import nxt.Nxt;
+import nxt.NxtException;
+import nxt.http.API;
+import nxt.http.APIEnum;
+import nxt.util.Convert;
+import nxt.util.CountingInputReader;
+import nxt.util.CountingInputStream;
+import nxt.util.CountingOutputWriter;
+import nxt.util.JSON;
+import nxt.util.Logger;
 
 final class PeerImpl implements Peer {
 

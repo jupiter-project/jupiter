@@ -30,8 +30,6 @@ import org.json.simple.JSONObject;
 
 import nxt.Account.ControlType;
 import nxt.AccountLedger.LedgerEvent;
-import nxt.Appendix.AbstractEncryptedMessage;
-import nxt.Appendix.Message;
 import nxt.Attachment.AbstractAttachment;
 import nxt.NxtException.ValidationException;
 import nxt.VoteWeighting.VotingModel;

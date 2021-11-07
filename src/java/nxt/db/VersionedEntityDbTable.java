@@ -154,5 +154,4 @@ public abstract class VersionedEntityDbTable<T> extends EntityDbTable<T> {
             throw new RuntimeException(e.toString(), e);
         }
     }
-
 }

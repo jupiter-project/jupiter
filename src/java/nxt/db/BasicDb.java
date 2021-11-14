@@ -184,15 +184,15 @@ public class BasicDb {
     }
 
     protected Connection getPooledConnection() throws SQLException {
-    	cp.dispose();
     	
         Connection con = cp.getConnection();
         int activeConnections = cp.getActiveConnections();
+        Logger.logDebugMessage("Database connection pool current size: " + activeConnections + ". Max connections: " + this.maxConnections);
+        
         if (activeConnections > maxActiveConnections) {
             maxActiveConnections = activeConnections;
-            Logger.logDebugMessage("Database connection pool current size: " + activeConnections + ". Max connections: " + this.maxConnections);
-            
         }
+        
         return con;
     }
 

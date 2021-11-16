@@ -1,6 +1,8 @@
 nohup.out
 logs/nxt.log
 logs/nxt.log.lck
+logs/jup.log
+logs/jup.log.lck
 nxt_db/
 nxt_test_db/
 html/www/html/pages/sources.tmp

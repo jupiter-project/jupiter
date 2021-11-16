@@ -102,8 +102,8 @@ sure it is long and random. A weak password will result in your funds being
 stolen immediately.
 
 The java process logs its activities and error messages to the standard output
-which you see in the console window, but also to a file nxt.log, which gets
-overwritten at restart. In case of an error, the nxt.log file may contain
+which you see in the console window, but also to a file jup.log, which gets
+overwritten at restart. In case of an error, the jup.log file may contain
 helpful information, so include its contents when submitting a bug report.
 
 In addition to the default user interface at http://localhost:7876 , the

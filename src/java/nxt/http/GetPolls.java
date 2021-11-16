@@ -25,7 +25,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.Poll;
 import nxt.db.DbIterator;
@@ -53,7 +53,7 @@ public class GetPolls extends APIServlet.APIRequestHandler {
         try {
             if (accountId == 0) {
                 if (finishedOnly) {
-                    polls = Poll.getPollsFinishingAtOrBefore(Nxt.getBlockchain().getHeight(), firstIndex, lastIndex);
+                    polls = Poll.getPollsFinishingAtOrBefore(Jup.getBlockchain().getHeight(), firstIndex, lastIndex);
                 } else if (includeFinished) {
                     polls = Poll.getAllPolls(firstIndex, lastIndex);
                 } else {

@@ -26,7 +26,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.Transaction;
 import nxt.TransactionType;
@@ -45,7 +45,7 @@ public final class GetExpectedOrderCancellations extends APIServlet.APIRequestHa
         Filter<Transaction> filter = transaction -> transaction.getType() == TransactionType.ColoredCoins.ASK_ORDER_CANCELLATION
                 || transaction.getType() == TransactionType.ColoredCoins.BID_ORDER_CANCELLATION;
 
-        List<? extends Transaction> transactions = Nxt.getBlockchain().getExpectedTransactions(filter);
+        List<? extends Transaction> transactions = Jup.getBlockchain().getExpectedTransactions(filter);
         JSONArray cancellations = new JSONArray();
         transactions.forEach(transaction -> cancellations.add(JSONData.expectedOrderCancellation(transaction)));
         JSONObject response = new JSONObject();

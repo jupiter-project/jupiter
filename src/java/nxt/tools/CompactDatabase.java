@@ -25,7 +25,7 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 
 import nxt.Constants;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.util.Logger;
 
 /**
@@ -72,23 +72,23 @@ public class CompactDatabase {
         // Get the database URL
         //
         String dbPrefix = Constants.isTestnet ? "nxt.testDb" : "nxt.db";
-        String dbType = Nxt.getStringProperty(dbPrefix + "Type");
+        String dbType = Jup.getStringProperty(dbPrefix + "Type");
         if (!"h2".equals(dbType)) {
             Logger.logErrorMessage("Database type must be 'h2'");
             return 1;
         }
-        String dbUrl = Nxt.getStringProperty(dbPrefix + "Url");
+        String dbUrl = Jup.getStringProperty(dbPrefix + "Url");
         if (dbUrl == null) {
-            String dbPath = Nxt.getDbDir(Nxt.getStringProperty(dbPrefix + "Dir"));
+            String dbPath = Jup.getDbDir(Jup.getStringProperty(dbPrefix + "Dir"));
             dbUrl = String.format("jdbc:%s:%s", dbType, dbPath);
         }
-        String dbParams = Nxt.getStringProperty(dbPrefix + "Params");
+        String dbParams = Jup.getStringProperty(dbPrefix + "Params");
         dbUrl += ";" + dbParams;
         if (!dbUrl.contains("MV_STORE=")) {
             dbUrl += ";MV_STORE=FALSE";
         }
-        String dbUsername = Nxt.getStringProperty(dbPrefix + "Username", "sa");
-        String dbPassword = Nxt.getStringProperty(dbPrefix + "Password", "sa", true);
+        String dbUsername = Jup.getStringProperty(dbPrefix + "Username", "sa");
+        String dbPassword = Jup.getStringProperty(dbPrefix + "Password", "sa", true);
         //
         // Get the database path.  This is the third colon-separated operand and is
         // terminated by a semi-colon or by the end of the string.

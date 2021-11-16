@@ -33,7 +33,7 @@ import nxt.util.Logger;
 
 public final class Shuffler {
 
-    private static final int MAX_SHUFFLERS = Nxt.getIntProperty("nxt.maxNumberOfShufflers");
+    private static final int MAX_SHUFFLERS = Jup.getIntProperty("nxt.maxNumberOfShufflers");
     private static final Map<String, Map<Long, Shuffler>> shufflingsMap = new HashMap<>();
     private static final Map<Integer, Set<String>> expirations = new HashMap<>();
 
@@ -275,7 +275,7 @@ public final class Shuffler {
     }
 
     private static void scheduleExpiration(Shuffling shuffling) {
-        int expirationHeight = Nxt.getBlockchain().getHeight() + 720;
+        int expirationHeight = Jup.getBlockchain().getHeight() + 720;
         Set<String> shufflingIds = expirations.get(expirationHeight);
         if (shufflingIds == null) {
             shufflingIds = new HashSet<>();
@@ -447,9 +447,9 @@ public final class Shuffler {
             }
         }
         try {
-            Transaction.Builder builder = Nxt.newTransactionBuilder(Crypto.getPublicKey(secretPhrase), 0, 0,
+            Transaction.Builder builder = Jup.newTransactionBuilder(Crypto.getPublicKey(secretPhrase), 0, 0,
                     (short) 1440, attachment);
-            builder.timestamp(Nxt.getBlockchain().getLastBlockTimestamp());
+            builder.timestamp(Jup.getBlockchain().getLastBlockTimestamp());
             Transaction transaction = builder.build(secretPhrase);
             failedTransaction = null;
             failureCause = null;

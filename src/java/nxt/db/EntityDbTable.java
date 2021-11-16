@@ -24,7 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import nxt.Constants;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.util.Logger;
 
 public abstract class EntityDbTable<T> extends DerivedDbTable {
@@ -64,15 +64,15 @@ public abstract class EntityDbTable<T> extends DerivedDbTable {
 
     public void checkAvailable(int height) {
         if (multiversion) {
-            int minRollBackHeight = isPersistent() && Nxt.getBlockchainProcessor().isScanning() ?
-                    Math.max(Nxt.getBlockchainProcessor().getInitialScanHeight() - Constants.MAX_ROLLBACK, 0)
-                    : Nxt.getBlockchainProcessor().getMinRollbackHeight();
+            int minRollBackHeight = isPersistent() && Jup.getBlockchainProcessor().isScanning() ?
+                    Math.max(Jup.getBlockchainProcessor().getInitialScanHeight() - Constants.MAX_ROLLBACK, 0)
+                    : Jup.getBlockchainProcessor().getMinRollbackHeight();
             if (height < minRollBackHeight) {
                 throw new IllegalArgumentException("Historical data as of height " + height + " not available.");
             }
         }
-        if (height > Nxt.getBlockchain().getHeight()) {
-            throw new IllegalArgumentException("Height " + height + " exceeds blockchain height " + Nxt.getBlockchain().getHeight());
+        if (height > Jup.getBlockchain().getHeight()) {
+            throw new IllegalArgumentException("Height " + height + " exceeds blockchain height " + Jup.getBlockchain().getHeight());
         }
     }
 
@@ -492,7 +492,7 @@ public abstract class EntityDbTable<T> extends DerivedDbTable {
     }
 
     private boolean doesNotExceed(int height) {
-        return Nxt.getBlockchain().getHeight() <= height && ! (isPersistent() && Nxt.getBlockchainProcessor().isScanning());
+        return Jup.getBlockchain().getHeight() <= height && ! (isPersistent() && Jup.getBlockchainProcessor().isScanning());
     }
 
 }

@@ -78,7 +78,7 @@ class UnconfirmedTransaction implements Transaction {
                 pstmt.setNull(++i, Types.VARCHAR);
             }
             pstmt.setLong(++i, arrivalTimestamp);
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             pstmt.executeUpdate();
         }
     }

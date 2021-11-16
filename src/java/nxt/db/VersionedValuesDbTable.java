@@ -24,7 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import nxt.Nxt;
+import nxt.Jup;
 
 public abstract class VersionedValuesDbTable<T, V> extends ValuesDbTable<T, V> {
 
@@ -40,7 +40,7 @@ public abstract class VersionedValuesDbTable<T, V> extends ValuesDbTable<T, V> {
             throw new IllegalStateException("Not in transaction");
         }
         DbKey dbKey = dbKeyFactory.newKey(t);
-        int height = Nxt.getBlockchain().getHeight();
+        int height = Jup.getBlockchain().getHeight();
         try (Connection con = db.getConnection();
              PreparedStatement pstmtCount = con.prepareStatement("SELECT 1 FROM " + table + dbKeyFactory.getPKClause()
                      + " AND height < ? LIMIT 1")) {

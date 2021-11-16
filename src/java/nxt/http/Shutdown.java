@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 
 public final class Shutdown extends APIServlet.APIRequestHandler {
 
@@ -38,7 +38,7 @@ public final class Shutdown extends APIServlet.APIRequestHandler {
         JSONObject response = new JSONObject();
         boolean scan = "true".equalsIgnoreCase(req.getParameter("scan"));
         if (scan) {
-            Nxt.getBlockchainProcessor().fullScanWithShutdown();
+            Jup.getBlockchainProcessor().fullScanWithShutdown();
         } else {
             new Thread(() -> System.exit(0)).start();
         }

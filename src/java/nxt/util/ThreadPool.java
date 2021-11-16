@@ -27,7 +27,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import nxt.Nxt;
+import nxt.Jup;
 
 public final class ThreadPool {
 
@@ -60,7 +60,7 @@ public final class ThreadPool {
         if (scheduledThreadPool != null) {
             throw new IllegalStateException("Executor service already started, no new jobs accepted");
         }
-        if (! Nxt.getBooleanProperty("nxt.disable" + name + "Thread")) {
+        if (! Jup.getBooleanProperty("nxt.disable" + name + "Thread")) {
             backgroundJobs.put(runnable, timeUnit.toMillis(delay));
         } else {
             Logger.logMessage("Will not run " + name + " thread");

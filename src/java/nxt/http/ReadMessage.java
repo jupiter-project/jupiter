@@ -31,7 +31,7 @@ import org.json.simple.JSONStreamAware;
 
 import nxt.Account;
 import nxt.Appendix;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.PrunableMessage;
 import nxt.Transaction;
 import nxt.crypto.Crypto;
@@ -52,10 +52,10 @@ public final class ReadMessage extends APIServlet.APIRequestHandler {
 
         long transactionId = ParameterParser.getUnsignedLong(req, "transaction", true);
         boolean retrieve = "true".equalsIgnoreCase(req.getParameter("retrieve"));
-        Transaction transaction = Nxt.getBlockchain().getTransaction(transactionId);
+        Transaction transaction = Jup.getBlockchain().getTransaction(transactionId);
         
         if (transaction == null) {
-            transaction = Nxt.getTransactionProcessor().getUnconfirmedTransaction(transactionId);
+            transaction = Jup.getTransactionProcessor().getUnconfirmedTransaction(transactionId);
         } 
         
         if (transaction == null) {
@@ -63,7 +63,7 @@ public final class ReadMessage extends APIServlet.APIRequestHandler {
         }
         PrunableMessage prunableMessage = PrunableMessage.getPrunableMessage(transactionId);
         if (prunableMessage == null && (transaction.getPrunablePlainMessage() != null || transaction.getPrunableEncryptedMessage() != null) && retrieve) {
-            if (Nxt.getBlockchainProcessor().restorePrunedTransaction(transactionId) == null) {
+            if (Jup.getBlockchainProcessor().restorePrunedTransaction(transactionId) == null) {
                 return PRUNED_TRANSACTION;
             }
             prunableMessage = PrunableMessage.getPrunableMessage(transactionId);

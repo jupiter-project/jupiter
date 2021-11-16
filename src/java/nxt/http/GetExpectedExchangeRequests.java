@@ -28,7 +28,7 @@ import org.json.simple.JSONStreamAware;
 
 import nxt.Attachment;
 import nxt.MonetarySystem;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.Transaction;
 import nxt.util.Filter;
@@ -59,7 +59,7 @@ public final class GetExpectedExchangeRequests extends APIServlet.APIRequestHand
             return currencyId == 0 || attachment.getCurrencyId() == currencyId;
         };
 
-        List<? extends Transaction> transactions = Nxt.getBlockchain().getExpectedTransactions(filter);
+        List<? extends Transaction> transactions = Jup.getBlockchain().getExpectedTransactions(filter);
 
         JSONArray exchangeRequests = new JSONArray();
         transactions.forEach(transaction -> exchangeRequests.add(JSONData.expectedExchangeRequest(transaction, includeCurrencyInfo)));

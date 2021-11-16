@@ -93,7 +93,7 @@ public interface Attachment extends Appendix {
         }
 
         final int getFinishValidationHeight(Transaction transaction) {
-            return isPhased(transaction) ? transaction.getPhasing().getFinishHeight() - 1 : Nxt.getBlockchain().getHeight();
+            return isPhased(transaction) ? transaction.getPhasing().getFinishHeight() - 1 : Jup.getBlockchain().getHeight();
         }
 
     }

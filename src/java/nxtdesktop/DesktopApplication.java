@@ -57,7 +57,7 @@ import netscape.javascript.JSObject;
 import nxt.Block;
 import nxt.BlockchainProcessor;
 import nxt.Constants;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.PrunableMessage;
 import nxt.TaggedData;
 import nxt.Transaction;
@@ -124,7 +124,7 @@ public class DesktopApplication extends Application {
         browser.setMinHeight(height);
         browser.setMinWidth(width);
         webEngine = browser.getEngine();
-        webEngine.setUserDataDirectory(Nxt.getConfDir());
+        webEngine.setUserDataDirectory(Jup.getConfDir());
 
         Worker<Void> loadWorker = webEngine.getLoadWorker();
         loadWorker.stateProperty().addListener(
@@ -143,12 +143,12 @@ public class DesktopApplication extends Application {
                     stage.setTitle(Constants.PROJECT_NAME + " Desktop - " + webEngine.getLocation());
                     nrs = (JSObject) webEngine.executeScript("NRS");
                     updateClientState("Desktop Wallet started");
-                    BlockchainProcessor blockchainProcessor = Nxt.getBlockchainProcessor();
+                    BlockchainProcessor blockchainProcessor = Jup.getBlockchainProcessor();
                     blockchainProcessor.addListener((block) ->
                             updateClientState(BlockchainProcessor.Event.BLOCK_PUSHED, block), BlockchainProcessor.Event.BLOCK_PUSHED);
                     blockchainProcessor.addListener((block) ->
                             updateClientState(BlockchainProcessor.Event.AFTER_BLOCK_APPLY, block), BlockchainProcessor.Event.AFTER_BLOCK_APPLY);
-                    Nxt.getTransactionProcessor().addListener((transaction) ->
+                    Jup.getTransactionProcessor().addListener((transaction) ->
                             updateClientState(TransactionProcessor.Event.ADDED_UNCONFIRMED_TRANSACTIONS, transaction), TransactionProcessor.Event.ADDED_UNCONFIRMED_TRANSACTIONS);
 
                     if (ENABLE_JAVASCRIPT_DEBUGGER) {
@@ -192,7 +192,7 @@ public class DesktopApplication extends Application {
     }
 
     private void updateClientState(BlockchainProcessor.Event blockEvent, Block block) {
-        BlockchainProcessor blockchainProcessor = Nxt.getBlockchainProcessor();
+        BlockchainProcessor blockchainProcessor = Jup.getBlockchainProcessor();
         if (blockEvent == BlockchainProcessor.Event.BLOCK_PUSHED && blockchainProcessor.isDownloading()) {
             if (!(block.getHeight() % 100 == 0)) {
                 return;
@@ -230,7 +230,7 @@ public class DesktopApplication extends Application {
             HttpsURLConnection.setDefaultSSLSocketFactory(TrustAllSSLProvider.getSslSocketFactory());
             HttpsURLConnection.setDefaultHostnameVerifier(TrustAllSSLProvider.getHostNameVerifier());
         }
-        String defaultAccount = Nxt.getStringProperty("nxt.defaultDesktopAccount");
+        String defaultAccount = Jup.getStringProperty("nxt.defaultDesktopAccount");
         if (defaultAccount != null && !defaultAccount.equals("")) {
             url += "?account=" + defaultAccount;
         }
@@ -285,7 +285,7 @@ public class DesktopApplication extends Application {
         if (requestType.equals("downloadTaggedData")) {
             if (taggedData == null && retrieve) {
                 try {
-                    if (Nxt.getBlockchainProcessor().restorePrunedTransaction(transactionId) == null) {
+                    if (Jup.getBlockchainProcessor().restorePrunedTransaction(transactionId) == null) {
                         growl("Pruned transaction data not currently available from any peer");
                         return;
                     }
@@ -309,7 +309,7 @@ public class DesktopApplication extends Application {
             PrunableMessage prunableMessage = PrunableMessage.getPrunableMessage(transactionId);
             if (prunableMessage == null && retrieve) {
                 try {
-                    if (Nxt.getBlockchainProcessor().restorePrunedTransaction(transactionId) == null) {
+                    if (Jup.getBlockchainProcessor().restorePrunedTransaction(transactionId) == null) {
                         growl("Pruned message not currently available from any peer");
                         return;
                     }

@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 
 public final class FullReset extends APIServlet.APIRequestHandler {
 
@@ -37,7 +37,7 @@ public final class FullReset extends APIServlet.APIRequestHandler {
     protected JSONStreamAware processRequest(HttpServletRequest req) {
         JSONObject response = new JSONObject();
         try {
-            Nxt.getBlockchainProcessor().fullReset();
+            Jup.getBlockchainProcessor().fullReset();
             response.put("done", true);
         } catch (RuntimeException e) {
             JSONData.putException(response, e);

@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 
 public final class TrimDerivedTables extends APIServlet.APIRequestHandler {
 
@@ -36,7 +36,7 @@ public final class TrimDerivedTables extends APIServlet.APIRequestHandler {
     @Override
     protected JSONStreamAware processRequest(HttpServletRequest req) {
         JSONObject response = new JSONObject();
-        Nxt.getBlockchainProcessor().trimDerivedTables();
+        Jup.getBlockchainProcessor().trimDerivedTables();
         response.put("done", true);
         return response;
     }

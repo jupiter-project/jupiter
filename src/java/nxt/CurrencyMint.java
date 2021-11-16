@@ -119,7 +119,7 @@ public final class CurrencyMint {
             pstmt.setLong(++i, this.currencyId);
             pstmt.setLong(++i, this.accountId);
             pstmt.setLong(++i, this.counter);
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             pstmt.executeUpdate();
         }
     }

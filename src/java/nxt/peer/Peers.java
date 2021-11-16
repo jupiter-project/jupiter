@@ -64,7 +64,7 @@ import nxt.Account;
 import nxt.Block;
 import nxt.Constants;
 import nxt.Db;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.Transaction;
 import nxt.http.API;
 import nxt.http.APIEnum;
@@ -135,7 +135,7 @@ public final class Peers {
     static final int MAX_APPLICATION_LENGTH = 20;
     static final int MAX_PLATFORM_LENGTH = 30;
     static final int MAX_ANNOUNCED_ADDRESS_LENGTH = 100;
-    static final boolean hideErrorDetails = Nxt.getBooleanProperty("nxt.hideErrorDetails");
+    static final boolean hideErrorDetails = Jup.getBooleanProperty("nxt.hideErrorDetails");
 
     private static final JSONObject myPeerInfo;
     private static final List<Peer.Service> myServices;
@@ -155,12 +155,12 @@ public final class Peers {
 
     static {
 
-        String platform = Nxt.getStringProperty("nxt.myPlatform", System.getProperty("os.name") + " " + System.getProperty("os.arch"));
+        String platform = Jup.getStringProperty("nxt.myPlatform", System.getProperty("os.name") + " " + System.getProperty("os.arch"));
         if (platform.length() > MAX_PLATFORM_LENGTH) {
             platform = platform.substring(0, MAX_PLATFORM_LENGTH);
         }
         myPlatform = platform;
-        myAddress = Convert.emptyToNull(Nxt.getStringProperty("nxt.myAddress", "").trim());
+        myAddress = Convert.emptyToNull(Jup.getStringProperty("nxt.myAddress", "").trim());
         if (myAddress != null && myAddress.endsWith(":" + TESTNET_PEER_PORT) && !Constants.isTestnet) {
             throw new RuntimeException("Port " + TESTNET_PEER_PORT + " should only be used for testnet!!!");
         }
@@ -207,13 +207,13 @@ public final class Peers {
                 Logger.logWarningMessage("Your announced address is not valid: " + e.toString());
             }
         }
-        myPeerServerPort = Nxt.getIntProperty("nxt.peerServerPort");
+        myPeerServerPort = Jup.getIntProperty("nxt.peerServerPort");
         if (myPeerServerPort == TESTNET_PEER_PORT && !Constants.isTestnet) {
             throw new RuntimeException("Port " + TESTNET_PEER_PORT + " should only be used for testnet!!!");
         }
-        shareMyAddress = Nxt.getBooleanProperty("nxt.shareMyAddress") && ! Constants.isOffline;
-        enablePeerUPnP = Nxt.getBooleanProperty("nxt.enablePeerUPnP");
-        myHallmark = Convert.emptyToNull(Nxt.getStringProperty("nxt.myHallmark", "").trim());
+        shareMyAddress = Jup.getBooleanProperty("nxt.shareMyAddress") && ! Constants.isOffline;
+        enablePeerUPnP = Jup.getBooleanProperty("nxt.enablePeerUPnP");
+        myHallmark = Convert.emptyToNull(Jup.getStringProperty("nxt.myHallmark", "").trim());
         if (Peers.myHallmark != null && Peers.myHallmark.length() > 0) {
             try {
                 Hallmark hallmark = Hallmark.parseHallmark(Peers.myHallmark);
@@ -262,8 +262,8 @@ public final class Peers {
             json.put("hallmark", Peers.myHallmark);
             servicesList.add(Peer.Service.HALLMARK);
         }
-        json.put("application", Nxt.APPLICATION);
-        json.put("version", Nxt.VERSION);
+        json.put("application", Jup.APPLICATION);
+        json.put("version", Jup.VERSION);
         json.put("platform", Peers.myPlatform);
         json.put("shareAddress", Peers.shareMyAddress);
         if (!Constants.ENABLE_PRUNING && Constants.INCLUDE_EXPIRED_PRUNABLE) {
@@ -312,40 +312,40 @@ public final class Peers {
         Logger.logDebugMessage("My peer info:\n" + json.toJSONString());
         myPeerInfo = json;
 
-        final List<String> defaultPeers = Constants.isTestnet ? Nxt.getStringListProperty("nxt.defaultTestnetPeers")
-                : Nxt.getStringListProperty("nxt.defaultPeers");
-        wellKnownPeers = Collections.unmodifiableList(Constants.isTestnet ? Nxt.getStringListProperty("nxt.testnetPeers")
-                : Nxt.getStringListProperty("nxt.wellKnownPeers"));
+        final List<String> defaultPeers = Constants.isTestnet ? Jup.getStringListProperty("nxt.defaultTestnetPeers")
+                : Jup.getStringListProperty("nxt.defaultPeers");
+        wellKnownPeers = Collections.unmodifiableList(Constants.isTestnet ? Jup.getStringListProperty("nxt.testnetPeers")
+                : Jup.getStringListProperty("nxt.wellKnownPeers"));
 
-        List<String> knownBlacklistedPeersList = Nxt.getStringListProperty("nxt.knownBlacklistedPeers");
+        List<String> knownBlacklistedPeersList = Jup.getStringListProperty("nxt.knownBlacklistedPeers");
         if (knownBlacklistedPeersList.isEmpty()) {
             knownBlacklistedPeers = Collections.emptySet();
         } else {
             knownBlacklistedPeers = Collections.unmodifiableSet(new HashSet<>(knownBlacklistedPeersList));
         }
 
-        maxNumberOfInboundConnections = Nxt.getIntProperty("nxt.maxNumberOfInboundConnections");
-        maxNumberOfOutboundConnections = Nxt.getIntProperty("nxt.maxNumberOfOutboundConnections");
-        maxNumberOfConnectedPublicPeers = Math.min(Nxt.getIntProperty("nxt.maxNumberOfConnectedPublicPeers"),
+        maxNumberOfInboundConnections = Jup.getIntProperty("nxt.maxNumberOfInboundConnections");
+        maxNumberOfOutboundConnections = Jup.getIntProperty("nxt.maxNumberOfOutboundConnections");
+        maxNumberOfConnectedPublicPeers = Math.min(Jup.getIntProperty("nxt.maxNumberOfConnectedPublicPeers"),
                 maxNumberOfOutboundConnections);
-        maxNumberOfKnownPeers = Nxt.getIntProperty("nxt.maxNumberOfKnownPeers");
-        minNumberOfKnownPeers = Nxt.getIntProperty("nxt.minNumberOfKnownPeers");
-        connectTimeout = Nxt.getIntProperty("nxt.connectTimeout");
-        readTimeout = Nxt.getIntProperty("nxt.readTimeout");
-        enableHallmarkProtection = Nxt.getBooleanProperty("nxt.enableHallmarkProtection") && !Constants.isLightClient;
-        pushThreshold = Nxt.getIntProperty("nxt.pushThreshold");
-        pullThreshold = Nxt.getIntProperty("nxt.pullThreshold");
-        useWebSockets = Nxt.getBooleanProperty("nxt.useWebSockets");
-        webSocketIdleTimeout = Nxt.getIntProperty("nxt.webSocketIdleTimeout");
-        isGzipEnabled = Nxt.getBooleanProperty("nxt.enablePeerServerGZIPFilter");
-        blacklistingPeriod = Nxt.getIntProperty("nxt.blacklistingPeriod") / 1000;
-        communicationLoggingMask = Nxt.getIntProperty("nxt.communicationLoggingMask");
-        sendToPeersLimit = Nxt.getIntProperty("nxt.sendToPeersLimit");
-        usePeersDb = Nxt.getBooleanProperty("nxt.usePeersDb") && ! Constants.isOffline;
-        savePeers = usePeersDb && Nxt.getBooleanProperty("nxt.savePeers");
-        getMorePeers = Nxt.getBooleanProperty("nxt.getMorePeers");
-        cjdnsOnly = Nxt.getBooleanProperty("nxt.cjdnsOnly");
-        ignorePeerAnnouncedAddress = Nxt.getBooleanProperty("nxt.ignorePeerAnnouncedAddress");
+        maxNumberOfKnownPeers = Jup.getIntProperty("nxt.maxNumberOfKnownPeers");
+        minNumberOfKnownPeers = Jup.getIntProperty("nxt.minNumberOfKnownPeers");
+        connectTimeout = Jup.getIntProperty("nxt.connectTimeout");
+        readTimeout = Jup.getIntProperty("nxt.readTimeout");
+        enableHallmarkProtection = Jup.getBooleanProperty("nxt.enableHallmarkProtection") && !Constants.isLightClient;
+        pushThreshold = Jup.getIntProperty("nxt.pushThreshold");
+        pullThreshold = Jup.getIntProperty("nxt.pullThreshold");
+        useWebSockets = Jup.getBooleanProperty("nxt.useWebSockets");
+        webSocketIdleTimeout = Jup.getIntProperty("nxt.webSocketIdleTimeout");
+        isGzipEnabled = Jup.getBooleanProperty("nxt.enablePeerServerGZIPFilter");
+        blacklistingPeriod = Jup.getIntProperty("nxt.blacklistingPeriod") / 1000;
+        communicationLoggingMask = Jup.getIntProperty("nxt.communicationLoggingMask");
+        sendToPeersLimit = Jup.getIntProperty("nxt.sendToPeersLimit");
+        usePeersDb = Jup.getBooleanProperty("nxt.usePeersDb") && ! Constants.isOffline;
+        savePeers = usePeersDb && Jup.getBooleanProperty("nxt.savePeers");
+        getMorePeers = Jup.getBooleanProperty("nxt.getMorePeers");
+        cjdnsOnly = Jup.getBooleanProperty("nxt.cjdnsOnly");
+        ignorePeerAnnouncedAddress = Jup.getBooleanProperty("nxt.ignorePeerAnnouncedAddress");
         if (useWebSockets && useProxy) {
             Logger.logMessage("Using a proxy, will not create outbound websockets.");
         }
@@ -359,7 +359,7 @@ public final class Peers {
 
                 @Override
                 public void run() {
-                    final int now = Nxt.getEpochTime();
+                    final int now = Jup.getEpochTime();
                     wellKnownPeers.forEach(address -> entries.add(new PeerDb.Entry(address, 0, now)));
                     if (usePeersDb) {
                         Logger.logDebugMessage("Loading known peers from the database...");
@@ -421,9 +421,9 @@ public final class Peers {
                 ServerConnector connector = new ServerConnector(peerServer);
                 final int port = Constants.isTestnet ? TESTNET_PEER_PORT : Peers.myPeerServerPort;
                 connector.setPort(port);
-                final String host = Nxt.getStringProperty("nxt.peerServerHost");
+                final String host = Jup.getStringProperty("nxt.peerServerHost");
                 connector.setHost(host);
-                connector.setIdleTimeout(Nxt.getIntProperty("nxt.peerServerIdleTimeout"));
+                connector.setIdleTimeout(Jup.getIntProperty("nxt.peerServerIdleTimeout"));
                 connector.setReuseAddress(true);
                 peerServer.addConnector(connector);
 
@@ -433,12 +433,12 @@ public final class Peers {
                 ServletHolder peerServletHolder = new ServletHolder(new PeerServlet());
                 ctxHandler.addServlet(peerServletHolder, "/*");
 
-                if (Nxt.getBooleanProperty("nxt.enablePeerServerDoSFilter")) {
+                if (Jup.getBooleanProperty("nxt.enablePeerServerDoSFilter")) {
                     FilterHolder dosFilterHolder = ctxHandler.addFilter(DoSFilter.class, "/*",
                             EnumSet.of(DispatcherType.REQUEST));
-                    dosFilterHolder.setInitParameter("maxRequestsPerSec", Nxt.getStringProperty("nxt.peerServerDoSFilter.maxRequestsPerSec"));
-                    dosFilterHolder.setInitParameter("delayMs", Nxt.getStringProperty("nxt.peerServerDoSFilter.delayMs"));
-                    dosFilterHolder.setInitParameter("maxRequestMs", Nxt.getStringProperty("nxt.peerServerDoSFilter.maxRequestMs"));
+                    dosFilterHolder.setInitParameter("maxRequestsPerSec", Jup.getStringProperty("nxt.peerServerDoSFilter.maxRequestsPerSec"));
+                    dosFilterHolder.setInitParameter("delayMs", Jup.getStringProperty("nxt.peerServerDoSFilter.delayMs"));
+                    dosFilterHolder.setInitParameter("maxRequestMs", Jup.getStringProperty("nxt.peerServerDoSFilter.maxRequestMs"));
                     dosFilterHolder.setInitParameter("trackSessions", "false");
                     dosFilterHolder.setAsyncSupported(true);
                 }
@@ -486,7 +486,7 @@ public final class Peers {
         try {
             try {
 
-                int curTime = Nxt.getEpochTime();
+                int curTime = Jup.getEpochTime();
                 for (PeerImpl peer : peers.values()) {
                     peer.updateBlacklistedStatus(curTime);
                 }
@@ -509,7 +509,7 @@ public final class Peers {
             try {
                 try {
 
-                    final int now = Nxt.getEpochTime();
+                    final int now = Jup.getEpochTime();
                     if (!hasEnoughConnectedPublicPeers(Peers.maxNumberOfConnectedPublicPeers)) {
                         List<Future<?>> futures = new ArrayList<>();
                         List<Peer> hallmarkedPeers = getPeers(peer -> !peer.isBlacklisted()
@@ -644,7 +644,7 @@ public final class Peers {
                     if (peers != null) {
                         JSONArray services = (JSONArray)response.get("services");
                         boolean setServices = (services != null && services.size() == peers.size());
-                        int now = Nxt.getEpochTime();
+                        int now = Jup.getEpochTime();
                         for (int i=0; i<peers.size(); i++) {
                             String announcedAddress = (String)peers.get(i);
                             PeerImpl newPeer = findOrCreatePeer(announcedAddress, true);
@@ -698,7 +698,7 @@ public final class Peers {
         }
 
         private void updateSavedPeers() {
-            int now = Nxt.getEpochTime();
+            int now = Jup.getEpochTime();
             //
             // Load the current database entries and map announced address to database entry
             //
@@ -1147,7 +1147,7 @@ public final class Peers {
 
     private static final int[] MAX_VERSION;
     static {
-        String version = Nxt.VERSION;
+        String version = Jup.VERSION;
         if (version.endsWith("e")) {
             version = version.substring(0, version.length() - 1);
         }
@@ -1238,8 +1238,8 @@ public final class Peers {
 
     private static void checkBlockchainState() {
         Peer.BlockchainState state = Constants.isLightClient ? Peer.BlockchainState.LIGHT_CLIENT :
-                (Nxt.getBlockchainProcessor().isDownloading() || Nxt.getBlockchain().getLastBlockTimestamp() < Nxt.getEpochTime() - 600) ? Peer.BlockchainState.DOWNLOADING :
-                        (Nxt.getBlockchain().getLastBlock().getBaseTarget() / Constants.INITIAL_BASE_TARGET > 10 && !Constants.isTestnet) ? Peer.BlockchainState.FORK :
+                (Jup.getBlockchainProcessor().isDownloading() || Jup.getBlockchain().getLastBlockTimestamp() < Jup.getEpochTime() - 600) ? Peer.BlockchainState.DOWNLOADING :
+                        (Jup.getBlockchain().getLastBlock().getBaseTarget() / Constants.INITIAL_BASE_TARGET > 10 && !Constants.isTestnet) ? Peer.BlockchainState.FORK :
                         Peer.BlockchainState.UP_TO_DATE;
         if (state != currentBlockchainState) {
             JSONObject json = new JSONObject(myPeerInfo);

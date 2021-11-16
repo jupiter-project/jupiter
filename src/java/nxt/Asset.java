@@ -58,11 +58,11 @@ public final class Asset {
 
         @Override
         public void checkAvailable(int height) {
-            if (height + Constants.MAX_DIVIDEND_PAYMENT_ROLLBACK < Nxt.getBlockchainProcessor().getMinRollbackHeight()) {
+            if (height + Constants.MAX_DIVIDEND_PAYMENT_ROLLBACK < Jup.getBlockchainProcessor().getMinRollbackHeight()) {
                 throw new IllegalArgumentException("Historical data as of height " + height +" not available.");
             }
-            if (height > Nxt.getBlockchain().getHeight()) {
-                throw new IllegalArgumentException("Height " + height + " exceeds blockchain height " + Nxt.getBlockchain().getHeight());
+            if (height > Jup.getBlockchain().getHeight()) {
+                throw new IllegalArgumentException("Height " + height + " exceeds blockchain height " + Jup.getBlockchain().getHeight());
             }
         }
 
@@ -155,7 +155,7 @@ public final class Asset {
             pstmt.setLong(++i, this.initialQuantityQNT);
             pstmt.setLong(++i, this.quantityQNT);
             pstmt.setByte(++i, this.decimals);
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             pstmt.executeUpdate();
         }
     }

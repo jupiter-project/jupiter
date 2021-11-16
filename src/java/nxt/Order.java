@@ -85,7 +85,7 @@ public abstract class Order {
         this.assetId = attachment.getAssetId();
         this.quantityQNT = attachment.getQuantityQNT();
         this.priceNQT = attachment.getPriceNQT();
-        this.creationHeight = Nxt.getBlockchain().getHeight();
+        this.creationHeight = Jup.getBlockchain().getHeight();
         this.transactionIndex = transaction.getIndex();
         this.transactionHeight = transaction.getHeight();
     }
@@ -113,7 +113,7 @@ public abstract class Order {
             pstmt.setInt(++i, this.creationHeight);
             pstmt.setShort(++i, this.transactionIndex);
             pstmt.setInt(++i, this.transactionHeight);
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             pstmt.executeUpdate();
         }
     }

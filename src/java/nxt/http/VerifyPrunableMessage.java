@@ -30,7 +30,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import nxt.Appendix;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.Transaction;
 import nxt.util.JSON;
@@ -65,7 +65,7 @@ public final class VerifyPrunableMessage extends APIServlet.APIRequestHandler {
     protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
 
         long transactionId = ParameterParser.getUnsignedLong(req, "transaction", true);
-        Transaction transaction = Nxt.getBlockchain().getTransaction(transactionId);
+        Transaction transaction = Jup.getBlockchain().getTransaction(transactionId);
         if (transaction == null) {
             return UNKNOWN_TRANSACTION;
         }

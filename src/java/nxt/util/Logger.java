@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.LogManager;
 
-import nxt.Nxt;
+import nxt.Jup;
 
 /**
  * Handle logging for the Nxt node server
@@ -80,9 +80,9 @@ public final class Logger {
         if (! Boolean.getBoolean("nxt.doNotConfigureLogging")) {
             try {
                 Properties loggingProperties = new Properties();
-                Nxt.loadProperties(loggingProperties, "logging-default.properties", true);
-                Nxt.loadProperties(loggingProperties, "logging.properties", false);
-                Nxt.updateLogFileHandler(loggingProperties);
+                Jup.loadProperties(loggingProperties, "logging-default.properties", true);
+                Jup.loadProperties(loggingProperties, "logging.properties", false);
+                Jup.updateLogFileHandler(loggingProperties);
                 if (loggingProperties.size() > 0) {
                     ByteArrayOutputStream outStream = new ByteArrayOutputStream();
                     loggingProperties.store(outStream, "logging properties");
@@ -96,9 +96,9 @@ public final class Logger {
                 throw new RuntimeException("Error loading logging properties", e);
             }
         }
-        log = org.slf4j.LoggerFactory.getLogger(nxt.Nxt.class);
-        enableStackTraces = Nxt.getBooleanProperty("nxt.enableStackTraces");
-        enableLogTraceback = Nxt.getBooleanProperty("nxt.enableLogTraceback");
+        log = org.slf4j.LoggerFactory.getLogger(nxt.Jup.class);
+        enableStackTraces = Jup.getBooleanProperty("nxt.enableStackTraces");
+        enableLogTraceback = Jup.getBooleanProperty("nxt.enableLogTraceback");
         logInfoMessage("logging enabled");
     }
 

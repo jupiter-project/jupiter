@@ -32,7 +32,7 @@ import nxt.CurrencyMinting;
 import nxt.CurrencyType;
 import nxt.Genesis;
 import nxt.HoldingType;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.PhasingPoll;
 import nxt.Shuffling;
 import nxt.ShufflingParticipant;
@@ -57,7 +57,7 @@ public final class GetConstants extends APIServlet.APIRequestHandler {
                 response.put("coinSymbol", Constants.COIN_SYMBOL);
                 response.put("accountPrefix", Constants.ACCOUNT_PREFIX);
                 response.put("projectName", Constants.PROJECT_NAME);
-                response.put("genesisBlockId", Long.toUnsignedString(Nxt.getBlockchainProcessor().getGenesisBlockId()));
+                response.put("genesisBlockId", Long.toUnsignedString(Jup.getBlockchainProcessor().getGenesisBlockId()));
                 response.put("genesisAccountId", Long.toUnsignedString(Genesis.CREATOR_ID));
                 response.put("epochBeginning", Genesis.EPOCH_BEGINNING);
                 response.put("maxBlockPayloadLength", Constants.MAX_PAYLOAD_LENGTH);

@@ -116,7 +116,7 @@ public final class ExchangeRequest {
         this.units = attachment.getUnits();
         this.rate = attachment.getRateNQT();
         this.isBuy = isBuy;
-        Block block = Nxt.getBlockchain().getLastBlock();
+        Block block = Jup.getBlockchain().getLastBlock();
         this.height = block.getHeight();
         this.timestamp = block.getTimestamp();
     }

@@ -20,11 +20,11 @@ package nxt.env;
 
 import java.nio.file.Paths;
 
-import nxt.Nxt;
+import nxt.Jup;
 
 public class WindowsUserDirProvider extends DesktopUserDirProvider {
 
-    private static final String NXT_USER_HOME = Paths.get(System.getProperty("user.home"), "AppData", "Roaming", Nxt.APPLICATION.toUpperCase()).toString();
+    private static final String NXT_USER_HOME = Paths.get(System.getProperty("user.home"), "AppData", "Roaming", Jup.APPLICATION.toUpperCase()).toString();
 
     @Override
     public String getUserHomeDir() {

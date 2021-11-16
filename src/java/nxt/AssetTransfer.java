@@ -148,12 +148,12 @@ public final class AssetTransfer {
     private AssetTransfer(Transaction transaction, Attachment.ColoredCoinsAssetTransfer attachment) {
         this.id = transaction.getId();
         this.dbKey = transferDbKeyFactory.newKey(this.id);
-        this.height = Nxt.getBlockchain().getHeight();
+        this.height = Jup.getBlockchain().getHeight();
         this.assetId = attachment.getAssetId();
         this.senderId = transaction.getSenderId();
         this.recipientId = transaction.getRecipientId();
         this.quantityQNT = attachment.getQuantityQNT();
-        this.timestamp = Nxt.getBlockchain().getLastBlockTimestamp();
+        this.timestamp = Jup.getBlockchain().getLastBlockTimestamp();
     }
 
     private AssetTransfer(ResultSet rs, DbKey dbKey) throws SQLException {

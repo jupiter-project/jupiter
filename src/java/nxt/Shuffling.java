@@ -129,7 +129,7 @@ public final class Shuffling {
 
     }
 
-    private static final boolean deleteFinished = Nxt.getBooleanProperty("nxt.deleteFinishedShufflings");
+    private static final boolean deleteFinished = Jup.getBooleanProperty("nxt.deleteFinishedShufflings");
 
     private static final Listeners<Shuffling, Event> listeners = new Listeners<>();
 
@@ -157,7 +157,7 @@ public final class Shuffling {
     };
 
     static {
-        Nxt.getBlockchainProcessor().addListener(block -> {
+        Jup.getBlockchainProcessor().addListener(block -> {
         	int maxNumberOfTransactions = Constants.MAX_NUMBER_OF_TRANSACTIONS;
         	if (block.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK) {
         		maxNumberOfTransactions = Constants.ORIGINAL_MAX_NUMBER_OF_TRANSACTIONS;
@@ -348,7 +348,7 @@ public final class Shuffling {
             DbUtils.setLongZeroToNull(pstmt, ++i, this.assigneeAccountId);
             DbUtils.setArrayEmptyToNull(pstmt, ++i, this.recipientPublicKeys);
             pstmt.setByte(++i, this.registrantCount);
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             pstmt.executeUpdate();
         }
     }
@@ -448,7 +448,7 @@ public final class Shuffling {
         byte[] shufflingStateHash = null;
         int participantIndex = 0;
         List<ShufflingParticipant> shufflingParticipants = new ArrayList<>();
-        Nxt.getBlockchain().readLock();
+        Jup.getBlockchain().readLock();
         // Read the participant list for the shuffling
         try (DbIterator<ShufflingParticipant> participants = ShufflingParticipant.getParticipants(id)) {
             for (ShufflingParticipant participant : participants) {
@@ -463,7 +463,7 @@ public final class Shuffling {
                 shufflingStateHash = getParticipantsHash(shufflingParticipants);
             }
         } finally {
-            Nxt.getBlockchain().readUnlock();
+            Jup.getBlockchain().readUnlock();
         }
         boolean isLast = participantIndex == participantCount - 1;
         // decrypt the tokens bundled in the current data
@@ -523,7 +523,7 @@ public final class Shuffling {
     }
 
     public Attachment.ShufflingCancellation revealKeySeeds(final String secretPhrase, long cancellingAccountId, byte[] shufflingStateHash) {
-        Nxt.getBlockchain().readLock();
+        Jup.getBlockchain().readLock();
         try (DbIterator<ShufflingParticipant> participants = ShufflingParticipant.getParticipants(id)) {
             if (cancellingAccountId != this.assigneeAccountId) {
                 throw new RuntimeException(String.format("Current shuffling cancellingAccountId %s does not match %s",
@@ -578,7 +578,7 @@ public final class Shuffling {
             return new Attachment.ShufflingCancellation(this.id, data, keySeeds.toArray(new byte[keySeeds.size()][]),
                     shufflingStateHash, cancellingAccountId);
         } finally {
-            Nxt.getBlockchain().readUnlock();
+            Jup.getBlockchain().readUnlock();
         }
     }
 

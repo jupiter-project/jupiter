@@ -25,17 +25,17 @@ public final class Db {
 
     public static final String PREFIX = Constants.isTestnet ? "nxt.testDb" : "nxt.db";
     public static final TransactionalDb db = new TransactionalDb(new BasicDb.DbProperties()
-            .maxCacheSize(Nxt.getIntProperty("nxt.dbCacheKB"))
-            .dbUrl(Nxt.getStringProperty(PREFIX + "Url"))
-            .dbType(Nxt.getStringProperty(PREFIX + "Type"))
-            .dbDir(Nxt.getStringProperty(PREFIX + "Dir"))
-            .dbParams(Nxt.getStringProperty(PREFIX + "Params"))
-            .dbUsername(Nxt.getStringProperty(PREFIX + "Username"))
-            .dbPassword(Nxt.getStringProperty(PREFIX + "Password", null, true))
-            .maxConnections(Nxt.getIntProperty("nxt.maxDbConnections"))
-            .loginTimeout(Nxt.getIntProperty("nxt.dbLoginTimeout"))
-            .defaultLockTimeout(Nxt.getIntProperty("nxt.dbDefaultLockTimeout") * 1000)
-            .maxMemoryRows(Nxt.getIntProperty("nxt.dbMaxMemoryRows"))
+            .maxCacheSize(Jup.getIntProperty("nxt.dbCacheKB"))
+            .dbUrl(Jup.getStringProperty(PREFIX + "Url"))
+            .dbType(Jup.getStringProperty(PREFIX + "Type"))
+            .dbDir(Jup.getStringProperty(PREFIX + "Dir"))
+            .dbParams(Jup.getStringProperty(PREFIX + "Params"))
+            .dbUsername(Jup.getStringProperty(PREFIX + "Username"))
+            .dbPassword(Jup.getStringProperty(PREFIX + "Password", null, true))
+            .maxConnections(Jup.getIntProperty("nxt.maxDbConnections"))
+            .loginTimeout(Jup.getIntProperty("nxt.dbLoginTimeout"))
+            .defaultLockTimeout(Jup.getIntProperty("nxt.dbDefaultLockTimeout") * 1000)
+            .maxMemoryRows(Jup.getIntProperty("nxt.dbMaxMemoryRows"))
     );
 
     static void init() {

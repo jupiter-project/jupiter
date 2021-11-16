@@ -18,7 +18,7 @@
 
 package nxt.addons;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.util.Logger;
 import nxt.util.ThreadPool;
 
@@ -26,7 +26,7 @@ public final class AfterStart implements AddOn {
 
     @Override
     public void init() {
-        String afterStartScript = Nxt.getStringProperty("nxt.afterStartScript");
+        String afterStartScript = Jup.getStringProperty("nxt.afterStartScript");
         if (afterStartScript != null) {
             ThreadPool.runAfterStart(() -> {
                 try {

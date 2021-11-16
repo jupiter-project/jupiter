@@ -29,7 +29,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import nxt.Attachment;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.Transaction;
 import nxt.TransactionType;
@@ -62,7 +62,7 @@ public final class GetExpectedAskOrders extends APIServlet.APIRequestHandler {
             return assetId == 0 || attachment.getAssetId() == assetId;
         };
 
-        List<? extends Transaction> transactions = Nxt.getBlockchain().getExpectedTransactions(filter);
+        List<? extends Transaction> transactions = Jup.getBlockchain().getExpectedTransactions(filter);
         if (sortByPrice) {
             Collections.sort(transactions, priceComparator);
         }

@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.TaggedData;
 
@@ -48,7 +48,7 @@ public final class DownloadTaggedData extends APIServlet.APIRequestHandler {
         boolean retrieve = "true".equalsIgnoreCase(request.getParameter("retrieve"));
         TaggedData taggedData = TaggedData.getData(transactionId);
         if (taggedData == null && retrieve) {
-            if (Nxt.getBlockchainProcessor().restorePrunedTransaction(transactionId) == null) {
+            if (Jup.getBlockchainProcessor().restorePrunedTransaction(transactionId) == null) {
                 return PRUNED_TRANSACTION;
             }
             taggedData = TaggedData.getData(transactionId);

@@ -27,7 +27,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import nxt.Block;
-import nxt.Nxt;
+import nxt.Jup;
 
 public final class PopOff extends APIServlet.APIRequestHandler {
 
@@ -51,23 +51,23 @@ public final class PopOff extends APIServlet.APIRequestHandler {
         boolean keepTransactions = "true".equalsIgnoreCase(req.getParameter("keepTransactions"));
         List<? extends Block> blocks;
         try {
-            Nxt.getBlockchainProcessor().setGetMoreBlocks(false);
+            Jup.getBlockchainProcessor().setGetMoreBlocks(false);
             if (numBlocks > 0) {
-                blocks = Nxt.getBlockchainProcessor().popOffTo(Nxt.getBlockchain().getHeight() - numBlocks);
+                blocks = Jup.getBlockchainProcessor().popOffTo(Jup.getBlockchain().getHeight() - numBlocks);
             } else if (height > 0) {
-                blocks = Nxt.getBlockchainProcessor().popOffTo(height);
+                blocks = Jup.getBlockchainProcessor().popOffTo(height);
             } else {
                 return JSONResponses.missing("numBlocks", "height");
             }
         } finally {
-            Nxt.getBlockchainProcessor().setGetMoreBlocks(true);
+            Jup.getBlockchainProcessor().setGetMoreBlocks(true);
         }
         JSONArray blocksJSON = new JSONArray();
         blocks.forEach(block -> blocksJSON.add(JSONData.block(block, true, false, false)));
         JSONObject response = new JSONObject();
         response.put("blocks", blocksJSON);
         if (keepTransactions) {
-            blocks.forEach(block -> Nxt.getTransactionProcessor().processLater(block.getTransactions()));
+            blocks.forEach(block -> Jup.getTransactionProcessor().processLater(block.getTransactions()));
         }
         return response;
     }

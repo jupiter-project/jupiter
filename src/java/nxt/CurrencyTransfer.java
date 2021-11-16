@@ -148,12 +148,12 @@ public final class CurrencyTransfer {
     private CurrencyTransfer(Transaction transaction, Attachment.MonetarySystemCurrencyTransfer attachment) {
         this.id = transaction.getId();
         this.dbKey = currencyTransferDbKeyFactory.newKey(this.id);
-        this.height = Nxt.getBlockchain().getHeight();
+        this.height = Jup.getBlockchain().getHeight();
         this.currencyId = attachment.getCurrencyId();
         this.senderId = transaction.getSenderId();
         this.recipientId = transaction.getRecipientId();
         this.units = attachment.getUnits();
-        this.timestamp = Nxt.getBlockchain().getLastBlockTimestamp();
+        this.timestamp = Jup.getBlockchain().getLastBlockTimestamp();
     }
 
     private CurrencyTransfer(ResultSet rs, DbKey dbKey) throws SQLException {

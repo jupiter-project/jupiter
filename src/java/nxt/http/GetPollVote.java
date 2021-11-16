@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.Poll;
 import nxt.Vote;
@@ -45,8 +45,8 @@ public class GetPollVote extends APIServlet.APIRequestHandler  {
         if (vote != null) {
             int countHeight;
             JSONData.VoteWeighter weighter = null;
-            if (includeWeights && (countHeight = Math.min(poll.getFinishHeight(), Nxt.getBlockchain().getHeight()))
-                    >= Nxt.getBlockchainProcessor().getMinRollbackHeight()) {
+            if (includeWeights && (countHeight = Math.min(poll.getFinishHeight(), Jup.getBlockchain().getHeight()))
+                    >= Jup.getBlockchainProcessor().getMinRollbackHeight()) {
                 VoteWeighting voteWeighting = poll.getVoteWeighting();
                 VoteWeighting.VotingModel votingModel = voteWeighting.getVotingModel();
                 weighter = voterId -> votingModel.calcWeight(voteWeighting, voterId, countHeight);

@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.PrunableMessage;
 import nxt.util.Convert;
@@ -48,7 +48,7 @@ public final class DownloadPrunableMessage extends APIServlet.APIRequestHandler 
         boolean retrieve = "true".equalsIgnoreCase(request.getParameter("retrieve"));
         PrunableMessage prunableMessage = PrunableMessage.getPrunableMessage(transactionId);
         if (prunableMessage == null && retrieve) {
-            if (Nxt.getBlockchainProcessor().restorePrunedTransaction(transactionId) == null) {
+            if (Jup.getBlockchainProcessor().restorePrunedTransaction(transactionId) == null) {
                 return PRUNED_TRANSACTION;
             }
             prunableMessage = PrunableMessage.getPrunableMessage(transactionId);

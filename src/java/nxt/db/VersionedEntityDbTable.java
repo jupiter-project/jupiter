@@ -26,7 +26,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import nxt.Nxt;
+import nxt.Jup;
 
 public abstract class VersionedEntityDbTable<T> extends EntityDbTable<T> {
 
@@ -54,7 +54,7 @@ public abstract class VersionedEntityDbTable<T> extends EntityDbTable<T> {
              PreparedStatement pstmtCount = con.prepareStatement("SELECT 1 FROM " + table
                      + dbKeyFactory.getPKClause() + " AND height < ? LIMIT 1")) {
             int i = dbKey.setPK(pstmtCount);
-            pstmtCount.setInt(i, Nxt.getBlockchain().getHeight());
+            pstmtCount.setInt(i, Jup.getBlockchain().getHeight());
             try (ResultSet rs = pstmtCount.executeQuery()) {
                 if (rs.next()) {
                     try (PreparedStatement pstmt = con.prepareStatement("UPDATE " + table

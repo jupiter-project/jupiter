@@ -54,7 +54,7 @@ import nxt.Block;
 import nxt.Constants;
 import nxt.Db;
 import nxt.Generator;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.http.API;
 import nxt.peer.Peers;
 import nxt.util.Convert;
@@ -94,7 +94,7 @@ public class DesktopSystemTray {
         }
         MenuItem showDesktopApplication = new MenuItem("Show Desktop Application");
         MenuItem refreshDesktopApplication = new MenuItem("Refresh Wallet");
-        if (!Nxt.isDesktopApplicationEnabled()) {
+        if (!Jup.isDesktopApplicationEnabled()) {
             showDesktopApplication.setEnabled(false);
             refreshDesktopApplication.setEnabled(false);
         }
@@ -159,7 +159,7 @@ public class DesktopSystemTray {
 
         shutdown.addActionListener(e -> {
             if(JOptionPane.showConfirmDialog (null,
-                    "Sure you want to shutdown " + Nxt.APPLICATION + "?\n\nIf you do, this will stop forging, shufflers and account monitors.\n\n",
+                    "Sure you want to shutdown " + Jup.APPLICATION + "?\n\nIf you do, this will stop forging, shufflers and account monitors.\n\n",
                     "Shutdown",
                     JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 Logger.logInfoMessage("Shutdown requested by System Tray");
@@ -177,7 +177,7 @@ public class DesktopSystemTray {
     }
 
     private void displayStatus() {
-        Block lastBlock = Nxt.getBlockchain().getLastBlock();
+        Block lastBlock = Jup.getBlockchain().getLastBlock();
         Collection<Generator> allGenerators = Generator.getAllGenerators();
 
         StringBuilder generators = new StringBuilder();
@@ -199,14 +199,14 @@ public class DesktopSystemTray {
         statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.Y_AXIS));
 
         addLabelRow(statusPanel, "Installation");
-        addDataRow(statusPanel, "Application", Nxt.APPLICATION);
-        addDataRow(statusPanel, "Version", Nxt.VERSION);
+        addDataRow(statusPanel, "Application", Jup.APPLICATION);
+        addDataRow(statusPanel, "Version", Jup.VERSION);
         addDataRow(statusPanel, "Network", (Constants.isTestnet) ? "TestNet" : "MainNet");
         addDataRow(statusPanel, "Working offline", "" + Constants.isOffline);
         addDataRow(statusPanel, "Wallet", String.valueOf(API.getWelcomePageUri()));
         addDataRow(statusPanel, "Peer port", String.valueOf(Peers.getDefaultPeerPort()));
         addDataRow(statusPanel, "Program folder", String.valueOf(Paths.get(".").toAbsolutePath().getParent()));
-        addDataRow(statusPanel, "User folder", String.valueOf(Paths.get(Nxt.getUserHomeDir()).toAbsolutePath()));
+        addDataRow(statusPanel, "User folder", String.valueOf(Paths.get(Jup.getUserHomeDir()).toAbsolutePath()));
         addDataRow(statusPanel, "Database URL", Db.db == null ? "unavailable" : Db.db.getUrl());
         addEmptyRow(statusPanel);
 
@@ -215,7 +215,7 @@ public class DesktopSystemTray {
             addDataRow(statusPanel, "Height", String.valueOf(lastBlock.getHeight()));
             addDataRow(statusPanel, "Timestamp", String.valueOf(lastBlock.getTimestamp()));
             addDataRow(statusPanel, "Time", String.valueOf(new Date(Convert.fromEpochTime(lastBlock.getTimestamp()))));
-            addDataRow(statusPanel, "Seconds passed", String.valueOf(Nxt.getEpochTime() - lastBlock.getTimestamp()));
+            addDataRow(statusPanel, "Seconds passed", String.valueOf(Jup.getEpochTime() - lastBlock.getTimestamp()));
             addDataRow(statusPanel, "Forging", String.valueOf(allGenerators.size() > 0));
             if (allGenerators.size() > 0) {
                 addDataRow(statusPanel, "Forging accounts", generators.toString());
@@ -229,12 +229,12 @@ public class DesktopSystemTray {
         addDataRow(statusPanel, "Max memory", humanReadableByteCount(Runtime.getRuntime().maxMemory()));
         addDataRow(statusPanel, "Total memory", humanReadableByteCount(Runtime.getRuntime().totalMemory()));
         addDataRow(statusPanel, "Free memory", humanReadableByteCount(Runtime.getRuntime().freeMemory()));
-        addDataRow(statusPanel, "Process id", Nxt.getProcessId());
+        addDataRow(statusPanel, "Process id", Jup.getProcessId());
         addEmptyRow(statusPanel);
         addDataRow(statusPanel, "Updated", dateFormat.format(new Date()));
         if (statusDialog == null || !statusDialog.isVisible()) {
             JOptionPane pane = new JOptionPane(statusPanel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, imageIcon);
-            statusDialog = pane.createDialog(wrapper, Nxt.APPLICATION + " Server Status");
+            statusDialog = pane.createDialog(wrapper, Jup.APPLICATION + " Server Status");
             statusDialog.setVisible(true);
             statusDialog.dispose();
         } else {

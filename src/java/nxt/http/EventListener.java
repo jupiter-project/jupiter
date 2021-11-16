@@ -45,7 +45,7 @@ import nxt.AccountLedger.LedgerEntry;
 import nxt.Block;
 import nxt.BlockchainProcessor;
 import nxt.Db;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.Transaction;
 import nxt.TransactionProcessor;
 import nxt.db.TransactionalDb;
@@ -69,16 +69,16 @@ import nxt.util.Logger;
 class EventListener implements Runnable, AsyncListener, TransactionalDb.TransactionCallback {
 
     /** Maximum event users */
-    static final int maxEventUsers = Nxt.getIntProperty("nxt.apiMaxEventUsers");
+    static final int maxEventUsers = Jup.getIntProperty("nxt.apiMaxEventUsers");
 
     /** Event registration timeout (seconds) */
-    static final int eventTimeout = Math.max(Nxt.getIntProperty("nxt.apiEventTimeout"), 15);
+    static final int eventTimeout = Math.max(Jup.getIntProperty("nxt.apiEventTimeout"), 15);
 
     /** Blockchain processor */
-    static final BlockchainProcessor blockchainProcessor = Nxt.getBlockchainProcessor();
+    static final BlockchainProcessor blockchainProcessor = Jup.getBlockchainProcessor();
 
     /** Transaction processor */
-    static final TransactionProcessor transactionProcessor = Nxt.getTransactionProcessor();
+    static final TransactionProcessor transactionProcessor = Jup.getTransactionProcessor();
 
     /** Active event users */
     static final Map<String, EventListener> eventListeners = new ConcurrentHashMap<>();

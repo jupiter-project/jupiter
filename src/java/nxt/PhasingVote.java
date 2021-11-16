@@ -112,7 +112,7 @@ public class PhasingVote {
             pstmt.setLong(++i, this.voteId);
             pstmt.setLong(++i, this.phasedTransactionId);
             pstmt.setLong(++i, this.voterId);
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             pstmt.executeUpdate();
         }
     }

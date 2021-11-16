@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONStreamAware;
 
 import nxt.Account;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 
 public final class GetBalance extends APIServlet.APIRequestHandler {
@@ -40,7 +40,7 @@ public final class GetBalance extends APIServlet.APIRequestHandler {
         long accountId = ParameterParser.getAccountId(req, true);
         int height = ParameterParser.getHeight(req);
         if (height < 0) {
-            height = Nxt.getBlockchain().getHeight();
+            height = Jup.getBlockchain().getHeight();
         }
         Account account = Account.getAccount(accountId, height);
         return JSONData.accountBalance(account, includeEffectiveBalance, height);

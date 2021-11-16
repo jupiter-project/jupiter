@@ -25,7 +25,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.Transaction;
 import nxt.util.JSON;
 
@@ -44,7 +44,7 @@ final class GetUnconfirmedTransactions extends PeerServlet.PeerRequestHandler {
             return JSON.emptyJSON;
         }
 
-        SortedSet<? extends Transaction> transactionSet = Nxt.getTransactionProcessor().getCachedUnconfirmedTransactions(exclude);
+        SortedSet<? extends Transaction> transactionSet = Jup.getTransactionProcessor().getCachedUnconfirmedTransactions(exclude);
         JSONArray transactionsData = new JSONArray();
         for (Transaction transaction : transactionSet) {
             if (transactionsData.size() >= 100) {

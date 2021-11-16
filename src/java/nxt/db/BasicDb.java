@@ -24,7 +24,7 @@ import java.sql.Statement;
 
 import org.h2.jdbcx.JdbcConnectionPool;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.util.Logger;
 
 public class BasicDb {
@@ -118,7 +118,7 @@ public class BasicDb {
         }
         String dbUrl = dbProperties.dbUrl;
         if (dbUrl == null) {
-            String dbDir = Nxt.getDbDir(dbProperties.dbDir);
+            String dbDir = Jup.getDbDir(dbProperties.dbDir);
             dbUrl = String.format("jdbc:%s:%s;%s", dbProperties.dbType, dbDir, dbProperties.dbParams);
         }
         if (!dbUrl.contains("MV_STORE=")) {

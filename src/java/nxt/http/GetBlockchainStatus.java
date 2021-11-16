@@ -27,7 +27,7 @@ import nxt.AccountLedger;
 import nxt.Block;
 import nxt.BlockchainProcessor;
 import nxt.Constants;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.peer.Peer;
 import nxt.peer.Peers;
 
@@ -42,21 +42,21 @@ public final class GetBlockchainStatus extends APIServlet.APIRequestHandler {
     @Override
     protected JSONObject processRequest(HttpServletRequest req) {
         JSONObject response = new JSONObject();
-        response.put("application", Nxt.APPLICATION);
-        response.put("version", Nxt.VERSION);
-        response.put("time", Nxt.getEpochTime());
-        Block lastBlock = Nxt.getBlockchain().getLastBlock();
+        response.put("application", Jup.APPLICATION);
+        response.put("version", Jup.VERSION);
+        response.put("time", Jup.getEpochTime());
+        Block lastBlock = Jup.getBlockchain().getLastBlock();
         response.put("lastBlock", lastBlock.getStringId());
         response.put("cumulativeDifficulty", lastBlock.getCumulativeDifficulty().toString());
         response.put("numberOfBlocks", lastBlock.getHeight() + 1);
-        BlockchainProcessor blockchainProcessor = Nxt.getBlockchainProcessor();
+        BlockchainProcessor blockchainProcessor = Jup.getBlockchainProcessor();
         Peer lastBlockchainFeeder = blockchainProcessor.getLastBlockchainFeeder();
         response.put("lastBlockchainFeeder", lastBlockchainFeeder == null ? null : lastBlockchainFeeder.getAnnouncedAddress());
         response.put("lastBlockchainFeederHeight", blockchainProcessor.getLastBlockchainFeederHeight());
         response.put("isScanning", blockchainProcessor.isScanning());
         response.put("isDownloading", blockchainProcessor.isDownloading());
         response.put("maxRollback", Constants.MAX_ROLLBACK);
-        response.put("currentMinRollbackHeight", Nxt.getBlockchainProcessor().getMinRollbackHeight());
+        response.put("currentMinRollbackHeight", Jup.getBlockchainProcessor().getMinRollbackHeight());
         response.put("isTestnet", Constants.isTestnet);
         response.put("maxPrunableLifetime", Constants.MAX_PRUNABLE_LIFETIME);
         response.put("includeExpiredPrunable", Constants.INCLUDE_EXPIRED_PRUNABLE);

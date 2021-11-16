@@ -29,7 +29,7 @@ import java.io.InputStreamReader;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.Transaction;
 import nxt.crypto.Crypto;
 import nxt.util.Convert;
@@ -75,7 +75,7 @@ public final class SignTransactionJSON {
                 } else {
                     secretPhrase = new String(console.readPassword("Secret phrase for account " + senderRS + ": "));
                 }
-                Transaction.Builder builder = Nxt.newTransactionBuilder(json);
+                Transaction.Builder builder = Jup.newTransactionBuilder(json);
                 Transaction transaction = builder.build(secretPhrase);
                 writer.write(transaction.getJSONObject().toJSONString());
                 writer.newLine();

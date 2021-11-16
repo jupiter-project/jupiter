@@ -24,7 +24,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import nxt.Block;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 
 public final class GetECBlock extends APIServlet.APIRequestHandler {
@@ -39,9 +39,9 @@ public final class GetECBlock extends APIServlet.APIRequestHandler {
     protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
         int timestamp = ParameterParser.getTimestamp(req);
         if (timestamp == 0) {
-            timestamp = Nxt.getEpochTime();
+            timestamp = Jup.getEpochTime();
         }
-        Block ecBlock = Nxt.getBlockchain().getECBlock(timestamp);
+        Block ecBlock = Jup.getBlockchain().getECBlock(timestamp);
         JSONObject response = new JSONObject();
         response.put("ecBlockId", ecBlock.getStringId());
         response.put("ecBlockHeight", ecBlock.getHeight());

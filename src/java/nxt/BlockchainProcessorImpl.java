@@ -82,10 +82,10 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
 
     private final ExecutorService networkService = Executors.newCachedThreadPool();
     private final List<DerivedDbTable> derivedTables = new CopyOnWriteArrayList<>();
-    private final boolean trimDerivedTables = Nxt.getBooleanProperty("nxt.trimDerivedTables");
-    private final int defaultNumberOfForkConfirmations = Nxt.getIntProperty(Constants.isTestnet
+    private final boolean trimDerivedTables = Jup.getBooleanProperty("nxt.trimDerivedTables");
+    private final int defaultNumberOfForkConfirmations = Jup.getIntProperty(Constants.isTestnet
             ? "nxt.testnetNumberOfForkConfirmations" : "nxt.numberOfForkConfirmations");
-    private final boolean simulateEndlessDownload = Nxt.getBooleanProperty("nxt.simulateEndlessDownload");
+    private final boolean simulateEndlessDownload = Jup.getBooleanProperty("nxt.simulateEndlessDownload");
 
     private int initialScanHeight;
     private volatile int lastTrimHeight;
@@ -144,7 +144,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                 //
                 // Restore prunable data
                 //
-                int now = Nxt.getEpochTime();
+                int now = Jup.getEpochTime();
                 if (!isRestoring && !prunableTransactions.isEmpty() && now - lastRestoreTime > 60 * 60) {
                     isRestoring = true;
                     lastRestoreTime = now;
@@ -874,7 +874,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                     if (transactions == null || transactions.isEmpty()) {
                         return;
                     }
-                    List<Transaction> processed = Nxt.getTransactionProcessor().restorePrunableData(transactions);
+                    List<Transaction> processed = Jup.getTransactionProcessor().restorePrunableData(transactions);
                     //
                     // Remove transactions that have been successfully processed
                     //
@@ -904,7 +904,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
     };
 
     private BlockchainProcessorImpl() {
-        final int trimFrequency = Nxt.getIntProperty("nxt.trimFrequency");
+        final int trimFrequency = Jup.getIntProperty("nxt.trimFrequency");
         blockListeners.addListener(block -> {
             if (block.getHeight() % 5000 == 0) {
                 Logger.logMessage("processed block " + block.getHeight());
@@ -937,8 +937,8 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
         ThreadPool.runBeforeStart(() -> {
             alreadyInitialized = true;
             addGenesisBlock();
-            if (Nxt.getBooleanProperty("nxt.forceScan")) {
-                scan(0, Nxt.getBooleanProperty("nxt.forceValidate"));
+            if (Jup.getBooleanProperty("nxt.forceScan")) {
+                scan(0, Jup.getBooleanProperty("nxt.forceValidate"));
             } else {
                 boolean rescan;
                 boolean validate;
@@ -1122,7 +1122,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
     public int restorePrunedData() {
         Db.db.beginTransaction();
         try (Connection con = Db.db.getConnection()) {
-            int now = Nxt.getEpochTime();
+            int now = Jup.getEpochTime();
             int minTimestamp = Math.max(1, now - Constants.MAX_PRUNABLE_LIFETIME);
             int maxTimestamp = Math.max(minTimestamp, now - Constants.MIN_PRUNABLE_LIFETIME) - 1;
             List<TransactionDb.PrunableTransaction> transactionList =
@@ -1195,7 +1195,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                 continue;
             }
             try {
-                List<Transaction> processed = Nxt.getTransactionProcessor().restorePrunableData(transactions);
+                List<Transaction> processed = Jup.getTransactionProcessor().restorePrunableData(transactions);
                 if (processed.isEmpty()) {
                     continue;
                 }
@@ -1286,7 +1286,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
 
     private void pushBlock(final BlockImpl block) throws BlockNotAcceptedException {
 
-        int curTime = Nxt.getEpochTime();
+        int curTime = Jup.getEpochTime();
 
         blockchain.writeLock();
         try {
@@ -1484,7 +1484,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
             block.apply();
             validPhasedTransactions.forEach(transaction -> transaction.getPhasing().countVotes(transaction));
             invalidPhasedTransactions.forEach(transaction -> transaction.getPhasing().reject(transaction));
-            int fromTimestamp = Nxt.getEpochTime() - Constants.MAX_PRUNABLE_LIFETIME;
+            int fromTimestamp = Jup.getEpochTime() - Constants.MAX_PRUNABLE_LIFETIME;
             for (TransactionImpl transaction : block.getTransactions()) {
                 try {
                     transaction.apply();
@@ -1948,7 +1948,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                                 List<TransactionImpl> invalidPhasedTransactions = new ArrayList<>();
                                 validatePhasedTransactions(blockchain.getHeight(), validPhasedTransactions, invalidPhasedTransactions, duplicates);
                                 if (validate && currentBlock.getHeight() > 0) {
-                                    int curTime = Nxt.getEpochTime();
+                                    int curTime = Jup.getEpochTime();
                                     validate(currentBlock, blockchain.getLastBlock(), curTime);
                                     byte[] blockBytes = currentBlock.bytes();
                                     JSONObject blockJSON = (JSONObject) JSONValue.parse(currentBlock.getJSONObject().toJSONString());

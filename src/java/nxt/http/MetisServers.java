@@ -32,7 +32,7 @@ import org.json.simple.JSONObject;
 import nxt.Appendix;
 import nxt.Block;
 import nxt.BlockchainProcessor;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.Transaction;
 import nxt.TransactionProcessor;
 import nxt.TransactionType;
@@ -47,8 +47,8 @@ public final class MetisServers {
 	
 	private static final int DEFAULT_METIS_PORT = 8083;
 	
-	private static final TransactionProcessor transactionProcessor = Nxt.getTransactionProcessor();
-	private static final BlockchainProcessor blockchainProcessor = Nxt.getBlockchainProcessor();
+	private static final TransactionProcessor transactionProcessor = Jup.getTransactionProcessor();
+	private static final BlockchainProcessor blockchainProcessor = Jup.getBlockchainProcessor();
 	
     public enum Event {
     	ADDED_ACTIVE_METISSERVER, CHANGED_ACTIVE_METISSERVER, DEACTIVATE, REMOVE, NEW_METIS_SERVER

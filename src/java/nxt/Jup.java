@@ -52,7 +52,7 @@ import nxt.util.Logger;
 import nxt.util.ThreadPool;
 import nxt.util.Time;
 
-public final class Nxt {
+public final class Jup {
 
     public static final String VERSION = "2.5.0";
     public static final String APPLICATION = "JRS";
@@ -70,14 +70,14 @@ public final class Nxt {
     static {
         redirectSystemStreams("out");
         redirectSystemStreams("err");
-        System.out.println("Initializing " + Nxt.APPLICATION + " server version " + Nxt.VERSION);
+        System.out.println("Initializing " + Jup.APPLICATION + " server version " + Jup.VERSION);
         printCommandLineArguments();
         runtimeMode = RuntimeEnvironment.getRuntimeMode();
         System.out.printf("Runtime mode %s\n", runtimeMode.getClass().getName());
         dirProvider = RuntimeEnvironment.getDirProvider();
         System.out.println("User home folder " + dirProvider.getUserHomeDir());
         loadProperties(defaultProperties, NXT_DEFAULT_PROPERTIES, true);
-        if (!VERSION.equals(Nxt.defaultProperties.getProperty("nxt.version"))) {
+        if (!VERSION.equals(Jup.defaultProperties.getProperty("nxt.version"))) {
             throw new RuntimeException("Using an nxt-default.properties file from a version other than " + VERSION + " is not supported!!!");
         }
     }
@@ -307,12 +307,12 @@ public final class Nxt {
     }
 
     static void setTime(Time time) {
-        Nxt.time = time;
+        Jup.time = time;
     }
 
     public static void main(String[] args) {
         try {
-            Runtime.getRuntime().addShutdownHook(new Thread(Nxt::shutdown));
+            Runtime.getRuntime().addShutdownHook(new Thread(Jup::shutdown));
             init();
         } catch (Throwable t) {
             System.out.println("Fatal error: " + t.toString());
@@ -339,7 +339,7 @@ public final class Nxt {
         Peers.shutdown();
         MetisServers.shutdown();
         Db.shutdown();
-        Logger.logShutdownMessage(Nxt.APPLICATION + " server " + VERSION + " stopped.");
+        Logger.logShutdownMessage(Jup.APPLICATION + " server " + VERSION + " stopped.");
         Logger.shutdown();
         runtimeMode.shutdown();
     }
@@ -395,10 +395,10 @@ public final class Nxt {
                 AddOns.init();
                 API.init();
                 DebugTrace.init();
-                int timeMultiplier = (Constants.isTestnet && Constants.isOffline) ? Math.max(Nxt.getIntProperty("nxt.timeMultiplier"), 1) : 1;
+                int timeMultiplier = (Constants.isTestnet && Constants.isOffline) ? Math.max(Jup.getIntProperty("nxt.timeMultiplier"), 1) : 1;
                 ThreadPool.start(timeMultiplier);
                 if (timeMultiplier > 1) {
-                    setTime(new Time.FasterTime(Math.max(getEpochTime(), Nxt.getBlockchain().getLastBlock().getTimestamp()), timeMultiplier));
+                    setTime(new Time.FasterTime(Math.max(getEpochTime(), Jup.getBlockchain().getLastBlock().getTimestamp()), timeMultiplier));
                     Logger.logMessage("TIME WILL FLOW " + timeMultiplier + " TIMES FASTER!");
                 }
                 try {
@@ -407,7 +407,7 @@ public final class Nxt {
                 testSecureRandom();
                 long currentTime = System.currentTimeMillis();
                 Logger.logMessage("Initialization took " + (currentTime - startTime) / 1000 + " seconds");
-                Logger.logMessage(Nxt.APPLICATION + " server " + VERSION + " started successfully.");
+                Logger.logMessage(Jup.APPLICATION + " server " + VERSION + " started successfully.");
                 Logger.logMessage("Copyright © 2013-2016 The Nxt Core Developers.");
                 Logger.logMessage("Copyright © 2016-2017 Jelurida IP B.V.");
                 Logger.logMessage("Copyright © 2016-2020 Sigwo Technologies");
@@ -537,13 +537,13 @@ public final class Nxt {
     }
 
     public static boolean isDesktopApplicationEnabled() {
-        return RuntimeEnvironment.isDesktopApplicationEnabled() && Nxt.getBooleanProperty("nxt.launchDesktopApplication");
+        return RuntimeEnvironment.isDesktopApplicationEnabled() && Jup.getBooleanProperty("nxt.launchDesktopApplication");
     }
 
     private static void launchDesktopApplication() {
         runtimeMode.launchDesktopApplication();
     }
 
-    private Nxt() {} // never
+    private Jup() {} // never
 
 }

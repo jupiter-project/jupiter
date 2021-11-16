@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.Transaction;
 import nxt.util.Convert;
 
@@ -53,9 +53,9 @@ public final class GetTransaction extends APIServlet.APIRequestHandler {
         try {
             if (transactionIdString != null) {
                 transactionId = Convert.parseUnsignedLong(transactionIdString);
-                transaction = Nxt.getBlockchain().getTransaction(transactionId);
+                transaction = Jup.getBlockchain().getTransaction(transactionId);
             } else {
-                transaction = Nxt.getBlockchain().getTransactionByFullHash(transactionFullHash);
+                transaction = Jup.getBlockchain().getTransactionByFullHash(transactionFullHash);
                 if (transaction == null) {
                     return UNKNOWN_TRANSACTION;
                 }
@@ -65,7 +65,7 @@ public final class GetTransaction extends APIServlet.APIRequestHandler {
         }
 
         if (transaction == null) {
-            transaction = Nxt.getTransactionProcessor().getUnconfirmedTransaction(transactionId);
+            transaction = Jup.getTransactionProcessor().getUnconfirmedTransaction(transactionId);
             if (transaction == null) {
                 return UNKNOWN_TRANSACTION;
             }

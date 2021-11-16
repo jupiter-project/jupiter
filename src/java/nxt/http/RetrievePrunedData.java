@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 
 /**
  * <p>RetrievePrunedData will schedule a background task to retrieve data which
@@ -44,7 +44,7 @@ public class RetrievePrunedData extends APIServlet.APIRequestHandler {
     protected JSONStreamAware processRequest(HttpServletRequest req) {
         JSONObject response = new JSONObject();
         try {
-            int count = Nxt.getBlockchainProcessor().restorePrunedData();
+            int count = Jup.getBlockchainProcessor().restorePrunedData();
             response.put("done", true);
             response.put("numberOfPrunedData", count);
         } catch (RuntimeException e) {

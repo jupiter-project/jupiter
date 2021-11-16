@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.Transaction;
 
 public class RetrievePrunedTransaction extends APIServlet.APIRequestHandler {
@@ -39,11 +39,11 @@ public class RetrievePrunedTransaction extends APIServlet.APIRequestHandler {
     @Override
     protected JSONStreamAware processRequest(HttpServletRequest req) throws ParameterException {
         long transactionId = ParameterParser.getUnsignedLong(req, "transaction", true);
-        Transaction transaction = Nxt.getBlockchain().getTransaction(transactionId);
+        Transaction transaction = Jup.getBlockchain().getTransaction(transactionId);
         if (transaction == null) {
             return UNKNOWN_TRANSACTION;
         }
-        transaction = Nxt.getBlockchainProcessor().restorePrunedTransaction(transactionId);
+        transaction = Jup.getBlockchainProcessor().restorePrunedTransaction(transactionId);
         if (transaction == null) {
             return PRUNED_TRANSACTION;
         }

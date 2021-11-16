@@ -24,7 +24,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import nxt.Asset;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.Transaction;
 import nxt.util.Convert;
@@ -44,7 +44,7 @@ public final class GetAsset extends APIServlet.APIRequestHandler {
         JSONObject assetJson = JSONData.asset(asset, includeCounts);
         
         if (assetJson.containsKey("asset")){
-        	 Transaction transaction = Nxt.getBlockchain().getTransaction(asset.getId());
+        	 Transaction transaction = Jup.getBlockchain().getTransaction(asset.getId());
         	 if (transaction != null && transaction.getMessage() != null) {
      			String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
      			assetJson.put(MESSAGE_FIELD, messageString);

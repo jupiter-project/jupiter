@@ -26,7 +26,7 @@ import org.json.simple.JSONStreamAware;
 
 import nxt.Account;
 import nxt.Constants;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.db.DbIterator;
 
@@ -44,7 +44,7 @@ public final class GetAccountLessors extends APIServlet.APIRequestHandler {
         Account account = ParameterParser.getAccount(req);
         int height = ParameterParser.getHeight(req);
         if (height < 0) {
-            height = Nxt.getBlockchain().getHeight();
+            height = Jup.getBlockchain().getHeight();
         }
 
         JSONObject response = new JSONObject();

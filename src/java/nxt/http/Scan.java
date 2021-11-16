@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 
 public final class Scan extends APIServlet.APIRequestHandler {
 
@@ -48,16 +48,16 @@ public final class Scan extends APIServlet.APIRequestHandler {
             } catch (NumberFormatException ignore) {}
             long start = System.currentTimeMillis();
             try {
-                Nxt.getBlockchainProcessor().setGetMoreBlocks(false);
+                Jup.getBlockchainProcessor().setGetMoreBlocks(false);
                 if (numBlocks > 0) {
-                    Nxt.getBlockchainProcessor().scan(Nxt.getBlockchain().getHeight() - numBlocks + 1, validate);
+                    Jup.getBlockchainProcessor().scan(Jup.getBlockchain().getHeight() - numBlocks + 1, validate);
                 } else if (height >= 0) {
-                    Nxt.getBlockchainProcessor().scan(height, validate);
+                    Jup.getBlockchainProcessor().scan(height, validate);
                 } else {
                     return JSONResponses.missing("numBlocks", "height");
                 }
             } finally {
-                Nxt.getBlockchainProcessor().setGetMoreBlocks(true);
+                Jup.getBlockchainProcessor().setGetMoreBlocks(true);
             }
             long end = System.currentTimeMillis();
             response.put("done", true);

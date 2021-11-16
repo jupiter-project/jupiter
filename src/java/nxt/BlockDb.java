@@ -42,9 +42,9 @@ final class BlockDb {
     static final Map<Long, BlockImpl> blockCache = new HashMap<>();
     static final SortedMap<Integer, BlockImpl> heightMap = new TreeMap<>();
     static final Map<Long, TransactionImpl> transactionCache = new HashMap<>();
-    static final Blockchain blockchain = Nxt.getBlockchain();
+    static final Blockchain blockchain = Jup.getBlockchain();
     static {
-        Nxt.getBlockchainProcessor().addListener((block) -> {
+        Jup.getBlockchainProcessor().addListener((block) -> {
             synchronized (blockCache) {
                 int height = block.getHeight();
                 Iterator<BlockImpl> it = blockCache.values().iterator();

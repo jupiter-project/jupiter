@@ -31,14 +31,14 @@ import java.util.EnumSet;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.env.service.NxtService_ServiceManagement;
 
 public class ManifestGenerator {
 
     public static void main(String[] args) {
         ManifestGenerator manifestGenerator = new ManifestGenerator();
-        manifestGenerator.generate("./resource/nxt.manifest.mf", Nxt.class.getCanonicalName(), "./lib");
+        manifestGenerator.generate("./resource/nxt.manifest.mf", Jup.class.getCanonicalName(), "./lib");
         String serviceClassName = NxtService_ServiceManagement.class.getCanonicalName();
         serviceClassName = serviceClassName.substring(0, serviceClassName.length() - "_ServiceManagement".length());
         manifestGenerator.generate("./resource/nxtservice.manifest.mf", serviceClassName, "./lib");

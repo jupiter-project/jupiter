@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONStreamAware;
 
 import nxt.Block;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.util.Convert;
 
 public final class GetBlock extends APIServlet.APIRequestHandler {
@@ -48,17 +48,17 @@ public final class GetBlock extends APIServlet.APIRequestHandler {
         String timestampValue = Convert.emptyToNull(req.getParameter("timestamp"));
         if (blockValue != null) {
             try {
-                blockData = Nxt.getBlockchain().getBlock(Convert.parseUnsignedLong(blockValue));
+                blockData = Jup.getBlockchain().getBlock(Convert.parseUnsignedLong(blockValue));
             } catch (RuntimeException e) {
                 return INCORRECT_BLOCK;
             }
         } else if (heightValue != null) {
             try {
                 int height = Integer.parseInt(heightValue);
-                if (height < 0 || height > Nxt.getBlockchain().getHeight()) {
+                if (height < 0 || height > Jup.getBlockchain().getHeight()) {
                     return INCORRECT_HEIGHT;
                 }
-                blockData = Nxt.getBlockchain().getBlockAtHeight(height);
+                blockData = Jup.getBlockchain().getBlockAtHeight(height);
             } catch (RuntimeException e) {
                 return INCORRECT_HEIGHT;
             }
@@ -68,12 +68,12 @@ public final class GetBlock extends APIServlet.APIRequestHandler {
                 if (timestamp < 0) {
                     return INCORRECT_TIMESTAMP;
                 }
-                blockData = Nxt.getBlockchain().getLastBlock(timestamp);
+                blockData = Jup.getBlockchain().getLastBlock(timestamp);
             } catch (RuntimeException e) {
                 return INCORRECT_TIMESTAMP;
             }
         } else {
-            blockData = Nxt.getBlockchain().getLastBlock();
+            blockData = Jup.getBlockchain().getLastBlock();
         }
 
         if (blockData == null) {

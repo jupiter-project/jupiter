@@ -24,7 +24,7 @@ import org.json.simple.JSONStreamAware;
 
 import nxt.Blockchain;
 import nxt.Constants;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.Transaction;
 
 /**
@@ -44,7 +44,7 @@ public class GetTransactions extends PeerServlet.PeerRequestHandler {
         JSONObject response = new JSONObject();
         JSONArray transactionArray = new JSONArray();
         JSONArray transactionIds = (JSONArray)request.get("transactionIds");
-        Blockchain blockchain = Nxt.getBlockchain();
+        Blockchain blockchain = Jup.getBlockchain();
         //
         // Return the transactions to the caller
         //

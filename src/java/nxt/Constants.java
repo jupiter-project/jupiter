@@ -23,19 +23,19 @@ import java.text.DecimalFormat;
 
 public final class Constants {
 
-    public static final boolean isTestnet = Nxt.getBooleanProperty("nxt.isTestnet");
-    public static final boolean isOffline = Nxt.getBooleanProperty("nxt.isOffline");
-    public static final boolean isLightClient = Nxt.getBooleanProperty("nxt.isLightClient");
+    public static final boolean isTestnet = Jup.getBooleanProperty("nxt.isTestnet");
+    public static final boolean isOffline = Jup.getBooleanProperty("nxt.isOffline");
+    public static final boolean isLightClient = Jup.getBooleanProperty("nxt.isLightClient");
 
     public static final String COIN_SYMBOL = "JUP";
     public static final String ACCOUNT_PREFIX = "JUP";
     public static final String PROJECT_NAME = "Jupiter";
     
-    public static final int BLOCK_HEIGHT_HARD_FORK_INCREASE_MAX_BASE_TARGET = isTestnet ? Nxt.getIntProperty("nxt.hardBlockBaseTarget", 0) : 1731000;
-    public static final int BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK = isTestnet ? Nxt.getIntProperty("nxt.hardBlockTx", 0) : 1725000;
-    public static final int BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME = isTestnet ? Nxt.getIntProperty("nxt.hardBlockHeight", 0) : 1718000;
-    public static final int BLOCK_HEIGHT_HARD_FORK_REMOVE_MAX_BASE_TARGET = isTestnet ? Nxt.getIntProperty("nxt.hardRemoveBaseTarget", 0) : 1948750;
-    public static final int BLOCK_HEIGHT_HARD_FORK_UPDATE_FEE = isTestnet ? Nxt.getIntProperty("nxt.hardUpdateFee", 0) : 1948750;
+    public static final int BLOCK_HEIGHT_HARD_FORK_INCREASE_MAX_BASE_TARGET = isTestnet ? Jup.getIntProperty("nxt.hardBlockBaseTarget", 0) : 1731000;
+    public static final int BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK = isTestnet ? Jup.getIntProperty("nxt.hardBlockTx", 0) : 1725000;
+    public static final int BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME = isTestnet ? Jup.getIntProperty("nxt.hardBlockHeight", 0) : 1718000;
+    public static final int BLOCK_HEIGHT_HARD_FORK_REMOVE_MAX_BASE_TARGET = isTestnet ? Jup.getIntProperty("nxt.hardRemoveBaseTarget", 0) : 1948750;
+    public static final int BLOCK_HEIGHT_HARD_FORK_UPDATE_FEE = isTestnet ? Jup.getIntProperty("nxt.hardUpdateFee", 0) : 1948750;
 
     public static final int MIN_TRANSACTION_SIZE = 176;
     
@@ -72,14 +72,14 @@ public final class Constants {
     public static final int ORIGINAL_BASE_TARGET_GAMMA = 64;
     public static DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
     
-    public static final int MAX_ROLLBACK = Math.max(Nxt.getIntProperty("nxt.maxRollback"), 720);
-    public static final int GUARANTEED_BALANCE_CONFIRMATIONS = isTestnet ? Nxt.getIntProperty("nxt.testnetGuaranteedBalanceConfirmations", 1440) : 1440;
-    public static final int LEASING_DELAY = isTestnet ? Nxt.getIntProperty("nxt.testnetLeasingDelay", 1440) : 1440;
+    public static final int MAX_ROLLBACK = Math.max(Jup.getIntProperty("nxt.maxRollback"), 720);
+    public static final int GUARANTEED_BALANCE_CONFIRMATIONS = isTestnet ? Jup.getIntProperty("nxt.testnetGuaranteedBalanceConfirmations", 1440) : 1440;
+    public static final int LEASING_DELAY = isTestnet ? Jup.getIntProperty("nxt.testnetLeasingDelay", 1440) : 1440;
     public static final long MIN_FORGING_BALANCE_NQT = 1000 * ONE_JUP;
 
     public static final int MAX_TIMEDRIFT = 15; // allow up to 15 s clock difference
-    public static final int FORGING_DELAY = Nxt.getIntProperty("nxt.forgingDelay");
-    public static final int FORGING_SPEEDUP = Nxt.getIntProperty("nxt.forgingSpeedup");
+    public static final int FORGING_DELAY = Jup.getIntProperty("nxt.forgingDelay");
+    public static final int FORGING_SPEEDUP = Jup.getIntProperty("nxt.forgingSpeedup");
 
     public static final byte MAX_PHASING_VOTE_TRANSACTIONS = 10;
     public static final byte MAX_PHASING_WHITELIST_SIZE = 10;
@@ -101,11 +101,11 @@ public final class Constants {
     public static final int MAX_PRUNABLE_LIFETIME;
     public static final boolean ENABLE_PRUNING;
     static {
-        int maxPrunableLifetime = Nxt.getIntProperty("nxt.maxPrunableLifetime");
+        int maxPrunableLifetime = Jup.getIntProperty("nxt.maxPrunableLifetime");
         ENABLE_PRUNING = maxPrunableLifetime >= 0;
         MAX_PRUNABLE_LIFETIME = ENABLE_PRUNING ? Math.max(maxPrunableLifetime, MIN_PRUNABLE_LIFETIME) : Integer.MAX_VALUE;
     }
-    public static final boolean INCLUDE_EXPIRED_PRUNABLE = Nxt.getBooleanProperty("nxt.includeExpiredPrunable");
+    public static final boolean INCLUDE_EXPIRED_PRUNABLE = Jup.getBooleanProperty("nxt.includeExpiredPrunable");
 
     public static final int MAX_ACCOUNT_NAME_LENGTH = 100;
     public static final int MAX_ACCOUNT_DESCRIPTION_LENGTH = 1000;
@@ -172,7 +172,7 @@ public final class Constants {
     static final long UNCONFIRMED_POOL_DEPOSIT_NQT = (isTestnet ? 50 : 100) * ONE_JUP;
     public static final long SHUFFLING_DEPOSIT_NQT = (isTestnet ? 7 : 1000) * ONE_JUP;
 
-    public static final boolean correctInvalidFees = Nxt.getBooleanProperty("nxt.correctInvalidFees");
+    public static final boolean correctInvalidFees = Jup.getBooleanProperty("nxt.correctInvalidFees");
 
     public static final String ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyz";
     public static final String ALLOWED_CURRENCY_CODE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

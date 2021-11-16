@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.util.Convert;
 
 public final class GetBlockId extends APIServlet.APIRequestHandler {
@@ -53,7 +53,7 @@ public final class GetBlockId extends APIServlet.APIRequestHandler {
 
         try {
             JSONObject response = new JSONObject();
-            response.put("block", Long.toUnsignedString(Nxt.getBlockchain().getBlockIdAtHeight(height)));
+            response.put("block", Long.toUnsignedString(Jup.getBlockchain().getBlockIdAtHeight(height)));
             return response;
         } catch (RuntimeException e) {
             return INCORRECT_HEIGHT;

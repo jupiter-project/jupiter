@@ -73,7 +73,7 @@ import org.eclipse.jetty.util.security.Constraint;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 import nxt.Constants;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.util.Convert;
 import nxt.util.Logger;
 import nxt.util.ThreadPool;
@@ -94,27 +94,27 @@ public final class API {
     private static final Set<String> allowedBotHosts;
     private static final List<NetworkAddress> allowedBotNets;
     private static final Map<String, PasswordCount> incorrectPasswords = new HashMap<>();
-    public static final String adminPassword = Nxt.getStringProperty("nxt.adminPassword", "", true);
+    public static final String adminPassword = Jup.getStringProperty("nxt.adminPassword", "", true);
     static final boolean disableAdminPassword;
-    static final int maxRecords = Nxt.getIntProperty("nxt.maxAPIRecords");
-    static final boolean enableAPIUPnP = Nxt.getBooleanProperty("nxt.enableAPIUPnP");
-    public static final int apiServerIdleTimeout = Nxt.getIntProperty("nxt.apiServerIdleTimeout");
-    public static final boolean apiServerCORS = Nxt.getBooleanProperty("nxt.apiServerCORS");
+    static final int maxRecords = Jup.getIntProperty("nxt.maxAPIRecords");
+    static final boolean enableAPIUPnP = Jup.getBooleanProperty("nxt.enableAPIUPnP");
+    public static final int apiServerIdleTimeout = Jup.getIntProperty("nxt.apiServerIdleTimeout");
+    public static final boolean apiServerCORS = Jup.getBooleanProperty("nxt.apiServerCORS");
 
     private static final Server apiServer;
     private static URI welcomePageUri;
     private static URI serverRootUri;
 
     static {
-        List<String> disabled = new ArrayList<>(Nxt.getStringListProperty("nxt.disabledAPIs"));
+        List<String> disabled = new ArrayList<>(Jup.getStringListProperty("nxt.disabledAPIs"));
         Collections.sort(disabled);
         disabledAPIs = Collections.unmodifiableList(disabled);
-        disabled = Nxt.getStringListProperty("nxt.disabledAPITags");
+        disabled = Jup.getStringListProperty("nxt.disabledAPITags");
         Collections.sort(disabled);
         List<APITag> apiTags = new ArrayList<>(disabled.size());
         disabled.forEach(tagName -> apiTags.add(APITag.fromDisplayName(tagName)));
         disabledAPITags = Collections.unmodifiableList(apiTags);
-        List<String> allowedBotHostsList = Nxt.getStringListProperty("nxt.allowedBotHosts");
+        List<String> allowedBotHostsList = Jup.getStringListProperty("nxt.allowedBotHosts");
         if (! allowedBotHostsList.contains("*")) {
             Set<String> hosts = new HashSet<>();
             List<NetworkAddress> nets = new ArrayList<>();
@@ -137,16 +137,16 @@ public final class API {
             allowedBotNets = null;
         }
 
-        boolean enableAPIServer = Nxt.getBooleanProperty("nxt.enableAPIServer");
+        boolean enableAPIServer = Jup.getBooleanProperty("nxt.enableAPIServer");
         if (enableAPIServer) {
-            final int port = Constants.isTestnet ? TESTNET_API_PORT : Nxt.getIntProperty("nxt.apiServerPort");
-            final int sslPort = Constants.isTestnet ? TESTNET_API_SSLPORT : Nxt.getIntProperty("nxt.apiServerSSLPort");
-            final String host = Nxt.getStringProperty("nxt.apiServerHost");
-            disableAdminPassword = Nxt.getBooleanProperty("nxt.disableAdminPassword") || ("127.0.0.1".equals(host) && adminPassword.isEmpty());
+            final int port = Constants.isTestnet ? TESTNET_API_PORT : Jup.getIntProperty("nxt.apiServerPort");
+            final int sslPort = Constants.isTestnet ? TESTNET_API_SSLPORT : Jup.getIntProperty("nxt.apiServerSSLPort");
+            final String host = Jup.getStringProperty("nxt.apiServerHost");
+            disableAdminPassword = Jup.getBooleanProperty("nxt.disableAdminPassword") || ("127.0.0.1".equals(host) && adminPassword.isEmpty());
 
             apiServer = new Server();
             ServerConnector connector;
-            boolean enableSSL = Nxt.getBooleanProperty("nxt.apiSSL");
+            boolean enableSSL = Jup.getBooleanProperty("nxt.apiSSL");
             //
             // Create the HTTP connector
             //
@@ -175,16 +175,16 @@ public final class API {
                 https_config.setSecurePort(sslPort);
                 https_config.addCustomizer(new SecureRequestCustomizer());
                 sslContextFactory = new SslContextFactory();
-                String keyStorePath = Paths.get(Nxt.getUserHomeDir()).resolve(Paths.get(Nxt.getStringProperty("nxt.keyStorePath"))).toString();
+                String keyStorePath = Paths.get(Jup.getUserHomeDir()).resolve(Paths.get(Jup.getStringProperty("nxt.keyStorePath"))).toString();
                 Logger.logInfoMessage("Using keystore: " + keyStorePath);
                 sslContextFactory.setKeyStorePath(keyStorePath);
-                sslContextFactory.setKeyStorePassword(Nxt.getStringProperty("nxt.keyStorePassword", null, true));
+                sslContextFactory.setKeyStorePassword(Jup.getStringProperty("nxt.keyStorePassword", null, true));
                 sslContextFactory.addExcludeCipherSuites("SSL_RSA_WITH_DES_CBC_SHA", "SSL_DHE_RSA_WITH_DES_CBC_SHA",
                         "SSL_DHE_DSS_WITH_DES_CBC_SHA", "SSL_RSA_EXPORT_WITH_RC4_40_MD5", "SSL_RSA_EXPORT_WITH_DES40_CBC_SHA",
                         "SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA", "SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA");
                 sslContextFactory.addExcludeProtocols("SSLv3");
-                sslContextFactory.setKeyStoreType(Nxt.getStringProperty("nxt.keyStoreType"));
-                List<String> ciphers = Nxt.getStringListProperty("nxt.apiSSLCiphers");
+                sslContextFactory.setKeyStoreType(Jup.getStringProperty("nxt.keyStoreType"));
+                List<String> ciphers = Jup.getStringListProperty("nxt.apiSSLCiphers");
                 if (!ciphers.isEmpty()) {
                     sslContextFactory.setIncludeCipherSuites(ciphers.toArray(new String[ciphers.size()]));
                 }
@@ -212,7 +212,7 @@ public final class API {
             HandlerList apiHandlers = new HandlerList();
 
             ServletContextHandler apiHandler = new ServletContextHandler();
-            String apiResourceBase = Nxt.getStringProperty("nxt.apiResourceBase");
+            String apiResourceBase = Jup.getStringProperty("nxt.apiResourceBase");
             if (apiResourceBase != null) {
                 ServletHolder defaultServletHolder = new ServletHolder(new DefaultServlet());
                 defaultServletHolder.setInitParameter("dirAllowed", "false");
@@ -222,10 +222,10 @@ public final class API {
                 defaultServletHolder.setInitParameter("gzip", "true");
                 defaultServletHolder.setInitParameter("etags", "true");
                 apiHandler.addServlet(defaultServletHolder, "/*");
-                apiHandler.setWelcomeFiles(new String[]{Nxt.getStringProperty("nxt.apiWelcomeFile")});
+                apiHandler.setWelcomeFiles(new String[]{Jup.getStringProperty("nxt.apiWelcomeFile")});
             }
 
-            String javadocResourceBase = Nxt.getStringProperty("nxt.javadocResourceBase");
+            String javadocResourceBase = Jup.getStringProperty("nxt.javadocResourceBase");
             if (javadocResourceBase != null) {
                 ContextHandler contextHandler = new ContextHandler("/doc");
                 ResourceHandler docFileHandler = new ResourceHandler();
@@ -238,17 +238,17 @@ public final class API {
 
             ServletHolder servletHolder = apiHandler.addServlet(APIServlet.class, "/nxt");
             servletHolder.getRegistration().setMultipartConfig(new MultipartConfigElement(
-                    null, Math.max(Nxt.getIntProperty("nxt.maxUploadFileSize"), Constants.MAX_TAGGED_DATA_DATA_LENGTH), -1L, 0));
+                    null, Math.max(Jup.getIntProperty("nxt.maxUploadFileSize"), Constants.MAX_TAGGED_DATA_DATA_LENGTH), -1L, 0));
 
             servletHolder = apiHandler.addServlet(APIProxyServlet.class, "/nxt-proxy");
             servletHolder.setInitParameters(Collections.singletonMap("idleTimeout",
                     "" + Math.max(apiServerIdleTimeout - APIProxyServlet.PROXY_IDLE_TIMEOUT_DELTA, 0)));
             servletHolder.getRegistration().setMultipartConfig(new MultipartConfigElement(
-                    null, Math.max(Nxt.getIntProperty("nxt.maxUploadFileSize"), Constants.MAX_TAGGED_DATA_DATA_LENGTH), -1L, 0));
+                    null, Math.max(Jup.getIntProperty("nxt.maxUploadFileSize"), Constants.MAX_TAGGED_DATA_DATA_LENGTH), -1L, 0));
             apiHandler.addServlet(ShapeShiftProxyServlet.class, ShapeShiftProxyServlet.SHAPESHIFT_TARGET + "/*");
 
             GzipHandler gzipHandler = new GzipHandler();
-            if (!Nxt.getBooleanProperty("nxt.enableAPIServerGZIPFilter")) {
+            if (!Jup.getBooleanProperty("nxt.enableAPIServerGZIPFilter")) {
                 gzipHandler.setExcludedPaths("/nxt", "/nxt-proxy");
             }
             gzipHandler.setIncludedMethods("GET", "POST");
@@ -266,7 +266,7 @@ public final class API {
                 filterHolder.setAsyncSupported(true);
             }
 
-            if (Nxt.getBooleanProperty("nxt.apiFrameOptionsSameOrigin")) {
+            if (Jup.getBooleanProperty("nxt.apiFrameOptionsSameOrigin")) {
                 FilterHolder filterHolder = apiHandler.addFilter(XFrameOptionsFilter.class, "/*", null);
                 filterHolder.setAsyncSupported(true);
             }
@@ -367,7 +367,7 @@ public final class API {
     }
 
     private static void checkOrLockPassword(HttpServletRequest req) throws ParameterException {
-        int now = Nxt.getEpochTime();
+        int now = Jup.getEpochTime();
         String remoteHost = req.getRemoteHost();
         synchronized(incorrectPasswords) {
             PasswordCount passwordCount = incorrectPasswords.get(remoteHost);

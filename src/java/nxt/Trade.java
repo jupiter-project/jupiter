@@ -188,7 +188,7 @@ public final class Trade {
     private final boolean isBuy;
 
     private Trade(long assetId, Order.Ask askOrder, Order.Bid bidOrder) {
-        Block block = Nxt.getBlockchain().getLastBlock();
+        Block block = Jup.getBlockchain().getLastBlock();
         this.blockId = block.getId();
         this.height = block.getHeight();
         this.assetId = assetId;

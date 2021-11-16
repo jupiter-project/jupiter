@@ -29,7 +29,7 @@ import org.json.simple.JSONStreamAware;
 import nxt.Block;
 import nxt.Blockchain;
 import nxt.Generator;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 
 /**
@@ -76,7 +76,7 @@ public final class GetNextBlockGeneratorsTemp extends APIServlet.APIRequestHandl
     protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
         JSONObject response = new JSONObject();
         int limit = Math.max(1, ParameterParser.getInt(req, "limit", 1, Integer.MAX_VALUE, false));
-        Blockchain blockchain = Nxt.getBlockchain();
+        Blockchain blockchain = Jup.getBlockchain();
         blockchain.readLock();
         try {
             Block lastBlock = blockchain.getLastBlock();

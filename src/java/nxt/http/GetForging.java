@@ -29,7 +29,7 @@ import org.json.simple.JSONStreamAware;
 
 import nxt.Account;
 import nxt.Generator;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.crypto.Crypto;
 
 
@@ -45,7 +45,7 @@ public final class GetForging extends APIServlet.APIRequestHandler {
     protected JSONStreamAware processRequest(HttpServletRequest req) throws ParameterException {
 
         String secretPhrase = ParameterParser.getSecretPhrase(req, false);
-        int elapsedTime = Nxt.getEpochTime() - Nxt.getBlockchain().getLastBlock().getTimestamp();
+        int elapsedTime = Jup.getEpochTime() - Jup.getBlockchain().getLastBlock().getTimestamp();
         if (secretPhrase != null) {
             Account account = Account.getAccount(Crypto.getPublicKey(secretPhrase));
             if (account == null) {

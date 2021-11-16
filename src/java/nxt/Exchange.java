@@ -177,7 +177,7 @@ public final class Exchange {
     private final long rate;
 
     private Exchange(long transactionId, long currencyId, CurrencyExchangeOffer offer, long sellerId, long buyerId, long units) {
-        Block block = Nxt.getBlockchain().getLastBlock();
+        Block block = Jup.getBlockchain().getLastBlock();
         this.transactionId = transactionId;
         this.blockId = block.getId();
         this.height = block.getHeight();

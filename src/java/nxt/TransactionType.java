@@ -2524,9 +2524,9 @@ public abstract class TransactionType {
             @Override
             void validateAttachment(Transaction transaction) throws NxtException.ValidationException {
                 Attachment.ColoredCoinsDividendPayment attachment = (Attachment.ColoredCoinsDividendPayment)transaction.getAttachment();
-                if (attachment.getHeight() > Nxt.getBlockchain().getHeight()) {
+                if (attachment.getHeight() > Jup.getBlockchain().getHeight()) {
                     throw new NxtException.NotCurrentlyValidException("Invalid dividend payment height: " + attachment.getHeight()
-                            + ", must not exceed current blockchain height " + Nxt.getBlockchain().getHeight());
+                            + ", must not exceed current blockchain height " + Jup.getBlockchain().getHeight());
                 }
                 if (attachment.getHeight() <= attachment.getFinishValidationHeight(transaction) - Constants.MAX_DIVIDEND_PAYMENT_ROLLBACK) {
                     throw new NxtException.NotCurrentlyValidException("Invalid dividend payment height: " + attachment.getHeight()
@@ -2542,9 +2542,9 @@ public abstract class TransactionType {
                     throw new NxtException.NotValidException("Invalid dividend payment sender or amount " + attachment.getJSONObject());
                 }
                 AssetDividend lastDividend = AssetDividend.getLastDividend(attachment.getAssetId());
-                if (lastDividend != null && lastDividend.getHeight() > Nxt.getBlockchain().getHeight() - 60) {
+                if (lastDividend != null && lastDividend.getHeight() > Jup.getBlockchain().getHeight() - 60) {
                     throw new NxtException.NotCurrentlyValidException("Last dividend payment for asset " + Long.toUnsignedString(attachment.getAssetId())
-                            + " was less than 60 blocks ago at " + lastDividend.getHeight() + ", current height is " + Nxt.getBlockchain().getHeight()
+                            + " was less than 60 blocks ago at " + lastDividend.getHeight() + ", current height is " + Jup.getBlockchain().getHeight()
                             + ", limit is one dividend per 60 blocks");
                 }
             }
@@ -2984,7 +2984,7 @@ public abstract class TransactionType {
                 if (attachment.getQuantity() > goods.getQuantity() || attachment.getPriceNQT() != goods.getPriceNQT()) {
                     throw new NxtException.NotCurrentlyValidException("Goods price or quantity changed: " + attachment.getJSONObject());
                 }
-                if (attachment.getDeliveryDeadlineTimestamp() <= Nxt.getBlockchain().getLastBlockTimestamp()) {
+                if (attachment.getDeliveryDeadlineTimestamp() <= Jup.getBlockchain().getLastBlockTimestamp()) {
                     throw new NxtException.NotCurrentlyValidException("Delivery deadline has already expired: " + attachment.getDeliveryDeadlineTimestamp());
                 }
             }
@@ -3532,7 +3532,7 @@ public abstract class TransactionType {
             @Override
             void validateAttachment(Transaction transaction) throws NxtException.ValidationException {
                 Attachment.TaggedDataUpload attachment = (Attachment.TaggedDataUpload) transaction.getAttachment();
-                if (attachment.getData() == null && Nxt.getEpochTime() - transaction.getTimestamp() < Constants.MIN_PRUNABLE_LIFETIME) {
+                if (attachment.getData() == null && Jup.getEpochTime() - transaction.getTimestamp() < Constants.MIN_PRUNABLE_LIFETIME) {
                     throw new NxtException.NotCurrentlyValidException("Data has been pruned prematurely");
                 }
                 if (attachment.getData() != null) {
@@ -3603,10 +3603,10 @@ public abstract class TransactionType {
             @Override
             void validateAttachment(Transaction transaction) throws NxtException.ValidationException {
                 Attachment.TaggedDataExtend attachment = (Attachment.TaggedDataExtend) transaction.getAttachment();
-                if ((attachment.jsonIsPruned() || attachment.getData() == null) && Nxt.getEpochTime() - transaction.getTimestamp() < Constants.MIN_PRUNABLE_LIFETIME) {
+                if ((attachment.jsonIsPruned() || attachment.getData() == null) && Jup.getEpochTime() - transaction.getTimestamp() < Constants.MIN_PRUNABLE_LIFETIME) {
                     throw new NxtException.NotCurrentlyValidException("Data has been pruned prematurely");
                 }
-                TransactionImpl uploadTransaction = TransactionDb.findTransaction(attachment.getTaggedDataId(), Nxt.getBlockchain().getHeight());
+                TransactionImpl uploadTransaction = TransactionDb.findTransaction(attachment.getTaggedDataId(), Jup.getBlockchain().getHeight());
                 if (uploadTransaction == null) {
                     throw new NxtException.NotCurrentlyValidException("No such tagged data upload " + Long.toUnsignedString(attachment.getTaggedDataId()));
                 }
@@ -3622,7 +3622,7 @@ public abstract class TransactionType {
                     }
                 }
                 TaggedData taggedData = TaggedData.getData(attachment.getTaggedDataId());
-                if (taggedData != null && taggedData.getTransactionTimestamp() > Nxt.getEpochTime() + 6 * Constants.MIN_PRUNABLE_LIFETIME) {
+                if (taggedData != null && taggedData.getTransactionTimestamp() > Jup.getEpochTime() + 6 * Constants.MIN_PRUNABLE_LIFETIME) {
                     throw new NxtException.NotCurrentlyValidException("Data already extended, timestamp is " + taggedData.getTransactionTimestamp());
                 }
             }

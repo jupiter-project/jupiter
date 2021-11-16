@@ -59,7 +59,7 @@ public abstract class CurrencyExchangeOffer {
 
     static {
 
-        Nxt.getBlockchainProcessor().addListener(block -> {
+        Jup.getBlockchainProcessor().addListener(block -> {
             List<CurrencyBuyOffer> expired = new ArrayList<>();
             try (DbIterator<CurrencyBuyOffer> offers = CurrencyBuyOffer.getOffers(new DbClause.IntClause("expiration_height", block.getHeight()), 0, -1)) {
                 for (CurrencyBuyOffer offer : offers) {
@@ -236,7 +236,7 @@ public abstract class CurrencyExchangeOffer {
         this.limit = limit;
         this.supply = supply;
         this.expirationHeight = expirationHeight;
-        this.creationHeight = Nxt.getBlockchain().getHeight();
+        this.creationHeight = Jup.getBlockchain().getHeight();
         this.transactionIndex = transactionIndex;
         this.transactionHeight = transactionHeight;
     }
@@ -269,7 +269,7 @@ public abstract class CurrencyExchangeOffer {
             pstmt.setInt(++i, this.creationHeight);
             pstmt.setShort(++i, this.transactionIndex);
             pstmt.setInt(++i, this.transactionHeight);
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             pstmt.executeUpdate();
         }
     }

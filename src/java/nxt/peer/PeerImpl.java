@@ -52,7 +52,7 @@ import org.json.simple.parser.ParseException;
 import nxt.Account;
 import nxt.BlockchainProcessor;
 import nxt.Constants;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.http.API;
 import nxt.http.APIEnum;
@@ -173,7 +173,7 @@ final class PeerImpl implements Peer {
         boolean versionChanged = version == null || !version.equals(this.version);
         this.version = version;
         isOldVersion = false;
-        if (Nxt.APPLICATION.equals(application)) {
+        if (Jup.APPLICATION.equals(application)) {
             isOldVersion = Peers.isOldVersion(version, Constants.MIN_VERSION);
             if (isOldVersion) {
                 if (versionChanged) {
@@ -328,11 +328,11 @@ final class PeerImpl implements Peer {
         if (hallmark == null) {
             return 0;
         }
-        if (hallmarkBalance == -1 || hallmarkBalanceHeight < Nxt.getBlockchain().getHeight() - 60) {
+        if (hallmarkBalance == -1 || hallmarkBalanceHeight < Jup.getBlockchain().getHeight() - 60) {
             long accountId = hallmark.getAccountId();
             Account account = Account.getAccount(accountId);
             hallmarkBalance = account == null ? 0 : account.getBalanceNQT();
-            hallmarkBalanceHeight = Nxt.getBlockchain().getHeight();
+            hallmarkBalanceHeight = Jup.getBlockchain().getHeight();
         }
         return (int)(adjustedWeight * (hallmarkBalance / Constants.ONE_JUP) / Constants.MAX_BALANCE_NXT);
     }
@@ -366,7 +366,7 @@ final class PeerImpl implements Peer {
 
     @Override
     public void blacklist(String cause) {
-        blacklistingTime = Nxt.getEpochTime();
+        blacklistingTime = Jup.getEpochTime();
         blacklistingCause = cause;
         setState(State.NON_CONNECTED);
         lastInboundRequest = 0;
@@ -618,7 +618,7 @@ final class PeerImpl implements Peer {
     }
 
     void connect() {
-        lastConnectAttempt = Nxt.getEpochTime();
+        lastConnectAttempt = Jup.getEpochTime();
         try {
             if (!Peers.ignorePeerAnnouncedAddress && announcedAddress != null) {
                 try {

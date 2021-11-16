@@ -27,7 +27,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.Transaction;
 import nxt.util.Convert;
@@ -48,7 +48,7 @@ public final class GetExpectedTransactions extends APIServlet.APIRequestHandler 
         Filter<Transaction> filter = accountIds.isEmpty() ? transaction -> true :
                 transaction -> accountIds.contains(transaction.getSenderId()) || accountIds.contains(transaction.getRecipientId());
 
-        List<? extends Transaction> transactions = Nxt.getBlockchain().getExpectedTransactions(filter);
+        List<? extends Transaction> transactions = Jup.getBlockchain().getExpectedTransactions(filter);
 
         JSONObject response = new JSONObject();
         JSONArray jsonArray = new JSONArray();

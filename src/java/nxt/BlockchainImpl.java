@@ -460,8 +460,8 @@ final class BlockchainImpl implements Blockchain {
                 pstmt.setInt(++i, height);
             }
             int prunableExpiration = Math.max(0, Constants.INCLUDE_EXPIRED_PRUNABLE && includeExpiredPrunable ?
-                                        Nxt.getEpochTime() - Constants.MAX_PRUNABLE_LIFETIME :
-                                        Nxt.getEpochTime() - Constants.MIN_PRUNABLE_LIFETIME);
+                                        Jup.getEpochTime() - Constants.MAX_PRUNABLE_LIFETIME :
+                                        Jup.getEpochTime() - Constants.MIN_PRUNABLE_LIFETIME);
             if (withMessage) {
                 pstmt.setInt(++i, prunableExpiration);
             }

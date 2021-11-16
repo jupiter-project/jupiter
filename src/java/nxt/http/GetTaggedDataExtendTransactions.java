@@ -29,7 +29,7 @@ import org.json.simple.JSONStreamAware;
 import nxt.Appendix;
 import nxt.Attachment;
 import nxt.Blockchain;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.TaggedData;
 import nxt.util.Filter;
@@ -48,7 +48,7 @@ public final class GetTaggedDataExtendTransactions extends APIServlet.APIRequest
         List<Long> extendTransactions = TaggedData.getExtendTransactionIds(taggedDataId);
         JSONObject response = new JSONObject();
         JSONArray jsonArray = new JSONArray();
-        Blockchain blockchain = Nxt.getBlockchain();
+        Blockchain blockchain = Jup.getBlockchain();
         Filter<Appendix> filter = (appendix) -> ! (appendix instanceof Attachment.TaggedDataExtend);
         extendTransactions.forEach(transactionId -> jsonArray.add(JSONData.transaction(blockchain.getTransaction(transactionId), filter)));
         response.put("extendTransactions", jsonArray);

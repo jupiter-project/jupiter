@@ -50,7 +50,7 @@ import nxt.FundingMonitor;
 import nxt.Generator;
 import nxt.HoldingType;
 import nxt.MonetarySystem;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.Order;
 import nxt.PhasingPoll;
 import nxt.PhasingVote;
@@ -93,7 +93,7 @@ public final class JSONData {
     }
 
     static JSONObject accountBalance(Account account, boolean includeEffectiveBalance) {
-        return accountBalance(account, includeEffectiveBalance, Nxt.getBlockchain().getHeight());
+        return accountBalance(account, includeEffectiveBalance, Jup.getBlockchain().getHeight());
     }
 
     static JSONObject accountBalance(Account account, boolean includeEffectiveBalance, int height) {
@@ -246,7 +246,7 @@ public final class JSONData {
     	json.put("type", "ask");
         
     	if (includeNTFInfo) {
-    		json = JSONData.addNFTInfo(json, Nxt.getBlockchain().getTransaction(askOrder.getAssetId()));
+    		json = JSONData.addNFTInfo(json, Jup.getBlockchain().getTransaction(askOrder.getAssetId()));
     	}
         
         return json;
@@ -261,7 +261,7 @@ public final class JSONData {
         json.put("type", "bid");
         
         if (includeNTFInfo) {
-        	json = JSONData.addNFTInfo(json, Nxt.getBlockchain().getTransaction(order.getAssetId()));
+        	json = JSONData.addNFTInfo(json, Jup.getBlockchain().getTransaction(order.getAssetId()));
         }
         
         return json;
@@ -482,7 +482,7 @@ public final class JSONData {
                 for (PhasingPoll.PhasingPollResult phasingPollResult : phasingPollResults) {
                     long phasedTransactionId = phasingPollResult.getId();
                     if (includeTransactions) {
-                        phasedTransactions.add(transaction(Nxt.getBlockchain().getTransaction(phasedTransactionId)));
+                        phasedTransactions.add(transaction(Jup.getBlockchain().getTransaction(phasedTransactionId)));
                     } else {
                         phasedTransactions.add(Long.toUnsignedString(phasedTransactionId));
                     }
@@ -631,7 +631,7 @@ public final class JSONData {
             if (currency != null) {
                 json.put("decimals", currency.getDecimals());
             } else {
-                Transaction currencyIssuance = Nxt.getBlockchain().getTransaction(voteWeighting.getHoldingId());
+                Transaction currencyIssuance = Jup.getBlockchain().getTransaction(voteWeighting.getHoldingId());
                 Attachment.MonetarySystemCurrencyIssuance currencyIssuanceAttachment = (Attachment.MonetarySystemCurrencyIssuance) currencyIssuance.getAttachment();
                 json.put("decimals", currencyIssuanceAttachment.getDecimals());
             }
@@ -1051,7 +1051,7 @@ public final class JSONData {
     static JSONObject transaction(Transaction transaction, Filter<Appendix> filter) {
         JSONObject json = unconfirmedTransaction(transaction, filter);
         json.put("block", Long.toUnsignedString(transaction.getBlockId()));
-        json.put("confirmations", Nxt.getBlockchain().getHeight() - transaction.getHeight());
+        json.put("confirmations", Jup.getBlockchain().getHeight() - transaction.getHeight());
         json.put("blockTimestamp", transaction.getBlockTimestamp());
         json.put("transactionIndex", transaction.getIndex());
         return json;
@@ -1215,7 +1215,7 @@ public final class JSONData {
     }
 
     private static void putAssetInfo(JSONObject json, long assetId) {
-        Transaction transaction = Nxt.getBlockchain().getTransaction(assetId);
+        Transaction transaction = Jup.getBlockchain().getTransaction(assetId);
         
         JSONObject attachmentObject = transaction.getAttachment().getJSONObject();
         if (transaction.getMessage() != null) {
@@ -1234,11 +1234,11 @@ public final class JSONData {
     }
 
     private static void putExpectedTransaction(JSONObject json, Transaction transaction) {
-        json.put("height", Nxt.getBlockchain().getHeight() + 1);
+        json.put("height", Jup.getBlockchain().getHeight() + 1);
         json.put("phased", transaction.getPhasing() != null);
         if (transaction.getBlockId() != 0) { // those values may be wrong for unconfirmed transactions
             json.put("transactionHeight", transaction.getHeight());
-            json.put("confirmations", Nxt.getBlockchain().getHeight() - transaction.getHeight());
+            json.put("confirmations", Jup.getBlockchain().getHeight() - transaction.getHeight());
         }
     }
 
@@ -1276,7 +1276,7 @@ public final class JSONData {
             }
         }
         if (includeTransactions && entry.getEvent().isTransaction()) {
-            Transaction transaction = Nxt.getBlockchain().getTransaction(entry.getEventId());
+            Transaction transaction = Jup.getBlockchain().getTransaction(entry.getEventId());
             json.put("transaction", JSONData.transaction(transaction));
         }
     }

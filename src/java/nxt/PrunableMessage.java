@@ -258,7 +258,7 @@ public final class PrunableMessage {
     }
 
     static void add(TransactionImpl transaction, Appendix.PrunablePlainMessage appendix) {
-        add(transaction, appendix, Nxt.getBlockchain().getLastBlockTimestamp(), Nxt.getBlockchain().getHeight());
+        add(transaction, appendix, Jup.getBlockchain().getLastBlockTimestamp(), Jup.getBlockchain().getHeight());
     }
 
     static void add(TransactionImpl transaction, Appendix.PrunablePlainMessage appendix, int blockTimestamp, int height) {
@@ -277,7 +277,7 @@ public final class PrunableMessage {
     }
 
     static void add(TransactionImpl transaction, Appendix.PrunableEncryptedMessage appendix) {
-        add(transaction, appendix, Nxt.getBlockchain().getLastBlockTimestamp(), Nxt.getBlockchain().getHeight());
+        add(transaction, appendix, Jup.getBlockchain().getLastBlockTimestamp(), Jup.getBlockchain().getHeight());
     }
 
     static void add(TransactionImpl transaction, Appendix.PrunableEncryptedMessage appendix, int blockTimestamp, int height) {

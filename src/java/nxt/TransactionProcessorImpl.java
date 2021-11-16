@@ -55,12 +55,12 @@ import nxt.util.ThreadPool;
 
 final class TransactionProcessorImpl implements TransactionProcessor {
 
-    private static final boolean enableTransactionRebroadcasting = Nxt.getBooleanProperty("nxt.enableTransactionRebroadcasting");
-    private static final boolean testUnconfirmedTransactions = Nxt.getBooleanProperty("nxt.testUnconfirmedTransactions");
+    private static final boolean enableTransactionRebroadcasting = Jup.getBooleanProperty("nxt.enableTransactionRebroadcasting");
+    private static final boolean testUnconfirmedTransactions = Jup.getBooleanProperty("nxt.testUnconfirmedTransactions");
     private static final int maxUnconfirmedTransactions;
     
     static {
-        int n = Nxt.getIntProperty("nxt.maxUnconfirmedTransactions");
+        int n = Jup.getIntProperty("nxt.maxUnconfirmedTransactions");
         maxUnconfirmedTransactions = n <= 0 ? Integer.MAX_VALUE : n;
     }
 
@@ -173,12 +173,12 @@ final class TransactionProcessorImpl implements TransactionProcessor {
 
         try {
             try {
-                if (Nxt.getBlockchainProcessor().isDownloading() && !testUnconfirmedTransactions) {
+                if (Jup.getBlockchainProcessor().isDownloading() && !testUnconfirmedTransactions) {
                     return;
                 }
                 List<UnconfirmedTransaction> expiredTransactions = new ArrayList<>();
                 try (DbIterator<UnconfirmedTransaction> iterator = unconfirmedTransactionTable.getManyBy(
-                        new DbClause.IntClause("expiration", DbClause.Op.LT, Nxt.getEpochTime()), 0, -1, "")) {
+                        new DbClause.IntClause("expiration", DbClause.Op.LT, Jup.getEpochTime()), 0, -1, "")) {
                     while (iterator.hasNext()) {
                         expiredTransactions.add(iterator.next());
                     }
@@ -218,11 +218,11 @@ final class TransactionProcessorImpl implements TransactionProcessor {
 
         try {
             try {
-                if (Nxt.getBlockchainProcessor().isDownloading() && !testUnconfirmedTransactions) {
+                if (Jup.getBlockchainProcessor().isDownloading() && !testUnconfirmedTransactions) {
                     return;
                 }
                 List<Transaction> transactionList = new ArrayList<>();
-                int curTime = Nxt.getEpochTime();
+                int curTime = Jup.getEpochTime();
                 for (TransactionImpl transaction : broadcastedTransactions) {
                     if (transaction.getExpiration() < curTime || TransactionDb.hasTransaction(transaction.getId())) {
                         broadcastedTransactions.remove(transaction);
@@ -250,7 +250,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
 
         try {
             try {
-                if (Nxt.getBlockchainProcessor().isDownloading() && !testUnconfirmedTransactions) {
+                if (Jup.getBlockchainProcessor().isDownloading() && !testUnconfirmedTransactions) {
                     return;
                 }
                 Peer peer = Peers.getAnyPeer(Peer.State.CONNECTED, true);
@@ -291,7 +291,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
 
         try {
             try {
-                if (Nxt.getBlockchainProcessor().isDownloading() && !testUnconfirmedTransactions) {
+                if (Jup.getBlockchainProcessor().isDownloading() && !testUnconfirmedTransactions) {
                     return;
                 }
                 processWaitingTransactions();
@@ -360,14 +360,14 @@ final class TransactionProcessorImpl implements TransactionProcessor {
     }
 
     Transaction getUnconfirmedTransaction(DbKey dbKey) {
-        Nxt.getBlockchain().readLock();
+        Jup.getBlockchain().readLock();
         try {
             Transaction transaction = transactionCache.get(dbKey);
             if (transaction != null) {
                 return transaction;
             }
         } finally {
-            Nxt.getBlockchain().readUnlock();
+            Jup.getBlockchain().readUnlock();
         }
         return unconfirmedTransactionTable.get(dbKey);
     }
@@ -596,7 +596,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
         BlockchainImpl.getInstance().writeLock();
         try {
             if (waitingTransactions.size() > 0) {
-                int currentTime = Nxt.getEpochTime();
+                int currentTime = Jup.getEpochTime();
                 List<Transaction> addedUnconfirmedTransactions = new ArrayList<>();
                 Iterator<UnconfirmedTransaction> iterator = waitingTransactions.iterator();
                 while (iterator.hasNext()) {
@@ -627,7 +627,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
     }
 
     private void processPeerTransactions(JSONArray transactionsData) throws NxtException.NotValidException {
-        if (Nxt.getBlockchain().getHeight() <= Constants.LAST_KNOWN_BLOCK && !testUnconfirmedTransactions) {
+        if (Jup.getBlockchain().getHeight() <= Constants.LAST_KNOWN_BLOCK && !testUnconfirmedTransactions) {
             return;
         }
         if (transactionsData == null || transactionsData.isEmpty()) {
@@ -676,7 +676,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
 
     private void processTransaction(UnconfirmedTransaction unconfirmedTransaction) throws NxtException.ValidationException {
         TransactionImpl transaction = unconfirmedTransaction.getTransaction();
-        int curTime = Nxt.getEpochTime();
+        int curTime = Jup.getEpochTime();
         if (transaction.getTimestamp() > curTime + Constants.MAX_TIMEDRIFT || transaction.getExpiration() < curTime) {
             throw new NxtException.NotCurrentlyValidException("Invalid transaction timestamp");
         }
@@ -691,7 +691,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
         try {
             try {
                 Db.db.beginTransaction();
-                if (Nxt.getBlockchain().getHeight() < Constants.LAST_KNOWN_BLOCK && !testUnconfirmedTransactions) {
+                if (Jup.getBlockchain().getHeight() < Constants.LAST_KNOWN_BLOCK && !testUnconfirmedTransactions) {
                     throw new NxtException.NotCurrentlyValidException("Blockchain not ready to accept transactions");
                 }
 
@@ -755,7 +755,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
     @Override
     public SortedSet<? extends Transaction> getCachedUnconfirmedTransactions(List<String> exclude) {
         SortedSet<UnconfirmedTransaction> transactionSet = new TreeSet<>(cachedUnconfirmedTransactionComparator);
-        Nxt.getBlockchain().readLock();
+        Jup.getBlockchain().readLock();
         try {
             //
             // Initialize the unconfirmed transaction cache if it hasn't been done yet
@@ -779,7 +779,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                 }
             });
         } finally {
-            Nxt.getBlockchain().readUnlock();
+            Jup.getBlockchain().readUnlock();
         }
         return transactionSet;
     }
@@ -794,7 +794,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
     @Override
     public List<Transaction> restorePrunableData(JSONArray transactions) throws NxtException.NotValidException {
         List<Transaction> processed = new ArrayList<>();
-        Nxt.getBlockchain().readLock();
+        Jup.getBlockchain().readLock();
         try {
             Db.db.beginTransaction();
             try {
@@ -853,7 +853,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                 Db.db.endTransaction();
             }
         } finally {
-            Nxt.getBlockchain().readUnlock();
+            Jup.getBlockchain().readUnlock();
         }
         return processed;
     }

@@ -38,7 +38,7 @@ import nxt.Account;
 import nxt.Appendix;
 import nxt.Attachment;
 import nxt.Constants;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.PhasingParams;
 import nxt.Transaction;
@@ -92,8 +92,8 @@ abstract class CreateTransaction extends APIServlet.APIRequestHandler {
 
     private Appendix.Phasing parsePhasing(HttpServletRequest req) throws ParameterException {
         int finishHeight = ParameterParser.getInt(req, "phasingFinishHeight",
-                Nxt.getBlockchain().getHeight() + 1,
-                Nxt.getBlockchain().getHeight() + Constants.MAX_PHASING_DURATION + 1,
+                Jup.getBlockchain().getHeight() + 1,
+                Jup.getBlockchain().getHeight() + Constants.MAX_PHASING_DURATION + 1,
                 true);
         
         PhasingParams phasingParams = parsePhasingParams(req, "phasing");
@@ -192,11 +192,11 @@ abstract class CreateTransaction extends APIServlet.APIRequestHandler {
         long feeNQT = ParameterParser.getFeeNQT(req);
         int ecBlockHeight = ParameterParser.getInt(req, "ecBlockHeight", 0, Integer.MAX_VALUE, false);
         long ecBlockId = Convert.parseUnsignedLong(req.getParameter("ecBlockId"));
-        if (ecBlockId != 0 && ecBlockId != Nxt.getBlockchain().getBlockIdAtHeight(ecBlockHeight)) {
+        if (ecBlockId != 0 && ecBlockId != Jup.getBlockchain().getBlockIdAtHeight(ecBlockHeight)) {
             return INCORRECT_EC_BLOCK;
         }
         if (ecBlockId == 0 && ecBlockHeight > 0) {
-            ecBlockId = Nxt.getBlockchain().getBlockIdAtHeight(ecBlockHeight);
+            ecBlockId = Jup.getBlockchain().getBlockIdAtHeight(ecBlockHeight);
         }
 
         JSONObject response = new JSONObject();
@@ -205,7 +205,7 @@ abstract class CreateTransaction extends APIServlet.APIRequestHandler {
         byte[] publicKey = secretPhrase != null ? Crypto.getPublicKey(secretPhrase) : Convert.parseHexString(publicKeyValue);
 
         try {
-            Transaction.Builder builder = Nxt.newTransactionBuilder(publicKey, amountNQT, feeNQT,
+            Transaction.Builder builder = Jup.newTransactionBuilder(publicKey, amountNQT, feeNQT,
                     deadline, attachment).referencedTransactionFullHash(referencedTransactionFullHash);
             if (attachment.getTransactionType().canHaveRecipient()) {
                 builder.recipientId(recipientId);
@@ -244,7 +244,7 @@ abstract class CreateTransaction extends APIServlet.APIRequestHandler {
                 response.put("signatureHash", transactionJSON.get("signatureHash"));
             }
             if (broadcast) {
-                Nxt.getTransactionProcessor().broadcast(transaction);
+                Jup.getTransactionProcessor().broadcast(transaction);
                 response.put("broadcasted", true);
             } else {
                 transaction.validate();

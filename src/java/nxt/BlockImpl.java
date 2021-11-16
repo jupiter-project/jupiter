@@ -59,7 +59,7 @@ final class BlockImpl implements Block {
     private volatile long generatorId;
     private volatile byte[] bytes = null;
     
-    private static boolean showBlockTimeGenerationRateLogs = Nxt.getBooleanProperty("nxt.showBlockTimeGenerationRateLogs");
+    private static boolean showBlockTimeGenerationRateLogs = Jup.getBooleanProperty("nxt.showBlockTimeGenerationRateLogs");
 
     BlockImpl(int version, int timestamp, long previousBlockId, long totalAmountNQT, long totalFeeNQT, int payloadLength, byte[] payloadHash,
               byte[] generatorPublicKey, byte[] generationSignature, byte[] previousBlockHash, List<TransactionImpl> transactions, String secretPhrase) {

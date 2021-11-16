@@ -26,7 +26,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import nxt.Block;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.util.Convert;
 import nxt.util.JSON;
 
@@ -58,13 +58,13 @@ final class GetNextBlocks extends PeerServlet.PeerRequestHandler {
             }
             List<Long> idList = new ArrayList<>();
             stringList.forEach(stringId -> idList.add(Convert.parseUnsignedLong(stringId)));
-            blocks = Nxt.getBlockchain().getBlocksAfter(blockId, idList);
+            blocks = Jup.getBlockchain().getBlocksAfter(blockId, idList);
         } else {
             long limit = Convert.parseLong(request.get("limit"));
             if (limit > 36) {
                 return TOO_MANY_BLOCKS_REQUESTED;
             }
-            blocks = Nxt.getBlockchain().getBlocksAfter(blockId, limit > 0 ? (int)limit : 36);
+            blocks = Jup.getBlockchain().getBlocksAfter(blockId, limit > 0 ? (int)limit : 36);
         }
         blocks.forEach(block -> nextBlocksArray.add(block.getJSONObject()));
         response.put("nextBlocks", nextBlocksArray);

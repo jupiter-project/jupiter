@@ -24,7 +24,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.Transaction;
 import nxt.db.DbIterator;
@@ -45,7 +45,7 @@ public final class GetReferencingTransactions extends APIServlet.APIRequestHandl
         int lastIndex = ParameterParser.getLastIndex(req);
 
         JSONArray transactions = new JSONArray();
-        try (DbIterator<? extends Transaction> iterator = Nxt.getBlockchain().getReferencingTransactions(transactionId, firstIndex, lastIndex)) {
+        try (DbIterator<? extends Transaction> iterator = Jup.getBlockchain().getReferencingTransactions(transactionId, firstIndex, lastIndex)) {
             while (iterator.hasNext()) {
                 Transaction transaction = iterator.next();
                 transactions.add(JSONData.transaction(transaction));

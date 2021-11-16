@@ -24,7 +24,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.Transaction;
 
 public final class GetAllWaitingTransactions extends APIServlet.APIRequestHandler {
@@ -40,7 +40,7 @@ public final class GetAllWaitingTransactions extends APIServlet.APIRequestHandle
         JSONObject response = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         response.put("transactions", jsonArray);
-        Transaction[] transactions = Nxt.getTransactionProcessor().getAllWaitingTransactions();
+        Transaction[] transactions = Jup.getTransactionProcessor().getAllWaitingTransactions();
         for (Transaction transaction : transactions) {
             jsonArray.add(JSONData.unconfirmedTransaction(transaction));
         }

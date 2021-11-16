@@ -25,7 +25,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import nxt.Block;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.db.DbIterator;
 
@@ -49,7 +49,7 @@ public final class GetAccountBlocks extends APIServlet.APIRequestHandler {
         boolean includeTransactionIds = ParameterParser.getBoolean(req, "includeTransactionIds", false);
 
         JSONArray blocks = new JSONArray();
-        try (DbIterator<? extends Block> iterator = Nxt.getBlockchain().getBlocks(accountId, timestamp, firstIndex, lastIndex)) {
+        try (DbIterator<? extends Block> iterator = Jup.getBlockchain().getBlocks(accountId, timestamp, firstIndex, lastIndex)) {
             while (iterator.hasNext()) {
                 Block block = iterator.next();
                 blocks.add(JSONData.block(block, includeTransactions, includeTransactionIds, false));

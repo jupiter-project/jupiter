@@ -26,7 +26,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.Transaction;
 import nxt.db.DbIterator;
 import nxt.db.FilteringIterator;
@@ -49,7 +49,7 @@ public final class GetUnconfirmedTransactionIds extends APIServlet.APIRequestHan
 
         JSONArray transactionIds = new JSONArray();
         if (accountIds.isEmpty()) {
-            try (DbIterator<? extends Transaction> transactionsIterator = Nxt.getTransactionProcessor().getAllUnconfirmedTransactions(firstIndex, lastIndex)) {
+            try (DbIterator<? extends Transaction> transactionsIterator = Jup.getTransactionProcessor().getAllUnconfirmedTransactions(firstIndex, lastIndex)) {
                 while (transactionsIterator.hasNext()) {
                     Transaction transaction = transactionsIterator.next();
                     transactionIds.add(transaction.getStringId());
@@ -57,7 +57,7 @@ public final class GetUnconfirmedTransactionIds extends APIServlet.APIRequestHan
             }
         } else {
             try (FilteringIterator<? extends Transaction> transactionsIterator = new FilteringIterator<> (
-                    Nxt.getTransactionProcessor().getAllUnconfirmedTransactions(0, -1),
+                    Jup.getTransactionProcessor().getAllUnconfirmedTransactions(0, -1),
                     transaction -> accountIds.contains(transaction.getSenderId()) || accountIds.contains(transaction.getRecipientId()),
                     firstIndex, lastIndex)) {
                 while (transactionsIterator.hasNext()) {

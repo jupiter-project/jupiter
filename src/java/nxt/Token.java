@@ -33,7 +33,7 @@ public final class Token {
         byte[] data = new byte[message.length + 32 + 4];
         System.arraycopy(message, 0, data, 0, message.length);
         System.arraycopy(Crypto.getPublicKey(secretPhrase), 0, data, message.length, 32);
-        int timestamp = Nxt.getEpochTime();
+        int timestamp = Jup.getEpochTime();
         data[message.length + 32] = (byte)timestamp;
         data[message.length + 32 + 1] = (byte)(timestamp >> 8);
         data[message.length + 32 + 2] = (byte)(timestamp >> 16);

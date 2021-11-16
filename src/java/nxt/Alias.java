@@ -59,7 +59,7 @@ public final class Alias {
                 pstmt.setLong(++i, this.aliasId);
                 pstmt.setLong(++i, this.priceNQT);
                 DbUtils.setLongZeroToNull(pstmt, ++i, this.buyerId);
-                pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+                pstmt.setInt(++i, Jup.getBlockchain().getHeight());
                 pstmt.executeUpdate();
             }
         }
@@ -173,7 +173,7 @@ public final class Alias {
         } else {
             alias.accountId = transaction.getSenderId();
             alias.aliasURI = attachment.getAliasURI();
-            alias.timestamp = Nxt.getBlockchain().getLastBlockTimestamp();
+            alias.timestamp = Jup.getBlockchain().getLastBlockTimestamp();
         }
         aliasTable.insert(alias);
     }
@@ -201,7 +201,7 @@ public final class Alias {
     static void changeOwner(long newOwnerId, String aliasName) {
         Alias alias = getAlias(aliasName);
         alias.accountId = newOwnerId;
-        alias.timestamp = Nxt.getBlockchain().getLastBlockTimestamp();
+        alias.timestamp = Jup.getBlockchain().getLastBlockTimestamp();
         aliasTable.insert(alias);
         Offer offer = getOffer(alias);
         offerTable.delete(offer);
@@ -223,7 +223,7 @@ public final class Alias {
         this.accountId = transaction.getSenderId();
         this.aliasName = attachment.getAliasName();
         this.aliasURI = attachment.getAliasURI();
-        this.timestamp = Nxt.getBlockchain().getLastBlockTimestamp();
+        this.timestamp = Jup.getBlockchain().getLastBlockTimestamp();
     }
 
     private Alias(ResultSet rs, DbKey dbKey) throws SQLException {
@@ -245,7 +245,7 @@ public final class Alias {
             pstmt.setString(++i, this.aliasName);
             pstmt.setString(++i, this.aliasURI);
             pstmt.setInt(++i, this.timestamp);
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             pstmt.executeUpdate();
         }
     }

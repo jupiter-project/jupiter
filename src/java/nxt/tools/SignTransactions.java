@@ -26,7 +26,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.Transaction;
 import nxt.util.Convert;
 
@@ -63,7 +63,7 @@ public final class SignTransactions {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     byte[] transactionBytes = Convert.parseHexString(line);
-                    Transaction.Builder builder = Nxt.newTransactionBuilder(transactionBytes);
+                    Transaction.Builder builder = Jup.newTransactionBuilder(transactionBytes);
                     Transaction transaction = builder.build(secretPhrase);
                     writer.write(Convert.toHexString(transaction.getBytes()));
                     writer.newLine();

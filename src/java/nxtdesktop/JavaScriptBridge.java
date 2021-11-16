@@ -30,7 +30,7 @@ import org.json.simple.JSONObject;
 import javafx.application.Platform;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.http.API;
 import nxt.util.JSON;
 import nxt.util.Logger;
@@ -69,13 +69,13 @@ public class JavaScriptBridge {
         String fileName = "contacts.json";
         byte[] bytes;
         try {
-            bytes = Files.readAllBytes(Paths.get(Nxt.getUserHomeDir(), fileName));
+            bytes = Files.readAllBytes(Paths.get(Jup.getUserHomeDir(), fileName));
         } catch (IOException e) {
             Logger.logInfoMessage("Cannot read file " + fileName + " error " + e.getMessage());
             JSONObject response = new JSONObject();
             response.put("error", "contacts_file_not_found");
             response.put("file", fileName);
-            response.put("folder", Nxt.getUserHomeDir());
+            response.put("folder", Jup.getUserHomeDir());
             response.put("type", "1");
             return JSON.toJSONString(response);
         }

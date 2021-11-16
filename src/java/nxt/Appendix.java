@@ -53,7 +53,7 @@ public interface Appendix {
         boolean hasPrunableData();
         void restorePrunableData(Transaction transaction, int blockTimestamp, int height);
         default boolean shouldLoadPrunable(Transaction transaction, boolean includeExpiredPrunable) {
-            return Nxt.getEpochTime() - transaction.getTimestamp() <
+            return Jup.getEpochTime() - transaction.getTimestamp() <
                     (includeExpiredPrunable && Constants.INCLUDE_EXPIRED_PRUNABLE ?
                             Constants.MAX_PRUNABLE_LIFETIME : Constants.MIN_PRUNABLE_LIFETIME);
         }
@@ -429,14 +429,14 @@ public interface Appendix {
             if (msg != null && msg.length > Constants.MAX_PRUNABLE_MESSAGE_LENGTH) {
                 throw new NxtException.NotValidException("Invalid prunable message length: " + msg.length);
             }
-            if (msg == null && Nxt.getEpochTime() - transaction.getTimestamp() < Constants.MIN_PRUNABLE_LIFETIME) {
+            if (msg == null && Jup.getEpochTime() - transaction.getTimestamp() < Constants.MIN_PRUNABLE_LIFETIME) {
                 throw new NxtException.NotCurrentlyValidException("Message has been pruned prematurely");
             }
         }
 
         @Override
         void apply(Transaction transaction, Account senderAccount, Account recipientAccount) {
-            if (Nxt.getEpochTime() - transaction.getTimestamp() < Constants.MAX_PRUNABLE_LIFETIME) {
+            if (Jup.getEpochTime() - transaction.getTimestamp() < Constants.MAX_PRUNABLE_LIFETIME) {
                 PrunableMessage.add((TransactionImpl)transaction, this);
             }
         }
@@ -772,7 +772,7 @@ public interface Appendix {
                 throw new NxtException.NotValidException("Cannot have both encrypted and prunable encrypted message attachments");
             }
             EncryptedData ed = getEncryptedData();
-            if (ed == null && Nxt.getEpochTime() - transaction.getTimestamp() < Constants.MIN_PRUNABLE_LIFETIME) {
+            if (ed == null && Jup.getEpochTime() - transaction.getTimestamp() < Constants.MIN_PRUNABLE_LIFETIME) {
                 throw new NxtException.NotCurrentlyValidException("Encrypted message has been pruned prematurely");
             }
             if (ed != null) {
@@ -792,7 +792,7 @@ public interface Appendix {
 
         @Override
         void apply(Transaction transaction, Account senderAccount, Account recipientAccount) {
-            if (Nxt.getEpochTime() - transaction.getTimestamp() < Constants.MAX_PRUNABLE_LIFETIME) {
+            if (Jup.getEpochTime() - transaction.getTimestamp() < Constants.MAX_PRUNABLE_LIFETIME) {
                 PrunableMessage.add((TransactionImpl)transaction, this);
             }
         }
@@ -1394,7 +1394,7 @@ public interface Appendix {
         @Override
         void validate(Transaction transaction) throws NxtException.ValidationException {
             params.validate();
-            int currentHeight = Nxt.getBlockchain().getHeight();
+            int currentHeight = Jup.getBlockchain().getHeight();
             if (params.getVoteWeighting().getVotingModel() == VoteWeighting.VotingModel.TRANSACTION) {
                 if (linkedFullHashes.length == 0 || linkedFullHashes.length > Constants.MAX_PHASING_LINKED_TRANSACTIONS) {
                     throw new NxtException.NotValidException("Invalid number of linkedFullHashes " + linkedFullHashes.length);
@@ -1526,16 +1526,16 @@ public interface Appendix {
                     try {
                         release(transaction);
                         poll.finish(result);
-                        Logger.logDebugMessage("Early finish of transaction " + transaction.getStringId() + " at height " + Nxt.getBlockchain().getHeight());
+                        Logger.logDebugMessage("Early finish of transaction " + transaction.getStringId() + " at height " + Jup.getBlockchain().getHeight());
                     } catch (RuntimeException e) {
                         Logger.logErrorMessage("Failed to release phased transaction " + transaction.getJSONObject().toJSONString(), e);
                     }
                 } else {
-                    Logger.logDebugMessage("At height " + Nxt.getBlockchain().getHeight() + " phased transaction " + transaction.getStringId()
+                    Logger.logDebugMessage("At height " + Jup.getBlockchain().getHeight() + " phased transaction " + transaction.getStringId()
                             + " is duplicate, cannot finish early");
                 }
             } else {
-                Logger.logDebugMessage("At height " + Nxt.getBlockchain().getHeight() + " phased transaction " + transaction.getStringId()
+                Logger.logDebugMessage("At height " + Jup.getBlockchain().getHeight() + " phased transaction " + transaction.getStringId()
                         + " does not yet meet quorum, cannot finish early");
             }
         }

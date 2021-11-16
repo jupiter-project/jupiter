@@ -24,7 +24,7 @@ import java.util.Map;
 import org.bitlet.weupnp.GatewayDevice;
 import org.bitlet.weupnp.GatewayDiscover;
 
-import nxt.Nxt;
+import nxt.Jup;
 
 /**
  * Forward ports using the UPnP protocol.
@@ -61,7 +61,7 @@ public class UPnP {
         //
         try {
             if (gateway.addPortMapping(port, port, localAddress.getHostAddress(), "TCP",
-                                       Nxt.APPLICATION + " " + Nxt.VERSION)) {
+                                       Jup.APPLICATION + " " + Jup.VERSION)) {
                 Logger.logDebugMessage("Mapped port [" + externalAddress.getHostAddress() + "]:" + port);
             } else {
                 Logger.logDebugMessage("Unable to map port " + port);
@@ -125,9 +125,9 @@ public class UPnP {
         //
         try {
             Logger.logInfoMessage("Looking for UPnP gateway device...");
-            GatewayDevice.setHttpReadTimeout(Nxt.getIntProperty("nxt.upnpGatewayTimeout", GatewayDevice.getHttpReadTimeout()));
+            GatewayDevice.setHttpReadTimeout(Jup.getIntProperty("nxt.upnpGatewayTimeout", GatewayDevice.getHttpReadTimeout()));
             GatewayDiscover discover = new GatewayDiscover();
-            discover.setTimeout(Nxt.getIntProperty("nxt.upnpDiscoverTimeout", discover.getTimeout()));
+            discover.setTimeout(Jup.getIntProperty("nxt.upnpDiscoverTimeout", discover.getTimeout()));
             Map<InetAddress, GatewayDevice> gatewayMap = discover.discover();
             if (gatewayMap == null || gatewayMap.isEmpty()) {
                 Logger.logDebugMessage("There are no UPnP gateway devices");

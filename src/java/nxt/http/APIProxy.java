@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 import nxt.Constants;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.peer.Peer;
 import nxt.peer.Peers;
 import nxt.util.Logger;
@@ -40,9 +40,9 @@ public class APIProxy {
     private static final APIProxy instance = new APIProxy();
 
     static final boolean enableAPIProxy = Constants.isLightClient ||
-            (Nxt.getBooleanProperty("nxt.enableAPIProxy") && API.openAPIPort == 0 && API.openAPISSLPort == 0);
-    private static final int blacklistingPeriod = Nxt.getIntProperty("nxt.apiProxyBlacklistingPeriod") / 1000;
-    static final String forcedServerURL = Nxt.getStringProperty("nxt.forceAPIProxyServerURL", "");
+            (Jup.getBooleanProperty("nxt.enableAPIProxy") && API.openAPIPort == 0 && API.openAPISSLPort == 0);
+    private static final int blacklistingPeriod = Jup.getIntProperty("nxt.apiProxyBlacklistingPeriod") / 1000;
+    static final String forcedServerURL = Jup.getStringProperty("nxt.forceAPIProxyServerURL", "");
 
     private volatile String forcedPeerHost;
     private volatile List<String> peersHosts = Collections.emptyList();
@@ -68,7 +68,7 @@ public class APIProxy {
     }
 
     private static final Runnable peersUpdateThread = () -> {
-        int curTime = Nxt.getEpochTime();
+        int curTime = Jup.getEpochTime();
         instance.blacklistedPeers.entrySet().removeIf((entry) -> {
             if (entry.getValue() < curTime) {
                 Logger.logDebugMessage("Unblacklisting API peer " + entry.getKey());
@@ -181,11 +181,11 @@ public class APIProxy {
     }
 
     static boolean isActivated() {
-        return Constants.isLightClient || (enableAPIProxy && Nxt.getBlockchainProcessor().isDownloading());
+        return Constants.isLightClient || (enableAPIProxy && Jup.getBlockchainProcessor().isDownloading());
     }
 
     void blacklistHost(String host) {
-        blacklistedPeers.put(host, Nxt.getEpochTime() + blacklistingPeriod);
+        blacklistedPeers.put(host, Jup.getEpochTime() + blacklistingPeriod);
         if (peersHosts.contains(host)) {
             peersHosts = Collections.emptyList();
             getServingPeer(null);

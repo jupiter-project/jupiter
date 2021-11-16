@@ -145,7 +145,7 @@ public final class AccountRestrictions {
                         phasingParams.toString() + " . Actual: " + phasingAppendix.getParams().toString());
             }
             if (!validatingAtFinish) {
-                int duration = phasingAppendix.getFinishHeight() - Nxt.getBlockchain().getHeight();
+                int duration = phasingAppendix.getFinishHeight() - Jup.getBlockchain().getHeight();
                 if ((maxDuration > 0 && duration > maxDuration) || (minDuration > 0 && duration < minDuration)) {
                     throw new AccountControlException("Invalid phasing duration " + duration);
                 }
@@ -168,7 +168,7 @@ public final class AccountRestrictions {
                 pstmt.setLong(++i, this.maxFees);
                 pstmt.setShort(++i, this.minDuration);
                 pstmt.setShort(++i, this.maxDuration);
-                pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+                pstmt.setInt(++i, Jup.getBlockchain().getHeight());
                 pstmt.executeUpdate();
             }
         }

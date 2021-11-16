@@ -56,13 +56,13 @@ public class AccountLedger {
     private static final int logUnconfirmed;
 
     /** Number of blocks to keep when trimming */
-    public static final int trimKeep = Nxt.getIntProperty("nxt.ledgerTrimKeep", 30000);
+    public static final int trimKeep = Jup.getIntProperty("nxt.ledgerTrimKeep", 30000);
 
     /** Blockchain */
-    private static final Blockchain blockchain = Nxt.getBlockchain();
+    private static final Blockchain blockchain = Jup.getBlockchain();
 
     /** Blockchain processor */
-    private static final BlockchainProcessor blockchainProcessor = Nxt.getBlockchainProcessor();
+    private static final BlockchainProcessor blockchainProcessor = Jup.getBlockchainProcessor();
 
     /** Pending ledger entries */
     private static final List<LedgerEntry> pendingEntries = new ArrayList<>();
@@ -71,7 +71,7 @@ public class AccountLedger {
      * Process nxt.ledgerAccounts
      */
     static {
-        List<String> ledgerAccounts = Nxt.getStringListProperty("nxt.ledgerAccounts");
+        List<String> ledgerAccounts = Jup.getStringListProperty("nxt.ledgerAccounts");
         ledgerEnabled = !ledgerAccounts.isEmpty();
         trackAllAccounts = ledgerAccounts.contains("*");
         if (ledgerEnabled) {
@@ -90,7 +90,7 @@ public class AccountLedger {
         } else {
             Logger.logInfoMessage("Account ledger is not enabled");
         }
-        int temp = Nxt.getIntProperty("nxt.ledgerLogUnconfirmed", 1);
+        int temp = Jup.getIntProperty("nxt.ledgerLogUnconfirmed", 1);
         logUnconfirmed = (temp >= 0 && temp <= 2 ? temp : 1);
     }
 

@@ -30,7 +30,7 @@ import org.json.simple.JSONStreamAware;
 
 import nxt.Attachment;
 import nxt.MonetarySystem;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.Transaction;
 import nxt.util.Filter;
 
@@ -66,7 +66,7 @@ public final class GetExpectedBuyOffers extends APIServlet.APIRequestHandler {
             return currencyId == 0 || attachment.getCurrencyId() == currencyId;
         };
 
-        List<? extends Transaction> transactions = Nxt.getBlockchain().getExpectedTransactions(filter);
+        List<? extends Transaction> transactions = Jup.getBlockchain().getExpectedTransactions(filter);
         if (sortByRate) {
             Collections.sort(transactions, rateComparator);
         }

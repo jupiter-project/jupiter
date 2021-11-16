@@ -112,8 +112,8 @@ public final class AssetDividend {
         this.dividendHeight = attachment.getHeight();
         this.totalDividend = totalDividend;
         this.numAccounts = numAccounts;
-        this.timestamp = Nxt.getBlockchain().getLastBlockTimestamp();
-        this.height = Nxt.getBlockchain().getHeight();
+        this.timestamp = Jup.getBlockchain().getLastBlockTimestamp();
+        this.height = Jup.getBlockchain().getHeight();
     }
 
     private AssetDividend(ResultSet rs, DbKey dbKey) throws SQLException {

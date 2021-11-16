@@ -66,7 +66,7 @@ public final class PhasingPoll extends AbstractPoll {
             this.dbKey = resultDbKeyFactory.newKey(this.id);
             this.result = result;
             this.approved = result >= poll.getQuorum();
-            this.height = Nxt.getBlockchain().getHeight();
+            this.height = Jup.getBlockchain().getHeight();
         }
 
         private PhasingPollResult(ResultSet rs, DbKey dbKey) throws SQLException {
@@ -172,7 +172,7 @@ public final class PhasingPoll extends AbstractPoll {
                 int i = 0;
                 pstmt.setLong(++i, poll.getId());
                 pstmt.setLong(++i, accountId);
-                pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+                pstmt.setInt(++i, Jup.getBlockchain().getHeight());
                 pstmt.executeUpdate();
             }
         }
@@ -201,7 +201,7 @@ public final class PhasingPoll extends AbstractPoll {
                 pstmt.setLong(++i, poll.getId());
                 pstmt.setBytes(++i, linkedFullHash);
                 pstmt.setLong(++i, Convert.fullHashToId(linkedFullHash));
-                pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+                pstmt.setInt(++i, Jup.getBlockchain().getHeight());
                 pstmt.executeUpdate();
             }
         }
@@ -270,7 +270,7 @@ public final class PhasingPoll extends AbstractPoll {
                     + "ORDER BY transaction.height DESC, transaction.transaction_index DESC "
                     + DbUtils.limitsClause(from, to));
             int i = 0;
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             pstmt.setLong(++i, voterId);
             DbUtils.setLimits(++i, pstmt, from, to);
 
@@ -300,7 +300,7 @@ public final class PhasingPoll extends AbstractPoll {
             int i = 0;
             pstmt.setLong(++i, holdingId);
             pstmt.setByte(++i, votingModel.getCode());
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             if (accountId != 0) {
                 pstmt.setLong(++i, accountId);
             }
@@ -326,7 +326,7 @@ public final class PhasingPoll extends AbstractPoll {
             int i = 0;
             pstmt.setLong(++i, accountId);
             pstmt.setLong(++i, accountId);
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             DbUtils.setLimits(++i, pstmt, from, to);
 
             return BlockchainImpl.getInstance().getTransactions(con, pstmt);
@@ -346,7 +346,7 @@ public final class PhasingPoll extends AbstractPoll {
             int i = 0;
             pstmt.setLong(++i, accountId);
             pstmt.setLong(++i, accountId);
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             try (ResultSet rs = pstmt.executeQuery()) {
                 rs.next();
                 return rs.getInt(1);
@@ -384,7 +384,7 @@ public final class PhasingPoll extends AbstractPoll {
                      " AND phasing_poll.finish_height > ?")) {
             int i = 0;
             pstmt.setLong(++i, accountId);
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             try (ResultSet rs = pstmt.executeQuery()) {
                 rs.next();
                 return rs.getLong("fees");
@@ -474,7 +474,7 @@ public final class PhasingPoll extends AbstractPoll {
         if (voteWeighting.getVotingModel() == VoteWeighting.VotingModel.NONE) {
             return 0;
         }
-        int height = Math.min(this.finishHeight, Nxt.getBlockchain().getHeight());
+        int height = Math.min(this.finishHeight, Jup.getBlockchain().getHeight());
         if (voteWeighting.getVotingModel() == VoteWeighting.VotingModel.TRANSACTION) {
             int count = 0;
             for (byte[] hash : getLinkedFullHashes()) {
@@ -517,7 +517,7 @@ public final class PhasingPoll extends AbstractPoll {
             pstmt.setByte(++i, voteWeighting.getMinBalanceModel().getCode());
             DbUtils.setBytes(pstmt, ++i, hashedSecret);
             pstmt.setByte(++i, algorithm);
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             pstmt.executeUpdate();
         }
     }

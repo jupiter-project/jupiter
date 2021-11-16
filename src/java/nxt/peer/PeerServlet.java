@@ -43,7 +43,7 @@ import org.json.simple.parser.ParseException;
 
 import nxt.BlockchainProcessor;
 import nxt.Constants;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.util.CountingInputReader;
 import nxt.util.CountingOutputWriter;
 import nxt.util.JSON;
@@ -123,7 +123,7 @@ public final class PeerServlet extends WebSocketServlet {
         LIGHT_CLIENT = JSON.prepare(response);
     }
 
-    private static final BlockchainProcessor blockchainProcessor = Nxt.getBlockchainProcessor();
+    private static final BlockchainProcessor blockchainProcessor = Jup.getBlockchainProcessor();
 
     static JSONStreamAware error(Exception e) {
         JSONObject response = new JSONObject();
@@ -282,7 +282,7 @@ public final class PeerServlet extends WebSocketServlet {
                 }
                 Peers.notifyListeners(peer, Peers.Event.ADD_INBOUND);
             }
-            peer.setLastInboundRequest(Nxt.getEpochTime());
+            peer.setLastInboundRequest(Jup.getEpochTime());
             if (peerRequestHandler.rejectWhileDownloading()) {
                 if (blockchainProcessor.isDownloading()) {
                     return DOWNLOADING;

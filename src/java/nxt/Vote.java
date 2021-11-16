@@ -121,7 +121,7 @@ public final class Vote {
             pstmt.setLong(++i, this.pollId);
             pstmt.setLong(++i, this.voterId);
             pstmt.setBytes(++i, this.voteBytes);
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             pstmt.executeUpdate();
         }
     }

@@ -106,8 +106,8 @@ public final class AssetDelete {
         this.assetId = assetId;
         this.accountId = transaction.getSenderId();
         this.quantityQNT = quantityQNT;
-        this.timestamp = Nxt.getBlockchain().getLastBlockTimestamp();
-        this.height = Nxt.getBlockchain().getHeight();
+        this.timestamp = Jup.getBlockchain().getLastBlockTimestamp();
+        this.height = Jup.getBlockchain().getHeight();
     }
 
     private AssetDelete(ResultSet rs, DbKey dbKey) throws SQLException {

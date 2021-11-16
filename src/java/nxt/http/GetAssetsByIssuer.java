@@ -25,7 +25,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import nxt.Asset;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.Transaction;
 import nxt.db.DbIterator;
 import nxt.util.Convert;
@@ -58,7 +58,7 @@ public final class GetAssetsByIssuer extends APIServlet.APIRequestHandler {
                 	JSONObject assetJSON = JSONData.asset(asset, includeCounts);
                 	
                 	if (includeNTFInfo) {
-                		Transaction transaction = Nxt.getBlockchain().getTransaction(asset.getId());
+                		Transaction transaction = Jup.getBlockchain().getTransaction(asset.getId());
                 	
 	                	if (transaction != null) {
 	                		if (transaction.getMessage() != null) {

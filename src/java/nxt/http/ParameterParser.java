@@ -78,7 +78,7 @@ import nxt.CurrencyBuyOffer;
 import nxt.CurrencySellOffer;
 import nxt.DigitalGoodsStore;
 import nxt.HoldingType;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.Poll;
 import nxt.Shuffling;
@@ -566,7 +566,7 @@ public final class ParameterParser {
     }
 
     public static int getNumberOfConfirmations(HttpServletRequest req) throws ParameterException {
-        return getInt(req, "numberOfConfirmations", 0, Nxt.getBlockchain().getHeight(), false);
+        return getInt(req, "numberOfConfirmations", 0, Jup.getBlockchain().getHeight(), false);
     }
 
     public static int getHeight(HttpServletRequest req) throws ParameterException {
@@ -574,7 +574,7 @@ public final class ParameterParser {
         if (heightValue != null) {
             try {
                 int height = Integer.parseInt(heightValue);
-                if (height < 0 || height > Nxt.getBlockchain().getHeight()) {
+                if (height < 0 || height > Jup.getBlockchain().getHeight()) {
                     throw new ParameterException(INCORRECT_HEIGHT);
                 }
                 return height;
@@ -634,7 +634,7 @@ public final class ParameterParser {
         if (transactionJSON != null) {
             try {
                 JSONObject json = (JSONObject) JSONValue.parseWithException(transactionJSON);
-                return Nxt.newTransactionBuilder(json);
+                return Jup.newTransactionBuilder(json);
             } catch (NxtException.ValidationException | RuntimeException | ParseException e) {
                 Logger.logDebugMessage(e.getMessage(), e);
                 JSONObject response = new JSONObject();
@@ -645,7 +645,7 @@ public final class ParameterParser {
             try {
                 byte[] bytes = Convert.parseHexString(transactionBytes);
                 JSONObject prunableAttachments = prunableAttachmentJSON == null ? null : (JSONObject)JSONValue.parseWithException(prunableAttachmentJSON);
-                return Nxt.newTransactionBuilder(bytes, prunableAttachments);
+                return Jup.newTransactionBuilder(bytes, prunableAttachments);
             } catch (NxtException.ValidationException|RuntimeException | ParseException e) {
                 Logger.logDebugMessage(e.getMessage(), e);
                 JSONObject response = new JSONObject();

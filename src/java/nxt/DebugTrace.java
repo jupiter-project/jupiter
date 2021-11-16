@@ -38,13 +38,13 @@ import nxt.util.Logger;
 
 public final class DebugTrace {
 
-    static final String QUOTE = Nxt.getStringProperty("nxt.debugTraceQuote", "\"");
-    static final String SEPARATOR = Nxt.getStringProperty("nxt.debugTraceSeparator", "\t");
-    static final boolean LOG_UNCONFIRMED = Nxt.getBooleanProperty("nxt.debugLogUnconfirmed");
+    static final String QUOTE = Jup.getStringProperty("nxt.debugTraceQuote", "\"");
+    static final String SEPARATOR = Jup.getStringProperty("nxt.debugTraceSeparator", "\t");
+    static final boolean LOG_UNCONFIRMED = Jup.getBooleanProperty("nxt.debugLogUnconfirmed");
 
     static void init() {
-        List<String> accountIdStrings = Nxt.getStringListProperty("nxt.debugTraceAccounts");
-        String logName = Nxt.getStringProperty("nxt.debugTraceLog");
+        List<String> accountIdStrings = Jup.getStringListProperty("nxt.debugTraceAccounts");
+        String logName = Jup.getStringProperty("nxt.debugTraceLog");
         if (accountIdStrings.isEmpty() || logName == null) {
             return;
         }
@@ -57,7 +57,7 @@ public final class DebugTrace {
             accountIds.add(Convert.parseAccountId(accountId));
         }
         final DebugTrace debugTrace = addDebugTrace(accountIds, logName);
-        Nxt.getBlockchainProcessor().addListener(block -> debugTrace.resetLog(), BlockchainProcessor.Event.RESCAN_BEGIN);
+        Jup.getBlockchainProcessor().addListener(block -> debugTrace.resetLog(), BlockchainProcessor.Event.RESCAN_BEGIN);
         Logger.logDebugMessage("Debug tracing of " + (accountIdStrings.contains("*") ? "ALL"
                 : String.valueOf(accountIds.size())) + " accounts enabled");
     }
@@ -84,9 +84,9 @@ public final class DebugTrace {
         }
         Account.addLeaseListener(accountLease -> debugTrace.trace(accountLease, true), Account.Event.LEASE_STARTED);
         Account.addLeaseListener(accountLease -> debugTrace.trace(accountLease, false), Account.Event.LEASE_ENDED);
-        Nxt.getBlockchainProcessor().addListener(debugTrace::traceBeforeAccept, BlockchainProcessor.Event.BEFORE_BLOCK_ACCEPT);
-        Nxt.getBlockchainProcessor().addListener(debugTrace::trace, BlockchainProcessor.Event.BEFORE_BLOCK_APPLY);
-        Nxt.getTransactionProcessor().addListener(transactions -> debugTrace.traceRelease(transactions.get(0)), TransactionProcessor.Event.RELEASE_PHASED_TRANSACTION);
+        Jup.getBlockchainProcessor().addListener(debugTrace::traceBeforeAccept, BlockchainProcessor.Event.BEFORE_BLOCK_ACCEPT);
+        Jup.getBlockchainProcessor().addListener(debugTrace::trace, BlockchainProcessor.Event.BEFORE_BLOCK_APPLY);
+        Jup.getTransactionProcessor().addListener(transactions -> debugTrace.traceRelease(transactions.get(0)), TransactionProcessor.Event.RELEASE_PHASED_TRANSACTION);
         Shuffling.addListener(debugTrace::traceShufflingDistribute, Shuffling.Event.SHUFFLING_DONE);
         Shuffling.addListener(debugTrace::traceShufflingCancel, Shuffling.Event.SHUFFLING_CANCELLED);
         return debugTrace;
@@ -266,7 +266,7 @@ public final class DebugTrace {
             map.put("event", "shuffling blame");
             log(map);
             long fee = Constants.SHUFFLING_DEPOSIT_NQT / 4;
-            int height = Nxt.getBlockchain().getHeight();
+            int height = Jup.getBlockchain().getHeight();
             for (int i = 0; i < 3; i++) {
                 long generatorId = BlockDb.findBlockAtHeight(height - i - 1).getGeneratorId();
                 if (include(generatorId)) {
@@ -277,7 +277,7 @@ public final class DebugTrace {
                 }
             }
             fee = Constants.SHUFFLING_DEPOSIT_NQT - 3 * fee;
-            long generatorId = Nxt.getBlockchain().getLastBlock().getGeneratorId();
+            long generatorId = Jup.getBlockchain().getLastBlock().getGeneratorId();
             if (include(generatorId)) {
                 Map<String,String> generatorMap = getValues(generatorId, false);
                 generatorMap.put("generation fee", String.valueOf(fee));
@@ -292,8 +292,8 @@ public final class DebugTrace {
         map.put("account", Long.toUnsignedString(account.getId()));
         map.put("lessor guaranteed balance", String.valueOf(account.getGuaranteedBalanceNQT()));
         map.put("lessee", Long.toUnsignedString(lesseeId));
-        map.put("timestamp", String.valueOf(Nxt.getBlockchain().getLastBlock().getTimestamp()));
-        map.put("height", String.valueOf(Nxt.getBlockchain().getHeight()));
+        map.put("timestamp", String.valueOf(Jup.getBlockchain().getLastBlock().getTimestamp()));
+        map.put("height", String.valueOf(Jup.getBlockchain().getHeight()));
         map.put("event", "lessor guaranteed balance");
         return map;
     }
@@ -403,8 +403,8 @@ public final class DebugTrace {
         Account account = Account.getAccount(accountId);
         map.put("balance", String.valueOf(account != null ? account.getBalanceNQT() : 0));
         map.put("unconfirmed balance", String.valueOf(account != null ? account.getUnconfirmedBalanceNQT() : 0));
-        map.put("timestamp", String.valueOf(Nxt.getBlockchain().getLastBlock().getTimestamp()));
-        map.put("height", String.valueOf(Nxt.getBlockchain().getHeight()));
+        map.put("timestamp", String.valueOf(Jup.getBlockchain().getLastBlock().getTimestamp()));
+        map.put("height", String.valueOf(Jup.getBlockchain().getHeight()));
         map.put("event", unconfirmed ? "unconfirmed balance" : "balance");
         return map;
     }
@@ -534,8 +534,8 @@ public final class DebugTrace {
         } else {
             map.put("asset balance", String.valueOf(accountAsset.getQuantityQNT()));
         }
-        map.put("timestamp", String.valueOf(Nxt.getBlockchain().getLastBlock().getTimestamp()));
-        map.put("height", String.valueOf(Nxt.getBlockchain().getHeight()));
+        map.put("timestamp", String.valueOf(Jup.getBlockchain().getLastBlock().getTimestamp()));
+        map.put("height", String.valueOf(Jup.getBlockchain().getHeight()));
         map.put("event", "asset balance");
         return map;
     }
@@ -549,8 +549,8 @@ public final class DebugTrace {
         } else {
             map.put("currency balance", String.valueOf(accountCurrency.getUnits()));
         }
-        map.put("timestamp", String.valueOf(Nxt.getBlockchain().getLastBlock().getTimestamp()));
-        map.put("height", String.valueOf(Nxt.getBlockchain().getHeight()));
+        map.put("timestamp", String.valueOf(Jup.getBlockchain().getLastBlock().getTimestamp()));
+        map.put("height", String.valueOf(Jup.getBlockchain().getHeight()));
         map.put("event", "currency balance");
         return map;
     }
@@ -559,8 +559,8 @@ public final class DebugTrace {
         Map<String,String> map = new HashMap<>();
         map.put("account", Long.toUnsignedString(accountId));
         map.put("event", start ? "lease begin" : "lease end");
-        map.put("timestamp", String.valueOf(Nxt.getBlockchain().getLastBlock().getTimestamp()));
-        map.put("height", String.valueOf(Nxt.getBlockchain().getHeight()));
+        map.put("timestamp", String.valueOf(Jup.getBlockchain().getLastBlock().getTimestamp()));
+        map.put("height", String.valueOf(Jup.getBlockchain().getHeight()));
         map.put("lessee", Long.toUnsignedString(accountLease.getCurrentLesseeId()));
         return map;
     }
@@ -660,8 +660,8 @@ public final class DebugTrace {
         } else if (attachment == Attachment.ARBITRARY_MESSAGE) {
             map = new HashMap<>();
             map.put("account", Long.toUnsignedString(accountId));
-            map.put("timestamp", String.valueOf(Nxt.getBlockchain().getLastBlock().getTimestamp()));
-            map.put("height", String.valueOf(Nxt.getBlockchain().getHeight()));
+            map.put("timestamp", String.valueOf(Jup.getBlockchain().getLastBlock().getTimestamp()));
+            map.put("height", String.valueOf(Jup.getBlockchain().getHeight()));
             map.put("event", attachment == Attachment.ARBITRARY_MESSAGE ? "message" : "encrypted message");
             if (isRecipient) {
                 map.put("sender", Long.toUnsignedString(transaction.getSenderId()));

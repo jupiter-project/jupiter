@@ -26,7 +26,7 @@ import java.io.PrintWriter;
 
 import nxt.Block;
 import nxt.BlockchainProcessor;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.util.Listener;
 import nxt.util.Logger;
 
@@ -41,7 +41,7 @@ public final class DownloadTimer implements AddOn {
 
             writer = new PrintWriter((new BufferedWriter(new OutputStreamWriter(new FileOutputStream("downloadtime.csv")))), true);
             writer.println("height,time,dtime,bps,transations,dtransactions,tps");
-            Nxt.getBlockchainProcessor().addListener(new Listener<Block>() {
+            Jup.getBlockchainProcessor().addListener(new Listener<Block>() {
 
                 final int interval = 10000;
                 final long startTime = System.currentTimeMillis();

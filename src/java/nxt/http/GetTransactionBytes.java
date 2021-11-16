@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.Transaction;
 import nxt.util.Convert;
 
@@ -55,15 +55,15 @@ public final class GetTransactionBytes extends APIServlet.APIRequestHandler {
             return INCORRECT_TRANSACTION;
         }
 
-        transaction = Nxt.getBlockchain().getTransaction(transactionId);
+        transaction = Jup.getBlockchain().getTransaction(transactionId);
         JSONObject response = new JSONObject();
         if (transaction == null) {
-            transaction = Nxt.getTransactionProcessor().getUnconfirmedTransaction(transactionId);
+            transaction = Jup.getTransactionProcessor().getUnconfirmedTransaction(transactionId);
             if (transaction == null) {
                 return UNKNOWN_TRANSACTION;
             }
         } else {
-            response.put("confirmations", Nxt.getBlockchain().getHeight() - transaction.getHeight());
+            response.put("confirmations", Jup.getBlockchain().getHeight() - transaction.getHeight());
         }
         response.put("transactionBytes", Convert.toHexString(transaction.getBytes()));
         response.put("unsignedTransactionBytes", Convert.toHexString(transaction.getUnsignedBytes()));

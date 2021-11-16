@@ -27,7 +27,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import nxt.Attachment;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.Transaction;
 import nxt.TransactionType;
@@ -59,7 +59,7 @@ public final class GetExpectedAssetTransfers extends APIServlet.APIRequestHandle
             return assetId == 0 || attachment.getAssetId() == assetId;
         };
 
-        List<? extends Transaction> transactions = Nxt.getBlockchain().getExpectedTransactions(filter);
+        List<? extends Transaction> transactions = Jup.getBlockchain().getExpectedTransactions(filter);
 
         JSONObject response = new JSONObject();
         JSONArray transfersData = new JSONArray();

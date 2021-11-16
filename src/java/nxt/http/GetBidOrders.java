@@ -28,7 +28,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import nxt.Attachment;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.Order;
 import nxt.Transaction;
@@ -55,7 +55,7 @@ public final class GetBidOrders extends APIServlet.APIRequestHandler {
         long[] cancellations = null;
         if (showExpectedCancellations) {
             Filter<Transaction> filter = transaction -> transaction.getType() == TransactionType.ColoredCoins.BID_ORDER_CANCELLATION;
-            List<? extends Transaction> transactions = Nxt.getBlockchain().getExpectedTransactions(filter);
+            List<? extends Transaction> transactions = Jup.getBlockchain().getExpectedTransactions(filter);
             cancellations = new long[transactions.size()];
             for (int i = 0; i < transactions.size(); i++) {
                 Attachment.ColoredCoinsOrderCancellation attachment = (Attachment.ColoredCoinsOrderCancellation) transactions.get(i).getAttachment();

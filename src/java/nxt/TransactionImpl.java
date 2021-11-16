@@ -84,7 +84,7 @@ final class TransactionImpl implements Transaction {
         @Override
         public TransactionImpl build(String secretPhrase) throws NxtException.NotValidException {
             if (timestamp == Integer.MAX_VALUE) {
-                timestamp = Nxt.getEpochTime();
+                timestamp = Jup.getEpochTime();
             }
             if (!ecBlockSet) {
                 Block ecBlock = BlockchainImpl.getInstance().getECBlock(timestamp);
@@ -316,7 +316,7 @@ final class TransactionImpl implements Transaction {
         }
         this.appendagesSize = appendagesSize;
         if (builder.feeNQT <= 0 || (Constants.correctInvalidFees && builder.signature == null)) {
-            int effectiveHeight = (height < Integer.MAX_VALUE ? height : Nxt.getBlockchain().getHeight());
+            int effectiveHeight = (height < Integer.MAX_VALUE ? height : Jup.getBlockchain().getHeight());
             long minFee = getMinimumFeeNQT(effectiveHeight);
             feeNQT = Math.max(minFee, builder.feeNQT);
         } else {
@@ -993,10 +993,10 @@ final class TransactionImpl implements Transaction {
         }
 
     	int maxPayloadLength = Constants.MAX_NUMBER_OF_TRANSACTIONS;
-    	if (Nxt.getBlockchain().getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK) {
+    	if (Jup.getBlockchain().getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK) {
     		maxPayloadLength = Constants.ORIGINAL_MAX_PAYLOAD_LENGTH;
     	}
-    	if (Nxt.getBlockchain().getHeight() > Constants.BLOCK_HEIGHT_HARD_FORK_INCREASE_MAX_BASE_TARGET) {
+    	if (Jup.getBlockchain().getHeight() > Constants.BLOCK_HEIGHT_HARD_FORK_INCREASE_MAX_BASE_TARGET) {
     		maxPayloadLength = Constants.MAX_PAYLOAD_LENGTH;
     	}
     	
@@ -1005,7 +1005,7 @@ final class TransactionImpl implements Transaction {
         }
 
         if (!validatingAtFinish) {
-            int blockchainHeight = Nxt.getBlockchain().getHeight();
+            int blockchainHeight = Jup.getBlockchain().getHeight();
             long minimumFeeNQT = getMinimumFeeNQT(blockchainHeight);
             if (feeNQT < minimumFeeNQT) {
                 throw new NxtException.NotCurrentlyValidException(String.format("Transaction fee %f %s less than minimum fee %f %s at height %d",

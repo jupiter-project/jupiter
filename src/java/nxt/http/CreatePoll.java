@@ -36,7 +36,7 @@ import nxt.Account;
 import nxt.Attachment;
 import nxt.Attachment.MessagingPollCreation.PollBuilder;
 import nxt.Constants;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.util.Convert;
 
@@ -91,7 +91,7 @@ public final class CreatePoll extends CreateTransaction {
             return INCORRECT_ZEROOPTIONS;
         }
 
-        int currentHeight = Nxt.getBlockchain().getHeight();
+        int currentHeight = Jup.getBlockchain().getHeight();
         int finishHeight = ParameterParser.getInt(req, "finishHeight",
                 currentHeight + 2,
                 currentHeight + Constants.MAX_POLL_DURATION + 1, true);

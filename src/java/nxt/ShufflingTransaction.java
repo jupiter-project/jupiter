@@ -246,7 +246,7 @@ public abstract class ShufflingTransaction extends TransactionType {
                 throw new NxtException.NotCurrentlyValidException(String.format("Account %s is already registered for shuffling %s",
                         Long.toUnsignedString(transaction.getSenderId()), Long.toUnsignedString(shuffling.getId())));
             }
-            if (Nxt.getBlockchain().getHeight() + shuffling.getBlocksRemaining() <= attachment.getFinishValidationHeight(transaction)) {
+            if (Jup.getBlockchain().getHeight() + shuffling.getBlocksRemaining() <= attachment.getFinishValidationHeight(transaction)) {
                 throw new NxtException.NotCurrentlyValidException("Shuffling registration finishes in " + shuffling.getBlocksRemaining() + " blocks");
             }
         }
@@ -374,7 +374,7 @@ public abstract class ShufflingTransaction extends TransactionType {
                 throw new NxtException.NotCurrentlyValidException("Shuffling state hash doesn't match");
             }
             byte[][] data = attachment.getData();
-            if (data == null && Nxt.getEpochTime() - transaction.getTimestamp() < Constants.MIN_PRUNABLE_LIFETIME) {
+            if (data == null && Jup.getEpochTime() - transaction.getTimestamp() < Constants.MIN_PRUNABLE_LIFETIME) {
                 throw new NxtException.NotCurrentlyValidException("Data has been pruned prematurely");
             }
             if (data != null) {
@@ -698,7 +698,7 @@ public abstract class ShufflingTransaction extends TransactionType {
             if (shufflingStateHash == null || !Arrays.equals(shufflingStateHash, attachment.getShufflingStateHash())) {
                 throw new NxtException.NotCurrentlyValidException("Shuffling state hash doesn't match");
             }
-            Transaction dataProcessingTransaction = TransactionDb.findTransactionByFullHash(participant.getDataTransactionFullHash(), Nxt.getBlockchain().getHeight());
+            Transaction dataProcessingTransaction = TransactionDb.findTransactionByFullHash(participant.getDataTransactionFullHash(), Jup.getBlockchain().getHeight());
             if (dataProcessingTransaction == null) {
                 throw new NxtException.NotCurrentlyValidException("Invalid data transaction full hash");
             }

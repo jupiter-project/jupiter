@@ -24,7 +24,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import nxt.BlockchainProcessor;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.http.APIServlet;
 import nxt.http.APITag;
@@ -35,7 +35,7 @@ public final class PopOffCounter implements AddOn {
 
     @Override
     public void init() {
-        Nxt.getBlockchainProcessor().addListener(block -> numberOfPopOffs += 1, BlockchainProcessor.Event.BLOCK_POPPED);
+        Jup.getBlockchainProcessor().addListener(block -> numberOfPopOffs += 1, BlockchainProcessor.Event.BLOCK_POPPED);
     }
 
     @Override

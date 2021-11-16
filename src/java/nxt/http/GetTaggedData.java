@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.TaggedData;
 import nxt.util.JSON;
@@ -45,7 +45,7 @@ public final class GetTaggedData extends APIServlet.APIRequestHandler {
 
         TaggedData taggedData = TaggedData.getData(transactionId);
         if (taggedData == null && retrieve) {
-            if (Nxt.getBlockchainProcessor().restorePrunedTransaction(transactionId) == null) {
+            if (Jup.getBlockchainProcessor().restorePrunedTransaction(transactionId) == null) {
                 return PRUNED_TRANSACTION;
             }
             taggedData = TaggedData.getData(transactionId);

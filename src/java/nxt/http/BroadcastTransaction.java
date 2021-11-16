@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.Transaction;
 import nxt.util.Convert;
@@ -67,7 +67,7 @@ public final class BroadcastTransaction extends APIServlet.APIRequestHandler {
         try {
             Transaction.Builder builder = ParameterParser.parseTransaction(transactionJSON, transactionBytes, prunableAttachmentJSON);
             Transaction transaction = builder.build();
-            Nxt.getTransactionProcessor().broadcast(transaction);
+            Jup.getTransactionProcessor().broadcast(transaction);
             response.put("transaction", transaction.getStringId());
             response.put("fullHash", transaction.getFullHash());
         } catch (NxtException.ValidationException|RuntimeException e) {

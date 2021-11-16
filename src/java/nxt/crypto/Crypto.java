@@ -34,13 +34,13 @@ import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.jcajce.provider.digest.Keccak;
 import org.bouncycastle.jcajce.provider.digest.RIPEMD160;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.util.Convert;
 import nxt.util.Logger;
 
 public final class Crypto {
 
-    private static final boolean useStrongSecureRandom = Nxt.getBooleanProperty("nxt.useStrongSecureRandom");
+    private static final boolean useStrongSecureRandom = Jup.getBooleanProperty("nxt.useStrongSecureRandom");
 
     private static final ThreadLocal<SecureRandom> secureRandom = new ThreadLocal<SecureRandom>() {
         @Override

@@ -57,7 +57,7 @@ public final class FundingMonitor {
     public static final int MIN_FUND_INTERVAL = 10;
 
     /** Maximum number of monitors */
-    private static final int MAX_MONITORS = Nxt.getIntProperty("nxt.maxNumberOfMonitors");
+    private static final int MAX_MONITORS = Jup.getIntProperty("nxt.maxNumberOfMonitors");
 
     /** Monitor started */
     private static volatile boolean started = false;
@@ -235,7 +235,7 @@ public final class FundingMonitor {
         //
         FundingMonitor monitor = new FundingMonitor(holdingType, holdingId, property,
                 amount, threshold, interval, accountId, secretPhrase);
-        Nxt.getBlockchain().readLock();
+        Jup.getBlockchain().readLock();
         try {
             //
             // Locate monitored accounts based on the account property and the setter identifier
@@ -280,7 +280,7 @@ public final class FundingMonitor {
                         holdingType.name(), monitor.accountName, monitor.property, Long.toUnsignedString(monitor.holdingId)));
             }
         } finally {
-            Nxt.getBlockchain().readUnlock();
+            Jup.getBlockchain().readUnlock();
         }
         return true;
     }
@@ -478,7 +478,7 @@ public final class FundingMonitor {
             Account.addCurrencyListener(new CurrencyEventHandler(), Account.Event.CURRENCY_BALANCE);
             Account.addPropertyListener(new SetPropertyEventHandler(), Account.Event.SET_PROPERTY);
             Account.addPropertyListener(new DeletePropertyEventHandler(), Account.Event.DELETE_PROPERTY);
-            Nxt.getBlockchainProcessor().addListener(new BlockEventHandler(), BlockchainProcessor.Event.BLOCK_PUSHED);
+            Jup.getBlockchainProcessor().addListener(new BlockEventHandler(), BlockchainProcessor.Event.BLOCK_PUSHED);
             //
             // All done
             //
@@ -557,7 +557,7 @@ public final class FundingMonitor {
                         try {
                             Account targetAccount = Account.getAccount(monitoredAccount.accountId);
                             Account fundingAccount = Account.getAccount(monitoredAccount.monitor.accountId);
-                            if (Nxt.getBlockchain().getHeight() - monitoredAccount.height < monitoredAccount.interval) {
+                            if (Jup.getBlockchain().getHeight() - monitoredAccount.height < monitoredAccount.interval) {
                                 if (!suspendedEvents.contains(monitoredAccount)) {
                                     suspendedEvents.add(monitoredAccount);
                                 }
@@ -611,17 +611,17 @@ public final class FundingMonitor {
                                             throws NxtException {
         FundingMonitor monitor = monitoredAccount.monitor;
         if (targetAccount.getBalanceNQT() < monitoredAccount.threshold) {
-            Transaction.Builder builder = Nxt.newTransactionBuilder(monitor.publicKey,
+            Transaction.Builder builder = Jup.newTransactionBuilder(monitor.publicKey,
                     monitoredAccount.amount, 0, (short)1440, Attachment.ORDINARY_PAYMENT);
             builder.recipientId(monitoredAccount.accountId)
-                   .timestamp(Nxt.getBlockchain().getLastBlockTimestamp());
+                   .timestamp(Jup.getBlockchain().getLastBlockTimestamp());
             Transaction transaction = builder.build(monitor.secretPhrase);
             if (Math.addExact(monitoredAccount.amount, transaction.getFeeNQT()) > fundingAccount.getUnconfirmedBalanceNQT()) {
                 Logger.logWarningMessage(String.format("Funding account %s has insufficient funds; funding transaction discarded",
                         monitor.accountName));
             } else {
-                Nxt.getTransactionProcessor().broadcast(transaction);
-                monitoredAccount.height = Nxt.getBlockchain().getHeight();
+                Jup.getTransactionProcessor().broadcast(transaction);
+                monitoredAccount.height = Jup.getBlockchain().getHeight();
                 Logger.logDebugMessage(String.format("%s funding transaction %s for %f %s submitted from %s to %s",
                         Constants.COIN_SYMBOL, transaction.getStringId(), (double)monitoredAccount.amount / Constants.ONE_JUP,
                         Constants.COIN_SYMBOL, monitor.accountName, monitoredAccount.accountName));
@@ -648,17 +648,17 @@ public final class FundingMonitor {
                             monitor.accountName, Long.toUnsignedString(monitor.holdingId)));
         } else if (targetAsset == null || targetAsset.getQuantityQNT() < monitoredAccount.threshold) {
             Attachment attachment = new Attachment.ColoredCoinsAssetTransfer(monitor.holdingId, monitoredAccount.amount);
-            Transaction.Builder builder = Nxt.newTransactionBuilder(monitor.publicKey,
+            Transaction.Builder builder = Jup.newTransactionBuilder(monitor.publicKey,
                     0, 0, (short)1440, attachment);
             builder.recipientId(monitoredAccount.accountId)
-                   .timestamp(Nxt.getBlockchain().getLastBlockTimestamp());
+                   .timestamp(Jup.getBlockchain().getLastBlockTimestamp());
             Transaction transaction = builder.build(monitor.secretPhrase);
             if (transaction.getFeeNQT() > fundingAccount.getUnconfirmedBalanceNQT()) {
                 Logger.logWarningMessage(String.format("Funding account %s has insufficient funds; funding transaction discarded",
                         monitor.accountName));
             } else {
-                Nxt.getTransactionProcessor().broadcast(transaction);
-                monitoredAccount.height = Nxt.getBlockchain().getHeight();
+                Jup.getTransactionProcessor().broadcast(transaction);
+                monitoredAccount.height = Jup.getBlockchain().getHeight();
                 Logger.logDebugMessage(String.format("ASSET funding transaction %s submitted for %d units from %s to %s",
                         transaction.getStringId(), monitoredAccount.amount,
                         monitor.accountName, monitoredAccount.accountName));
@@ -685,17 +685,17 @@ public final class FundingMonitor {
                             monitor.accountName, Long.toUnsignedString(monitor.holdingId)));
         } else if (targetCurrency == null || targetCurrency.getUnits() < monitoredAccount.threshold) {
             Attachment attachment = new Attachment.MonetarySystemCurrencyTransfer(monitor.holdingId, monitoredAccount.amount);
-            Transaction.Builder builder = Nxt.newTransactionBuilder(monitor.publicKey,
+            Transaction.Builder builder = Jup.newTransactionBuilder(monitor.publicKey,
                     0, 0, (short)1440, attachment);
             builder.recipientId(monitoredAccount.accountId)
-                   .timestamp(Nxt.getBlockchain().getLastBlockTimestamp());
+                   .timestamp(Jup.getBlockchain().getLastBlockTimestamp());
             Transaction transaction = builder.build(monitor.secretPhrase);
             if (transaction.getFeeNQT() > fundingAccount.getUnconfirmedBalanceNQT()) {
                 Logger.logWarningMessage(String.format("Funding account %s has insufficient funds; funding transaction discarded",
                         monitor.accountName));
             } else {
-                Nxt.getTransactionProcessor().broadcast(transaction);
-                monitoredAccount.height = Nxt.getBlockchain().getHeight();
+                Jup.getTransactionProcessor().broadcast(transaction);
+                monitoredAccount.height = Jup.getBlockchain().getHeight();
                 Logger.logDebugMessage(String.format("CURRENCY funding transaction %s submitted for %d units from %s to %s",
                         transaction.getStringId(), monitoredAccount.amount,
                         monitor.accountName, monitoredAccount.accountName));

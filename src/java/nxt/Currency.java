@@ -95,7 +95,7 @@ public final class Currency {
                 pstmt.setLong(++i, this.currencyId);
                 pstmt.setLong(++i, this.currentSupply);
                 pstmt.setLong(++i, this.currentReservePerUnitNQT);
-                pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+                pstmt.setInt(++i, Jup.getBlockchain().getHeight());
                 pstmt.executeUpdate();
             }
         }
@@ -188,7 +188,7 @@ public final class Currency {
     }
 
     static {
-        Nxt.getBlockchainProcessor().addListener(new CrowdFundingListener(), BlockchainProcessor.Event.AFTER_BLOCK_APPLY);
+        Jup.getBlockchainProcessor().addListener(new CrowdFundingListener(), BlockchainProcessor.Event.AFTER_BLOCK_APPLY);
     }
 
     static void init() {}
@@ -225,7 +225,7 @@ public final class Currency {
         this.initialSupply = attachment.getInitialSupply();
         this.reserveSupply = attachment.getReserveSupply();
         this.maxSupply = attachment.getMaxSupply();
-        this.creationHeight = Nxt.getBlockchain().getHeight();
+        this.creationHeight = Jup.getBlockchain().getHeight();
         this.issuanceHeight = attachment.getIssuanceHeight();
         this.minReservePerUnitNQT = attachment.getMinReservePerUnitNQT();
         this.minDifficulty = attachment.getMinDifficulty();
@@ -279,7 +279,7 @@ public final class Currency {
             pstmt.setByte(++i, this.ruleset);
             pstmt.setByte(++i, this.algorithm);
             pstmt.setByte(++i, this.decimals);
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             pstmt.executeUpdate();
         }
     }

@@ -24,7 +24,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import nxt.Db;
-import nxt.Nxt;
+import nxt.Jup;
 
 public abstract class DerivedDbTable {
 
@@ -34,7 +34,7 @@ public abstract class DerivedDbTable {
 
     protected DerivedDbTable(String table) {
         this.table = table;
-        Nxt.getBlockchainProcessor().registerDerivedTable(this);
+        Jup.getBlockchainProcessor().registerDerivedTable(this);
     }
 
     public void rollback(int height) {

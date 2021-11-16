@@ -54,7 +54,7 @@ import org.json.simple.JSONValue;
 import nxt.Attachment;
 import nxt.Constants;
 import nxt.CurrencyMinting;
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.NxtException;
 import nxt.Transaction;
 import nxt.crypto.Crypto;
@@ -72,16 +72,16 @@ public class MintWorker {
     }
 
     private void mint() {
-        String currencyCode = Convert.emptyToNull(Nxt.getStringProperty("nxt.mint.currencyCode"));
+        String currencyCode = Convert.emptyToNull(Jup.getStringProperty("nxt.mint.currencyCode"));
         if (currencyCode == null) {
             throw new IllegalArgumentException("nxt.mint.currencyCode not specified");
         }
-        String secretPhrase = Convert.emptyToNull(Nxt.getStringProperty("nxt.mint.secretPhrase", null, true));
+        String secretPhrase = Convert.emptyToNull(Jup.getStringProperty("nxt.mint.secretPhrase", null, true));
         if (secretPhrase == null) {
             throw new IllegalArgumentException("nxt.mint.secretPhrase not specified");
         }
-        boolean isSubmitted = Nxt.getBooleanProperty("nxt.mint.isSubmitted");
-        boolean isStopOnError = Nxt.getBooleanProperty("nxt.mint.stopOnError");
+        boolean isSubmitted = Jup.getBooleanProperty("nxt.mint.isSubmitted");
+        boolean isStopOnError = Jup.getBooleanProperty("nxt.mint.stopOnError");
         byte[] publicKeyHash = Crypto.sha256().digest(Crypto.getPublicKey(secretPhrase));
         long accountId = Convert.fullHashToId(publicKeyHash);
         String rsAccount = Convert.rsAccount(accountId);
@@ -95,7 +95,7 @@ public class MintWorker {
         }
         byte algorithm = (byte)(long) currency.get("algorithm");
         byte decimal = (byte)(long) currency.get("decimals");
-        String unitsStr = Nxt.getStringProperty("nxt.mint.unitsPerMint");
+        String unitsStr = Jup.getStringProperty("nxt.mint.unitsPerMint");
         double wholeUnits = 1;
         if (unitsStr != null && unitsStr.length() > 0) {
             wholeUnits = Double.parseDouble(unitsStr);
@@ -105,11 +105,11 @@ public class MintWorker {
         long counter = (long) mintingTarget.get("counter");
         byte[] target = Convert.parseHexString((String) mintingTarget.get("targetBytes"));
         BigInteger difficulty = new BigInteger((String)mintingTarget.get("difficulty"));
-        long initialNonce = Nxt.getIntProperty("nxt.mint.initialNonce");
+        long initialNonce = Jup.getIntProperty("nxt.mint.initialNonce");
         if (initialNonce == 0) {
             initialNonce = new Random().nextLong();
         }
-        int threadPoolSize = Nxt.getIntProperty("nxt.mint.threadPoolSize");
+        int threadPoolSize = Jup.getIntProperty("nxt.mint.threadPoolSize");
         if (threadPoolSize == 0) {
             threadPoolSize = Runtime.getRuntime().availableProcessors();
             Logger.logDebugMessage("Thread pool size " + threadPoolSize);
@@ -182,7 +182,7 @@ public class MintWorker {
     private JSONObject currencyMint(String secretPhrase, long currencyId, long nonce, long units, long counter) {
         JSONObject ecBlock = getECBlock();
         Attachment attachment = new Attachment.MonetarySystemCurrencyMinting(nonce, currencyId, units, counter);
-        Transaction.Builder builder = Nxt.newTransactionBuilder(Crypto.getPublicKey(secretPhrase), 0, Constants.ONE_JUP,
+        Transaction.Builder builder = Jup.newTransactionBuilder(Crypto.getPublicKey(secretPhrase), 0, Constants.ONE_JUP,
                 (short) 120, attachment)
                 .timestamp(((Long) ecBlock.get("timestamp")).intValue())
                 .ecBlockHeight(((Long) ecBlock.get("ecBlockHeight")).intValue())
@@ -226,7 +226,7 @@ public class MintWorker {
     private JSONObject getJsonResponse(Map<String, String> params) {
         JSONObject response;
         HttpURLConnection connection = null;
-        String host = Convert.emptyToNull(Nxt.getStringProperty("nxt.mint.serverAddress"));
+        String host = Convert.emptyToNull(Jup.getStringProperty("nxt.mint.serverAddress"));
         if (host == null) {
             try {
                 host = InetAddress.getLocalHost().getHostAddress();
@@ -235,13 +235,13 @@ public class MintWorker {
             }
         }
         String protocol = "http";
-        boolean useHttps = Nxt.getBooleanProperty("nxt.mint.useHttps");
+        boolean useHttps = Jup.getBooleanProperty("nxt.mint.useHttps");
         if (useHttps) {
             protocol = "https";
             HttpsURLConnection.setDefaultSSLSocketFactory(TrustAllSSLProvider.getSslSocketFactory());
             HttpsURLConnection.setDefaultHostnameVerifier(TrustAllSSLProvider.getHostNameVerifier());
         }
-        int port = Constants.isTestnet ? API.TESTNET_API_PORT : Nxt.getIntProperty("nxt.apiServerPort");
+        int port = Constants.isTestnet ? API.TESTNET_API_PORT : Jup.getIntProperty("nxt.apiServerPort");
         String urlParams = getUrlParams(params);
         URL url;
         try {

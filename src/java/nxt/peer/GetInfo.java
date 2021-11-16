@@ -21,7 +21,7 @@ package nxt.peer;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.util.Convert;
 import nxt.util.JSON;
 import nxt.util.Logger;
@@ -42,7 +42,7 @@ final class GetInfo extends PeerServlet.PeerRequestHandler {
     @Override
     JSONStreamAware processRequest(JSONObject request, Peer peer) {
         PeerImpl peerImpl = (PeerImpl)peer;
-        peerImpl.setLastUpdated(Nxt.getEpochTime());
+        peerImpl.setLastUpdated(Jup.getEpochTime());
         long origServices = peerImpl.getServices();
         String servicesString = (String)request.get("services");
         peerImpl.setServices(servicesString != null ? Long.parseUnsignedLong(servicesString) : 0);

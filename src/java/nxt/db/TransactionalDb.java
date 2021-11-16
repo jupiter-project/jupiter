@@ -28,7 +28,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import nxt.Nxt;
+import nxt.Jup;
 import nxt.util.Logger;
 
 public class TransactionalDb extends BasicDb {
@@ -39,9 +39,9 @@ public class TransactionalDb extends BasicDb {
     private static final long txInterval;
     static {
         long temp;
-        stmtThreshold = (temp=Nxt.getIntProperty("nxt.statementLogThreshold")) != 0 ? temp : 1000;
-        txThreshold = (temp=Nxt.getIntProperty("nxt.transactionLogThreshold")) != 0 ? temp : 5000;
-        txInterval = (temp=Nxt.getIntProperty("nxt.transactionLogInterval")) != 0 ? temp*60*1000 : 15*60*1000;
+        stmtThreshold = (temp=Jup.getIntProperty("nxt.statementLogThreshold")) != 0 ? temp : 1000;
+        txThreshold = (temp=Jup.getIntProperty("nxt.transactionLogThreshold")) != 0 ? temp : 5000;
+        txInterval = (temp=Jup.getIntProperty("nxt.transactionLogInterval")) != 0 ? temp*60*1000 : 15*60*1000;
     }
 
     private final ThreadLocal<DbConnection> localConnection = new ThreadLocal<>();
@@ -132,7 +132,7 @@ public class TransactionalDb extends BasicDb {
         long elapsed = now - ((DbConnection)con).txStart;
         if (elapsed >= txThreshold) {
             logThreshold(String.format("Database transaction required %.3f seconds at height %d",
-                                       (double)elapsed/1000.0, Nxt.getBlockchain().getHeight()));
+                                       (double)elapsed/1000.0, Jup.getBlockchain().getHeight()));
         } else {
             long count, times;
             boolean logStats = false;
@@ -269,7 +269,7 @@ public class TransactionalDb extends BasicDb {
             long elapsed = System.currentTimeMillis() - start;
             if (elapsed > stmtThreshold)
                 logThreshold(String.format("SQL statement required %.3f seconds at height %d:\n%s",
-                                           (double)elapsed/1000.0, Nxt.getBlockchain().getHeight(), sql));
+                                           (double)elapsed/1000.0, Jup.getBlockchain().getHeight(), sql));
             return b;
         }
 
@@ -280,7 +280,7 @@ public class TransactionalDb extends BasicDb {
             long elapsed = System.currentTimeMillis() - start;
             if (elapsed > stmtThreshold)
                 logThreshold(String.format("SQL statement required %.3f seconds at height %d:\n%s",
-                                           (double)elapsed/1000.0, Nxt.getBlockchain().getHeight(), sql));
+                                           (double)elapsed/1000.0, Jup.getBlockchain().getHeight(), sql));
             return r;
         }
 
@@ -291,7 +291,7 @@ public class TransactionalDb extends BasicDb {
             long elapsed = System.currentTimeMillis() - start;
             if (elapsed > stmtThreshold)
                 logThreshold(String.format("SQL statement required %.3f seconds at height %d:\n%s",
-                                           (double)elapsed/1000.0, Nxt.getBlockchain().getHeight(), sql));
+                                           (double)elapsed/1000.0, Jup.getBlockchain().getHeight(), sql));
             return c;
         }
     }
@@ -308,7 +308,7 @@ public class TransactionalDb extends BasicDb {
             long elapsed = System.currentTimeMillis() - start;
             if (elapsed > stmtThreshold)
                 logThreshold(String.format("SQL statement required %.3f seconds at height %d:\n%s",
-                                           (double)elapsed/1000.0, Nxt.getBlockchain().getHeight(), getSQL()));
+                                           (double)elapsed/1000.0, Jup.getBlockchain().getHeight(), getSQL()));
             return b;
         }
 
@@ -319,7 +319,7 @@ public class TransactionalDb extends BasicDb {
             long elapsed = System.currentTimeMillis() - start;
             if (elapsed > stmtThreshold)
                 logThreshold(String.format("SQL statement required %.3f seconds at height %d:\n%s",
-                                           (double)elapsed/1000.0, Nxt.getBlockchain().getHeight(), getSQL()));
+                                           (double)elapsed/1000.0, Jup.getBlockchain().getHeight(), getSQL()));
             return r;
         }
 
@@ -330,7 +330,7 @@ public class TransactionalDb extends BasicDb {
             long elapsed = System.currentTimeMillis() - start;
             if (elapsed > stmtThreshold)
                 logThreshold(String.format("SQL statement required %.3f seconds at height %d:\n%s",
-                                           (double)elapsed/1000.0, Nxt.getBlockchain().getHeight(), getSQL()));
+                                           (double)elapsed/1000.0, Jup.getBlockchain().getHeight(), getSQL()));
             return c;
         }
     }

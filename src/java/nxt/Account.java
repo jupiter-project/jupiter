@@ -92,7 +92,7 @@ public final class Account {
                 pstmt.setLong(++i, this.assetId);
                 pstmt.setLong(++i, this.quantityQNT);
                 pstmt.setLong(++i, this.unconfirmedQuantityQNT);
-                pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+                pstmt.setInt(++i, Jup.getBlockchain().getHeight());
                 pstmt.executeUpdate();
             }
         }
@@ -164,7 +164,7 @@ public final class Account {
                 pstmt.setLong(++i, this.currencyId);
                 pstmt.setLong(++i, this.units);
                 pstmt.setLong(++i, this.unconfirmedUnits);
-                pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+                pstmt.setInt(++i, Jup.getBlockchain().getHeight());
                 pstmt.executeUpdate();
             }
         }
@@ -246,7 +246,7 @@ public final class Account {
                 DbUtils.setIntZeroToNull(pstmt, ++i, this.nextLeasingHeightFrom);
                 DbUtils.setIntZeroToNull(pstmt, ++i, this.nextLeasingHeightTo);
                 DbUtils.setLongZeroToNull(pstmt, ++i, this.nextLesseeId);
-                pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+                pstmt.setInt(++i, Jup.getBlockchain().getHeight());
                 pstmt.executeUpdate();
             }
         }
@@ -310,7 +310,7 @@ public final class Account {
                 pstmt.setLong(++i, this.accountId);
                 DbUtils.setString(pstmt, ++i, this.name);
                 DbUtils.setString(pstmt, ++i, this.description);
-                pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+                pstmt.setInt(++i, Jup.getBlockchain().getHeight());
                 pstmt.executeUpdate();
             }
         }
@@ -375,7 +375,7 @@ public final class Account {
                 DbUtils.setLongZeroToNull(pstmt, ++i, this.setterId != this.recipientId ? this.setterId : 0);
                 DbUtils.setString(pstmt, ++i, this.property);
                 DbUtils.setString(pstmt, ++i, this.value);
-                pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+                pstmt.setInt(++i, Jup.getBlockchain().getHeight());
                 pstmt.executeUpdate();
             }
         }
@@ -413,7 +413,7 @@ public final class Account {
             this.accountId = accountId;
             this.dbKey = publicKeyDbKeyFactory.newKey(accountId);
             this.publicKey = publicKey;
-            this.height = Nxt.getBlockchain().getHeight();
+            this.height = Jup.getBlockchain().getHeight();
         }
 
         private PublicKey(ResultSet rs, DbKey dbKey) throws SQLException {
@@ -424,7 +424,7 @@ public final class Account {
         }
 
         private void save(Connection con) throws SQLException {
-            height = Nxt.getBlockchain().getHeight();
+            height = Jup.getBlockchain().getHeight();
             try (PreparedStatement pstmt = con.prepareStatement("MERGE INTO public_key (account_id, public_key, height, latest) "
                     + "KEY (account_id, height) VALUES (?, ?, ?, TRUE)")) {
                 int i = 0;
@@ -589,11 +589,11 @@ public final class Account {
 
         @Override
         public void checkAvailable(int height) {
-            if (height + Constants.MAX_DIVIDEND_PAYMENT_ROLLBACK < Nxt.getBlockchainProcessor().getMinRollbackHeight()) {
+            if (height + Constants.MAX_DIVIDEND_PAYMENT_ROLLBACK < Jup.getBlockchainProcessor().getMinRollbackHeight()) {
                 throw new IllegalArgumentException("Historical data as of height " + height +" not available.");
             }
-            if (height > Nxt.getBlockchain().getHeight()) {
-                throw new IllegalArgumentException("Height " + height + " exceeds blockchain height " + Nxt.getBlockchain().getHeight());
+            if (height > Jup.getBlockchain().getHeight()) {
+                throw new IllegalArgumentException("Height " + height + " exceeds blockchain height " + Jup.getBlockchain().getHeight());
             }
         }
 
@@ -671,7 +671,7 @@ public final class Account {
 
     };
 
-    private static final ConcurrentMap<DbKey, byte[]> publicKeyCache = Nxt.getBooleanProperty("nxt.enablePublicKeyCache") ?
+    private static final ConcurrentMap<DbKey, byte[]> publicKeyCache = Jup.getBooleanProperty("nxt.enablePublicKeyCache") ?
             new ConcurrentHashMap<>() : null;
 
     private static final Listeners<Account,Event> listeners = new Listeners<>();
@@ -998,7 +998,7 @@ public final class Account {
 
     static {
 
-        Nxt.getBlockchainProcessor().addListener(block -> {
+        Jup.getBlockchainProcessor().addListener(block -> {
             int height = block.getHeight();
             List<AccountLease> changingLeases = new ArrayList<>();
             try (DbIterator<AccountLease> leases = getLeaseChangingAccounts(height)) {
@@ -1039,7 +1039,7 @@ public final class Account {
 
         if (publicKeyCache != null) {
 
-            Nxt.getBlockchainProcessor().addListener(block -> {
+            Jup.getBlockchainProcessor().addListener(block -> {
                 publicKeyCache.remove(accountDbKeyFactory.newKey(block.getGeneratorId()));
                 block.getTransactions().forEach(transaction -> {
                     publicKeyCache.remove(accountDbKeyFactory.newKey(transaction.getSenderId()));
@@ -1055,7 +1055,7 @@ public final class Account {
                 });
             }, BlockchainProcessor.Event.BLOCK_POPPED);
 
-            Nxt.getBlockchainProcessor().addListener(block -> publicKeyCache.clear(), BlockchainProcessor.Event.RESCAN_BEGIN);
+            Jup.getBlockchainProcessor().addListener(block -> publicKeyCache.clear(), BlockchainProcessor.Event.RESCAN_BEGIN);
 
         }
 
@@ -1108,7 +1108,7 @@ public final class Account {
             pstmt.setLong(++i, this.forgedBalanceNQT);
             DbUtils.setLongZeroToNull(pstmt, ++i, this.activeLesseeId);
             pstmt.setBoolean(++i, controls.contains(ControlType.PHASING_ONLY));
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             pstmt.executeUpdate();
         }
     }
@@ -1190,7 +1190,7 @@ public final class Account {
     }
 
     public long getEffectiveBalanceNXT() {
-        return getEffectiveBalanceNXT(Nxt.getBlockchain().getHeight());
+        return getEffectiveBalanceNXT(Jup.getBlockchain().getHeight());
     }
 
     public long getEffectiveBalanceNXT(int height) {
@@ -1204,7 +1204,7 @@ public final class Account {
         if (this.publicKey == null || this.publicKey.publicKey == null || height - this.publicKey.height <= 1440) {
             return 0; // cfb: Accounts with the public key revealed less than 1440 blocks ago are not allowed to generate blocks
         }
-        Nxt.getBlockchain().readLock();
+        Jup.getBlockchain().readLock();
         try {
             long effectiveBalanceNQT = getLessorsGuaranteedBalanceNQT(height);
             if (activeLesseeId == 0) {
@@ -1212,7 +1212,7 @@ public final class Account {
             }
 	        return effectiveBalanceNQT < Constants.MIN_FORGING_BALANCE_NQT ? 0 : effectiveBalanceNQT / Constants.ONE_JUP;
         } finally {
-            Nxt.getBlockchain().readUnlock();
+            Jup.getBlockchain().readUnlock();
         }
     }
 
@@ -1229,7 +1229,7 @@ public final class Account {
             lessorIds[i] = lessors.get(i).getId();
             balances[i] = lessors.get(i).getBalanceNQT();
         }
-        int blockchainHeight = Nxt.getBlockchain().getHeight();
+        int blockchainHeight = Jup.getBlockchain().getHeight();
         try (Connection con = Db.db.getConnection();
              PreparedStatement pstmt = con.prepareStatement("SELECT account_id, SUM (additions) AS additions "
                      + "FROM account_guaranteed_balance, TABLE (id BIGINT=?) T WHERE account_id = T.id AND height > ? "
@@ -1271,15 +1271,15 @@ public final class Account {
     }
 
     public long getGuaranteedBalanceNQT() {
-        return getGuaranteedBalanceNQT(Constants.GUARANTEED_BALANCE_CONFIRMATIONS, Nxt.getBlockchain().getHeight());
+        return getGuaranteedBalanceNQT(Constants.GUARANTEED_BALANCE_CONFIRMATIONS, Jup.getBlockchain().getHeight());
     }
 
     public long getGuaranteedBalanceNQT(final int numberOfConfirmations, final int currentHeight) {
-        Nxt.getBlockchain().readLock();
+        Jup.getBlockchain().readLock();
         try {
             int height = currentHeight - numberOfConfirmations;
-            if (height + Constants.GUARANTEED_BALANCE_CONFIRMATIONS < Nxt.getBlockchainProcessor().getMinRollbackHeight()
-                    || height > Nxt.getBlockchain().getHeight()) {
+            if (height + Constants.GUARANTEED_BALANCE_CONFIRMATIONS < Jup.getBlockchainProcessor().getMinRollbackHeight()
+                    || height > Jup.getBlockchain().getHeight()) {
                 throw new IllegalArgumentException("Height " + height + " not available for guaranteed balance calculation");
             }
             try (Connection con = Db.db.getConnection();
@@ -1298,7 +1298,7 @@ public final class Account {
                 throw new RuntimeException(e.toString(), e);
             }
         } finally {
-            Nxt.getBlockchain().readUnlock();
+            Jup.getBlockchain().readUnlock();
         }
     }
 
@@ -1379,7 +1379,7 @@ public final class Account {
     }
 
     void leaseEffectiveBalance(long lesseeId, int period) {
-        int height = Nxt.getBlockchain().getHeight();
+        int height = Jup.getBlockchain().getHeight();
         AccountLease accountLease = accountLeaseTable.get(accountDbKeyFactory.newKey(this));
         if (accountLease == null) {
             accountLease = new AccountLease(id,
@@ -1456,7 +1456,7 @@ public final class Account {
         }
         if (publicKey.publicKey == null) {
             publicKey.publicKey = key;
-            publicKey.height = Nxt.getBlockchain().getHeight();
+            publicKey.height = Jup.getBlockchain().getHeight();
             return true;
         }
         return Arrays.equals(publicKey.publicKey, key);
@@ -1472,7 +1472,7 @@ public final class Account {
             publicKeyTable.insert(publicKey);
         } else if (! Arrays.equals(publicKey.publicKey, key)) {
             throw new IllegalStateException("Public key mismatch");
-        } else if (publicKey.height >= Nxt.getBlockchain().getHeight() - 1) {
+        } else if (publicKey.height >= Jup.getBlockchain().getHeight() - 1) {
             PublicKey dbPublicKey = publicKeyTable.get(dbKey, false);
             if (dbPublicKey == null || dbPublicKey.publicKey == null) {
                 publicKeyTable.insert(publicKey);
@@ -1755,7 +1755,7 @@ public final class Account {
         if (amountNQT <= 0) {
             return;
         }
-        int blockchainHeight = Nxt.getBlockchain().getHeight();
+        int blockchainHeight = Jup.getBlockchain().getHeight();
         try (Connection con = Db.db.getConnection();
              PreparedStatement pstmtSelect = con.prepareStatement("SELECT additions FROM account_guaranteed_balance "
                      + "WHERE account_id = ? and height = ?");

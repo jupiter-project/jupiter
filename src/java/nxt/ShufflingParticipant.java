@@ -244,7 +244,7 @@ public final class ShufflingParticipant {
             DbUtils.setArrayEmptyToNull(pstmt, ++i, this.blameData);
             DbUtils.setArrayEmptyToNull(pstmt, ++i, this.keySeeds);
             DbUtils.setBytes(pstmt, ++i, this.dataTransactionFullHash);
-            pstmt.setInt(++i, Nxt.getBlockchain().getHeight());
+            pstmt.setInt(++i, Jup.getBlockchain().getHeight());
             pstmt.executeUpdate();
         }
     }
@@ -296,8 +296,8 @@ public final class ShufflingParticipant {
     }
 
     void setData(byte[][] data, int timestamp) {
-        if (data != null && Nxt.getEpochTime() - timestamp < Constants.MAX_PRUNABLE_LIFETIME && getData() == null) {
-            shufflingDataTable.insert(new ShufflingData(shufflingId, accountId, data, timestamp, Nxt.getBlockchain().getHeight()));
+        if (data != null && Jup.getEpochTime() - timestamp < Constants.MAX_PRUNABLE_LIFETIME && getData() == null) {
+            shufflingDataTable.insert(new ShufflingData(shufflingId, accountId, data, timestamp, Jup.getBlockchain().getHeight()));
         }
     }
 

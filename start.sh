@@ -9,6 +9,15 @@ if [ -e ~/.${APPLICATION}/jup.pid ]; then
         exit 1
     fi
 fi
+if [ -e ~/.${APPLICATION}/nxt.pid ]; then
+    PID=`cat ~/.${APPLICATION}/nxt.pid`
+    ps -p $PID > /dev/null
+    STATUS=$?
+    if [ $STATUS -eq 0 ]; then
+        echo "Jupiter server already running"
+        exit 1
+    fi
+fi
 mkdir -p ~/.${APPLICATION}/
 DIR=`dirname "$0"`
 cd "${DIR}"

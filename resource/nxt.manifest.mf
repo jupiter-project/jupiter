@@ -14,5 +14,5 @@ Class-Path: lib/slf4j-jdk14-1.7.22.jar lib/jetty-servlet-9.3.20.v20170
  ontinuation-9.3.20.v20170531.jar lib/weupnp-0.1.4.jar lib/jetty-servl
  ets-9.3.20.v20170531.jar lib/lucene-queryparser-5.3.2.jar lib/jetty-c
  lient-9.3.20.v20170531.jar conf/
-Main-Class: nxt.Nxt
+Main-Class: nxt.Jup
 

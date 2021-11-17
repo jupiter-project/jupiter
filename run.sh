@@ -4,4 +4,4 @@ if [ -x jre/bin/java ]; then
 else
     JAVA=java
 fi
-${JAVA} -cp classes:lib/*:conf:addons/classes:addons/lib/* nxt.Nxt
+${JAVA} -cp classes:lib/*:conf:addons/classes:addons/lib/* nxt.Jup

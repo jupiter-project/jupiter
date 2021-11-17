@@ -20,6 +20,6 @@ else
     JAVA=java
 fi
 # Adapt -Xms and -Xmx to your needs
-nohup ${JAVA} -Xms4096m -Xmx8192m -cp classes:lib/*:conf:addons/classes:addons/lib/* -Dnxt.runtime.mode=desktop nxt.Nxt > /dev/null 2>&1 &
+nohup ${JAVA} -Xms4096m -Xmx8192m -cp classes:lib/*:conf:addons/classes:addons/lib/* -Dnxt.runtime.mode=desktop nxt.Jup > /dev/null 2>&1 &
 echo $! > ~/.${APPLICATION}/nxt.pid
 cd - > /dev/null

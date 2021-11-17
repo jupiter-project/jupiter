@@ -5115,7 +5115,7 @@ This jar contains all compiled Nxt classes.
 
 nxt/run.sh
 This script is the simplest way to start Nxt, under Linux:
-java -Xmx1024M -cp nxt.jar:lib/*:conf nxt.Nxt
+java -Xmx1024M -cp nxt.jar:lib/*:conf nxt.Jup
 As you can see, the classpath needs to include nxt.jar, all the jars under
 lib, and the conf directory.
 
@@ -5543,11 +5543,11 @@ The code has been significantly refactored and is no longer a single java file.
 All classes previously nested in Nxt have been moved out to their own files.
 
 Everything is under a top level nxt package, and as a result the servlet-class
-parameter in web.xml has to be changed to nxt.Nxt. Sorry that I forgot to
+parameter in web.xml has to be changed to nxt.Jup. Sorry that I forgot to
 mention that when releasing 0.6.0:
 
 <servlet-name>Nxt</servlet-name>
-<servlet-class>nxt.Nxt</servlet-class>
+<servlet-class>nxt.Jup</servlet-class>
 
 There are three subpackages, nxt.user, nxt.peer, and nxt.http, with request
 handlers in separate classes for all the UI, peer to peer, and http API

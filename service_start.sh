@@ -2,8 +2,8 @@
 # Use this start script if you are providing a Jupiter node as a service
 
 APPLICATION="jrs"
-if [ -e ~/.${APPLICATION}/nxt.pid ]; then
-    PID=`cat ~/.${APPLICATION}/nxt.pid`
+if [ -e ~/.${APPLICATION}/jup.pid ]; then
+    PID=`cat ~/.${APPLICATION}/jup.pid`
     ps -p $PID > /dev/null
     STATUS=$?
     if [ $STATUS -eq 0 ]; then
@@ -20,6 +20,6 @@ else
     JAVA=java
 fi
 # Adapt -Xms and -Xmx to your needs
-nohup ${JAVA} -Xms4096m -Xmx8192m -cp classes:lib/*:conf:addons/classes:addons/lib/* -Dnxt.runtime.mode=desktop nxt.Jup > /dev/null 2>&1 &
-echo $! > ~/.${APPLICATION}/nxt.pid
+nohup ${JAVA} -Xms4096m -Xmx8192m -cp classes:lib/*:conf:addons/classes:addons/lib/* -Dnxt.runtime.mode=desktop jup.Jup > /dev/null 2>&1 &
+echo $! > ~/.${APPLICATION}/jup.pid
 cd - > /dev/null

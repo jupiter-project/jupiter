@@ -1,2 +1,2 @@
 #!/bin/sh
-java -cp classes:lib/*:conf nxt.mint.MintWorker
+java -cp classes:lib/*:conf jup.mint.MintWorker

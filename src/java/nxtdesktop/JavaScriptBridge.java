@@ -30,10 +30,10 @@ import org.json.simple.JSONObject;
 import javafx.application.Platform;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import nxt.Jup;
-import nxt.http.API;
-import nxt.util.JSON;
-import nxt.util.Logger;
+import jup.Jup;
+import jup.http.API;
+import jup.util.JSON;
+import jup.util.Logger;
 
 /**
  * The class itself and methods in this class are invoked from JavaScript therefore has to be public

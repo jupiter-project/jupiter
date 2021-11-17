@@ -57,7 +57,7 @@
 	)
 
 :startJava	
-	start "Jupiter JRS from %~dp0" "%javaDir%"\bin\java.exe -cp classes;lib\*;conf;addons\classes;addons\lib\* -Dnxt.runtime.mode=desktop nxt.Jup
+	start "Jupiter JRS from %~dp0" "%javaDir%"\bin\java.exe -cp classes;lib\*;conf;addons\classes;addons\lib\* -Dnxt.runtime.mode=desktop jup.Jup
 
 :endProcess 
 	endlocal

@@ -11,7 +11,7 @@ APPLICATION="jrs"
 /bin/mkdir -p addons/classes/
 
 echo "compiling Jupiter core..."
-find src/java/nxt/ -name "*.java" > sources.tmp
+find src/java/jup/ -name "*.java" > sources.tmp
 javac -encoding utf8 -sourcepath "${SP}" -classpath "${CP}" -d classes/ @sources.tmp || exit 1
 echo "Jupiter core class files compiled successfully"
 

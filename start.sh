@@ -1,7 +1,7 @@
 #!/bin/sh
 APPLICATION="jrs"
-if [ -e ~/.${APPLICATION}/nxt.pid ]; then
-    PID=`cat ~/.${APPLICATION}/nxt.pid`
+if [ -e ~/.${APPLICATION}/jup.pid ]; then
+    PID=`cat ~/.${APPLICATION}/jup.pid`
     ps -p $PID > /dev/null
     STATUS=$?
     if [ $STATUS -eq 0 ]; then
@@ -17,6 +17,6 @@ if [ -x jre/bin/java ]; then
 else
     JAVA=java
 fi
-nohup ${JAVA} -cp classes:lib/*:conf:addons/classes:addons/lib/* -Dnxt.runtime.mode=desktop nxt.Jup > /dev/null 2>&1 &
-echo $! > ~/.${APPLICATION}/nxt.pid
+nohup ${JAVA} -cp classes:lib/*:conf:addons/classes:addons/lib/* -Dnxt.runtime.mode=desktop jup.Jup > /dev/null 2>&1 &
+echo $! > ~/.${APPLICATION}/jup.pid
 cd - > /dev/null

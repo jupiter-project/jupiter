@@ -10,7 +10,7 @@ APPLICATION="jrs"
 /bin/rm -rf addons/classes
 /bin/mkdir -p addons/classes/
 
-javac -encoding utf8 -sourcepath "${SP}" -classpath "${CP}" -d classes/ src/java/nxt/*.java src/java/nxt/*/*.java src/java/nxt/*/*/*.java src/java/nxtdesktop/*.java || exit 1
+javac -encoding utf8 -sourcepath "${SP}" -classpath "${CP}" -d classes/ src/java/jup/*.java src/java/jup/*/*.java src/java/jup/*/*/*.java src/java/nxtdesktop/*.java || exit 1
 
 echo "Jupiter class files compiled successfully"
 

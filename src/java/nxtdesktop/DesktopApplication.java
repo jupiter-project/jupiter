@@ -53,19 +53,19 @@ import javafx.scene.web.WebView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import jup.Block;
+import jup.BlockchainProcessor;
+import jup.Constants;
+import jup.Jup;
+import jup.PrunableMessage;
+import jup.TaggedData;
+import jup.Transaction;
+import jup.TransactionProcessor;
+import jup.http.API;
+import jup.util.Convert;
+import jup.util.Logger;
+import jup.util.TrustAllSSLProvider;
 import netscape.javascript.JSObject;
-import nxt.Block;
-import nxt.BlockchainProcessor;
-import nxt.Constants;
-import nxt.Jup;
-import nxt.PrunableMessage;
-import nxt.TaggedData;
-import nxt.Transaction;
-import nxt.TransactionProcessor;
-import nxt.http.API;
-import nxt.util.Convert;
-import nxt.util.Logger;
-import nxt.util.TrustAllSSLProvider;
 
 public class DesktopApplication extends Application {
 

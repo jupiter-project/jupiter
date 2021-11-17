@@ -25,7 +25,7 @@ import java.util.logging.LogManager;
 /**
  * Java LogManager extension for use with Nxt
  */
-public class NxtLogManager extends LogManager {
+public class JupLogManager extends LogManager {
 
     /** Logging reconfiguration in progress */
     private volatile boolean loggingReconfiguration = false;
@@ -38,7 +38,7 @@ public class NxtLogManager extends LogManager {
      * the reset() method so we can delay the actual shutdown until we are
      * done terminating the Nxt processes.
      */
-    public NxtLogManager() {
+    public JupLogManager() {
         super();
     }
 

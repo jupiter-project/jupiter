@@ -72,8 +72,8 @@ public final class Logger {
      */
     static {
         String oldManager = System.getProperty("java.util.logging.manager");
-        System.setProperty("java.util.logging.manager", "nxt.util.NxtLogManager");
-        if (!(LogManager.getLogManager() instanceof NxtLogManager)) {
+        System.setProperty("java.util.logging.manager", "nxt.util.JupLogManager");
+        if (!(LogManager.getLogManager() instanceof JupLogManager)) {
             System.setProperty("java.util.logging.manager",
                     (oldManager != null ? oldManager : "java.util.logging.LogManager"));
         }
@@ -111,8 +111,8 @@ public final class Logger {
      * Logger shutdown
      */
     public static void shutdown() {
-        if (LogManager.getLogManager() instanceof NxtLogManager) {
-            ((NxtLogManager) LogManager.getLogManager()).nxtShutdown();
+        if (LogManager.getLogManager() instanceof JupLogManager) {
+            ((JupLogManager) LogManager.getLogManager()).nxtShutdown();
         }
     }
 
@@ -203,7 +203,7 @@ public final class Logger {
     }
 
     public static void logShutdownMessage(String message) {
-        if (LogManager.getLogManager() instanceof NxtLogManager) {
+        if (LogManager.getLogManager() instanceof JupLogManager) {
             logMessage(message);
         } else {
             System.out.println(message);
@@ -211,7 +211,7 @@ public final class Logger {
     }
 
     public static void logShutdownMessage(String message, Exception e) {
-        if (LogManager.getLogManager() instanceof NxtLogManager) {
+        if (LogManager.getLogManager() instanceof JupLogManager) {
             logMessage(message, e);
         } else {
             System.out.println(message);

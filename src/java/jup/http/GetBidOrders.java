@@ -29,7 +29,7 @@ import org.json.simple.JSONStreamAware;
 
 import jup.Attachment;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.Order;
 import jup.Transaction;
 import jup.TransactionType;
@@ -45,7 +45,7 @@ public final class GetBidOrders extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         long assetId = ParameterParser.getUnsignedLong(req, "asset", true);
         int firstIndex = ParameterParser.getFirstIndex(req);

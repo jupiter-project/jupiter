@@ -27,7 +27,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Alias;
 import jup.Attachment;
-import jup.NxtException;
+import jup.JupException;
 
 
 public final class DeleteAlias extends CreateTransaction {
@@ -39,7 +39,7 @@ public final class DeleteAlias extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(final HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(final HttpServletRequest req) throws JupException {
         final Alias alias = ParameterParser.getAlias(req);
         final Account owner = ParameterParser.getSenderAccount(req);
 

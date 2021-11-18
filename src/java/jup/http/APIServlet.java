@@ -49,7 +49,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Constants;
 import jup.Db;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.addons.AddOns;
 import jup.util.JSON;
 import jup.util.Logger;
@@ -97,9 +97,9 @@ public final class APIServlet extends HttpServlet {
             return fileParameter;
         }
 
-        protected abstract JSONStreamAware processRequest(HttpServletRequest request) throws NxtException;
+        protected abstract JSONStreamAware processRequest(HttpServletRequest request) throws JupException;
 
-        protected JSONStreamAware processRequest(HttpServletRequest request, HttpServletResponse response) throws NxtException {
+        protected JSONStreamAware processRequest(HttpServletRequest request, HttpServletResponse response) throws JupException {
             return processRequest(request);
         }
 
@@ -272,7 +272,7 @@ public final class APIServlet extends HttpServlet {
             }
         } catch (ParameterException e) {
             response = e.getErrorResponse();
-        } catch (NxtException | RuntimeException e) {
+        } catch (JupException | RuntimeException e) {
             Logger.logDebugMessage("Error processing API request", e);
             JSONObject json = new JSONObject();
             JSONData.putException(json, e);

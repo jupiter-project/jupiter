@@ -31,7 +31,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Attachment;
 import jup.Constants;
-import jup.NxtException;
+import jup.JupException;
 import jup.util.Convert;
 
 public final class IssueAsset extends CreateTransaction {
@@ -43,7 +43,7 @@ public final class IssueAsset extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         String name = req.getParameter("name");
         String description = req.getParameter("description");

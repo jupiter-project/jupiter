@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.util.JSON;
 
 public class AddMetis extends APIServlet.APIRequestHandler {
@@ -41,10 +41,10 @@ public class AddMetis extends APIServlet.APIRequestHandler {
      *
      * @param   req                 API request
      * @return                      API response
-     * @throws NxtException 
+     * @throws JupException 
      */
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest request) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest request) throws JupException {
     	String host = ParameterParser.getString(request, "host", true);
     	String protocol = ParameterParser.getString(request, "protocol", true);
     	if (!protocol.equals("ws") && !protocol.equals("wss")) {

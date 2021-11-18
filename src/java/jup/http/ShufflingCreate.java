@@ -26,7 +26,7 @@ import jup.Account;
 import jup.Attachment;
 import jup.Constants;
 import jup.HoldingType;
-import jup.NxtException;
+import jup.JupException;
 
 public final class ShufflingCreate extends CreateTransaction {
 
@@ -38,7 +38,7 @@ public final class ShufflingCreate extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         HoldingType holdingType = ParameterParser.getHoldingType(req);
         long holdingId = ParameterParser.getHoldingId(req, holdingType);
         long amount = ParameterParser.getLong(req, "amount", 0L, Long.MAX_VALUE, true);
@@ -55,7 +55,7 @@ public final class ShufflingCreate extends CreateTransaction {
         }
         try {
             return createTransaction(req, account, attachment);
-        } catch (NxtException.InsufficientBalanceException e) {
+        } catch (JupException.InsufficientBalanceException e) {
             return JSONResponses.notEnoughHolding(holdingType);
         }
     }

@@ -36,7 +36,7 @@ import java.util.zip.GZIPOutputStream;
 
 import jup.Constants;
 import jup.Genesis;
-import jup.NxtException;
+import jup.JupException;
 import jup.crypto.Crypto;
 
 public final class Convert {
@@ -240,9 +240,9 @@ public final class Convert {
         return bytes;
     }
 
-    public static String readString(ByteBuffer buffer, int numBytes, int maxLength) throws NxtException.NotValidException {
+    public static String readString(ByteBuffer buffer, int numBytes, int maxLength) throws JupException.NotValidException {
         if (numBytes > 3 * maxLength) {
-            throw new NxtException.NotValidException("Max parameter length exceeded");
+            throw new JupException.NotValidException("Max parameter length exceeded");
         }
         byte[] bytes = new byte[numBytes];
         buffer.get(bytes);

@@ -24,7 +24,7 @@ import org.json.simple.JSONStreamAware;
 
 import jup.Account;
 import jup.Attachment;
-import jup.NxtException;
+import jup.JupException;
 import jup.Shuffling;
 
 public final class ShufflingCancel extends CreateTransaction {
@@ -36,7 +36,7 @@ public final class ShufflingCancel extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         Shuffling shuffling = ParameterParser.getShuffling(req);
         long cancellingAccountId = ParameterParser.getAccountId(req, "cancellingAccount", false);
         byte[] shufflingStateHash = ParameterParser.getBytes(req, "shufflingStateHash", true);

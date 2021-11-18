@@ -26,7 +26,7 @@ import org.json.simple.JSONStreamAware;
 
 import jup.Block;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.db.DbIterator;
 
 public final class GetAccountBlockIds extends APIServlet.APIRequestHandler {
@@ -38,7 +38,7 @@ public final class GetAccountBlockIds extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         long accountId = ParameterParser.getAccountId(req, true);
         int timestamp = ParameterParser.getTimestamp(req);

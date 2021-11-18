@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.Transaction;
 import jup.crypto.Crypto;
 import jup.util.Convert;
@@ -57,7 +57,7 @@ public final class CalculateFullHash extends APIServlet.APIRequestHandler {
             digest.update(transaction.getUnsignedBytes());
             byte[] fullHash = digest.digest(Convert.parseHexString(signatureHashString));
             response.put("fullHash", Convert.toHexString(fullHash));
-        } catch (NxtException.NotValidException e) {
+        } catch (JupException.NotValidException e) {
             JSONData.putException(response, e, "Incorrect unsigned transaction json or bytes");
         }
         return response;

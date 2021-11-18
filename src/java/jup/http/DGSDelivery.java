@@ -31,7 +31,7 @@ import jup.Account;
 import jup.Attachment;
 import jup.Constants;
 import jup.DigitalGoodsStore;
-import jup.NxtException;
+import jup.JupException;
 import jup.crypto.EncryptedData;
 import jup.util.Convert;
 
@@ -45,7 +45,7 @@ public final class DGSDelivery extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         Account sellerAccount = ParameterParser.getSenderAccount(req);
         DigitalGoodsStore.Purchase purchase = ParameterParser.getPurchase(req);

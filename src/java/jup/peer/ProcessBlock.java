@@ -23,7 +23,7 @@ import org.json.simple.JSONStreamAware;
 
 import jup.Block;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.util.Convert;
 import jup.util.JSON;
 
@@ -43,7 +43,7 @@ final class ProcessBlock extends PeerServlet.PeerRequestHandler {
             Peers.peersService.submit(() -> {
                 try {
                     Jup.getBlockchainProcessor().processPeerBlock(request);
-                } catch (NxtException | RuntimeException e) {
+                } catch (JupException | RuntimeException e) {
                     if (peer != null) {
                         peer.blacklist(e);
                     }

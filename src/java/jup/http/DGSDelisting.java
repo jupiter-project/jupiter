@@ -27,7 +27,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Attachment;
 import jup.DigitalGoodsStore;
-import jup.NxtException;
+import jup.JupException;
 
 public final class DGSDelisting extends CreateTransaction {
 
@@ -38,7 +38,7 @@ public final class DGSDelisting extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         Account account = ParameterParser.getSenderAccount(req);
         DigitalGoodsStore.Goods goods = ParameterParser.getGoods(req);
         if (goods.isDelisted() || goods.getSellerId() != account.getId()) {

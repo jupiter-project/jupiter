@@ -25,7 +25,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.Transaction;
 import jup.db.DbIterator;
 import jup.util.Convert;
@@ -41,7 +41,7 @@ public final class GetBlockchainTransactions extends APIServlet.APIRequestHandle
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         long accountId = ParameterParser.getAccountId(req, true);
         int timestamp = ParameterParser.getTimestamp(req);

@@ -22,7 +22,7 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import jup.NxtException;
+import jup.JupException;
 
 public class CountingInputStream extends FilterInputStream {
 
@@ -65,10 +65,10 @@ public class CountingInputStream extends FilterInputStream {
         return count;
     }
 
-    private void incCount(long n) throws NxtException.NxtIOException {
+    private void incCount(long n) throws JupException.NxtIOException {
         count += n;
         if (count > limit) {
-            throw new NxtException.NxtIOException("Maximum size exceeded: " + count);
+            throw new JupException.NxtIOException("Maximum size exceeded: " + count);
         }
     }
 }

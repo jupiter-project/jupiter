@@ -25,7 +25,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.Account;
-import jup.NxtException;
+import jup.JupException;
 import jup.db.DbIterator;
 import jup.util.Convert;
 
@@ -38,7 +38,7 @@ public final class GetAccount extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         Account account = ParameterParser.getAccount(req);
         boolean includeLessors = "true".equalsIgnoreCase(req.getParameter("includeLessors"));

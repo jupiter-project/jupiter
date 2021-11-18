@@ -25,7 +25,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.DigitalGoodsStore;
-import jup.NxtException;
+import jup.JupException;
 import jup.db.DbIterator;
 import jup.util.Convert;
 
@@ -38,7 +38,7 @@ public final class GetDGSTagsLike extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         int firstIndex = ParameterParser.getFirstIndex(req);
         int lastIndex = ParameterParser.getLastIndex(req);
         final boolean inStockOnly = "true".equalsIgnoreCase(req.getParameter("inStockOnly"));

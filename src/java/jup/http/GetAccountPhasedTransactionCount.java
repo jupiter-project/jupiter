@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.PhasingPoll;
 
 public class GetAccountPhasedTransactionCount extends APIServlet.APIRequestHandler {
@@ -34,7 +34,7 @@ public class GetAccountPhasedTransactionCount extends APIServlet.APIRequestHandl
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         long accountId = ParameterParser.getAccountId(req, true);
         JSONObject response = new JSONObject();
         response.put("numberOfPhasedTransactions", PhasingPoll.getAccountPhasedTransactionCount(accountId));

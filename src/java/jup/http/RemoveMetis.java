@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.util.JSON;
 
 public class RemoveMetis extends APIServlet.APIRequestHandler {
@@ -42,10 +42,10 @@ public class RemoveMetis extends APIServlet.APIRequestHandler {
      *
      * @param   req                 API request
      * @return                      API response
-     * @throws NxtException 
+     * @throws JupException 
      */
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest request) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest request) throws JupException {
     	String announcedAddress = request.getParameter("metisHostServer");
 
     	MetisServers.metisService.submit(() -> {

@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.TaggedData;
 
 public final class GetDataTagCount extends APIServlet.APIRequestHandler {
@@ -35,7 +35,7 @@ public final class GetDataTagCount extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         JSONObject response = new JSONObject();
         response.put("numberOfDataTags", TaggedData.Tag.getTagCount());
         return response;

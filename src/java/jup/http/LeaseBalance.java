@@ -26,7 +26,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Attachment;
 import jup.Constants;
-import jup.NxtException;
+import jup.JupException;
 
 public final class LeaseBalance extends CreateTransaction {
 
@@ -37,7 +37,7 @@ public final class LeaseBalance extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         int period = ParameterParser.getInt(req, "period", Constants.LEASING_DELAY, 65535, true);
         Account account = ParameterParser.getSenderAccount(req);

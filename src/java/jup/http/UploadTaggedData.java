@@ -24,7 +24,7 @@ import org.json.simple.JSONStreamAware;
 
 import jup.Account;
 import jup.Attachment;
-import jup.NxtException;
+import jup.JupException;
 
 public final class UploadTaggedData extends CreateTransaction {
 
@@ -36,7 +36,7 @@ public final class UploadTaggedData extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         Account account = ParameterParser.getSenderAccount(req);
         Attachment.TaggedDataUpload taggedDataUpload = ParameterParser.getTaggedData(req);

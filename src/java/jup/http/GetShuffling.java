@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 
 public final class GetShuffling extends APIServlet.APIRequestHandler {
 
@@ -33,7 +33,7 @@ public final class GetShuffling extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         boolean includeHoldingInfo = "true".equalsIgnoreCase(req.getParameter("includeHoldingInfo"));
         return JSONData.shuffling(ParameterParser.getShuffling(req), includeHoldingInfo);
     }

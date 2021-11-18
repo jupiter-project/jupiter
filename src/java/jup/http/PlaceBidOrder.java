@@ -27,7 +27,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Asset;
 import jup.Attachment;
-import jup.NxtException;
+import jup.JupException;
 
 public final class PlaceBidOrder extends CreateTransaction {
 
@@ -38,7 +38,7 @@ public final class PlaceBidOrder extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         Asset asset = ParameterParser.getAsset(req);
         long priceNQT = ParameterParser.getPriceNQT(req);
@@ -48,7 +48,7 @@ public final class PlaceBidOrder extends CreateTransaction {
         Attachment attachment = new Attachment.ColoredCoinsBidOrderPlacement(asset.getId(), quantityQNT, priceNQT);
         try {
             return createTransaction(req, account, attachment);
-        } catch (NxtException.InsufficientBalanceException e) {
+        } catch (JupException.InsufficientBalanceException e) {
             return NOT_ENOUGH_FUNDS;
         }
     }

@@ -25,7 +25,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Attachment;
 import jup.Currency;
-import jup.NxtException;
+import jup.JupException;
 
 public final class DeleteCurrency extends CreateTransaction {
 
@@ -36,7 +36,7 @@ public final class DeleteCurrency extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         Currency currency = ParameterParser.getCurrency(req);
         Account account = ParameterParser.getSenderAccount(req);
         if (!currency.canBeDeletedBy(account.getId())) {

@@ -29,7 +29,7 @@ import org.json.simple.JSONStreamAware;
 
 import jup.Account;
 import jup.DigitalGoodsStore;
-import jup.NxtException;
+import jup.JupException;
 import jup.crypto.Crypto;
 import jup.util.Convert;
 import jup.util.Logger;
@@ -43,7 +43,7 @@ public final class GetDGSPurchase extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         DigitalGoodsStore.Purchase purchase = ParameterParser.getPurchase(req);
         JSONObject response = JSONData.purchase(purchase);

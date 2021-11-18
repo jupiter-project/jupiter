@@ -27,7 +27,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.AccountLedger;
-import jup.NxtException;
+import jup.JupException;
 import jup.AccountLedger.LedgerEntry;
 import jup.AccountLedger.LedgerEvent;
 import jup.AccountLedger.LedgerHolding;
@@ -241,10 +241,10 @@ public class GetAccountLedger extends APIServlet.APIRequestHandler {
      *
      * @param   req                 API request
      * @return                      API response
-     * @throws  NxtException        Invalid request
+     * @throws  JupException        Invalid request
      */
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         //
         // Process the request parameters
         //

@@ -55,7 +55,7 @@ import jup.Attachment;
 import jup.Constants;
 import jup.CurrencyMinting;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.Transaction;
 import jup.crypto.Crypto;
 import jup.crypto.HashFunction;
@@ -193,7 +193,7 @@ public class MintWorker {
             params.put("requestType", "broadcastTransaction");
             params.put("transactionBytes", Convert.toHexString(transaction.getBytes()));
             return getJsonResponse(params);
-        } catch (NxtException.NotValidException e) {
+        } catch (JupException.NotValidException e) {
             Logger.logInfoMessage("local signing failed", e);
             JSONObject response = new JSONObject();
             response.put("error", e.toString());

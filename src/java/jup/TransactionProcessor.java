@@ -58,13 +58,13 @@ public interface TransactionProcessor extends Observable<List<? extends Transact
 
     void rebroadcastAllUnconfirmedTransactions();
 
-    void broadcast(Transaction transaction) throws NxtException.ValidationException;
+    void broadcast(Transaction transaction) throws JupException.ValidationException;
 
-    void processPeerTransactions(JSONObject request) throws NxtException.ValidationException;
+    void processPeerTransactions(JSONObject request) throws JupException.ValidationException;
 
     void processLater(Collection<? extends Transaction> transactions);
 
     SortedSet<? extends Transaction> getCachedUnconfirmedTransactions(List<String> exclude);
 
-    List<Transaction> restorePrunableData(JSONArray transactions) throws NxtException.NotValidException;
+    List<Transaction> restorePrunableData(JSONArray transactions) throws JupException.NotValidException;
 }

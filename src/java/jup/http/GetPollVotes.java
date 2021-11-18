@@ -25,7 +25,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.Poll;
 import jup.Vote;
 import jup.VoteWeighting;
@@ -39,7 +39,7 @@ public class GetPollVotes extends APIServlet.APIRequestHandler  {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         int firstIndex = ParameterParser.getFirstIndex(req);
         int lastIndex = ParameterParser.getLastIndex(req);

@@ -36,7 +36,7 @@ import jup.Account;
 import jup.Attachment;
 import jup.Constants;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.Attachment.MessagingPollCreation.PollBuilder;
 import jup.util.Convert;
 
@@ -54,7 +54,7 @@ public final class CreatePoll extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         String nameValue = Convert.emptyToNull(req.getParameter("name"));
         String descriptionValue = req.getParameter("description");

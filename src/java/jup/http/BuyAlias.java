@@ -27,7 +27,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Alias;
 import jup.Attachment;
-import jup.NxtException;
+import jup.JupException;
 
 
 public final class BuyAlias extends CreateTransaction {
@@ -39,7 +39,7 @@ public final class BuyAlias extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         Account buyer = ParameterParser.getSenderAccount(req);
         Alias alias = ParameterParser.getAlias(req);
         long amountNQT = ParameterParser.getAmountNQT(req);

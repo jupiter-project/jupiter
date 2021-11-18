@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.peer.Peer;
 import jup.peer.Peers;
 import jup.util.Convert;
@@ -41,7 +41,7 @@ public class SetAPIProxyPeer extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest request) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest request) throws JupException {
         String peerAddress = Convert.emptyToNull(request.getParameter("peer"));
         if (peerAddress == null) {
             Peer peer = APIProxy.getInstance().setForcedPeer(null);

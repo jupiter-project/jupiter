@@ -24,7 +24,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import jup.Account.ControlType;
-import jup.NxtException.AccountControlException;
+import jup.JupException.AccountControlException;
 import jup.VoteWeighting.VotingModel;
 import jup.db.DbIterator;
 import jup.db.DbKey;
@@ -132,7 +132,7 @@ public final class AccountRestrictions {
             }
             try {
                 phasingParams.checkApprovable();
-            } catch (NxtException.NotCurrentlyValidException e) {
+            } catch (JupException.NotCurrentlyValidException e) {
                 Logger.logDebugMessage("Account control no longer valid: " + e.getMessage());
                 return;
             }
@@ -198,10 +198,10 @@ public final class AccountRestrictions {
     static void init() {
     }
 
-    static void checkTransaction(Transaction transaction, boolean validatingAtFinish) throws NxtException.NotCurrentlyValidException {
+    static void checkTransaction(Transaction transaction, boolean validatingAtFinish) throws JupException.NotCurrentlyValidException {
         Account senderAccount = Account.getAccount(transaction.getSenderId());
         if (senderAccount == null) {
-            throw new NxtException.NotCurrentlyValidException("Account " + Long.toUnsignedString(transaction.getSenderId()) + " does not exist yet");
+            throw new JupException.NotCurrentlyValidException("Account " + Long.toUnsignedString(transaction.getSenderId()) + " does not exist yet");
         }
         if (senderAccount.getControls().contains(Account.ControlType.PHASING_ONLY)) {
             PhasingOnly phasingOnly = PhasingOnly.get(transaction.getSenderId());

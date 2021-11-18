@@ -26,7 +26,7 @@ import org.json.simple.JSONStreamAware;
 
 import jup.Account;
 import jup.Attachment;
-import jup.NxtException;
+import jup.JupException;
 import jup.Order;
 
 public final class CancelBidOrder extends CreateTransaction {
@@ -38,7 +38,7 @@ public final class CancelBidOrder extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         long orderId = ParameterParser.getUnsignedLong(req, "order", true);
         Account account = ParameterParser.getSenderAccount(req);
         Order.Bid orderData = Order.Bid.getBidOrder(orderId);

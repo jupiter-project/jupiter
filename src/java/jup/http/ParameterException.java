@@ -20,9 +20,9 @@ package jup.http;
 
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 
-public final class ParameterException extends NxtException {
+public final class ParameterException extends JupException {
 
     private final JSONStreamAware errorResponse;
 

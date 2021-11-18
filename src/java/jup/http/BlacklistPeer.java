@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.http.APIServlet.APIRequestHandler;
 import jup.peer.Peer;
 import jup.peer.Peers;
@@ -41,7 +41,7 @@ public class BlacklistPeer extends APIRequestHandler {
 
     @Override
     protected JSONStreamAware processRequest(HttpServletRequest request)
-            throws NxtException {
+            throws JupException {
         JSONObject response = new JSONObject();
         
         String peerAddress = request.getParameter("peer");

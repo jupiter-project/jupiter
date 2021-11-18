@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.Transaction;
 import jup.peer.Peers;
 import jup.util.Convert;
@@ -77,7 +77,7 @@ public final class SendTransaction extends APIServlet.APIRequestHandler {
             Peers.sendToSomePeers(Collections.singletonList(transaction));
             response.put("transaction", transaction.getStringId());
             response.put("fullHash", transaction.getFullHash());
-        } catch (NxtException.ValidationException|RuntimeException e) {
+        } catch (JupException.ValidationException|RuntimeException e) {
             JSONData.putException(response, e, "Failed to broadcast transaction");
         }
         return response;

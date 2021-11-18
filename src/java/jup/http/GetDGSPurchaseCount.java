@@ -24,7 +24,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.DigitalGoodsStore;
-import jup.NxtException;
+import jup.JupException;
 
 public final class GetDGSPurchaseCount extends APIServlet.APIRequestHandler {
 
@@ -35,7 +35,7 @@ public final class GetDGSPurchaseCount extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         long sellerId = ParameterParser.getAccountId(req, "seller", false);
         long buyerId = ParameterParser.getAccountId(req, "buyer", false);

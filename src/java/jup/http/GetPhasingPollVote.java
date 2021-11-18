@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.PhasingVote;
 import jup.util.JSON;
 
@@ -34,7 +34,7 @@ public class GetPhasingPollVote extends APIServlet.APIRequestHandler  {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         long transactionId = ParameterParser.getUnsignedLong(req, "transaction", true);
         long accountId = ParameterParser.getAccountId(req, true);
 

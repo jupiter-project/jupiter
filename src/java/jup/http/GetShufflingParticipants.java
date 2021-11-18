@@ -24,7 +24,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.ShufflingParticipant;
 import jup.db.DbIterator;
 
@@ -37,7 +37,7 @@ public final class GetShufflingParticipants extends APIServlet.APIRequestHandler
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         long shufflingId = ParameterParser.getUnsignedLong(req, "shuffling", true);
         JSONObject response = new JSONObject();
         JSONArray participantsJSONArray = new JSONArray();

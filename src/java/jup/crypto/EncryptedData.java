@@ -21,7 +21,7 @@ package jup.crypto;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.util.Convert;
 
 public final class EncryptedData {
@@ -40,7 +40,7 @@ public final class EncryptedData {
     }
 
     public static EncryptedData readEncryptedData(ByteBuffer buffer, int length, int maxLength)
-            throws NxtException.NotValidException {
+            throws JupException.NotValidException {
         if (length == 0) {
             return EMPTY_DATA;
         }
@@ -62,7 +62,7 @@ public final class EncryptedData {
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         try {
             return readEncryptedData(buffer, bytes.length - 32, Integer.MAX_VALUE);
-        } catch (NxtException.NotValidException e) {
+        } catch (JupException.NotValidException e) {
             throw new RuntimeException(e.toString(), e); // never
         }
     }

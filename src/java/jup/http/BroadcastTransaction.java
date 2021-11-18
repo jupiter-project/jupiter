@@ -24,7 +24,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.Transaction;
 import jup.util.Convert;
 
@@ -70,7 +70,7 @@ public final class BroadcastTransaction extends APIServlet.APIRequestHandler {
             Jup.getTransactionProcessor().broadcast(transaction);
             response.put("transaction", transaction.getStringId());
             response.put("fullHash", transaction.getFullHash());
-        } catch (NxtException.ValidationException|RuntimeException e) {
+        } catch (JupException.ValidationException|RuntimeException e) {
             JSONData.putException(response, e, "Failed to broadcast transaction");
         }
         return response;

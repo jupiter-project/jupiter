@@ -25,7 +25,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Asset;
 import jup.Attachment;
-import jup.NxtException;
+import jup.JupException;
 
 public class DividendPayment extends CreateTransaction {
 
@@ -37,7 +37,7 @@ public class DividendPayment extends CreateTransaction {
 
     @Override
     protected JSONStreamAware processRequest(final HttpServletRequest request)
-            throws NxtException
+            throws JupException
     {
         final int height = ParameterParser.getHeight(request);
         final long amountNQTPerQNT = ParameterParser.getAmountNQTPerQNT(request);
@@ -49,7 +49,7 @@ public class DividendPayment extends CreateTransaction {
         final Attachment attachment = new Attachment.ColoredCoinsDividendPayment(asset.getId(), height, amountNQTPerQNT);
         try {
             return this.createTransaction(request, account, attachment);
-        } catch (NxtException.InsufficientBalanceException e) {
+        } catch (JupException.InsufficientBalanceException e) {
             return JSONResponses.NOT_ENOUGH_FUNDS;
         }
     }

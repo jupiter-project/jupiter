@@ -25,7 +25,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Attachment;
 import jup.Currency;
-import jup.NxtException;
+import jup.JupException;
 
 /**
  * Generate new currency units
@@ -55,7 +55,7 @@ public final class CurrencyMint extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         Currency currency = ParameterParser.getCurrency(req);
         long nonce = ParameterParser.getLong(req, "nonce", Long.MIN_VALUE, Long.MAX_VALUE, true);
         long units = ParameterParser.getLong(req, "units", 0, Long.MAX_VALUE, true);

@@ -20,25 +20,25 @@ package jup;
 
 import java.io.IOException;
 
-public abstract class NxtException extends Exception {
+public abstract class JupException extends Exception {
 
-    protected NxtException() {
+    protected JupException() {
         super();
     }
 
-    protected NxtException(String message) {
+    protected JupException(String message) {
         super(message);
     }
 
-    protected NxtException(String message, Throwable cause) {
+    protected JupException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    protected NxtException(Throwable cause) {
+    protected JupException(Throwable cause) {
         super(cause);
     }
 
-    public static abstract class ValidationException extends NxtException {
+    public static abstract class ValidationException extends JupException {
 
         private ValidationException(String message) {
             super(message);

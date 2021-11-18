@@ -27,7 +27,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Attachment;
 import jup.Currency;
-import jup.NxtException;
+import jup.JupException;
 
 public final class TransferCurrency extends CreateTransaction {
 
@@ -38,7 +38,7 @@ public final class TransferCurrency extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         long recipient = ParameterParser.getAccountId(req, "recipient", true);
 
@@ -49,7 +49,7 @@ public final class TransferCurrency extends CreateTransaction {
         Attachment attachment = new Attachment.MonetarySystemCurrencyTransfer(currency.getId(), units);
         try {
             return createTransaction(req, account, recipient, 0, attachment);
-        } catch (NxtException.InsufficientBalanceException e) {
+        } catch (JupException.InsufficientBalanceException e) {
             return NOT_ENOUGH_CURRENCY;
         }
     }

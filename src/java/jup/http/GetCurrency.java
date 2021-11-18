@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONStreamAware;
 
 import jup.Currency;
-import jup.NxtException;
+import jup.JupException;
 import jup.util.Convert;
 
 public final class GetCurrency extends APIServlet.APIRequestHandler {
@@ -38,7 +38,7 @@ public final class GetCurrency extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         boolean includeCounts = "true".equalsIgnoreCase(req.getParameter("includeCounts"));
         long currencyId = ParameterParser.getUnsignedLong(req, "currency", false);
         Currency currency;

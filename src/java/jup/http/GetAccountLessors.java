@@ -27,7 +27,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Constants;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.db.DbIterator;
 
 public final class GetAccountLessors extends APIServlet.APIRequestHandler {
@@ -39,7 +39,7 @@ public final class GetAccountLessors extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         Account account = ParameterParser.getAccount(req);
         int height = ParameterParser.getHeight(req);

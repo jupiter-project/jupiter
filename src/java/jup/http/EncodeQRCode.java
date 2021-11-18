@@ -39,7 +39,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.util.Convert;
 import jup.util.Logger;
 
@@ -92,7 +92,7 @@ public final class EncodeQRCode extends APIServlet.APIRequestHandler {
     
     @Override
     protected JSONStreamAware processRequest(HttpServletRequest request)
-            throws NxtException {
+            throws JupException {
         
         JSONObject response = new JSONObject();
 

@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.Order;
 
 public final class GetAskOrder extends APIServlet.APIRequestHandler {
@@ -36,7 +36,7 @@ public final class GetAskOrder extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         long orderId = ParameterParser.getUnsignedLong(req, "order", true);
         Order.Ask askOrder = Order.Ask.getAskOrder(orderId);
         boolean includeNTFInfo = "true".equalsIgnoreCase(req.getParameter("includeNTFInfo"));

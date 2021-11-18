@@ -30,7 +30,7 @@ import jup.Block;
 import jup.Blockchain;
 import jup.Generator;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 
 /**
  * <p>
@@ -73,7 +73,7 @@ public final class GetNextBlockGeneratorsTemp extends APIServlet.APIRequestHandl
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         JSONObject response = new JSONObject();
         int limit = Math.max(1, ParameterParser.getInt(req, "limit", 1, Integer.MAX_VALUE, false));
         Blockchain blockchain = Jup.getBlockchain();

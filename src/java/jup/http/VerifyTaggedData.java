@@ -31,7 +31,7 @@ import org.json.simple.JSONStreamAware;
 
 import jup.Attachment;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.Transaction;
 
 public final class VerifyTaggedData extends APIServlet.APIRequestHandler {
@@ -44,7 +44,7 @@ public final class VerifyTaggedData extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         long transactionId = ParameterParser.getUnsignedLong(req, "transaction", true);
         Transaction transaction = Jup.getBlockchain().getTransaction(transactionId);

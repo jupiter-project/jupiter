@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONStreamAware;
 
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.TaggedData;
 
 public final class DownloadTaggedData extends APIServlet.APIRequestHandler {
@@ -43,7 +43,7 @@ public final class DownloadTaggedData extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest request, HttpServletResponse response) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest request, HttpServletResponse response) throws JupException {
         long transactionId = ParameterParser.getUnsignedLong(request, "transaction", true);
         boolean retrieve = "true".equalsIgnoreCase(request.getParameter("retrieve"));
         TaggedData taggedData = TaggedData.getData(transactionId);
@@ -86,7 +86,7 @@ public final class DownloadTaggedData extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest request) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest request) throws JupException {
         throw new UnsupportedOperationException();
     }
 }

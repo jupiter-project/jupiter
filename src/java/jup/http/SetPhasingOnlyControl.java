@@ -25,7 +25,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Attachment;
 import jup.Constants;
-import jup.NxtException;
+import jup.JupException;
 import jup.PhasingParams;
 /**
  * Sets an account control that blocks transactions unless they are phased with certain parameters
@@ -72,7 +72,7 @@ public final class SetPhasingOnlyControl extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest request) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest request) throws JupException {
         Account account = ParameterParser.getSenderAccount(request);
         PhasingParams phasingParams = parsePhasingParams(request, "control");
         long maxFees = ParameterParser.getLong(request, "controlMaxFees", 0, Constants.MAX_BALANCE_NQT, false);

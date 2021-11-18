@@ -25,7 +25,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Attachment;
 import jup.Currency;
-import jup.NxtException;
+import jup.JupException;
 
 /**
  * Claim currency units and receive back NXT invested into this currency before it became active
@@ -49,7 +49,7 @@ public final class CurrencyReserveClaim extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         Currency currency = ParameterParser.getCurrency(req);
         long units = ParameterParser.getLong(req, "units", 0, currency.getReserveSupply(), false);
         Account account = ParameterParser.getSenderAccount(req);

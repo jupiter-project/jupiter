@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 
 public final class GetDGSGood extends APIServlet.APIRequestHandler {
 
@@ -33,7 +33,7 @@ public final class GetDGSGood extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         boolean includeCounts = "true".equalsIgnoreCase(req.getParameter("includeCounts"));
         return JSONData.goods(ParameterParser.getGoods(req), includeCounts);
     }

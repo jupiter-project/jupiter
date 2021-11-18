@@ -28,7 +28,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Attachment;
 import jup.Constants;
-import jup.NxtException;
+import jup.JupException;
 import jup.Poll;
 import jup.util.Convert;
 
@@ -42,7 +42,7 @@ public final class CastVote extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         Poll poll = ParameterParser.getPoll(req);
         if (poll.isFinished()) {
             return POLL_FINISHED;

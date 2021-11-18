@@ -28,7 +28,7 @@ import org.json.simple.JSONStreamAware;
 
 import jup.Attachment;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.Transaction;
 import jup.TransactionType;
 import jup.util.Filter;
@@ -42,7 +42,7 @@ public final class GetExpectedAssetDeletes extends APIServlet.APIRequestHandler 
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         long assetId = ParameterParser.getUnsignedLong(req, "asset", false);
         long accountId = ParameterParser.getAccountId(req, "account", false);

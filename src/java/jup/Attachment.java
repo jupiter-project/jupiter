@@ -58,7 +58,7 @@ public interface Attachment extends Appendix {
         }
 
         @Override
-        final void validate(Transaction transaction) throws NxtException.ValidationException {
+        final void validate(Transaction transaction) throws JupException.ValidationException {
             getTransactionType().validateAttachment(transaction);
         }
 
@@ -195,7 +195,7 @@ public interface Attachment extends Appendix {
         private final String aliasName;
         private final String aliasURI;
 
-        MessagingAliasAssignment(ByteBuffer buffer) throws NxtException.NotValidException {
+        MessagingAliasAssignment(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             aliasName = Convert.readString(buffer, buffer.get(), Constants.MAX_ALIAS_LENGTH).trim();
             aliasURI = Convert.readString(buffer, buffer.getShort(), Constants.MAX_ALIAS_URI_LENGTH).trim();
@@ -252,7 +252,7 @@ public interface Attachment extends Appendix {
         private final String aliasName;
         private final long priceNQT;
 
-        MessagingAliasSell(ByteBuffer buffer) throws NxtException.NotValidException {
+        MessagingAliasSell(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             this.aliasName = Convert.readString(buffer, buffer.get(), Constants.MAX_ALIAS_LENGTH);
             this.priceNQT = buffer.getLong();
@@ -306,7 +306,7 @@ public interface Attachment extends Appendix {
 
         private final String aliasName;
 
-        MessagingAliasBuy(ByteBuffer buffer) throws NxtException.NotValidException {
+        MessagingAliasBuy(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             this.aliasName = Convert.readString(buffer, buffer.get(), Constants.MAX_ALIAS_LENGTH);
         }
@@ -351,7 +351,7 @@ public interface Attachment extends Appendix {
 
         private final String aliasName;
 
-        MessagingAliasDelete(final ByteBuffer buffer) throws NxtException.NotValidException {
+        MessagingAliasDelete(final ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             this.aliasName = Convert.readString(buffer, buffer.get(), Constants.MAX_ALIAS_LENGTH);
         }
@@ -459,7 +459,7 @@ public interface Attachment extends Appendix {
         private final byte maxRangeValue;
         private final VoteWeighting voteWeighting;
 
-        MessagingPollCreation(ByteBuffer buffer) throws NxtException.NotValidException {
+        MessagingPollCreation(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             this.pollName = Convert.readString(buffer, buffer.getShort(), Constants.MAX_POLL_NAME_LENGTH);
             this.pollDescription = Convert.readString(buffer, buffer.getShort(), Constants.MAX_POLL_DESCRIPTION_LENGTH);
@@ -468,7 +468,7 @@ public interface Attachment extends Appendix {
 
             int numberOfOptions = buffer.get();
             if (numberOfOptions > Constants.MAX_POLL_OPTION_COUNT) {
-                throw new NxtException.NotValidException("Invalid number of poll options: " + numberOfOptions);
+                throw new JupException.NotValidException("Invalid number of poll options: " + numberOfOptions);
             }
 
             this.pollOptions = new String[numberOfOptions];
@@ -643,12 +643,12 @@ public interface Attachment extends Appendix {
         private final long pollId;
         private final byte[] pollVote;
 
-        public MessagingVoteCasting(ByteBuffer buffer) throws NxtException.NotValidException {
+        public MessagingVoteCasting(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             pollId = buffer.getLong();
             int numberOfOptions = buffer.get();
             if (numberOfOptions > Constants.MAX_POLL_OPTION_COUNT) {
-                throw new NxtException.NotValidException("More than " + Constants.MAX_POLL_OPTION_COUNT + " options in a vote");
+                throw new JupException.NotValidException("More than " + Constants.MAX_POLL_OPTION_COUNT + " options in a vote");
             }
             pollVote = new byte[numberOfOptions];
             buffer.get(pollVote);
@@ -712,7 +712,7 @@ public interface Attachment extends Appendix {
         private final List<byte[]> transactionFullHashes;
         private final byte[] revealedSecret;
 
-        MessagingPhasingVoteCasting(ByteBuffer buffer) throws NxtException.NotValidException {
+        MessagingPhasingVoteCasting(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             byte length = buffer.get();
             transactionFullHashes = new ArrayList<>(length);
@@ -723,7 +723,7 @@ public interface Attachment extends Appendix {
             }
             int secretLength = buffer.getInt();
             if (secretLength > Constants.MAX_PHASING_REVEALED_SECRET_LENGTH) {
-                throw new NxtException.NotValidException("Invalid revealed secret length " + secretLength);
+                throw new JupException.NotValidException("Invalid revealed secret length " + secretLength);
             }
             if (secretLength > 0) {
                 revealedSecret = new byte[secretLength];
@@ -789,7 +789,7 @@ public interface Attachment extends Appendix {
         private final String name;
         private final String description;
 
-        MessagingAccountInfo(ByteBuffer buffer) throws NxtException.NotValidException {
+        MessagingAccountInfo(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             this.name = Convert.readString(buffer, buffer.get(), Constants.MAX_ACCOUNT_NAME_LENGTH);
             this.description = Convert.readString(buffer, buffer.getShort(), Constants.MAX_ACCOUNT_DESCRIPTION_LENGTH);
@@ -847,7 +847,7 @@ public interface Attachment extends Appendix {
         private final String property;
         private final String value;
 
-        MessagingAccountProperty(ByteBuffer buffer) throws NxtException.NotValidException {
+        MessagingAccountProperty(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             this.property = Convert.readString(buffer, buffer.get(), Constants.MAX_ACCOUNT_PROPERTY_NAME_LENGTH).trim();
             this.value = Convert.readString(buffer, buffer.get(), Constants.MAX_ACCOUNT_PROPERTY_VALUE_LENGTH).trim();
@@ -951,7 +951,7 @@ public interface Attachment extends Appendix {
         private final long quantityQNT;
         private final byte decimals;
 
-        ColoredCoinsAssetIssuance(ByteBuffer buffer) throws NxtException.NotValidException {
+        ColoredCoinsAssetIssuance(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             this.name = Convert.readString(buffer, buffer.get(), Constants.MAX_ASSET_NAME_LENGTH);
             this.description = Convert.readString(buffer, buffer.getShort(), Constants.MAX_ASSET_DESCRIPTION_LENGTH);
@@ -1026,7 +1026,7 @@ public interface Attachment extends Appendix {
         private final long assetId;
         private final long quantityQNT;
 
-        ColoredCoinsAssetTransfer(ByteBuffer buffer) throws NxtException.NotValidException {
+        ColoredCoinsAssetTransfer(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             this.assetId = buffer.getLong();
             this.quantityQNT = buffer.getLong();
@@ -1381,7 +1381,7 @@ public interface Attachment extends Appendix {
         private final int quantity;
         private final long priceNQT;
 
-        DigitalGoodsListing(ByteBuffer buffer) throws NxtException.NotValidException {
+        DigitalGoodsListing(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             this.name = Convert.readString(buffer, buffer.getShort(), Constants.MAX_DGS_LISTING_NAME_LENGTH);
             this.description = Convert.readString(buffer, buffer.getShort(), Constants.MAX_DGS_LISTING_DESCRIPTION_LENGTH);
@@ -1669,7 +1669,7 @@ public interface Attachment extends Appendix {
         private final long discountNQT;
         private final boolean goodsIsText;
 
-        DigitalGoodsDelivery(ByteBuffer buffer) throws NxtException.NotValidException {
+        DigitalGoodsDelivery(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             this.purchaseId = buffer.getLong();
             int length = buffer.getInt();
@@ -1782,7 +1782,7 @@ public interface Attachment extends Appendix {
         @Override
         void putMyBytes(ByteBuffer buffer) {
             if (getGoods() == null) {
-                throw new NxtException.NotYetEncryptedException("Goods not yet encrypted");
+                throw new JupException.NotYetEncryptedException("Goods not yet encrypted");
             }
             super.putMyBytes(buffer);
         }
@@ -1974,7 +1974,7 @@ public interface Attachment extends Appendix {
         private final byte algorithm;
         private final byte decimals;
 
-        MonetarySystemCurrencyIssuance(ByteBuffer buffer) throws NxtException.NotValidException {
+        MonetarySystemCurrencyIssuance(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             this.name = Convert.readString(buffer, buffer.get(), Constants.MAX_CURRENCY_NAME_LENGTH);
             this.code = Convert.readString(buffer, buffer.get(), Constants.MAX_CURRENCY_CODE_LENGTH);
@@ -2960,11 +2960,11 @@ public interface Attachment extends Appendix {
 
         private final byte[][] recipientPublicKeys;
 
-        ShufflingRecipients(ByteBuffer buffer) throws NxtException.NotValidException {
+        ShufflingRecipients(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             int count = buffer.get();
             if (count > Constants.MAX_NUMBER_OF_SHUFFLING_PARTICIPANTS || count < 0) {
-                throw new NxtException.NotValidException("Invalid data count " + count);
+                throw new JupException.NotValidException("Invalid data count " + count);
             }
             this.recipientPublicKeys = new byte[count][];
             for (int i = 0; i < count; i++) {
@@ -3052,24 +3052,24 @@ public interface Attachment extends Appendix {
         private final byte[][] keySeeds;
         private final long cancellingAccountId;
 
-        ShufflingCancellation(ByteBuffer buffer) throws NxtException.NotValidException {
+        ShufflingCancellation(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             int count = buffer.get();
             if (count > Constants.MAX_NUMBER_OF_SHUFFLING_PARTICIPANTS || count <= 0) {
-                throw new NxtException.NotValidException("Invalid data count " + count);
+                throw new JupException.NotValidException("Invalid data count " + count);
             }
             this.blameData = new byte[count][];
             for (int i = 0; i < count; i++) {
                 int size = buffer.getInt();
                 if (size > Constants.MAX_PAYLOAD_LENGTH) {
-                    throw new NxtException.NotValidException("Invalid data size " + size);
+                    throw new JupException.NotValidException("Invalid data size " + size);
                 }
                 this.blameData[i] = new byte[size];
                 buffer.get(this.blameData[i]);
             }
             count = buffer.get();
             if (count > Constants.MAX_NUMBER_OF_SHUFFLING_PARTICIPANTS || count <= 0) {
-                throw new NxtException.NotValidException("Invalid keySeeds count " + count);
+                throw new JupException.NotValidException("Invalid keySeeds count " + count);
             }
             this.keySeeds = new byte[count][];
             for (int i = 0; i < count; i++) {
@@ -3384,11 +3384,11 @@ public interface Attachment extends Appendix {
         }
 
         public TaggedDataUpload(String name, String description, String tags, String type, String channel, boolean isText,
-                                String filename, byte[] data) throws NxtException.NotValidException {
+                                String filename, byte[] data) throws JupException.NotValidException {
             super(name, description, tags, type, channel, isText, filename, data);
             this.hash = null;
             if (isText && !Arrays.equals(data, Convert.toBytes(Convert.toString(data)))) {
-                throw new NxtException.NotValidException("Data is not UTF-8 text");
+                throw new JupException.NotValidException("Data is not UTF-8 text");
             }
         }
 

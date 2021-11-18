@@ -24,7 +24,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.TaggedData;
 import jup.db.DbIterator;
 import jup.util.Convert;
@@ -38,7 +38,7 @@ public final class SearchTaggedData extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         long accountId = ParameterParser.getAccountId(req, "account", false);
         String query = ParameterParser.getSearchQuery(req);
         String channel = Convert.emptyToNull(req.getParameter("channel"));

@@ -22,7 +22,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.util.JSON;
 
 final class ProcessTransactions extends PeerServlet.PeerRequestHandler {
@@ -38,7 +38,7 @@ final class ProcessTransactions extends PeerServlet.PeerRequestHandler {
         try {
             Jup.getTransactionProcessor().processPeerTransactions(request);
             return JSON.emptyJSON;
-        } catch (RuntimeException | NxtException.ValidationException e) {
+        } catch (RuntimeException | JupException.ValidationException e) {
             //Logger.logDebugMessage("Failed to parse peer transactions: " + request.toJSONString());
             peer.blacklist(e);
             return PeerServlet.error(e);

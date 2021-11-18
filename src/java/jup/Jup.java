@@ -290,15 +290,15 @@ public final class Jup {
         return new TransactionImpl.BuilderImpl((byte)1, senderPublicKey, amountNQT, feeNQT, deadline, (Attachment.AbstractAttachment)attachment);
     }
 
-    public static Transaction.Builder newTransactionBuilder(byte[] transactionBytes) throws NxtException.NotValidException {
+    public static Transaction.Builder newTransactionBuilder(byte[] transactionBytes) throws JupException.NotValidException {
         return TransactionImpl.newTransactionBuilder(transactionBytes);
     }
 
-    public static Transaction.Builder newTransactionBuilder(JSONObject transactionJSON) throws NxtException.NotValidException {
+    public static Transaction.Builder newTransactionBuilder(JSONObject transactionJSON) throws JupException.NotValidException {
         return TransactionImpl.newTransactionBuilder(transactionJSON);
     }
 
-    public static Transaction.Builder newTransactionBuilder(byte[] transactionBytes, JSONObject prunableAttachments) throws NxtException.NotValidException {
+    public static Transaction.Builder newTransactionBuilder(byte[] transactionBytes, JSONObject prunableAttachments) throws JupException.NotValidException {
         return TransactionImpl.newTransactionBuilder(transactionBytes, prunableAttachments);
     }
 

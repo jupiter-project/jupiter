@@ -605,10 +605,10 @@ public final class FundingMonitor {
      * @param   monitoredAccount            Monitored account
      * @param   targetAccount               Target account
      * @param   fundingAccount              Funding account
-     * @throws  NxtException                Unable to create transaction
+     * @throws  JupException                Unable to create transaction
      */
     private static void processNxtEvent(MonitoredAccount monitoredAccount, Account targetAccount, Account fundingAccount)
-                                            throws NxtException {
+                                            throws JupException {
         FundingMonitor monitor = monitoredAccount.monitor;
         if (targetAccount.getBalanceNQT() < monitoredAccount.threshold) {
             Transaction.Builder builder = Jup.newTransactionBuilder(monitor.publicKey,
@@ -635,10 +635,10 @@ public final class FundingMonitor {
      * @param   monitoredAccount            Monitored account
      * @param   targetAccount               Target account
      * @param   fundingAccount              Funding account
-     * @throws  NxtException                Unable to create transaction
+     * @throws  JupException                Unable to create transaction
      */
     private static void processAssetEvent(MonitoredAccount monitoredAccount, Account targetAccount, Account fundingAccount)
-                                            throws NxtException {
+                                            throws JupException {
         FundingMonitor monitor = monitoredAccount.monitor;
         Account.AccountAsset targetAsset = Account.getAccountAsset(targetAccount.getId(), monitor.holdingId);
         Account.AccountAsset fundingAsset = Account.getAccountAsset(fundingAccount.getId(), monitor.holdingId);
@@ -672,10 +672,10 @@ public final class FundingMonitor {
      * @param   monitoredAccount            Monitored account
      * @param   targetAccount               Target account
      * @param   fundingAccount              Funding account
-     * @throws  NxtException                Unable to create transaction
+     * @throws  JupException                Unable to create transaction
      */
     private static void processCurrencyEvent(MonitoredAccount monitoredAccount, Account targetAccount, Account fundingAccount)
-                                            throws NxtException {
+                                            throws JupException {
         FundingMonitor monitor = monitoredAccount.monitor;
         Account.AccountCurrency targetCurrency = Account.getAccountCurrency(targetAccount.getId(), monitor.holdingId);
         Account.AccountCurrency fundingCurrency = Account.getAccountCurrency(fundingAccount.getId(), monitor.holdingId);

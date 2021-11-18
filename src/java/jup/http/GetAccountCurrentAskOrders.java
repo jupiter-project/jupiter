@@ -24,7 +24,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.Order;
 import jup.db.DbIterator;
 
@@ -37,7 +37,7 @@ public final class GetAccountCurrentAskOrders extends APIServlet.APIRequestHandl
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         long accountId = ParameterParser.getAccountId(req, true);
         long assetId = ParameterParser.getUnsignedLong(req, "asset", false);

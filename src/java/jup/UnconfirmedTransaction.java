@@ -56,7 +56,7 @@ class UnconfirmedTransaction implements Transaction {
             this.transaction.setHeight(rs.getInt("transaction_height"));
             this.arrivalTimestamp = rs.getLong("arrival_timestamp");
             this.feePerByte = rs.getLong("fee_per_byte");
-        } catch (NxtException.ValidationException e) {
+        } catch (JupException.ValidationException e) {
             throw new RuntimeException(e.toString(), e);
         }
     }
@@ -210,7 +210,7 @@ class UnconfirmedTransaction implements Transaction {
     }
 
     @Override
-    public void validate() throws NxtException.ValidationException {
+    public void validate() throws JupException.ValidationException {
         transaction.validate();
     }
 

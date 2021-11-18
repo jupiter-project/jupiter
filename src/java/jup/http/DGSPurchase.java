@@ -32,7 +32,7 @@ import jup.Account;
 import jup.Attachment;
 import jup.DigitalGoodsStore;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.util.Convert;
 
 public final class DGSPurchase extends CreateTransaction {
@@ -45,7 +45,7 @@ public final class DGSPurchase extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         DigitalGoodsStore.Goods goods = ParameterParser.getGoods(req);
         if (goods.isDelisted()) {
@@ -83,7 +83,7 @@ public final class DGSPurchase extends CreateTransaction {
                 deliveryDeadline);
         try {
             return createTransaction(req, buyerAccount, sellerAccount.getId(), 0, attachment);
-        } catch (NxtException.InsufficientBalanceException e) {
+        } catch (JupException.InsufficientBalanceException e) {
             return JSONResponses.NOT_ENOUGH_FUNDS;
         }
 

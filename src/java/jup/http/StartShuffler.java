@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.Shuffler;
 import jup.Shuffling;
 import jup.util.JSON;
@@ -37,7 +37,7 @@ public final class StartShuffler extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         byte[] shufflingFullHash = ParameterParser.getBytes(req, "shufflingFullHash", true);
         String secretPhrase = ParameterParser.getSecretPhrase(req, true);
         byte[] recipientPublicKey = ParameterParser.getPublicKey(req, "recipient");
@@ -62,7 +62,7 @@ public final class StartShuffler extends APIServlet.APIRequestHandler {
             response.put("errorDescription", e.getMessage());
             return JSON.prepare(response);
         } catch (Shuffler.ShufflerException e) {
-            if (e.getCause() instanceof NxtException.InsufficientBalanceException) {
+            if (e.getCause() instanceof JupException.InsufficientBalanceException) {
                 Shuffling shuffling = Shuffling.getShuffling(shufflingFullHash);
                 if (shuffling == null) {
                     return JSONResponses.NOT_ENOUGH_FUNDS;

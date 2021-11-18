@@ -28,7 +28,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Attachment;
 import jup.DigitalGoodsStore;
-import jup.NxtException;
+import jup.JupException;
 
 public final class DGSFeedback extends CreateTransaction {
 
@@ -40,7 +40,7 @@ public final class DGSFeedback extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         DigitalGoodsStore.Purchase purchase = ParameterParser.getPurchase(req);
 

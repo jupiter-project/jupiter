@@ -25,7 +25,7 @@ import org.json.simple.JSONStreamAware;
 
 import jup.Block;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 
 public final class GetECBlock extends APIServlet.APIRequestHandler {
 
@@ -36,7 +36,7 @@ public final class GetECBlock extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         int timestamp = ParameterParser.getTimestamp(req);
         if (timestamp == 0) {
             timestamp = Jup.getEpochTime();

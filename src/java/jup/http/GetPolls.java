@@ -26,7 +26,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.Poll;
 import jup.db.DbIterator;
 import jup.db.DbUtils;
@@ -40,7 +40,7 @@ public class GetPolls extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         long accountId = ParameterParser.getAccountId(req, "account", false);
         boolean includeFinished = "true".equalsIgnoreCase(req.getParameter("includeFinished"));
         boolean finishedOnly = "true".equalsIgnoreCase(req.getParameter("finishedOnly"));

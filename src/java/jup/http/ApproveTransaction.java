@@ -33,7 +33,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Attachment;
 import jup.Constants;
-import jup.NxtException;
+import jup.JupException;
 import jup.PhasingPoll;
 import jup.util.Convert;
 
@@ -46,7 +46,7 @@ public class ApproveTransaction extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         String[] phasedTransactionValues = req.getParameterValues("transactionFullHash");
 
         if (phasedTransactionValues == null || phasedTransactionValues.length == 0) {

@@ -32,7 +32,7 @@ import jup.Account;
 import jup.Appendix;
 import jup.Attachment;
 import jup.Constants;
-import jup.NxtException;
+import jup.JupException;
 import jup.util.Convert;
 import jup.util.JSON;
 import jup.util.Search;
@@ -47,7 +47,7 @@ public final class DGSListing extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         String name = Convert.emptyToNull(req.getParameter("name"));
         String description = Convert.nullToEmpty(req.getParameter("description"));

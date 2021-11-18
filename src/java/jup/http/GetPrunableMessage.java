@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONStreamAware;
 
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.PrunableMessage;
 import jup.util.JSON;
 
@@ -38,7 +38,7 @@ public final class GetPrunableMessage extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         long transactionId = ParameterParser.getUnsignedLong(req, "transaction", true);
         String secretPhrase = ParameterParser.getSecretPhrase(req, false);
         byte[] sharedKey = ParameterParser.getBytes(req, "sharedKey", false);

@@ -25,7 +25,7 @@ import org.json.simple.JSONStreamAware;
 
 import jup.Account;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 
 public final class GetGuaranteedBalance extends APIServlet.APIRequestHandler {
 
@@ -36,7 +36,7 @@ public final class GetGuaranteedBalance extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         Account account = ParameterParser.getAccount(req);
         int numberOfConfirmations = ParameterParser.getNumberOfConfirmations(req);

@@ -52,9 +52,9 @@ public interface Transaction {
 
         Builder ecBlockId(long blockId);
 
-        Transaction build() throws NxtException.NotValidException;
+        Transaction build() throws JupException.NotValidException;
 
-        Transaction build(String secretPhrase) throws NxtException.NotValidException;
+        Transaction build(String secretPhrase) throws JupException.NotValidException;
 
     }
 
@@ -100,7 +100,7 @@ public interface Transaction {
 
     boolean verifySignature();
 
-    void validate() throws NxtException.ValidationException;
+    void validate() throws JupException.ValidationException;
 
     byte[] getBytes();
 

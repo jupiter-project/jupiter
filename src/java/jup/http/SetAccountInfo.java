@@ -28,7 +28,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Attachment;
 import jup.Constants;
-import jup.NxtException;
+import jup.JupException;
 import jup.util.Convert;
 
 public final class SetAccountInfo extends CreateTransaction {
@@ -40,7 +40,7 @@ public final class SetAccountInfo extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         String name = Convert.nullToEmpty(req.getParameter("name")).trim();
         String description = Convert.nullToEmpty(req.getParameter("description")).trim();

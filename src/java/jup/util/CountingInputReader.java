@@ -22,7 +22,7 @@ import java.io.FilterReader;
 import java.io.IOException;
 import java.io.Reader;
 
-import jup.NxtException.NxtIOException;
+import jup.JupException.NxtIOException;
 
 /**
  * CountingInputReader extends Reader to count the number of characters read

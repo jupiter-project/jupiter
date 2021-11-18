@@ -27,7 +27,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Asset;
 import jup.Attachment;
-import jup.NxtException;
+import jup.JupException;
 
 public final class TransferAsset extends CreateTransaction {
 
@@ -38,7 +38,7 @@ public final class TransferAsset extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         long recipient = ParameterParser.getAccountId(req, "recipient", true);
 
@@ -49,7 +49,7 @@ public final class TransferAsset extends CreateTransaction {
         Attachment attachment = new Attachment.ColoredCoinsAssetTransfer(asset.getId(), quantityQNT);
         try {
             return createTransaction(req, account, recipient, 0, attachment);
-        } catch (NxtException.InsufficientBalanceException e) {
+        } catch (JupException.InsufficientBalanceException e) {
             return NOT_ENOUGH_ASSETS;
         }
     }

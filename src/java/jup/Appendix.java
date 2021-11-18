@@ -151,9 +151,9 @@ public interface Appendix {
             return getBaselineFee(transaction);
         }
 
-        abstract void validate(Transaction transaction) throws NxtException.ValidationException;
+        abstract void validate(Transaction transaction) throws JupException.ValidationException;
 
-        void validateAtFinish(Transaction transaction) throws NxtException.ValidationException {
+        void validateAtFinish(Transaction transaction) throws JupException.ValidationException {
             if (!isPhased(transaction)) {
                 return;
             }
@@ -209,7 +209,7 @@ public interface Appendix {
         private final byte[] message;
         private final boolean isText;
 
-        Message(ByteBuffer buffer) throws NxtException.NotValidException {
+        Message(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             int messageLength = buffer.getInt();
             this.isText = messageLength < 0; // ugly hack
@@ -217,12 +217,12 @@ public interface Appendix {
                 messageLength &= Integer.MAX_VALUE;
             }
             if (messageLength > Constants.MAX_ARBITRARY_MESSAGE_LENGTH) {
-                throw new NxtException.NotValidException("Invalid arbitrary message length: " + messageLength);
+                throw new JupException.NotValidException("Invalid arbitrary message length: " + messageLength);
             }
             this.message = new byte[messageLength];
             buffer.get(this.message);
             if (isText && !Arrays.equals(message, Convert.toBytes(Convert.toString(message)))) {
-                throw new NxtException.NotValidException("Message is not UTF-8 text");
+                throw new JupException.NotValidException("Message is not UTF-8 text");
             }
         }
 
@@ -283,9 +283,9 @@ public interface Appendix {
         }
 
         @Override
-        void validate(Transaction transaction) throws NxtException.ValidationException {
+        void validate(Transaction transaction) throws JupException.ValidationException {
             if (message.length > Constants.MAX_ARBITRARY_MESSAGE_LENGTH) {
-                throw new NxtException.NotValidException("Invalid arbitrary message length: " + message.length);
+                throw new JupException.NotValidException("Invalid arbitrary message length: " + message.length);
             }
         }
 
@@ -421,16 +421,16 @@ public interface Appendix {
         }
 
         @Override
-        void validate(Transaction transaction) throws NxtException.ValidationException {
+        void validate(Transaction transaction) throws JupException.ValidationException {
             if (transaction.getMessage() != null) {
-                throw new NxtException.NotValidException("Cannot have both message and prunable message attachments");
+                throw new JupException.NotValidException("Cannot have both message and prunable message attachments");
             }
             byte[] msg = getMessage();
             if (msg != null && msg.length > Constants.MAX_PRUNABLE_MESSAGE_LENGTH) {
-                throw new NxtException.NotValidException("Invalid prunable message length: " + msg.length);
+                throw new JupException.NotValidException("Invalid prunable message length: " + msg.length);
             }
             if (msg == null && Jup.getEpochTime() - transaction.getTimestamp() < Constants.MIN_PRUNABLE_LIFETIME) {
-                throw new NxtException.NotCurrentlyValidException("Message has been pruned prematurely");
+                throw new JupException.NotCurrentlyValidException("Message has been pruned prematurely");
             }
         }
 
@@ -526,7 +526,7 @@ public interface Appendix {
         private final boolean isText;
         private final boolean isCompressed;
 
-        private AbstractEncryptedMessage(ByteBuffer buffer) throws NxtException.NotValidException {
+        private AbstractEncryptedMessage(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
             int length = buffer.getInt();
             this.isText = length < 0;
@@ -595,19 +595,19 @@ public interface Appendix {
         }
 
         @Override
-        void validate(Transaction transaction) throws NxtException.ValidationException {
+        void validate(Transaction transaction) throws JupException.ValidationException {
             if (getEncryptedDataLength() > Constants.MAX_ENCRYPTED_MESSAGE_LENGTH) {
-                throw new NxtException.NotValidException("Max encrypted message length exceeded, " + 
+                throw new JupException.NotValidException("Max encrypted message length exceeded, " + 
                 		getEncryptedDataLength() + " > " + Constants.MAX_ENCRYPTED_MESSAGE_LENGTH);
             }
             if (encryptedData != null) {
                 if ((encryptedData.getNonce().length != 32 && encryptedData.getData().length > 0)
                         || (encryptedData.getNonce().length != 0 && encryptedData.getData().length == 0)) {
-                    throw new NxtException.NotValidException("Invalid nonce length " + encryptedData.getNonce().length);
+                    throw new JupException.NotValidException("Invalid nonce length " + encryptedData.getNonce().length);
                 }
             }
             if ((getVersion() != 2 && !isCompressed) || (getVersion() == 2 && isCompressed)) {
-                throw new NxtException.NotValidException("Version mismatch - version " + getVersion() + ", isCompressed " + isCompressed);
+                throw new JupException.NotValidException("Version mismatch - version " + getVersion() + ", isCompressed " + isCompressed);
             }
         }
 
@@ -767,26 +767,26 @@ public interface Appendix {
         }
 
         @Override
-        void validate(Transaction transaction) throws NxtException.ValidationException {
+        void validate(Transaction transaction) throws JupException.ValidationException {
             if (transaction.getEncryptedMessage() != null) {
-                throw new NxtException.NotValidException("Cannot have both encrypted and prunable encrypted message attachments");
+                throw new JupException.NotValidException("Cannot have both encrypted and prunable encrypted message attachments");
             }
             EncryptedData ed = getEncryptedData();
             if (ed == null && Jup.getEpochTime() - transaction.getTimestamp() < Constants.MIN_PRUNABLE_LIFETIME) {
-                throw new NxtException.NotCurrentlyValidException("Encrypted message has been pruned prematurely");
+                throw new JupException.NotCurrentlyValidException("Encrypted message has been pruned prematurely");
             }
             if (ed != null) {
                 if (ed.getData().length > Constants.MAX_PRUNABLE_ENCRYPTED_MESSAGE_LENGTH) {
-                    throw new NxtException.NotValidException(String.format("Message length %d exceeds max prunable encrypted message length %d",
+                    throw new JupException.NotValidException(String.format("Message length %d exceeds max prunable encrypted message length %d",
                             ed.getData().length, Constants.MAX_PRUNABLE_ENCRYPTED_MESSAGE_LENGTH));
                 }
                 if ((ed.getNonce().length != 32 && ed.getData().length > 0)
                         || (ed.getNonce().length != 0 && ed.getData().length == 0)) {
-                    throw new NxtException.NotValidException("Invalid nonce length " + ed.getNonce().length);
+                    throw new JupException.NotValidException("Invalid nonce length " + ed.getNonce().length);
                 }
             }
             if (transaction.getRecipientId() == 0) {
-                throw new NxtException.NotValidException("Encrypted messages cannot be attached to transactions with no recipient");
+                throw new JupException.NotValidException("Encrypted messages cannot be attached to transactions with no recipient");
             }
         }
 
@@ -888,7 +888,7 @@ public interface Appendix {
         @Override
         void putMyBytes(ByteBuffer buffer) {
             if (getEncryptedData() == null) {
-                throw new NxtException.NotYetEncryptedException("Prunable encrypted message not yet encrypted");
+                throw new JupException.NotYetEncryptedException("Prunable encrypted message not yet encrypted");
             }
             super.putMyBytes(buffer);
         }
@@ -908,11 +908,11 @@ public interface Appendix {
         }
 
         @Override
-        void validate(Transaction transaction) throws NxtException.ValidationException {
+        void validate(Transaction transaction) throws JupException.ValidationException {
             if (getEncryptedData() == null) {
                 int dataLength = getEncryptedDataLength();
                 if (dataLength > Constants.MAX_PRUNABLE_ENCRYPTED_MESSAGE_LENGTH) {
-                    throw new NxtException.NotValidException(String.format("Message length %d exceeds max prunable encrypted message length %d",
+                    throw new JupException.NotValidException(String.format("Message length %d exceeds max prunable encrypted message length %d",
                             dataLength, Constants.MAX_PRUNABLE_ENCRYPTED_MESSAGE_LENGTH));
                 }
             } else {
@@ -923,7 +923,7 @@ public interface Appendix {
         @Override
         void apply(Transaction transaction, Account senderAccount, Account recipientAccount) {
             if (getEncryptedData() == null) {
-                throw new NxtException.NotYetEncryptedException("Prunable encrypted message not yet encrypted");
+                throw new JupException.NotYetEncryptedException("Prunable encrypted message not yet encrypted");
             }
             super.apply(transaction, senderAccount, recipientAccount);
         }
@@ -961,7 +961,7 @@ public interface Appendix {
             return new EncryptedMessage(attachmentData);
         }
 
-        EncryptedMessage(ByteBuffer buffer) throws NxtException.NotValidException {
+        EncryptedMessage(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
         }
 
@@ -986,10 +986,10 @@ public interface Appendix {
         }
 
         @Override
-        void validate(Transaction transaction) throws NxtException.ValidationException {
+        void validate(Transaction transaction) throws JupException.ValidationException {
             super.validate(transaction);
             if (transaction.getRecipientId() == 0) {
-                throw new NxtException.NotValidException("Encrypted messages cannot be attached to transactions with no recipient");
+                throw new JupException.NotValidException("Encrypted messages cannot be attached to transactions with no recipient");
             }
         }
 
@@ -1026,7 +1026,7 @@ public interface Appendix {
         @Override
         void putMyBytes(ByteBuffer buffer) {
             if (getEncryptedData() == null) {
-                throw new NxtException.NotYetEncryptedException("Message not yet encrypted");
+                throw new JupException.NotYetEncryptedException("Message not yet encrypted");
             }
             super.putMyBytes(buffer);
         }
@@ -1048,7 +1048,7 @@ public interface Appendix {
         @Override
         void apply(Transaction transaction, Account senderAccount, Account recipientAccount) {
             if (getEncryptedData() == null) {
-                throw new NxtException.NotYetEncryptedException("Message not yet encrypted");
+                throw new JupException.NotYetEncryptedException("Message not yet encrypted");
             }
             super.apply(transaction, senderAccount, recipientAccount);
         }
@@ -1083,7 +1083,7 @@ public interface Appendix {
             return new EncryptToSelfMessage(attachmentData);
         }
 
-        EncryptToSelfMessage(ByteBuffer buffer) throws NxtException.NotValidException {
+        EncryptToSelfMessage(ByteBuffer buffer) throws JupException.NotValidException {
             super(buffer);
         }
 
@@ -1137,7 +1137,7 @@ public interface Appendix {
         @Override
         void putMyBytes(ByteBuffer buffer) {
             if (getEncryptedData() == null) {
-                throw new NxtException.NotYetEncryptedException("Message not yet encrypted");
+                throw new JupException.NotYetEncryptedException("Message not yet encrypted");
             }
             super.putMyBytes(buffer);
         }
@@ -1158,7 +1158,7 @@ public interface Appendix {
         @Override
         void apply(Transaction transaction, Account senderAccount, Account recipientAccount) {
             if (getEncryptedData() == null) {
-                throw new NxtException.NotYetEncryptedException("Message not yet encrypted");
+                throw new JupException.NotYetEncryptedException("Message not yet encrypted");
             }
             super.apply(transaction, senderAccount, recipientAccount);
         }
@@ -1228,20 +1228,20 @@ public interface Appendix {
         }
 
         @Override
-        void validate(Transaction transaction) throws NxtException.ValidationException {
+        void validate(Transaction transaction) throws JupException.ValidationException {
             if (transaction.getRecipientId() == 0) {
-                throw new NxtException.NotValidException("PublicKeyAnnouncement cannot be attached to transactions with no recipient");
+                throw new JupException.NotValidException("PublicKeyAnnouncement cannot be attached to transactions with no recipient");
             }
             if (!Crypto.isCanonicalPublicKey(publicKey)) {
-                throw new NxtException.NotValidException("Invalid recipient public key: " + Convert.toHexString(publicKey));
+                throw new JupException.NotValidException("Invalid recipient public key: " + Convert.toHexString(publicKey));
             }
             long recipientId = transaction.getRecipientId();
             if (Account.getId(this.publicKey) != recipientId) {
-                throw new NxtException.NotValidException("Announced public key does not match recipient accountId");
+                throw new JupException.NotValidException("Announced public key does not match recipient accountId");
             }
             byte[] recipientPublicKey = Account.getPublicKey(recipientId);
             if (recipientPublicKey != null && ! Arrays.equals(publicKey, recipientPublicKey)) {
-                throw new NxtException.NotCurrentlyValidException("A different public key for this account has already been announced");
+                throw new JupException.NotCurrentlyValidException("A different public key for this account has already been announced");
             }
         }
 
@@ -1392,68 +1392,68 @@ public interface Appendix {
         }
 
         @Override
-        void validate(Transaction transaction) throws NxtException.ValidationException {
+        void validate(Transaction transaction) throws JupException.ValidationException {
             params.validate();
             int currentHeight = Jup.getBlockchain().getHeight();
             if (params.getVoteWeighting().getVotingModel() == VoteWeighting.VotingModel.TRANSACTION) {
                 if (linkedFullHashes.length == 0 || linkedFullHashes.length > Constants.MAX_PHASING_LINKED_TRANSACTIONS) {
-                    throw new NxtException.NotValidException("Invalid number of linkedFullHashes " + linkedFullHashes.length);
+                    throw new JupException.NotValidException("Invalid number of linkedFullHashes " + linkedFullHashes.length);
                 }
                 Set<Long> linkedTransactionIds = new HashSet<>(linkedFullHashes.length);
                 for (byte[] hash : linkedFullHashes) {
                     if (Convert.emptyToNull(hash) == null || hash.length != 32) {
-                        throw new NxtException.NotValidException("Invalid linkedFullHash " + Convert.toHexString(hash));
+                        throw new JupException.NotValidException("Invalid linkedFullHash " + Convert.toHexString(hash));
                     }
                     if (!linkedTransactionIds.add(Convert.fullHashToId(hash))) {
-                        throw new NxtException.NotValidException("Duplicate linked transaction ids");
+                        throw new JupException.NotValidException("Duplicate linked transaction ids");
                     }
                     TransactionImpl linkedTransaction = TransactionDb.findTransactionByFullHash(hash, currentHeight);
                     if (linkedTransaction != null) {
                         if (transaction.getTimestamp() - linkedTransaction.getTimestamp() > Constants.MAX_REFERENCED_TRANSACTION_TIMESPAN) {
-                            throw new NxtException.NotValidException("Linked transaction cannot be more than 60 days older than the phased transaction");
+                            throw new JupException.NotValidException("Linked transaction cannot be more than 60 days older than the phased transaction");
                         }
                         if (linkedTransaction.getPhasing() != null) {
-                            throw new NxtException.NotCurrentlyValidException("Cannot link to an already existing phased transaction");
+                            throw new JupException.NotCurrentlyValidException("Cannot link to an already existing phased transaction");
                         }
                     }
                 }
                 if (params.getQuorum() > linkedFullHashes.length) {
-                    throw new NxtException.NotValidException("Quorum of " + params.getQuorum() + " cannot be achieved in by-transaction voting with "
+                    throw new JupException.NotValidException("Quorum of " + params.getQuorum() + " cannot be achieved in by-transaction voting with "
                             + linkedFullHashes.length + " linked full hashes only");
                 }
             } else {
                 if (linkedFullHashes.length != 0) {
-                    throw new NxtException.NotValidException("LinkedFullHashes can only be used with VotingModel.TRANSACTION");
+                    throw new JupException.NotValidException("LinkedFullHashes can only be used with VotingModel.TRANSACTION");
                 }
             }
 
             if (params.getVoteWeighting().getVotingModel() == VoteWeighting.VotingModel.HASH) {
                 if (params.getQuorum() != 1) {
-                    throw new NxtException.NotValidException("Quorum must be 1 for by-hash voting");
+                    throw new JupException.NotValidException("Quorum must be 1 for by-hash voting");
                 }
                 if (hashedSecret.length == 0 || hashedSecret.length > Byte.MAX_VALUE) {
-                    throw new NxtException.NotValidException("Invalid hashedSecret " + Convert.toHexString(hashedSecret));
+                    throw new JupException.NotValidException("Invalid hashedSecret " + Convert.toHexString(hashedSecret));
                 }
                 if (PhasingPoll.getHashFunction(algorithm) == null) {
-                    throw new NxtException.NotValidException("Invalid hashedSecretAlgorithm " + algorithm);
+                    throw new JupException.NotValidException("Invalid hashedSecretAlgorithm " + algorithm);
                 }
             } else {
                 if (hashedSecret.length != 0) {
-                    throw new NxtException.NotValidException("HashedSecret can only be used with VotingModel.HASH");
+                    throw new JupException.NotValidException("HashedSecret can only be used with VotingModel.HASH");
                 }
                 if (algorithm != 0) {
-                    throw new NxtException.NotValidException("HashedSecretAlgorithm can only be used with VotingModel.HASH");
+                    throw new JupException.NotValidException("HashedSecretAlgorithm can only be used with VotingModel.HASH");
                 }
             }
 
             if (finishHeight <= currentHeight + (params.getVoteWeighting().acceptsVotes() ? 2 : 1)
                     || finishHeight >= currentHeight + Constants.MAX_PHASING_DURATION) {
-                throw new NxtException.NotCurrentlyValidException("Invalid finish height " + finishHeight);
+                throw new JupException.NotCurrentlyValidException("Invalid finish height " + finishHeight);
             }
         }
 
         @Override
-        void validateAtFinish(Transaction transaction) throws NxtException.ValidationException {
+        void validateAtFinish(Transaction transaction) throws JupException.ValidationException {
             params.checkApprovable();
         }
 

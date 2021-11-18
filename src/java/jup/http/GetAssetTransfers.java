@@ -25,7 +25,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.AssetTransfer;
-import jup.NxtException;
+import jup.JupException;
 import jup.db.DbIterator;
 import jup.db.DbUtils;
 
@@ -38,7 +38,7 @@ public final class GetAssetTransfers extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         long assetId = ParameterParser.getUnsignedLong(req, "asset", false);
         long accountId = ParameterParser.getAccountId(req, false);

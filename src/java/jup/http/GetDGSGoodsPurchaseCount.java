@@ -24,7 +24,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.DigitalGoodsStore;
-import jup.NxtException;
+import jup.JupException;
 
 public final class GetDGSGoodsPurchaseCount extends APIServlet.APIRequestHandler {
 
@@ -35,7 +35,7 @@ public final class GetDGSGoodsPurchaseCount extends APIServlet.APIRequestHandler
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         long goodsId = ParameterParser.getUnsignedLong(req, "goods", true);
         final boolean withPublicFeedbacksOnly = "true".equalsIgnoreCase(req.getParameter("withPublicFeedbacksOnly"));

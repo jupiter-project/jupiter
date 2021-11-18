@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.Transaction;
 import jup.util.Convert;
 import jup.util.Logger;
@@ -37,7 +37,7 @@ public final class ParseTransaction extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         String transactionBytes = Convert.emptyToNull(req.getParameter("transactionBytes"));
         String transactionJSON = Convert.emptyToNull(req.getParameter("transactionJSON"));
@@ -47,7 +47,7 @@ public final class ParseTransaction extends APIServlet.APIRequestHandler {
         JSONObject response = JSONData.unconfirmedTransaction(transaction);
         try {
             transaction.validate();
-        } catch (NxtException.ValidationException|RuntimeException e) {
+        } catch (JupException.ValidationException|RuntimeException e) {
             Logger.logDebugMessage(e.getMessage(), e);
             response.put("validate", false);
             JSONData.putException(response, e, "Invalid transaction");

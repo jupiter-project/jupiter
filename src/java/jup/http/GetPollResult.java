@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.Poll;
 import jup.VoteWeighting;
 import jup.util.Convert;
@@ -41,7 +41,7 @@ public class GetPollResult extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         Poll poll = ParameterParser.getPoll(req);
         List<Poll.OptionResult> pollResults;
         VoteWeighting voteWeighting;

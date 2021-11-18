@@ -27,7 +27,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.Account;
-import jup.NxtException;
+import jup.JupException;
 import jup.crypto.EncryptedData;
 import jup.util.Convert;
 import jup.util.Logger;
@@ -41,7 +41,7 @@ public final class DecryptFrom extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         byte[] publicKey = Account.getPublicKey(ParameterParser.getAccountId(req, true));
         if (publicKey == null) {

@@ -79,7 +79,7 @@ import jup.CurrencySellOffer;
 import jup.DigitalGoodsStore;
 import jup.HoldingType;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.Poll;
 import jup.Shuffling;
 import jup.Transaction;
@@ -635,7 +635,7 @@ public final class ParameterParser {
             try {
                 JSONObject json = (JSONObject) JSONValue.parseWithException(transactionJSON);
                 return Jup.newTransactionBuilder(json);
-            } catch (NxtException.ValidationException | RuntimeException | ParseException e) {
+            } catch (JupException.ValidationException | RuntimeException | ParseException e) {
                 Logger.logDebugMessage(e.getMessage(), e);
                 JSONObject response = new JSONObject();
                 JSONData.putException(response, e, "Incorrect transactionJSON");
@@ -646,7 +646,7 @@ public final class ParameterParser {
                 byte[] bytes = Convert.parseHexString(transactionBytes);
                 JSONObject prunableAttachments = prunableAttachmentJSON == null ? null : (JSONObject)JSONValue.parseWithException(prunableAttachmentJSON);
                 return Jup.newTransactionBuilder(bytes, prunableAttachments);
-            } catch (NxtException.ValidationException|RuntimeException | ParseException e) {
+            } catch (JupException.ValidationException|RuntimeException | ParseException e) {
                 Logger.logDebugMessage(e.getMessage(), e);
                 JSONObject response = new JSONObject();
                 JSONData.putException(response, e, "Incorrect transactionBytes");
@@ -763,7 +763,7 @@ public final class ParameterParser {
         }
     }
 
-    public static Attachment.TaggedDataUpload getTaggedData(HttpServletRequest req) throws ParameterException, NxtException.NotValidException {
+    public static Attachment.TaggedDataUpload getTaggedData(HttpServletRequest req) throws ParameterException, JupException.NotValidException {
         String name = Convert.emptyToNull(req.getParameter("name"));
         String description = Convert.nullToEmpty(req.getParameter("description"));
         String tags = Convert.nullToEmpty(req.getParameter("tags"));

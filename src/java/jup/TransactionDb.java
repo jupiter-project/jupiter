@@ -58,7 +58,7 @@ final class TransactionDb {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e.toString(), e);
-        } catch (NxtException.ValidationException e) {
+        } catch (JupException.ValidationException e) {
             throw new RuntimeException("Transaction already in database, id = " + transactionId + ", does not pass validation!", e);
         }
     }
@@ -89,7 +89,7 @@ final class TransactionDb {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e.toString(), e);
-        } catch (NxtException.ValidationException e) {
+        } catch (JupException.ValidationException e) {
             throw new RuntimeException("Transaction already in database, full_hash = " + Convert.toHexString(fullHash)
                     + ", does not pass validation!", e);
         }
@@ -165,7 +165,7 @@ final class TransactionDb {
         }
     }
 
-    static TransactionImpl loadTransaction(Connection con, ResultSet rs) throws NxtException.NotValidException {
+    static TransactionImpl loadTransaction(Connection con, ResultSet rs) throws JupException.NotValidException {
         try {
 
             byte type = rs.getByte("type");
@@ -273,7 +273,7 @@ final class TransactionDb {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e.toString(), e);
-        } catch (NxtException.ValidationException e) {
+        } catch (JupException.ValidationException e) {
             throw new RuntimeException("Transaction already in database for block_id = " + Long.toUnsignedString(blockId)
                     + " does not pass validation!", e);
         }

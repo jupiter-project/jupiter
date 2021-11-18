@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONStreamAware;
 
 import jup.Account;
-import jup.NxtException;
+import jup.JupException;
 import jup.crypto.EncryptedData;
 import jup.util.Convert;
 
@@ -40,7 +40,7 @@ public final class EncryptTo extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         long recipientId = ParameterParser.getAccountId(req, "recipient", true);
         byte[] recipientPublicKey = Account.getPublicKey(recipientId);

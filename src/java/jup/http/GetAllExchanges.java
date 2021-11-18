@@ -25,7 +25,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.Exchange;
-import jup.NxtException;
+import jup.JupException;
 import jup.db.DbIterator;
 
 public final class GetAllExchanges extends APIServlet.APIRequestHandler {
@@ -37,7 +37,7 @@ public final class GetAllExchanges extends APIServlet.APIRequestHandler {
     }
     
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         final int timestamp = ParameterParser.getTimestamp(req);
         int firstIndex = ParameterParser.getFirstIndex(req);
         int lastIndex = ParameterParser.getLastIndex(req);

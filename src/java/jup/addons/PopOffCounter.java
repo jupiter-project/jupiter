@@ -25,7 +25,7 @@ import org.json.simple.JSONStreamAware;
 
 import jup.BlockchainProcessor;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.http.APIServlet;
 import jup.http.APITag;
 
@@ -42,7 +42,7 @@ public final class PopOffCounter implements AddOn {
     public APIServlet.APIRequestHandler getAPIRequestHandler() {
         return new APIServlet.APIRequestHandler(new APITag[]{APITag.ADDONS, APITag.BLOCKS}) {
             @Override
-            protected JSONStreamAware processRequest(HttpServletRequest request) throws NxtException {
+            protected JSONStreamAware processRequest(HttpServletRequest request) throws JupException {
                 JSONObject response = new JSONObject();
                 response.put("numberOfPopOffs", numberOfPopOffs);
                 return response;

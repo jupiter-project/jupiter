@@ -40,7 +40,7 @@ import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.util.Convert;
 import jup.util.Logger;
 
@@ -77,7 +77,7 @@ public final class DecodeQRCode extends APIServlet.APIRequestHandler {
     
     @Override
     protected JSONStreamAware processRequest(HttpServletRequest request)
-            throws NxtException {
+            throws JupException {
    
         String qrCodeBase64 = Convert.nullToEmpty(request.getParameter("qrCodeBase64"));
 

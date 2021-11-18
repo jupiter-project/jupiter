@@ -24,7 +24,7 @@ import org.json.simple.JSONStreamAware;
 
 import jup.Account;
 import jup.Attachment;
-import jup.NxtException;
+import jup.JupException;
 import jup.TransactionType;
 
 public final class SendMetisMessage extends CreateTransaction {
@@ -39,7 +39,7 @@ public final class SendMetisMessage extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         long recipientId = ParameterParser.getAccountId(req, "recipient", false);
         int subtype = ParameterParser.getInt(req, "subtype", 0, 17, false);
         Account account = ParameterParser.getSenderAccount(req);

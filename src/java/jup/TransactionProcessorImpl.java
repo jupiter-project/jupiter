@@ -273,7 +273,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                 }
                 try {
                     processPeerTransactions(transactionsData);
-                } catch (NxtException.ValidationException|RuntimeException e) {
+                } catch (JupException.ValidationException|RuntimeException e) {
                     peer.blacklist(e);
                 }
             } catch (Exception e) {
@@ -414,7 +414,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
     }
 
     @Override
-    public void broadcast(Transaction transaction) throws NxtException.ValidationException {
+    public void broadcast(Transaction transaction) throws JupException.ValidationException {
         BlockchainImpl.getInstance().writeLock();
         try {
             if (TransactionDb.hasTransaction(transaction.getId())) {
@@ -452,7 +452,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
     }
 
     @Override
-    public void processPeerTransactions(JSONObject request) throws NxtException.ValidationException {
+    public void processPeerTransactions(JSONObject request) throws JupException.ValidationException {
         JSONArray transactionsData = (JSONArray)request.get("transactions");
         processPeerTransactions(transactionsData);
     }
@@ -606,14 +606,14 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                         processTransaction(unconfirmedTransaction);
                         iterator.remove();
                         addedUnconfirmedTransactions.add(unconfirmedTransaction.getTransaction());
-                    } catch (NxtException.ExistingTransactionException e) {
+                    } catch (JupException.ExistingTransactionException e) {
                         iterator.remove();
-                    } catch (NxtException.NotCurrentlyValidException e) {
+                    } catch (JupException.NotCurrentlyValidException e) {
                         if (unconfirmedTransaction.getExpiration() < currentTime
                                 || currentTime - Convert.toEpochTime(unconfirmedTransaction.getArrivalTimestamp()) > 3600) {
                             iterator.remove();
                         }
-                    } catch (NxtException.ValidationException|RuntimeException e) {
+                    } catch (JupException.ValidationException|RuntimeException e) {
                         iterator.remove();
                     }
                 }
@@ -626,7 +626,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
         }
     }
 
-    private void processPeerTransactions(JSONArray transactionsData) throws NxtException.NotValidException {
+    private void processPeerTransactions(JSONArray transactionsData) throws JupException.NotValidException {
         if (Jup.getBlockchain().getHeight() <= Constants.LAST_KNOWN_BLOCK && !testUnconfirmedTransactions) {
             return;
         }
@@ -656,8 +656,8 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                 }
                 addedUnconfirmedTransactions.add(transaction);
 
-            } catch (NxtException.NotCurrentlyValidException ignore) {
-            } catch (NxtException.ValidationException|RuntimeException e) {
+            } catch (JupException.NotCurrentlyValidException ignore) {
+            } catch (JupException.ValidationException|RuntimeException e) {
                 Logger.logDebugMessage(String.format("Invalid transaction from peer: %s", ((JSONObject) transactionData).toJSONString()), e);
                 exceptions.add(e);
             }
@@ -670,21 +670,21 @@ final class TransactionProcessorImpl implements TransactionProcessor {
         }
         broadcastedTransactions.removeAll(receivedTransactions);
         if (!exceptions.isEmpty()) {
-            throw new NxtException.NotValidException("Peer sends invalid transactions: " + exceptions.toString());
+            throw new JupException.NotValidException("Peer sends invalid transactions: " + exceptions.toString());
         }
     }
 
-    private void processTransaction(UnconfirmedTransaction unconfirmedTransaction) throws NxtException.ValidationException {
+    private void processTransaction(UnconfirmedTransaction unconfirmedTransaction) throws JupException.ValidationException {
         TransactionImpl transaction = unconfirmedTransaction.getTransaction();
         int curTime = Jup.getEpochTime();
         if (transaction.getTimestamp() > curTime + Constants.MAX_TIMEDRIFT || transaction.getExpiration() < curTime) {
-            throw new NxtException.NotCurrentlyValidException("Invalid transaction timestamp");
+            throw new JupException.NotCurrentlyValidException("Invalid transaction timestamp");
         }
         if (transaction.getVersion() < 1) {
-            throw new NxtException.NotValidException("Invalid transaction version");
+            throw new JupException.NotValidException("Invalid transaction version");
         }
         if (transaction.getId() == 0L) {
-            throw new NxtException.NotValidException("Invalid transaction id 0");
+            throw new JupException.NotValidException("Invalid transaction id 0");
         }
 
         BlockchainImpl.getInstance().writeLock();
@@ -692,27 +692,27 @@ final class TransactionProcessorImpl implements TransactionProcessor {
             try {
                 Db.db.beginTransaction();
                 if (Jup.getBlockchain().getHeight() < Constants.LAST_KNOWN_BLOCK && !testUnconfirmedTransactions) {
-                    throw new NxtException.NotCurrentlyValidException("Blockchain not ready to accept transactions");
+                    throw new JupException.NotCurrentlyValidException("Blockchain not ready to accept transactions");
                 }
 
                 if (getUnconfirmedTransaction(transaction.getDbKey()) != null || TransactionDb.hasTransaction(transaction.getId())) {
-                    throw new NxtException.ExistingTransactionException("Transaction already processed");
+                    throw new JupException.ExistingTransactionException("Transaction already processed");
                 }
 
                 if (!transaction.verifySignature()) {
                     if (Account.getAccount(transaction.getSenderId()) != null) {
-                        throw new NxtException.NotValidException("Transaction signature verification failed");
+                        throw new JupException.NotValidException("Transaction signature verification failed");
                     } else {
-                        throw new NxtException.NotCurrentlyValidException("Unknown transaction sender");
+                        throw new JupException.NotCurrentlyValidException("Unknown transaction sender");
                     }
                 }
 
                 if (!transaction.applyUnconfirmed()) {
-                    throw new NxtException.InsufficientBalanceException("Insufficient balance");
+                    throw new JupException.InsufficientBalanceException("Insufficient balance");
                 }
 
                 if (transaction.isUnconfirmedDuplicate(unconfirmedDuplicates)) {
-                    throw new NxtException.NotCurrentlyValidException("Duplicate unconfirmed transaction");
+                    throw new JupException.NotCurrentlyValidException("Duplicate unconfirmed transaction");
                 }
 
                 unconfirmedTransactionTable.insert(unconfirmedTransaction);
@@ -789,10 +789,10 @@ final class TransactionProcessorImpl implements TransactionProcessor {
      *
      * @param   transactions                        Transactions containing prunable data
      * @return                                      Processed transactions
-     * @throws  NxtException.NotValidException    Transaction is not valid
+     * @throws  JupException.NotValidException    Transaction is not valid
      */
     @Override
-    public List<Transaction> restorePrunableData(JSONArray transactions) throws NxtException.NotValidException {
+    public List<Transaction> restorePrunableData(JSONArray transactions) throws JupException.NotValidException {
         List<Transaction> processed = new ArrayList<>();
         Jup.getBlockchain().readLock();
         try {

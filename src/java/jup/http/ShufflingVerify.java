@@ -26,7 +26,7 @@ import org.json.simple.JSONStreamAware;
 
 import jup.Account;
 import jup.Attachment;
-import jup.NxtException;
+import jup.JupException;
 import jup.Shuffling;
 
 public final class ShufflingVerify extends CreateTransaction {
@@ -38,7 +38,7 @@ public final class ShufflingVerify extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         Shuffling shuffling = ParameterParser.getShuffling(req);
         byte[] shufflingStateHash = ParameterParser.getBytes(req, "shufflingStateHash", true);
         if (!Arrays.equals(shufflingStateHash, shuffling.getStateHash())) {

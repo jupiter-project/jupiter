@@ -24,7 +24,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.Alias;
-import jup.NxtException;
+import jup.JupException;
 
 public final class GetAliasCount extends APIServlet.APIRequestHandler {
 
@@ -35,7 +35,7 @@ public final class GetAliasCount extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         final long accountId = ParameterParser.getAccountId(req, true);
         JSONObject response = new JSONObject();
         response.put("numberOfAliases", Alias.getAccountAliasCount(accountId));

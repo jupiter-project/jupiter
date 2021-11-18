@@ -24,7 +24,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.Account;
-import jup.NxtException;
+import jup.JupException;
 
 public final class GetAccountAssetCount extends APIServlet.APIRequestHandler {
 
@@ -35,7 +35,7 @@ public final class GetAccountAssetCount extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         long accountId = ParameterParser.getAccountId(req, true);
         int height = ParameterParser.getHeight(req);

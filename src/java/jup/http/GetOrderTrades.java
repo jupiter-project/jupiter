@@ -24,7 +24,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.Trade;
 import jup.db.DbIterator;
 import jup.db.DbUtils;
@@ -38,7 +38,7 @@ public final class GetOrderTrades extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         long askOrderId = ParameterParser.getUnsignedLong(req, "askOrder", false);
         long bidOrderId = ParameterParser.getUnsignedLong(req, "bidOrder", false);

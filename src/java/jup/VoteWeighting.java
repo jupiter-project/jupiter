@@ -208,50 +208,50 @@ public final class VoteWeighting {
         return minBalanceModel;
     }
 
-    public void validate() throws NxtException.ValidationException {
+    public void validate() throws JupException.ValidationException {
         if (votingModel == null) {
-            throw new NxtException.NotValidException("Invalid voting model");
+            throw new JupException.NotValidException("Invalid voting model");
         }
         if (minBalanceModel == null) {
-            throw new NxtException.NotValidException("Invalid min balance model");
+            throw new JupException.NotValidException("Invalid min balance model");
         }
         if ((votingModel == VotingModel.ASSET || votingModel == VotingModel.CURRENCY) && holdingId == 0) {
-            throw new NxtException.NotValidException("No holdingId provided");
+            throw new JupException.NotValidException("No holdingId provided");
         }
         if (votingModel == VotingModel.CURRENCY && Currency.getCurrency(holdingId) == null) {
-            throw new NxtException.NotCurrentlyValidException("Currency " + Long.toUnsignedString(holdingId) + " not found");
+            throw new JupException.NotCurrentlyValidException("Currency " + Long.toUnsignedString(holdingId) + " not found");
         }
         if (votingModel == VotingModel.ASSET && Asset.getAsset(holdingId) == null) {
-            throw new NxtException.NotCurrentlyValidException("Asset " + Long.toUnsignedString(holdingId) + " not found");
+            throw new JupException.NotCurrentlyValidException("Asset " + Long.toUnsignedString(holdingId) + " not found");
         }
         if (minBalance < 0) {
-            throw new NxtException.NotValidException("Invalid minBalance " + minBalance);
+            throw new JupException.NotValidException("Invalid minBalance " + minBalance);
         }
         if (minBalance > 0) {
             if (minBalanceModel == MinBalanceModel.NONE) {
-                throw new NxtException.NotValidException("Invalid min balance model " + minBalanceModel);
+                throw new JupException.NotValidException("Invalid min balance model " + minBalanceModel);
             }
             if (votingModel.getMinBalanceModel() != MinBalanceModel.NONE && votingModel.getMinBalanceModel() != minBalanceModel) {
-                throw new NxtException.NotValidException("Invalid min balance model: " + minBalanceModel + " for voting model " + votingModel);
+                throw new JupException.NotValidException("Invalid min balance model: " + minBalanceModel + " for voting model " + votingModel);
             }
             if ((minBalanceModel == MinBalanceModel.ASSET || minBalanceModel == MinBalanceModel.CURRENCY) && holdingId == 0) {
-                throw new NxtException.NotValidException("No holdingId provided");
+                throw new JupException.NotValidException("No holdingId provided");
             }
             if (minBalanceModel == MinBalanceModel.ASSET && Asset.getAsset(holdingId) == null) {
-                throw new NxtException.NotCurrentlyValidException("Invalid min balance asset: " + Long.toUnsignedString(holdingId));
+                throw new JupException.NotCurrentlyValidException("Invalid min balance asset: " + Long.toUnsignedString(holdingId));
             }
             if (minBalanceModel == MinBalanceModel.CURRENCY && Currency.getCurrency(holdingId) == null) {
-                throw new NxtException.NotCurrentlyValidException("Invalid min balance currency: " + Long.toUnsignedString(holdingId));
+                throw new JupException.NotCurrentlyValidException("Invalid min balance currency: " + Long.toUnsignedString(holdingId));
             }
         }
         if (minBalance == 0 && votingModel == VotingModel.ACCOUNT && holdingId != 0) {
-            throw new NxtException.NotValidException("HoldingId cannot be used in by account voting with no min balance");
+            throw new JupException.NotValidException("HoldingId cannot be used in by account voting with no min balance");
         }
         if ((votingModel == VotingModel.NQT || minBalanceModel == MinBalanceModel.NQT) && holdingId != 0) {
-            throw new NxtException.NotValidException("HoldingId cannot be used in by balance voting or with min balance in NQT");
+            throw new JupException.NotValidException("HoldingId cannot be used in by balance voting or with min balance in NQT");
         }
         if ((!votingModel.acceptsVotes() || votingModel == VotingModel.HASH) && (holdingId != 0 || minBalance != 0 || minBalanceModel != MinBalanceModel.NONE)) {
-            throw new NxtException.NotValidException("With VotingModel " + votingModel + " no holdingId, minBalance, or minBalanceModel should be specified");
+            throw new JupException.NotValidException("With VotingModel " + votingModel + " no holdingId, minBalance, or minBalanceModel should be specified");
         }
     }
 

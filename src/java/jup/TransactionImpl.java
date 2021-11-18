@@ -82,7 +82,7 @@ final class TransactionImpl implements Transaction {
         }
 
         @Override
-        public TransactionImpl build(String secretPhrase) throws NxtException.NotValidException {
+        public TransactionImpl build(String secretPhrase) throws JupException.NotValidException {
             if (timestamp == Integer.MAX_VALUE) {
                 timestamp = Jup.getEpochTime();
             }
@@ -95,7 +95,7 @@ final class TransactionImpl implements Transaction {
         }
 
         @Override
-        public TransactionImpl build() throws NxtException.NotValidException {
+        public TransactionImpl build() throws JupException.NotValidException {
             return build(null);
         }
 
@@ -261,7 +261,7 @@ final class TransactionImpl implements Transaction {
     private volatile byte[] bytes = null;
 
 
-    private TransactionImpl(BuilderImpl builder, String secretPhrase) throws NxtException.NotValidException {
+    private TransactionImpl(BuilderImpl builder, String secretPhrase) throws JupException.NotValidException {
 
         this.timestamp = builder.timestamp;
         this.deadline = builder.deadline;
@@ -324,12 +324,12 @@ final class TransactionImpl implements Transaction {
         }
 
         if (builder.signature != null && secretPhrase != null) {
-            throw new NxtException.NotValidException("Transaction is already signed");
+            throw new JupException.NotValidException("Transaction is already signed");
         } else if (builder.signature != null) {
             this.signature = builder.signature;
         } else if (secretPhrase != null) {
             if (getSenderPublicKey() != null && ! Arrays.equals(senderPublicKey, Crypto.getPublicKey(secretPhrase))) {
-                throw new NxtException.NotValidException("Secret phrase doesn't match transaction sender public key");
+                throw new JupException.NotValidException("Secret phrase doesn't match transaction sender public key");
             }
             signature = Crypto.sign(bytes(), secretPhrase);
             bytes = null;
@@ -639,7 +639,7 @@ final class TransactionImpl implements Transaction {
         return bytes;
     }
 
-    static TransactionImpl.BuilderImpl newTransactionBuilder(byte[] bytes) throws NxtException.NotValidException {
+    static TransactionImpl.BuilderImpl newTransactionBuilder(byte[] bytes) throws JupException.NotValidException {
         try {
             ByteBuffer buffer = ByteBuffer.wrap(bytes);
             buffer.order(ByteOrder.LITTLE_ENDIAN);
@@ -708,16 +708,16 @@ final class TransactionImpl implements Transaction {
                 builder.appendix(new Appendix.PrunableEncryptedMessage(buffer));
             }
             if (buffer.hasRemaining()) {
-                throw new NxtException.NotValidException("Transaction bytes too long, " + buffer.remaining() + " extra bytes");
+                throw new JupException.NotValidException("Transaction bytes too long, " + buffer.remaining() + " extra bytes");
             }
             return builder;
-        } catch (NxtException.NotValidException|RuntimeException e) {
+        } catch (JupException.NotValidException|RuntimeException e) {
             Logger.logDebugMessage("Failed to parse transaction bytes: " + Convert.toHexString(bytes));
             throw e;
         }
     }
 
-    static TransactionImpl.BuilderImpl newTransactionBuilder(byte[] bytes, JSONObject prunableAttachments) throws NxtException.NotValidException {
+    static TransactionImpl.BuilderImpl newTransactionBuilder(byte[] bytes, JSONObject prunableAttachments) throws JupException.NotValidException {
         BuilderImpl builder = newTransactionBuilder(bytes);
         if (prunableAttachments != null) {
             Attachment.ShufflingProcessing shufflingProcessing = Attachment.ShufflingProcessing.parse(prunableAttachments);
@@ -795,15 +795,15 @@ final class TransactionImpl implements Transaction {
         return prunableJSON;
     }
 
-    static TransactionImpl parseTransaction(JSONObject transactionData) throws NxtException.NotValidException {
+    static TransactionImpl parseTransaction(JSONObject transactionData) throws JupException.NotValidException {
         TransactionImpl transaction = newTransactionBuilder(transactionData).build();
         if (transaction.getSignature() != null && !transaction.checkSignature()) {
-            throw new NxtException.NotValidException("Invalid transaction signature for transaction " + transaction.getJSONObject().toJSONString());
+            throw new JupException.NotValidException("Invalid transaction signature for transaction " + transaction.getJSONObject().toJSONString());
         }
         return transaction;
     }
 
-    static TransactionImpl.BuilderImpl newTransactionBuilder(JSONObject transactionData) throws NxtException.NotValidException {
+    static TransactionImpl.BuilderImpl newTransactionBuilder(JSONObject transactionData) throws JupException.NotValidException {
         try {
             byte type = ((Long) transactionData.get("type")).byteValue();
             byte subtype = ((Long) transactionData.get("subtype")).byteValue();
@@ -826,7 +826,7 @@ final class TransactionImpl implements Transaction {
 
             TransactionType transactionType = TransactionType.findTransactionType(type, subtype);
             if (transactionType == null) {
-                throw new NxtException.NotValidException("Invalid transaction type: " + type + ", " + subtype);
+                throw new JupException.NotValidException("Invalid transaction type: " + type + ", " + subtype);
             }
             TransactionImpl.BuilderImpl builder = new BuilderImpl(version, senderPublicKey,
                     amountNQT, feeNQT, deadline,
@@ -850,7 +850,7 @@ final class TransactionImpl implements Transaction {
                 builder.appendix(Appendix.PrunableEncryptedMessage.parse(attachmentData));
             }
             return builder;
-        } catch (NxtException.NotValidException|RuntimeException e) {
+        } catch (JupException.NotValidException|RuntimeException e) {
             Logger.logDebugMessage("Failed to parse transaction: " + transactionData.toJSONString());
             throw e;
         }
@@ -949,33 +949,33 @@ final class TransactionImpl implements Transaction {
     }
 
     @Override
-    public void validate() throws NxtException.ValidationException {
+    public void validate() throws JupException.ValidationException {
         if (timestamp == 0 ? (deadline != 0 || feeNQT != 0) : (deadline < 1 || feeNQT <= 0)
                 || feeNQT > Constants.MAX_BALANCE_NQT
                 || amountNQT < 0
                 || amountNQT > Constants.MAX_BALANCE_NQT
                 || type == null) {
-            throw new NxtException.NotValidException("Invalid transaction parameters:\n type: " + type + ", timestamp: " + timestamp
+            throw new JupException.NotValidException("Invalid transaction parameters:\n type: " + type + ", timestamp: " + timestamp
                     + ", deadline: " + deadline + ", fee: " + feeNQT + ", amount: " + amountNQT);
         }
 
         if (referencedTransactionFullHash != null && referencedTransactionFullHash.length != 32) {
-            throw new NxtException.NotValidException("Invalid referenced transaction full hash " + Convert.toHexString(referencedTransactionFullHash));
+            throw new JupException.NotValidException("Invalid referenced transaction full hash " + Convert.toHexString(referencedTransactionFullHash));
         }
 
         if (attachment == null || type != attachment.getTransactionType()) {
-            throw new NxtException.NotValidException("Invalid attachment " + attachment + " for transaction of type " + type);
+            throw new JupException.NotValidException("Invalid attachment " + attachment + " for transaction of type " + type);
         }
 
         if (! type.canHaveRecipient()) {
             if (recipientId != 0 || getAmountNQT() != 0) {
-                throw new NxtException.NotValidException("Transactions of this type must have recipient == 0, amount == 0");
+                throw new JupException.NotValidException("Transactions of this type must have recipient == 0, amount == 0");
             }
         }
 
         if (type.mustHaveRecipient()) {
             if (recipientId == 0) {
-                throw new NxtException.NotValidException("Transactions of this type must have a valid recipient");
+                throw new JupException.NotValidException("Transactions of this type must have a valid recipient");
             }
         }
 
@@ -983,7 +983,7 @@ final class TransactionImpl implements Transaction {
         for (Appendix.AbstractAppendix appendage : appendages) {
             appendage.loadPrunable(this);
             if (! appendage.verifyVersion()) {
-                throw new NxtException.NotValidException("Invalid attachment version " + appendage.getVersion());
+                throw new JupException.NotValidException("Invalid attachment version " + appendage.getVersion());
             }
             if (validatingAtFinish) {
                 appendage.validateAtFinish(this);
@@ -1001,14 +1001,14 @@ final class TransactionImpl implements Transaction {
     	}
     	
         if (getFullSize() > maxPayloadLength) {
-            throw new NxtException.NotValidException("Transaction size " + getFullSize() + " exceeds maximum payload size");
+            throw new JupException.NotValidException("Transaction size " + getFullSize() + " exceeds maximum payload size");
         }
 
         if (!validatingAtFinish) {
             int blockchainHeight = Jup.getBlockchain().getHeight();
             long minimumFeeNQT = getMinimumFeeNQT(blockchainHeight);
             if (feeNQT < minimumFeeNQT) {
-                throw new NxtException.NotCurrentlyValidException(String.format("Transaction fee %f %s less than minimum fee %f %s at height %d",
+                throw new JupException.NotCurrentlyValidException(String.format("Transaction fee %f %s less than minimum fee %f %s at height %d",
                         ((double) feeNQT) / Constants.ONE_JUP, 
                         Constants.COIN_SYMBOL, 
                         ((double) minimumFeeNQT) / Constants.ONE_JUP, 
@@ -1018,11 +1018,11 @@ final class TransactionImpl implements Transaction {
             
             if (ecBlockId != 0) {
                 if (blockchainHeight < ecBlockHeight) {
-                    throw new NxtException.NotCurrentlyValidException("ecBlockHeight " + ecBlockHeight
+                    throw new JupException.NotCurrentlyValidException("ecBlockHeight " + ecBlockHeight
                             + " exceeds blockchain height " + blockchainHeight);
                 }
                 if (BlockDb.findBlockIdAtHeight(ecBlockHeight) != ecBlockId) {
-                    throw new NxtException.NotCurrentlyValidException("ecBlockHeight " + ecBlockHeight
+                    throw new JupException.NotCurrentlyValidException("ecBlockHeight " + ecBlockHeight
                             + " does not match ecBlockId " + Long.toUnsignedString(ecBlockId)
                             + ", transaction was generated on a fork");
                 }

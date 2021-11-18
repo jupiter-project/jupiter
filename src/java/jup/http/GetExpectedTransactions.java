@@ -28,7 +28,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.Transaction;
 import jup.util.Convert;
 import jup.util.Filter;
@@ -42,7 +42,7 @@ public final class GetExpectedTransactions extends APIServlet.APIRequestHandler 
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         Set<Long> accountIds = Convert.toSet(ParameterParser.getAccountIds(req, false));
         Filter<Transaction> filter = accountIds.isEmpty() ? transaction -> true :

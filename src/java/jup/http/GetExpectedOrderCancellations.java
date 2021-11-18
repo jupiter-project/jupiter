@@ -27,7 +27,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.Transaction;
 import jup.TransactionType;
 import jup.util.Filter;
@@ -41,7 +41,7 @@ public final class GetExpectedOrderCancellations extends APIServlet.APIRequestHa
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         Filter<Transaction> filter = transaction -> transaction.getType() == TransactionType.ColoredCoins.ASK_ORDER_CANCELLATION
                 || transaction.getType() == TransactionType.ColoredCoins.BID_ORDER_CANCELLATION;
 

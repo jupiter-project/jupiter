@@ -284,7 +284,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                     blockchain.updateUnlock();
                 }
 
-            } catch (NxtException.StopException e) {
+            } catch (JupException.StopException e) {
                 Logger.logMessage("Blockchain download stopped: " + e.getMessage());
                 throw new InterruptedException("Blockchain download stopped");
             } catch (Exception e) {
@@ -671,7 +671,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                     if (--count <= 0)
                         break;
                 }
-            } catch (RuntimeException | NxtException.NotValidException e) {
+            } catch (RuntimeException | JupException.NotValidException e) {
                 Logger.logDebugMessage("Failed to parse block: " + e.toString(), e);
                 peer.blacklist(e);
                 stop = start + blockList.size();
@@ -883,7 +883,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                     }
                 }
                 Logger.logDebugMessage("Done retrieving prunable transactions from " + peer.getHost());
-            } catch (NxtException.ValidationException e) {
+            } catch (JupException.ValidationException e) {
                 Logger.logErrorMessage("Peer " + peer.getHost() + " returned invalid prunable transaction", e);
                 peer.blacklist(e);
             } catch (RuntimeException e) {
@@ -1058,7 +1058,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
     }
 
     @Override
-    public void processPeerBlock(JSONObject request) throws NxtException {
+    public void processPeerBlock(JSONObject request) throws JupException {
         BlockImpl block = BlockImpl.parseBlock(request);
         BlockImpl lastBlock = blockchain.getLastBlock();
         if (block.getPreviousBlockId() == lastBlock.getId()) {
@@ -1203,7 +1203,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                     prunableTransactions.remove(transactionId);
                 }
                 return processed.get(0);
-            } catch (NxtException.NotValidException e) {
+            } catch (JupException.NotValidException e) {
                 Logger.logErrorMessage("Peer " + peer.getHost() + " returned invalid prunable transaction", e);
                 peer.blacklist(e);
             }
@@ -1275,7 +1275,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                 throw new RuntimeException("Invalid genesis block signature");
             }
             Db.db.commitTransaction();
-        } catch (NxtException e) {
+        } catch (JupException e) {
             Db.db.rollbackTransaction();
             Logger.logMessage(e.getMessage());
             throw new RuntimeException(e.toString(), e);
@@ -1354,7 +1354,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                         Logger.logDebugMessage("At height " + height + " phased transaction " + phasedTransaction.getStringId() + " is duplicate, will not apply");
                         invalidPhasedTransactions.add(phasedTransaction);
                     }
-                } catch (NxtException.ValidationException e) {
+                } catch (JupException.ValidationException e) {
                     Logger.logDebugMessage("At height " + height + " phased transaction " + phasedTransaction.getStringId() + " no longer passes validation: "
                             + e.getMessage() + ", will not apply");
                     invalidPhasedTransactions.add(phasedTransaction);
@@ -1439,7 +1439,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                 }
                 try {
                     transaction.validate();
-                } catch (NxtException.ValidationException e) {
+                } catch (JupException.ValidationException e) {
                     throw new TransactionNotAcceptedException(e.getMessage(), transaction);
                 }
             }
@@ -1541,7 +1541,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                     try {
                         transaction.validate();
                         transaction.getPhasing().tryCountVotes(transaction, duplicates);
-                    } catch (NxtException.ValidationException e) {
+                    } catch (JupException.ValidationException e) {
                         Logger.logDebugMessage("At height " + block.getHeight() + " phased transaction " + transaction.getStringId()
                                 + " no longer passes validation: " + e.getMessage() + ", cannot finish early");
                     }
@@ -1713,7 +1713,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                 }
                 try {
                     unconfirmedTransaction.getTransaction().validate();
-                } catch (NxtException.ValidationException e) {
+                } catch (JupException.ValidationException e) {
                     continue;
                 }
                 if (unconfirmedTransaction.getTransaction().attachmentIsDuplicate(duplicates, true)) {
@@ -1763,7 +1763,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                 try {
                     phasedTransaction.validate();
                     phasedTransaction.attachmentIsDuplicate(duplicates, false); // pre-populate duplicates map
-                } catch (NxtException.ValidationException ignore) {
+                } catch (JupException.ValidationException ignore) {
                 }
             }
         }
@@ -1941,7 +1941,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                                 currentBlock = BlockDb.loadBlock(con, rs, true);
                                 currentBlock.loadTransactions();
                                 if (currentBlock.getId() != currentBlockId || currentBlock.getHeight() > blockchain.getHeight() + 1) {
-                                    throw new NxtException.NotValidException("Database blocks in the wrong order!");
+                                    throw new JupException.NotValidException("Database blocks in the wrong order!");
                                 }
                                 Map<TransactionType, Map<String, Integer>> duplicates = new HashMap<>();
                                 List<TransactionImpl> validPhasedTransactions = new ArrayList<>();
@@ -1953,18 +1953,18 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                                     byte[] blockBytes = currentBlock.bytes();
                                     JSONObject blockJSON = (JSONObject) JSONValue.parse(currentBlock.getJSONObject().toJSONString());
                                     if (!Arrays.equals(blockBytes, BlockImpl.parseBlock(blockJSON).bytes())) {
-                                        throw new NxtException.NotValidException("Block JSON cannot be parsed back to the same block");
+                                        throw new JupException.NotValidException("Block JSON cannot be parsed back to the same block");
                                     }
                                     validateTransactions(currentBlock, blockchain.getLastBlock(), curTime, duplicates, true);
                                     for (TransactionImpl transaction : currentBlock.getTransactions()) {
                                         byte[] transactionBytes = transaction.bytes();
                                         if (!Arrays.equals(transactionBytes, TransactionImpl.newTransactionBuilder(transactionBytes).build().bytes())) {
-                                            throw new NxtException.NotValidException("Transaction bytes cannot be parsed back to the same transaction: "
+                                            throw new JupException.NotValidException("Transaction bytes cannot be parsed back to the same transaction: "
                                                     + transaction.getJSONObject().toJSONString());
                                         }
                                         JSONObject transactionJSON = (JSONObject) JSONValue.parse(transaction.getJSONObject().toJSONString());
                                         if (!Arrays.equals(transactionBytes, TransactionImpl.newTransactionBuilder(transactionJSON).build().bytes())) {
-                                            throw new NxtException.NotValidException("Transaction JSON cannot be parsed back to the same transaction: "
+                                            throw new JupException.NotValidException("Transaction JSON cannot be parsed back to the same transaction: "
                                                     + transaction.getJSONObject().toJSONString());
                                         }
                                     }
@@ -1976,7 +1976,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                                 Db.db.clearCache();
                                 Db.db.commitTransaction();
                                 blockListeners.notify(currentBlock, Event.AFTER_BLOCK_ACCEPT);
-                            } catch (NxtException | RuntimeException e) {
+                            } catch (JupException | RuntimeException e) {
                                 Db.db.rollbackTransaction();
                                 Logger.logDebugMessage(e.toString(), e);
                                 Logger.logDebugMessage("Applying block " + Long.toUnsignedString(currentBlockId) + " at height "

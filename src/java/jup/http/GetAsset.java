@@ -25,7 +25,7 @@ import org.json.simple.JSONStreamAware;
 
 import jup.Asset;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.Transaction;
 import jup.util.Convert;
 
@@ -38,7 +38,7 @@ public final class GetAsset extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         boolean includeCounts = "true".equalsIgnoreCase(req.getParameter("includeCounts"));
         Asset asset = ParameterParser.getAsset(req);
         JSONObject assetJson = JSONData.asset(asset, includeCounts);

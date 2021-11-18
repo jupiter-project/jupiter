@@ -49,7 +49,7 @@ public interface BlockchainProcessor extends Observable<Block,BlockchainProcesso
 
     int getInitialScanHeight();
 
-    void processPeerBlock(JSONObject request) throws NxtException;
+    void processPeerBlock(JSONObject request) throws JupException;
 
     void fullReset();
 
@@ -71,7 +71,7 @@ public interface BlockchainProcessor extends Observable<Block,BlockchainProcesso
 
     long getGenesisBlockId();
 
-    class BlockNotAcceptedException extends NxtException {
+    class BlockNotAcceptedException extends JupException {
 
         private final BlockImpl block;
 

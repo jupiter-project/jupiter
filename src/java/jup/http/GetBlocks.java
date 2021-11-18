@@ -26,7 +26,7 @@ import org.json.simple.JSONStreamAware;
 
 import jup.Block;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.db.DbIterator;
 
 public final class GetBlocks extends APIServlet.APIRequestHandler {
@@ -39,7 +39,7 @@ public final class GetBlocks extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         int firstIndex = ParameterParser.getFirstIndex(req);
         int lastIndex = ParameterParser.getLastIndex(req);

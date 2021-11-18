@@ -27,7 +27,7 @@ import org.json.simple.JSONStreamAware;
 
 import jup.Currency;
 import jup.CurrencyMinting;
-import jup.NxtException;
+import jup.JupException;
 import jup.util.Convert;
 
 /**
@@ -49,7 +49,7 @@ public final class GetMintingTarget extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         Currency currency = ParameterParser.getCurrency(req);
         JSONObject json = new JSONObject();
         json.put("currency", Long.toUnsignedString(currency.getId()));

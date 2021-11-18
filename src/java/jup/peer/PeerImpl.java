@@ -53,7 +53,7 @@ import jup.Account;
 import jup.BlockchainProcessor;
 import jup.Constants;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.http.API;
 import jup.http.APIEnum;
 import jup.util.Convert;
@@ -345,7 +345,7 @@ final class PeerImpl implements Peer {
 
     @Override
     public void blacklist(Exception cause) {
-        if (cause instanceof NxtException.NotCurrentlyValidException || cause instanceof BlockchainProcessor.BlockOutOfOrderException
+        if (cause instanceof JupException.NotCurrentlyValidException || cause instanceof BlockchainProcessor.BlockOutOfOrderException
                 || cause instanceof SQLException || cause.getCause() instanceof SQLException) {
             // don't blacklist peers just because a feature is not yet enabled, or because of database timeouts
             // prevents erroneous blacklisting during loading of blockchain from scratch
@@ -497,7 +497,7 @@ final class PeerImpl implements Peer {
                         showLog = true;
                     }
                     if (wsResponse.length() > maxResponseSize)
-                        throw new NxtException.NxtIOException("Maximum size + ("+maxResponseSize+") exceeded: " + wsResponse.length());
+                        throw new JupException.NxtIOException("Maximum size + ("+maxResponseSize+") exceeded: " + wsResponse.length());
                     response = (JSONObject)JSONValue.parseWithException(wsResponse);
                     updateDownloadedVolume(wsResponse.length());
                 }
@@ -580,7 +580,7 @@ final class PeerImpl implements Peer {
                     }
                 }
             }
-        } catch (NxtException.NxtIOException e) {
+        } catch (JupException.NxtIOException e) {
             blacklist(e);
             if (connection != null) {
                 connection.disconnect();

@@ -512,7 +512,7 @@ final class BlockchainImpl implements Blockchain {
                         if (!phasedTransaction.attachmentIsDuplicate(duplicates, false) && filter.ok(phasedTransaction)) {
                             result.add(phasedTransaction);
                         }
-                    } catch (NxtException.ValidationException ignore) {
+                    } catch (JupException.ValidationException ignore) {
                     }
                 }
             }

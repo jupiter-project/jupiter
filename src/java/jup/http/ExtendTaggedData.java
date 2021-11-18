@@ -27,7 +27,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Attachment;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.TaggedData;
 import jup.Transaction;
 import jup.TransactionType;
@@ -42,7 +42,7 @@ public final class ExtendTaggedData extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         Account account = ParameterParser.getSenderAccount(req);
         long transactionId = ParameterParser.getUnsignedLong(req, "transaction", true);

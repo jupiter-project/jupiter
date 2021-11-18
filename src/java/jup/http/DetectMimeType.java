@@ -29,7 +29,7 @@ import javax.servlet.http.Part;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.util.Convert;
 import jup.util.Logger;
 import jup.util.Search;
@@ -43,7 +43,7 @@ public final class DetectMimeType extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         String filename = Convert.nullToEmpty(req.getParameter("filename")).trim();
         String dataValue = Convert.emptyToNull(req.getParameter("data"));
         byte[] data;

@@ -32,7 +32,7 @@ import jup.Asset;
 import jup.Currency;
 import jup.FundingMonitor;
 import jup.HoldingType;
-import jup.NxtException;
+import jup.JupException;
 import jup.crypto.Crypto;
 
 /**
@@ -75,10 +75,10 @@ public final class StartFundingMonitor extends APIServlet.APIRequestHandler {
      *
      * @param   req                 Client request
      * @return                      Client response
-     * @throws  NxtException        Unable to process request
+     * @throws  JupException        Unable to process request
      */
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         HoldingType holdingType = ParameterParser.getHoldingType(req);
         long holdingId = ParameterParser.getHoldingId(req, holdingType);
         String property = ParameterParser.getAccountProperty(req, true);

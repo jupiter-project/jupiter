@@ -261,7 +261,7 @@ public final class Shuffler {
                     TransactionProcessorImpl.getInstance().broadcast(shuffler.failedTransaction);
                     shuffler.failedTransaction = null;
                     shuffler.failureCause = null;
-                } catch (NxtException.ValidationException ignore) {
+                } catch (JupException.ValidationException ignore) {
                 }
             }
         })), BlockchainProcessor.Event.AFTER_BLOCK_ACCEPT);
@@ -297,7 +297,7 @@ public final class Shuffler {
     private final byte[] recipientPublicKey;
     private final byte[] shufflingFullHash;
     private volatile Transaction failedTransaction;
-    private volatile NxtException.NotCurrentlyValidException failureCause;
+    private volatile JupException.NotCurrentlyValidException failureCause;
 
     private Shuffler(String secretPhrase, byte[] recipientPublicKey, byte[] shufflingFullHash) {
         this.secretPhrase = secretPhrase;
@@ -322,7 +322,7 @@ public final class Shuffler {
         return failedTransaction;
     }
 
-    public NxtException.NotCurrentlyValidException getFailureCause() {
+    public JupException.NotCurrentlyValidException getFailureCause() {
         return failureCause;
     }
 
@@ -456,17 +456,17 @@ public final class Shuffler {
             Account participantAccount = Account.getAccount(this.accountId);
             if (participantAccount == null || transaction.getFeeNQT() > participantAccount.getUnconfirmedBalanceNQT()) {
                 failedTransaction = transaction;
-                failureCause = new NxtException.NotCurrentlyValidException("Insufficient balance");
+                failureCause = new JupException.NotCurrentlyValidException("Insufficient balance");
                 Logger.logDebugMessage("Error submitting shuffler transaction", failureCause);
             }
             try {
                 TransactionProcessorImpl.getInstance().broadcast(transaction);
-            } catch (NxtException.NotCurrentlyValidException e) {
+            } catch (JupException.NotCurrentlyValidException e) {
                 failedTransaction = transaction;
                 failureCause = e;
                 Logger.logDebugMessage("Error submitting shuffler transaction", e);
             }
-        } catch (NxtException.ValidationException e) {
+        } catch (JupException.ValidationException e) {
             Logger.logErrorMessage("Fatal error submitting shuffler transaction", e);
         }
     }
@@ -487,7 +487,7 @@ public final class Shuffler {
         return false;
     }
 
-    public static class ShufflerException extends NxtException {
+    public static class ShufflerException extends JupException {
 
         private ShufflerException(String message) {
             super(message);

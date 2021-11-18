@@ -24,7 +24,7 @@ import java.util.Arrays;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import jup.NxtException.ValidationException;
+import jup.JupException.ValidationException;
 import jup.util.Convert;
 
 /**
@@ -114,38 +114,38 @@ public final class PhasingParams {
 
     void validate() throws ValidationException {
         if (whitelist.length > Constants.MAX_PHASING_WHITELIST_SIZE) {
-            throw new NxtException.NotValidException("Whitelist is too big");
+            throw new JupException.NotValidException("Whitelist is too big");
         }
 
         long previousAccountId = 0;
         for (long accountId : whitelist) {
             if (accountId == 0) {
-                throw new NxtException.NotValidException("Invalid accountId 0 in whitelist");
+                throw new JupException.NotValidException("Invalid accountId 0 in whitelist");
             }
             if (previousAccountId != 0 && accountId < previousAccountId) {
-                throw new NxtException.NotValidException("Whitelist not sorted " + Arrays.toString(whitelist));
+                throw new JupException.NotValidException("Whitelist not sorted " + Arrays.toString(whitelist));
             }
             if (accountId == previousAccountId) {
-                throw new NxtException.NotValidException("Duplicate accountId " + Long.toUnsignedString(accountId) + " in whitelist");
+                throw new JupException.NotValidException("Duplicate accountId " + Long.toUnsignedString(accountId) + " in whitelist");
             }
             previousAccountId = accountId;
         }
 
         if (quorum <= 0 && voteWeighting.getVotingModel() != VoteWeighting.VotingModel.NONE) {
-            throw new NxtException.NotValidException("quorum <= 0");
+            throw new JupException.NotValidException("quorum <= 0");
         }
 
         if (voteWeighting.getVotingModel() == VoteWeighting.VotingModel.NONE) {
             if (quorum != 0) {
-                throw new NxtException.NotValidException("Quorum must be 0 for no-voting phased transaction");
+                throw new JupException.NotValidException("Quorum must be 0 for no-voting phased transaction");
             }
             if (whitelist.length != 0) {
-                throw new NxtException.NotValidException("No whitelist needed for no-voting phased transaction");
+                throw new JupException.NotValidException("No whitelist needed for no-voting phased transaction");
             }
         }
 
         if (voteWeighting.getVotingModel() == VoteWeighting.VotingModel.ACCOUNT && whitelist.length > 0 && quorum > whitelist.length) {
-            throw new NxtException.NotValidException("Quorum of " + quorum + " cannot be achieved in by-account voting with whitelist of length "
+            throw new JupException.NotValidException("Quorum of " + quorum + " cannot be achieved in by-account voting with whitelist of length "
                     + whitelist.length);
         }
 
@@ -154,40 +154,40 @@ public final class PhasingParams {
         if (voteWeighting.getVotingModel() == VoteWeighting.VotingModel.CURRENCY) {
             Currency currency = Currency.getCurrency(voteWeighting.getHoldingId());
             if (currency == null) {
-                throw new NxtException.NotCurrentlyValidException("Currency " + Long.toUnsignedString(voteWeighting.getHoldingId()) + " not found");
+                throw new JupException.NotCurrentlyValidException("Currency " + Long.toUnsignedString(voteWeighting.getHoldingId()) + " not found");
             }
             if (quorum > currency.getMaxSupply()) {
-                throw new NxtException.NotCurrentlyValidException("Quorum of " + quorum
+                throw new JupException.NotCurrentlyValidException("Quorum of " + quorum
                         + " exceeds max currency supply " + currency.getMaxSupply());
             }
             if (voteWeighting.getMinBalance() > currency.getMaxSupply()) {
-                throw new NxtException.NotCurrentlyValidException("MinBalance of " + voteWeighting.getMinBalance()
+                throw new JupException.NotCurrentlyValidException("MinBalance of " + voteWeighting.getMinBalance()
                         + " exceeds max currency supply " + currency.getMaxSupply());
             }
         } else if (voteWeighting.getVotingModel() == VoteWeighting.VotingModel.ASSET) {
             Asset asset = Asset.getAsset(voteWeighting.getHoldingId());
             if (quorum > asset.getInitialQuantityQNT()) {
-                throw new NxtException.NotCurrentlyValidException("Quorum of " + quorum
+                throw new JupException.NotCurrentlyValidException("Quorum of " + quorum
                         + " exceeds total initial asset quantity " + asset.getInitialQuantityQNT());
             }
             if (voteWeighting.getMinBalance() > asset.getInitialQuantityQNT()) {
-                throw new NxtException.NotCurrentlyValidException("MinBalance of " + voteWeighting.getMinBalance()
+                throw new JupException.NotCurrentlyValidException("MinBalance of " + voteWeighting.getMinBalance()
                         + " exceeds total initial asset quantity " + asset.getInitialQuantityQNT());
             }
         } else if (voteWeighting.getMinBalance() > 0) {
             if (voteWeighting.getMinBalanceModel() == VoteWeighting.MinBalanceModel.ASSET) {
                 Asset asset = Asset.getAsset(voteWeighting.getHoldingId());
                 if (voteWeighting.getMinBalance() > asset.getInitialQuantityQNT()) {
-                    throw new NxtException.NotCurrentlyValidException("MinBalance of " + voteWeighting.getMinBalance()
+                    throw new JupException.NotCurrentlyValidException("MinBalance of " + voteWeighting.getMinBalance()
                             + " exceeds total initial asset quantity " + asset.getInitialQuantityQNT());
                 }
             } else if (voteWeighting.getMinBalanceModel() == VoteWeighting.MinBalanceModel.CURRENCY) {
                 Currency currency = Currency.getCurrency(voteWeighting.getHoldingId());
                 if (currency == null) {
-                    throw new NxtException.NotCurrentlyValidException("Currency " + Long.toUnsignedString(voteWeighting.getHoldingId()) + " not found");
+                    throw new JupException.NotCurrentlyValidException("Currency " + Long.toUnsignedString(voteWeighting.getHoldingId()) + " not found");
                 }
                 if (voteWeighting.getMinBalance() > currency.getMaxSupply()) {
-                    throw new NxtException.NotCurrentlyValidException("MinBalance of " + voteWeighting.getMinBalance()
+                    throw new JupException.NotCurrentlyValidException("MinBalance of " + voteWeighting.getMinBalance()
                             + " exceeds max currency supply " + currency.getMaxSupply());
                 }
             }
@@ -195,14 +195,14 @@ public final class PhasingParams {
 
     }
 
-    void checkApprovable() throws NxtException.NotCurrentlyValidException {
+    void checkApprovable() throws JupException.NotCurrentlyValidException {
         if (voteWeighting.getVotingModel() == VoteWeighting.VotingModel.CURRENCY
                 && Currency.getCurrency(voteWeighting.getHoldingId()) == null) {
-            throw new NxtException.NotCurrentlyValidException("Currency " + Long.toUnsignedString(voteWeighting.getHoldingId()) + " not found");
+            throw new JupException.NotCurrentlyValidException("Currency " + Long.toUnsignedString(voteWeighting.getHoldingId()) + " not found");
         }
         if (voteWeighting.getMinBalance() > 0 && voteWeighting.getMinBalanceModel() == VoteWeighting.MinBalanceModel.CURRENCY
                 && Currency.getCurrency(voteWeighting.getHoldingId()) == null) {
-            throw new NxtException.NotCurrentlyValidException("Currency " + Long.toUnsignedString(voteWeighting.getHoldingId()) + " not found");
+            throw new JupException.NotCurrentlyValidException("Currency " + Long.toUnsignedString(voteWeighting.getHoldingId()) + " not found");
         }
     }
 

@@ -24,7 +24,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.PhasingPoll;
 import jup.Transaction;
 import jup.db.DbIterator;
@@ -38,7 +38,7 @@ public class GetAccountPhasedTransactions extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         long accountId = ParameterParser.getAccountId(req, true);
 
         int firstIndex = ParameterParser.getFirstIndex(req);

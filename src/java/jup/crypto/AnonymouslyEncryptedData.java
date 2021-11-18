@@ -22,7 +22,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 
-import jup.NxtException;
+import jup.JupException;
 import jup.util.Convert;
 
 public final class AnonymouslyEncryptedData {
@@ -37,7 +37,7 @@ public final class AnonymouslyEncryptedData {
     }
 
     public static AnonymouslyEncryptedData readEncryptedData(ByteBuffer buffer, int length, int maxLength)
-            throws NxtException.NotValidException {
+            throws JupException.NotValidException {
 //        if (length > maxLength) {
 //            throw new NxtException.NotValidException("Max encrypted data length exceeded: " + length);
 //        }
@@ -53,7 +53,7 @@ public final class AnonymouslyEncryptedData {
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         try {
             return readEncryptedData(buffer, bytes.length - 32, Integer.MAX_VALUE);
-        } catch (NxtException.NotValidException e) {
+        } catch (JupException.NotValidException e) {
             throw new RuntimeException(e.toString(), e); // never
         }
     }

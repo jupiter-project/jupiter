@@ -30,7 +30,7 @@ import jup.Appendix;
 import jup.Attachment;
 import jup.Blockchain;
 import jup.Jup;
-import jup.NxtException;
+import jup.JupException;
 import jup.TaggedData;
 import jup.util.Filter;
 
@@ -43,7 +43,7 @@ public final class GetTaggedDataExtendTransactions extends APIServlet.APIRequest
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         long taggedDataId = ParameterParser.getUnsignedLong(req, "transaction", true);
         List<Long> extendTransactions = TaggedData.getExtendTransactionIds(taggedDataId);
         JSONObject response = new JSONObject();

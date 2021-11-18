@@ -25,7 +25,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONStreamAware;
 
 import jup.Account;
-import jup.NxtException;
+import jup.JupException;
 import jup.db.DbIterator;
 
 public final class GetCurrencyAccounts extends APIServlet.APIRequestHandler {
@@ -37,7 +37,7 @@ public final class GetCurrencyAccounts extends APIServlet.APIRequestHandler {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         long currencyId = ParameterParser.getUnsignedLong(req, "currency", true);
         int firstIndex = ParameterParser.getFirstIndex(req);

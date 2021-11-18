@@ -29,7 +29,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Attachment;
 import jup.Jup;
 import jup.MonetarySystem;
-import jup.NxtException;
+import jup.JupException;
 import jup.Transaction;
 import jup.util.Filter;
 
@@ -42,7 +42,7 @@ public final class GetExpectedCurrencyTransfers extends APIServlet.APIRequestHan
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
 
         long currencyId = ParameterParser.getUnsignedLong(req, "currency", false);
         long accountId = ParameterParser.getAccountId(req, "account", false);

@@ -25,7 +25,7 @@ import org.json.simple.JSONStreamAware;
 import jup.Account;
 import jup.Attachment;
 import jup.Currency;
-import jup.NxtException;
+import jup.JupException;
 
 /**
  * Sell currency for NXT
@@ -54,7 +54,7 @@ public final class CurrencySell extends CreateTransaction {
     }
 
     @Override
-    protected JSONStreamAware processRequest(HttpServletRequest req) throws NxtException {
+    protected JSONStreamAware processRequest(HttpServletRequest req) throws JupException {
         Currency currency = ParameterParser.getCurrency(req);
         long rateNQT = ParameterParser.getLong(req, "rateNQT", 0, Long.MAX_VALUE, true);
         long units = ParameterParser.getLong(req, "units", 0, Long.MAX_VALUE, true);
@@ -63,7 +63,7 @@ public final class CurrencySell extends CreateTransaction {
         Attachment attachment = new Attachment.MonetarySystemExchangeSell(currency.getId(), rateNQT, units);
         try {
             return createTransaction(req, account, attachment);
-        } catch (NxtException.InsufficientBalanceException e) {
+        } catch (JupException.InsufficientBalanceException e) {
             return JSONResponses.NOT_ENOUGH_CURRENCY;
         }
     }

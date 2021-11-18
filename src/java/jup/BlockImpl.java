@@ -262,7 +262,7 @@ final class BlockImpl implements Block {
         return json;
     }
 
-    static BlockImpl parseBlock(JSONObject blockData) throws NxtException.NotValidException {
+    static BlockImpl parseBlock(JSONObject blockData) throws JupException.NotValidException {
         try {
             int version = ((Long) blockData.get("version")).intValue();
             int timestamp = ((Long) blockData.get("timestamp")).intValue();
@@ -282,10 +282,10 @@ final class BlockImpl implements Block {
             BlockImpl block = new BlockImpl(version, timestamp, previousBlock, totalAmountNQT, totalFeeNQT, payloadLength, payloadHash, generatorPublicKey,
                     generationSignature, blockSignature, previousBlockHash, blockTransactions);
             if (!block.checkSignature()) {
-                throw new NxtException.NotValidException("Invalid block signature");
+                throw new JupException.NotValidException("Invalid block signature");
             }
             return block;
-        } catch (NxtException.NotValidException|RuntimeException e) {
+        } catch (JupException.NotValidException|RuntimeException e) {
             Logger.logDebugMessage("Failed to parse block: " + blockData.toJSONString());
             throw e;
         }

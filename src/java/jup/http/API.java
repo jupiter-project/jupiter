@@ -239,17 +239,29 @@ public final class API {
             ServletHolder servletHolder = apiHandler.addServlet(APIServlet.class, "/nxt");
             servletHolder.getRegistration().setMultipartConfig(new MultipartConfigElement(
                     null, Math.max(Jup.getIntProperty("nxt.maxUploadFileSize"), Constants.MAX_TAGGED_DATA_DATA_LENGTH), -1L, 0));
+            
+            servletHolder = apiHandler.addServlet(APIServlet.class, "/jup");
+            servletHolder.getRegistration().setMultipartConfig(new MultipartConfigElement(
+                    null, Math.max(Jup.getIntProperty("nxt.maxUploadFileSize"), Constants.MAX_TAGGED_DATA_DATA_LENGTH), -1L, 0));
+            
+            servletHolder = apiHandler.addServlet(APIJupProxyServlet.class, "/jup-proxy");
+            servletHolder.setInitParameters(Collections.singletonMap("idleTimeout",
+                    "" + Math.max(apiServerIdleTimeout - APIJupProxyServlet.PROXY_IDLE_TIMEOUT_DELTA, 0)));
+            servletHolder.getRegistration().setMultipartConfig(new MultipartConfigElement(
+                    null, Math.max(Jup.getIntProperty("nxt.maxUploadFileSize"), Constants.MAX_TAGGED_DATA_DATA_LENGTH), -1L, 0));
+           
 
             servletHolder = apiHandler.addServlet(APIProxyServlet.class, "/nxt-proxy");
             servletHolder.setInitParameters(Collections.singletonMap("idleTimeout",
                     "" + Math.max(apiServerIdleTimeout - APIProxyServlet.PROXY_IDLE_TIMEOUT_DELTA, 0)));
             servletHolder.getRegistration().setMultipartConfig(new MultipartConfigElement(
                     null, Math.max(Jup.getIntProperty("nxt.maxUploadFileSize"), Constants.MAX_TAGGED_DATA_DATA_LENGTH), -1L, 0));
+            
             apiHandler.addServlet(ShapeShiftProxyServlet.class, ShapeShiftProxyServlet.SHAPESHIFT_TARGET + "/*");
 
             GzipHandler gzipHandler = new GzipHandler();
             if (!Jup.getBooleanProperty("nxt.enableAPIServerGZIPFilter")) {
-                gzipHandler.setExcludedPaths("/nxt", "/nxt-proxy");
+                gzipHandler.setExcludedPaths("/nxt", "/nxt-proxy", "/jup", "/jup-proxy");
             }
             gzipHandler.setIncludedMethods("GET", "POST");
             gzipHandler.setMinGzipSize(jup.peer.Peers.MIN_COMPRESS_SIZE);

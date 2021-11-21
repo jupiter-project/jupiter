@@ -39,9 +39,9 @@ public class AddMetis extends APIServlet.APIRequestHandler {
     /**
      * Process the AddMetis API request
      *
-     * @param   req                 API request
+     * @param   request             API request
      * @return                      API response
-     * @throws JupException 
+     * @throws JupException Jup Exception
      */
     @Override
     protected JSONStreamAware processRequest(HttpServletRequest request) throws JupException {

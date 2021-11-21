@@ -644,7 +644,7 @@ var NRS = (function(NRS, $) {
                 $("#m_shape_shift_sell_max").val(data.max);
                 $("#m_shape_shift_sell_max_coin").html(coin);
                 $("#m_shape_shift_sell_rate").val(data.rate);
-                $("#m_shape_shift_sell_rate_text").html(coin + "/NXT");
+                $("#m_shape_shift_sell_rate_text").html(coin + "/jup");
                 $("#m_shape_shift_sell_fee").val(data.fee);
                 $("#m_shape_shift_sell_fee_coin").html("NXT");
                 $("#m_shape_shift_sell_pair").val(pair);

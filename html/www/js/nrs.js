@@ -1088,9 +1088,9 @@ NRS.addPagination = function () {
 	NRS.getRequestPath = function (noProxy) {
 		var url = NRS.getRemoteNodeUrl();
 		if (!NRS.state.apiProxy || noProxy) {
-			return url + "/nxt";
+			return url + "/jup";
 		} else {
-			return url + "/nxt-proxy";
+			return url + "/jup-proxy";
 		}
 	};
 

@@ -219,7 +219,6 @@ public class MetisWebSocket {
      * originator.
      *
      * @param   request             Request message
-     * @return                      Response message
      * @throws  IOException         I/O error occurred
      */
     public void doMetisPost(String request) throws IOException {

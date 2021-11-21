@@ -245,7 +245,7 @@ var NRS = (function (NRS, $, undefined) {
         var type = (NRS.isRequirePost(requestType) || "secretPhrase" in data || "doNotSign" in data || "adminPassword" in data ? "POST" : "GET");
         var url;
         if (options.remoteNode) {
-            url = options.remoteNode.getUrl() + "/nxt";
+            url = options.remoteNode.getUrl() + "/jup";
         } else {
             url = NRS.getRequestPath(options.noProxy);
         }

@@ -187,14 +187,11 @@ public class BasicDb {
         Connection con = cp.getConnection();
         int activeConnections = cp.getActiveConnections();
         
-        logThreshold("Get pooled connection");
-        Logger.logDebugMessage("Database connection pool current size: " + activeConnections);
+        if (activeConnections > maxActiveConnections) {
+            maxActiveConnections = activeConnections;
+            Logger.logDebugMessage("Database connection pool current size: " + activeConnections);
+        }
         
-//        if (activeConnections > maxActiveConnections) {
-//        	logThreshold("Get pooled connection");
-//            maxActiveConnections = activeConnections;
-//            Logger.logDebugMessage("Database connection pool current size: " + activeConnections);
-//        }
         return con;
     }
     

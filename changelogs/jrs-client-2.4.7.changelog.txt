@@ -1,0 +1,2 @@
+* Fix bug filtering transactions by plain message
+* Add filtering transactions by plain message for unconfirmed transactions

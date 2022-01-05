@@ -185,24 +185,6 @@ public class TransactionalDb extends BasicDb {
         transactionCaches.get().values().forEach(Map::clear);
     }
 
-    private static void logThreshold(String msg) {
-        StringBuilder sb = new StringBuilder(512);
-        sb.append(msg).append('\n');
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        boolean firstLine = true;
-        for (int i=3; i<stackTrace.length; i++) {
-            String line = stackTrace[i].toString();
-            if (!line.startsWith("nxt."))
-                break;
-            if (firstLine)
-                firstLine = false;
-            else
-                sb.append('\n');
-            sb.append("  ").append(line);
-        }
-        Logger.logDebugMessage(sb.toString());
-    }
-
     private final class DbConnection extends FilteredConnection {
 
         long txStart = 0;

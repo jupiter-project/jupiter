@@ -186,11 +186,31 @@ public class BasicDb {
     protected Connection getPooledConnection() throws SQLException {
         Connection con = cp.getConnection();
         int activeConnections = cp.getActiveConnections();
+        
         if (activeConnections > maxActiveConnections) {
             maxActiveConnections = activeConnections;
             Logger.logDebugMessage("Database connection pool current size: " + activeConnections);
         }
+        
         return con;
+    }
+    
+    protected static void logThreshold(String msg) {
+        StringBuilder sb = new StringBuilder(512);
+        sb.append(msg).append('\n');
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        boolean firstLine = true;
+        for (int i=3; i<stackTrace.length; i++) {
+            String line = stackTrace[i].toString();
+            if (!line.startsWith("nxt."))
+                break;
+            if (firstLine)
+                firstLine = false;
+            else
+                sb.append('\n');
+            sb.append("  ").append(line);
+        }
+        Logger.logDebugMessage(sb.toString());
     }
 
     public String getUrl() {

@@ -37,7 +37,8 @@ public final class GetUnconfirmedTransactions extends APIServlet.APIRequestHandl
     static final GetUnconfirmedTransactions instance = new GetUnconfirmedTransactions();
 
     private GetUnconfirmedTransactions() {
-        super(new APITag[] {APITag.TRANSACTIONS, APITag.ACCOUNTS}, "account", "account", "account", "firstIndex", "lastIndex");
+        super(new APITag[] {APITag.TRANSACTIONS, APITag.ACCOUNTS}, "account", "account", "account", "firstIndex", "lastIndex",
+        		"withMessage", "message");
     }
 
     @Override
@@ -46,12 +47,27 @@ public final class GetUnconfirmedTransactions extends APIServlet.APIRequestHandl
         Set<Long> accountIds = Convert.toSet(ParameterParser.getAccountIds(req, false));
         int firstIndex = ParameterParser.getFirstIndex(req);
         int lastIndex = ParameterParser.getLastIndex(req);
+        
+        boolean withMessage = "true".equalsIgnoreCase(req.getParameter("withMessage"));
+        String messageToFilter = req.getParameter("message");
 
         JSONArray transactions = new JSONArray();
         if (accountIds.isEmpty()) {
             try (DbIterator<? extends Transaction> transactionsIterator = Nxt.getTransactionProcessor().getAllUnconfirmedTransactions(firstIndex, lastIndex)) {
                 while (transactionsIterator.hasNext()) {
                     Transaction transaction = transactionsIterator.next();
+                    
+                    if (withMessage) {
+    	            	if (transaction.getMessage() == null) continue;
+    	
+    	            	if (messageToFilter != null && !messageToFilter.isEmpty()) {
+    	                	String messageString = Convert.toString(transaction.getMessage().getMessage(), transaction.getMessage().isText());
+    	                	if (!messageString.contains(messageToFilter)) {
+    	                		continue;
+    	                	}
+    	                }
+                    }
+                    
                     transactions.add(JSONData.unconfirmedTransaction(transaction));
                 }
             }

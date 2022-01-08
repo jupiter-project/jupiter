@@ -287,9 +287,9 @@ var NRS = (function(NRS, $, undefined) {
 
     // id can be either account id or passphrase
     NRS.login = function(isPassphraseLogin, id, callback, isAccountSwitch, isSavedPassphrase) {
-		console.log("login isPassphraseLogin = " + isPassphraseLogin +
-			", isAccountSwitch = " + isAccountSwitch +
-			", isSavedPassphrase = " + isSavedPassphrase);
+		//console.log("login isPassphraseLogin = " + isPassphraseLogin +
+		//	", isAccountSwitch = " + isAccountSwitch +
+		//	", isSavedPassphrase = " + isSavedPassphrase);
         NRS.spinner.spin($("#center")[0]);
         if (isPassphraseLogin && !isSavedPassphrase){
 			var loginCheckPasswordLength = $("#login_check_password_length");
@@ -313,7 +313,7 @@ var NRS = (function(NRS, $, undefined) {
 			loginCheckPasswordLength.val(1);
 		}
 
-		console.log("login calling getBlockchainStatus");
+		//console.log("login calling getBlockchainStatus");
 		NRS.sendRequest("getBlockchainStatus", {}, function(response) {
 			if (response.errorCode) {
 			    NRS.connectionError(response.errorDescription);
@@ -321,7 +321,7 @@ var NRS = (function(NRS, $, undefined) {
 				console.log("getBlockchainStatus returned error");
 				return;
 			}
-			console.log("getBlockchainStatus response received");
+			//console.log("getBlockchainStatus response received");
 			NRS.state = response;
 			var accountRequest;
 			var requestVariable;
@@ -332,9 +332,9 @@ var NRS = (function(NRS, $, undefined) {
 				accountRequest = "getAccount";
 				requestVariable = {account: id};
 			}
-			console.log("calling " + accountRequest);
+			//console.log("calling " + accountRequest);
 			NRS.sendRequest(accountRequest, requestVariable, function(response, data) {
-				console.log(accountRequest + " response received");
+				//console.log(accountRequest + " response received");
 				if (!response.errorCode) {
 					NRS.account = NRS.escapeRespStr(response.account);
 					NRS.accountRS = NRS.escapeRespStr(response.accountRS);

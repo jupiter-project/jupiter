@@ -36,7 +36,7 @@ var NRS = (function (NRS, $) {
                 if (java) {
                     java.log(line);
                 } else {
-                    console.log(line);
+                    //console.log(line);
                 }
             } catch (e) {
                 // IE11 when running in compatibility mode

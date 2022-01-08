@@ -124,7 +124,7 @@
 	    this.prefix = options.prefix || 'i18next:';
 	    this.logger = concreteLogger || consoleLogger;
 	    this.options = options;
-	    this.debug = options.debug === false ? false : true;
+	    this.debug = options.debug === false ? false : false;
 	  };
 
 	  Logger.prototype.setDebug = function setDebug(bool) {

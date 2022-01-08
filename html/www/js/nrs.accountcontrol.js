@@ -41,7 +41,7 @@ var NRS = (function(NRS, $) {
 			labelI18n: "amount_nxt",
 			helpI18n: "approve_transaction_amount_help",
 			inputName: "controlQuorumNXT",
-			addonText: "NXT",
+			addonText: "JUP",
 			addonI18n: "nxt_unit"
 		}
 		var $elems = NRS.initModalUIElement($modal, '.phasing_only_amount_nxt', 'simple_input_with_addon_modal_ui_element', context);
@@ -109,7 +109,7 @@ var NRS = (function(NRS, $) {
 			addonI18n: ""
 		}
 		context['inputName'] = 'controlMinBalanceNXT';
-		context['addonText'] = 'NXT';
+		context['addonText'] = 'JUP';
 		context['addonI18n'] = 'nxt_unit';
 		var $elems = NRS.initModalUIElement($modal, '.phasing_only_min_balance_nxt', 'simple_input_with_addon_modal_ui_element', context);
 		$elems.find('input').prop("disabled", true);

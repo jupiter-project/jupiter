@@ -50,8 +50,15 @@ public final class GetUnconfirmedTransactions extends APIServlet.APIRequestHandl
         
         boolean withMessage = "true".equalsIgnoreCase(req.getParameter("withMessage"));
         String messageToFilter = req.getParameter("message");
+        int firstIndexToInclude = ParameterParser.getFirstIndex(req);
+        int lastIndexToInclude = ParameterParser.getLastIndex(req);
+        if (withMessage && messageToFilter != null && !messageToFilter.isEmpty()) {
+        	firstIndex = 0;
+        	lastIndex = Integer.MAX_VALUE;
+        }
 
         JSONArray transactions = new JSONArray();
+        int elementsFiltered = 0;
         if (accountIds.isEmpty()) {
             try (DbIterator<? extends Transaction> transactionsIterator = Nxt.getTransactionProcessor().getAllUnconfirmedTransactions(firstIndex, lastIndex)) {
                 while (transactionsIterator.hasNext()) {
@@ -65,10 +72,24 @@ public final class GetUnconfirmedTransactions extends APIServlet.APIRequestHandl
     	                	if (!messageString.contains(messageToFilter)) {
     	                		continue;
     	                	}
+    	                	
+    	                	if (elementsFiltered >= firstIndexToInclude && elementsFiltered <= lastIndexToInclude) {
+    		            		transactions.add(JSONData.unconfirmedTransaction(transaction));
+    	            		}
+    	            		
+    	            		elementsFiltered++;
+    	            		
+    	            		if (elementsFiltered > lastIndexToInclude) {
+    	            			break;
+    	            		}
+
+    	            	} else {
+    	                	transactions.add(JSONData.unconfirmedTransaction(transaction));
     	                }
+    	            	
+                    } else {
+                    	transactions.add(JSONData.unconfirmedTransaction(transaction));
                     }
-                    
-                    transactions.add(JSONData.unconfirmedTransaction(transaction));
                 }
             }
         } else {

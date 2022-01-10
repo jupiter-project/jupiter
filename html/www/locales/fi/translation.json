@@ -611,7 +611,7 @@
   "maximum_difficulty":"",
   "maximum_nr_choices":"Valintojen maksimimäärä",
   "maximum_range_value":"",
-  "memorize_passphrase_help":"Opettele ulkoa, tai kirjoita ylös nämä 12 sanaa. Sekä järjestyksellä että kirjainkoolla on merkitystä. Tämä on salasanasi jolla pääset kirjautumaan Nxt -tilillesi.",
+  "memorize_passphrase_help":"Opettele ulkoa, tai kirjoita ylös nämä 12 sanaa. Sekä järjestyksellä että kirjainkoolla on merkitystä. Tämä on salasanasi jolla pääset kirjautumaan Jup -tilillesi.",
   "message":"Viesti",
   "message_count":"",
   "message_empty":"Viesti on tyhjä.",

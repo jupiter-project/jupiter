@@ -1258,7 +1258,7 @@
   "page_header": "Page Header",
   "attachment": "Attachment",
   "success_dgs_delisting": "The item has been removed from the marketplace successfully.",
-  "nxt_forum": "Nxt Forum",
+  "nxt_forum": "Jup Forum",
   "password_required_for_decryption": "Your passphrase is required to decrypt these messages.",
   "success_asset_exchange_change_group": "Asset has been added to group.",
   "generator_public_key": "Generator Public Key",
@@ -1276,7 +1276,7 @@
   "success_dgs_quantity_change": "The marketplace item's quantity has been changed successfully.",
   "Purchased Products": "Purchased Products",
   "success_create_poll": "The poll has been created!",
-  "nxt_wiki": "Nxt Wiki",
+  "nxt_wiki": "Jup Wiki",
   "error_send_encrypted_note": "An unknown error occurred! Message may or may not have been sent.",
   "state": "State",
   "payment_with_message": "Payment With Message",
@@ -1856,6 +1856,6 @@
   "update_available": "A new release is available. It is recommended that you update.",
   "update_testnet": "Version cannot be updated whilst connected to the testnet.",
   "token_generation_validation": "Token Generation / Validation",
-  "branding_message": "JRS is a customized version of the Nxt Reference Software (NRS)",
+  "branding_message": "JRS is a customized version of the Jup Reference Software (NRS)",
   "swap": "Swap"
 }

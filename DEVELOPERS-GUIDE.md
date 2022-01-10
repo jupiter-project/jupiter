@@ -36,6 +36,7 @@
   - **tl;dr:**
     - master is release branch
     - dev is maintained by sigwo
+    - releases/abc is maintained by javier
     - feature/abc is yours
 
 ### Design ###

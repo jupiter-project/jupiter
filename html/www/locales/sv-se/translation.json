@@ -611,7 +611,7 @@
   "maximum_difficulty":"",
   "maximum_nr_choices":"",
   "maximum_range_value":"",
-  "memorize_passphrase_help":"Skriv ner eller memorera dessa 12 ord (ordning och versalisering är viktig - alltid gemener). Denna lösenordsfras behövs för att komma åt ditt Nxtkonto.",
+  "memorize_passphrase_help":"Skriv ner eller memorera dessa 12 ord (ordning och versalisering är viktig - alltid gemener). Denna lösenordsfras behövs för att komma åt ditt Jupkonto.",
   "message":"",
   "message_count":"",
   "message_empty":"",

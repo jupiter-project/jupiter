@@ -24,6 +24,6 @@
 ## Reporting a Vulnerability
 
 
-Please email info@gojupiter.tech to report a vulnerability. Our 
+Please email info@jup.io to report a vulnerability. Our 
 Jupiter Bounty Program will reward for your findings if the report
 is accepted. Bonus for an included fix. :tada:

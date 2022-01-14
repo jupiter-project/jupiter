@@ -1678,13 +1678,16 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
 
     SortedSet<UnconfirmedTransaction> selectUnconfirmedTransactions(Map<TransactionType, Map<String, Integer>> duplicates, Block previousBlock, int blockTimestamp) {
         List<UnconfirmedTransaction> orderedUnconfirmedTransactions = new ArrayList<>();
+        
         try (FilteringIterator<UnconfirmedTransaction> unconfirmedTransactions = new FilteringIterator<>(
                 TransactionProcessorImpl.getInstance().getAllUnconfirmedTransactions(),
                 transaction -> hasAllReferencedTransactions(transaction.getTransaction(), transaction.getTimestamp(), 0))) {
-            for (UnconfirmedTransaction unconfirmedTransaction : unconfirmedTransactions) {
+            
+        	for (UnconfirmedTransaction unconfirmedTransaction : unconfirmedTransactions) {
                 orderedUnconfirmedTransactions.add(unconfirmedTransaction);
             }
         }
+        
         SortedSet<UnconfirmedTransaction> sortedTransactions = new TreeSet<>(transactionArrivalComparator);
         int payloadLength = 0;
         int maxPayload = getMaxPayloadLength(previousBlock.getHeight());
@@ -1696,13 +1699,13 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
             for (UnconfirmedTransaction unconfirmedTransaction : orderedUnconfirmedTransactions) {
                 int transactionLength = unconfirmedTransaction.getTransaction().getFullSize();
                 
+                if (sortedTransactions.size() >= maxNumberOfTransactions) {
+                	break;
+                }
+                
                 if (sortedTransactions.contains(unconfirmedTransaction) || 
                 		payloadLength + transactionLength > maxPayload) {
                     continue;
-                }
-                
-                if (sortedTransactions.size() >= maxNumberOfTransactions) {
-                	continue;
                 }
                 
                 if (unconfirmedTransaction.getVersion() != getTransactionVersion(previousBlock.getHeight())) {
@@ -1715,9 +1718,11 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                 try {
                     unconfirmedTransaction.getTransaction().validate();
                 } catch (NxtException.ValidationException e) {
+                	Logger.logDebugMessage("Error validating transaction while unconfirmed transactions are collected");
                     continue;
                 }
                 if (unconfirmedTransaction.getTransaction().attachmentIsDuplicate(duplicates, true)) {
+                	Logger.logDebugMessage("Transaction attachment duplicated while unconfirmed transactions are collected");
                     continue;
                 }
                 sortedTransactions.add(unconfirmedTransaction);
@@ -1731,6 +1736,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                 break;
             }
         }
+        
         if (sortedTransactions.size() > 0) {
         	Logger.logDebugMessage("Selected " + sortedTransactions.size() + " unconfirmed txs (max of " + maxNumberOfTransactions + " txs). " 
         			+ "Block payload " + payloadLength + " (max of " + maxPayload +"). Pending " 

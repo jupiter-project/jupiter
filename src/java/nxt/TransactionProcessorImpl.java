@@ -516,6 +516,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                     }
                     waitingTransactions.add(unconfirmedTransaction);
                 }
+            	Logger.logDebugMessage("Requeued " + unconfirmedTransactions + " unconfirmed txs to waiting txs");
             }
             unconfirmedTransactionTable.truncate();
             unconfirmedDuplicates.clear();
@@ -596,9 +597,11 @@ final class TransactionProcessorImpl implements TransactionProcessor {
         BlockchainImpl.getInstance().writeLock();
         try {
             if (waitingTransactions.size() > 0) {
+            	Logger.logDebugMessage("Processing " + waitingTransactions.size() + " waiting txs");
                 int currentTime = Nxt.getEpochTime();
                 List<Transaction> addedUnconfirmedTransactions = new ArrayList<>();
                 Iterator<UnconfirmedTransaction> iterator = waitingTransactions.iterator();
+                
                 while (iterator.hasNext()) {
                     UnconfirmedTransaction unconfirmedTransaction = iterator.next();
                     try {
@@ -617,7 +620,9 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                         iterator.remove();
                     }
                 }
+                
                 if (addedUnconfirmedTransactions.size() > 0) {
+                	Logger.logDebugMessage("Added " + addedUnconfirmedTransactions.size() + " unconfirmed txs from waiting txs");
                     transactionListeners.notify(addedUnconfirmedTransactions, Event.ADDED_UNCONFIRMED_TRANSACTIONS);
                 }
             }

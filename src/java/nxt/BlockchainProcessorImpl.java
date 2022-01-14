@@ -1687,20 +1687,21 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
         }
         SortedSet<UnconfirmedTransaction> sortedTransactions = new TreeSet<>(transactionArrivalComparator);
         int payloadLength = 0;
+        int maxPayload = getMaxPayloadLength(previousBlock.getHeight());
+        int maxNumberOfTransactions = getMaxNumberOfTransactions(previousBlock.getHeight());
         
-        while (payloadLength <= getMaxPayloadLength(previousBlock.getHeight()) && 
-        		sortedTransactions.size() <= getMaxNumberOfTransactions(previousBlock.getHeight())) {
+        while (payloadLength <= maxPayload && sortedTransactions.size() <= maxNumberOfTransactions) {
             int prevNumberOfNewTransactions = sortedTransactions.size();
             
             for (UnconfirmedTransaction unconfirmedTransaction : orderedUnconfirmedTransactions) {
                 int transactionLength = unconfirmedTransaction.getTransaction().getFullSize();
                 
                 if (sortedTransactions.contains(unconfirmedTransaction) || 
-                		payloadLength + transactionLength > getMaxPayloadLength(previousBlock.getHeight())) {
+                		payloadLength + transactionLength > maxPayload) {
                     continue;
                 }
                 
-                if (sortedTransactions.size() >= getMaxNumberOfTransactions(previousBlock.getHeight())) {
+                if (sortedTransactions.size() >= maxNumberOfTransactions) {
                 	continue;
                 }
                 
@@ -1724,12 +1725,14 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
             }
             
             if (sortedTransactions.size() == prevNumberOfNewTransactions) {
+            	Logger.logDebugMessage("Break getting unconfirmed transactions with " + sortedTransactions.size() + " txs");
                 break;
             }
         }
         if (sortedTransactions.size() > 0) {
-        	Logger.logDebugMessage("Selected " + sortedTransactions.size() + " unconfirmed txs, payload " + payloadLength + ", pending " 
-        			+ (orderedUnconfirmedTransactions.size() - sortedTransactions.size()) + " to process");
+        	Logger.logDebugMessage("Selected " + sortedTransactions.size() + " unconfirmed txs (max of " + " txs). " 
+        			+ "Block payload " + payloadLength + " (max of " + maxPayload +"). Pending " 
+        			+ (orderedUnconfirmedTransactions.size() - sortedTransactions.size()) + " txs to process.");
         }
         return sortedTransactions;
     }

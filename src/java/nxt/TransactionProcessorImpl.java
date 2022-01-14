@@ -516,7 +516,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                     }
                     waitingTransactions.add(unconfirmedTransaction);
                 }
-            	Logger.logDebugMessage("Requeued " + unconfirmedTransactions + " unconfirmed txs to waiting txs");
+            	Logger.logDebugMessage("Requeued " + waitingTransactions.size() + " unconfirmed txs to waiting txs");
             }
             unconfirmedTransactionTable.truncate();
             unconfirmedDuplicates.clear();

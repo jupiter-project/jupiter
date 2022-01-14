@@ -71,7 +71,7 @@ public final class GetTransaction extends APIServlet.APIRequestHandler {
             	// Searching in waiting transactions
             	for(Transaction waitingTransaction : Nxt.getTransactionProcessor().getAllWaitingTransactions()) {
             		if (waitingTransaction.getId() == transactionId) {
-            			return JSONData.unconfirmedTransaction(transaction);
+            			return JSONData.unconfirmedTransaction(waitingTransaction);
             		}
             	}
             	

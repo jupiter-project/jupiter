@@ -612,7 +612,7 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                         iterator.remove();
                         addedUnconfirmedTransactions.add(unconfirmedTransaction.getTransaction());
                     } catch (NxtException.ExistingTransactionException e) {
-                    	Logger.logDebugMessage("ExistingTransactionException error moving waiting transaction to unconfirmed transaction");
+                    	Logger.logDebugMessage("ExistingTransactionException error moving waiting transaction to unconfirmed transaction" + e.getMessage());
                         iterator.remove();
                     } catch (NxtException.NotCurrentlyValidException e) {
                         if (unconfirmedTransaction.getExpiration() < currentTime
@@ -704,8 +704,12 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                     throw new NxtException.NotCurrentlyValidException("Blockchain not ready to accept transactions");
                 }
 
-                if (getUnconfirmedTransaction(transaction.getDbKey()) != null || TransactionDb.hasTransaction(transaction.getId())) {
+                if (getUnconfirmedTransaction(transaction.getDbKey()) != null) {
                     throw new NxtException.ExistingTransactionException("Transaction already processed");
+                }
+                
+                if (TransactionDb.hasTransaction(transaction.getId())) {
+                    throw new NxtException.ExistingTransactionException("TransactionDb already have unconfirmed transaction");
                 }
 
                 if (!transaction.verifySignature()) {

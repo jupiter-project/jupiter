@@ -55,6 +55,7 @@ import nxt.db.DbIterator;
 import nxt.db.DerivedDbTable;
 import nxt.db.FilteringIterator;
 import nxt.db.FullTextTrigger;
+import nxt.http.JSONData;
 import nxt.peer.Peer;
 import nxt.peer.Peers;
 import nxt.util.Convert;
@@ -1722,7 +1723,9 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                     continue;
                 }
                 if (unconfirmedTransaction.getTransaction().attachmentIsDuplicate(duplicates, true)) {
+                	String txString = JSONData.unconfirmedTransaction(unconfirmedTransaction).toJSONString();
                 	Logger.logDebugMessage("Transaction attachment duplicated while unconfirmed transactions are collected");
+                	Logger.logDebugMessage(txString);
                     continue;
                 }
                 sortedTransactions.add(unconfirmedTransaction);
@@ -1810,8 +1813,8 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
             Logger.logDebugMessage(" Account " + Long.toUnsignedString(block.getGeneratorId()) + " generated block " + block.getStringId()
             		+ " after " + (block.getTimestamp() - previousBlock.getTimestamp()) + "s"
                     + " height " + block.getHeight() 
-                    + " timestamp " + block.getTimestamp()+"("+Time.getDateTimeStringInfo(block.getTimestamp()) + ")" 
-                    + " fee " + ((float)block.getTotalFeeNQT())/Constants.ONE_JUP);
+                    + " with " + blockTransactions.size() + " transactions "
+                    + " timestamp " + block.getTimestamp()+"("+Time.getDateTimeStringInfo(block.getTimestamp()) + ")");
             
         } catch (TransactionNotAcceptedException e) {
             Logger.logDebugMessage("Generate block failed: " + e.getMessage());

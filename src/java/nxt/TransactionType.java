@@ -319,7 +319,7 @@ public abstract class TransactionType {
             return false;
         }
         if (currentCount == 0) {
-        	Logger.logDebugMessage("Tx duplicated with currentCount=0 for " + uniqueType + " - " + key);
+        	Logger.logDebugMessage("Tx duplicated with currentCount=0 for " + uniqueType + " - " + key +", currentCount = " + currentCount);
             return true;
         }
         if (currentCount < maxCount) {

@@ -1008,7 +1008,7 @@ public abstract class TransactionType {
             		Logger.logDebugMessage("Alias for " + messagingAliasAssignment.getAliasName() + " not found in db");
             	}
             	boolean duplicated = (alias == null
-                        && isDuplicate(Messaging.ALIAS_ASSIGNMENT, "", duplicates, true));
+                        && isDuplicate(Messaging.ALIAS_ASSIGNMENT, messagingAliasAssignment.getAliasName().toLowerCase(), duplicates, true));
             	
             	if (duplicated) {
             		Logger.logDebugMessage("Tx isBlockDuplicate for Messaging.ALIAS_ASSIGNMENT for alias " + messagingAliasAssignment.getAliasName());

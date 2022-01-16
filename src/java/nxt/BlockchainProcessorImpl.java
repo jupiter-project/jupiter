@@ -1694,6 +1694,10 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
         int maxPayload = getMaxPayloadLength(previousBlock.getHeight());
         int maxNumberOfTransactions = getMaxNumberOfTransactions(previousBlock.getHeight());
         
+        if (orderedUnconfirmedTransactions.size() > 0) {
+        	 Logger.logDebugMessage("     Starting to select unconfirmed transactions");
+        }
+        
         while (payloadLength <= maxPayload && sortedTransactions.size() <= maxNumberOfTransactions) {
             int prevNumberOfNewTransactions = sortedTransactions.size();
             
@@ -1788,6 +1792,18 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                 }
             }
         }
+        
+        Logger.logDebugMessage("Prepopulated duplicated map");
+        for (Map.Entry<TransactionType, Map<String, Integer>> entry : duplicates.entrySet()) {
+        	Logger.logDebugMessage(entry.getKey().toString() + " " + entry.getValue().size());
+        	if (entry.getValue() != null) {
+        		for(Map.Entry<String, Integer> entry2: entry.getValue().entrySet()) {
+        			Logger.logDebugMessage(entry2.getKey().toString() + " " + entry2.getValue());
+        		}
+        	}
+        }
+        Logger.logDebugMessage("end");
+        
 
         BlockImpl previousBlock = blockchain.getLastBlock();
         TransactionProcessorImpl.getInstance().processWaitingTransactions();

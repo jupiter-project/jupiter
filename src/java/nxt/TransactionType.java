@@ -30,14 +30,11 @@ import org.json.simple.JSONObject;
 
 import nxt.Account.ControlType;
 import nxt.AccountLedger.LedgerEvent;
-import nxt.Appendix.AbstractEncryptedMessage;
-import nxt.Appendix.Message;
 import nxt.Attachment.AbstractAttachment;
 import nxt.NxtException.ValidationException;
 import nxt.VoteWeighting.VotingModel;
 import nxt.util.Convert;
 import nxt.util.Logger;
-import sun.util.logging.resources.logging;
 
 
 public abstract class TransactionType {
@@ -316,6 +313,7 @@ public abstract class TransactionType {
         Integer currentCount = typeDuplicates.get(key);
         if (currentCount == null) {
             typeDuplicates.put(key, maxCount > 0 ? 1 : 0);
+            Logger.logDebugMessage("Added " + key + " with " + typeDuplicates.get(key) + ". return false");
             return false;
         }
         if (currentCount == 0) {
@@ -1002,6 +1000,7 @@ public abstract class TransactionType {
 
             @Override
             boolean isBlockDuplicate(Transaction transaction, Map<TransactionType, Map<String, Integer>> duplicates) {
+            	Logger.logDebugMessage("Checking isBlockDuplicate");
             	Attachment.MessagingAliasAssignment messagingAliasAssignment = (Attachment.MessagingAliasAssignment) transaction.getAttachment();
             	Alias alias = Alias.getAlias(messagingAliasAssignment.getAliasName());
             	if (alias == null) {
@@ -1013,6 +1012,7 @@ public abstract class TransactionType {
             	if (duplicated) {
             		Logger.logDebugMessage("Tx isBlockDuplicate for Messaging.ALIAS_ASSIGNMENT for alias " + messagingAliasAssignment.getAliasName());
             	}
+            	Logger.logDebugMessage("end Checking isBlockDuplicate with " + duplicated);
             	return duplicated;
             }
 

@@ -1709,7 +1709,6 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                 }
                 
                 if (sortedTransactions.contains(unconfirmedTransaction)) {
-                	Logger.logDebugMessage("Unconfirmed tx was already selected");
                     continue;
                 }
                 
@@ -1793,18 +1792,6 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
             }
         }
         
-        Logger.logDebugMessage("Prepopulated duplicated map");
-        for (Map.Entry<TransactionType, Map<String, Integer>> entry : duplicates.entrySet()) {
-        	Logger.logDebugMessage(entry.getKey().toString() + " " + entry.getValue().size());
-        	if (entry.getValue() != null) {
-        		for(Map.Entry<String, Integer> entry2: entry.getValue().entrySet()) {
-        			Logger.logDebugMessage(entry2.getKey().toString() + " " + entry2.getValue());
-        		}
-        	}
-        }
-        Logger.logDebugMessage("end");
-        
-
         BlockImpl previousBlock = blockchain.getLastBlock();
         TransactionProcessorImpl.getInstance().processWaitingTransactions();
         SortedSet<UnconfirmedTransaction> sortedTransactions = selectUnconfirmedTransactions(duplicates, previousBlock, blockTimestamp);

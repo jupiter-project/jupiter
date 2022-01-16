@@ -17,16 +17,12 @@ package nxt.http;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 import org.json.simple.JSONStreamAware;
 
 import nxt.peer.MetisWebSocket;
 import nxt.peer.Peer.State;
-import nxt.peer.PeerWebSocket;
 import nxt.util.Logger;
 
 public class MetisServer {

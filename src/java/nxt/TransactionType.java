@@ -313,7 +313,6 @@ public abstract class TransactionType {
         Integer currentCount = typeDuplicates.get(key);
         if (currentCount == null) {
             typeDuplicates.put(key, maxCount > 0 ? 1 : 0);
-            Logger.logDebugMessage("Added " + key + " with " + typeDuplicates.get(key) + ". return false");
             return false;
         }
         if (currentCount == 0) {
@@ -989,34 +988,21 @@ public abstract class TransactionType {
 
             @Override
             boolean isDuplicate(Transaction transaction, Map<TransactionType, Map<String, Integer>> duplicates) {
-            	Logger.logDebugMessage("+Checking isDuplicate");
+            	//Logger.logDebugMessage("+Checking Messaging.ALIAS_ASSIGNMENT isDuplicate");
             	Attachment.MessagingAliasAssignment attachment = (Attachment.MessagingAliasAssignment) transaction.getAttachment();
             	String alias = attachment.getAliasName().toLowerCase();
             	boolean duplicated = isDuplicate(Messaging.ALIAS_ASSIGNMENT, alias, duplicates, true);
-            	if (duplicated) {
-            		Logger.logDebugMessage("Tx isDuplicate for Messaging.ALIAS_ASSIGNMENT for alias " + alias);
-            	}
-            	Logger.logDebugMessage("+end Checking isDuplicate with " + duplicated);
+            	//Logger.logDebugMessage("+end Checking Messaging.ALIAS_ASSIGNMENT isDuplicate for alias " + alias + " with " + duplicated);
             	return duplicated;
             }
 
             @Override
             boolean isBlockDuplicate(Transaction transaction, Map<TransactionType, Map<String, Integer>> duplicates) {
-            	Logger.logDebugMessage("-Checking isBlockDuplicate");
+            	//Logger.logDebugMessage("-Checking isBlockDuplicate");
             	Attachment.MessagingAliasAssignment messagingAliasAssignment = (Attachment.MessagingAliasAssignment) transaction.getAttachment();
             	Alias alias = Alias.getAlias(messagingAliasAssignment.getAliasName());
-            	if (alias == null) {
-            		Logger.logDebugMessage("Alias for " + messagingAliasAssignment.getAliasName() + " not found in db");
-            	}
             	boolean duplicated = (alias != null);
-//            	boolean duplicated = (alias == null
-//                        && isDuplicate(Messaging.ALIAS_ASSIGNMENT, messagingAliasAssignment.getAliasName().toLowerCase(), duplicates, true));
-//            	
-//            	
-//            	if (duplicated) {
-//            		Logger.logDebugMessage("Tx isBlockDuplicate for Messaging.ALIAS_ASSIGNMENT for alias " + messagingAliasAssignment.getAliasName());
-//            	}
-            	Logger.logDebugMessage("-end Checking isBlockDuplicate with " + duplicated);
+            	//Logger.logDebugMessage("-end Checking isBlockDuplicate with " + duplicated);
             	return duplicated;
             }
 

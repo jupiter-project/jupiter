@@ -612,7 +612,6 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                         iterator.remove();
                         addedUnconfirmedTransactions.add(unconfirmedTransaction.getTransaction());
                     } catch (NxtException.ExistingTransactionException e) {
-                    	Logger.logDebugMessage("ExistingTransactionException error moving waiting transaction to unconfirmed transaction" + e.getMessage());
                         iterator.remove();
                     } catch (NxtException.NotCurrentlyValidException e) {
                         if (unconfirmedTransaction.getExpiration() < currentTime

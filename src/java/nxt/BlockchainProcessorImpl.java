@@ -1770,7 +1770,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
     		return Constants.ORIGINAL_MAX_NUMBER_OF_TRANSACTIONS;
     	}
     }
-
+    
     private static final Comparator<UnconfirmedTransaction> transactionArrivalComparator = Comparator
             .comparingLong(UnconfirmedTransaction::getArrivalTimestamp)
             .thenComparingInt(UnconfirmedTransaction::getHeight)

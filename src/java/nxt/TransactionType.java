@@ -1002,12 +1002,16 @@ public abstract class TransactionType {
 
             @Override
             boolean isBlockDuplicate(Transaction transaction, Map<TransactionType, Map<String, Integer>> duplicates) {
-            	Alias alias = Alias.getAlias(((Attachment.MessagingAliasAssignment) transaction.getAttachment()).getAliasName());
+            	Attachment.MessagingAliasAssignment messagingAliasAssignment = (Attachment.MessagingAliasAssignment) transaction.getAttachment();
+            	Alias alias = Alias.getAlias(messagingAliasAssignment.getAliasName());
+            	if (alias == null) {
+            		Logger.logDebugMessage("Alias for " + messagingAliasAssignment.getAliasName() + " not found in db");
+            	}
             	boolean duplicated = (alias == null
                         && isDuplicate(Messaging.ALIAS_ASSIGNMENT, "", duplicates, true));
             	
             	if (duplicated) {
-            		Logger.logDebugMessage("Tx isBlockDuplicate for Messaging.ALIAS_ASSIGNMENT");
+            		Logger.logDebugMessage("Tx isBlockDuplicate for Messaging.ALIAS_ASSIGNMENT for alias " + messagingAliasAssignment.getAliasName());
             	}
             	return duplicated;
             }

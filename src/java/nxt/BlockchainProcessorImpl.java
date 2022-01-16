@@ -1697,37 +1697,44 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
         while (payloadLength <= maxPayload && sortedTransactions.size() <= maxNumberOfTransactions) {
             int prevNumberOfNewTransactions = sortedTransactions.size();
             
-            for (UnconfirmedTransaction unconfirmedTransaction : orderedUnconfirmedTransactions) {
+            for (UnconfirmedTransaction unconfirmedTransaction: orderedUnconfirmedTransactions) {
                 int transactionLength = unconfirmedTransaction.getTransaction().getFullSize();
                 
                 if (sortedTransactions.size() >= maxNumberOfTransactions) {
                 	break;
                 }
                 
-                if (sortedTransactions.contains(unconfirmedTransaction) || 
-                		payloadLength + transactionLength > maxPayload) {
+                if (sortedTransactions.contains(unconfirmedTransaction)) {
+                	Logger.logDebugMessage("Unconfirmed tx was already selected");
+                    continue;
+                }
+                
+                if (payloadLength + transactionLength > maxPayload) {
                     continue;
                 }
                 
                 if (unconfirmedTransaction.getVersion() != getTransactionVersion(previousBlock.getHeight())) {
                     continue;
                 }
+                
                 if (blockTimestamp > 0 && (unconfirmedTransaction.getTimestamp() > blockTimestamp + Constants.MAX_TIMEDRIFT
                         || unconfirmedTransaction.getExpiration() < blockTimestamp)) {
                     continue;
                 }
+                
                 try {
                     unconfirmedTransaction.getTransaction().validate();
                 } catch (NxtException.ValidationException e) {
                 	Logger.logDebugMessage("Error validating transaction while unconfirmed transactions are collected");
                     continue;
                 }
+                
                 if (unconfirmedTransaction.getTransaction().attachmentIsDuplicate(duplicates, true)) {
-                	String txString = JSONData.unconfirmedTransaction(unconfirmedTransaction).toJSONString();
                 	Logger.logDebugMessage("Transaction attachment duplicated while unconfirmed transactions are collected");
-                	Logger.logDebugMessage(txString);
+                	Logger.logDebugMessage(JSONData.unconfirmedTransaction(unconfirmedTransaction).toJSONString());
                     continue;
                 }
+                
                 sortedTransactions.add(unconfirmedTransaction);
                 payloadLength += transactionLength;
             }
@@ -1813,7 +1820,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
             Logger.logDebugMessage(" Account " + Long.toUnsignedString(block.getGeneratorId()) + " generated block " + block.getStringId()
             		+ " after " + (block.getTimestamp() - previousBlock.getTimestamp()) + "s"
                     + " height " + block.getHeight() 
-                    + " with " + blockTransactions.size() + " transactions "
+                    + " with " + blockTransactions.size() + " transactions"
                     + " timestamp " + block.getTimestamp()+"("+Time.getDateTimeStringInfo(block.getTimestamp()) + ")");
             
         } catch (TransactionNotAcceptedException e) {

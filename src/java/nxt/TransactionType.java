@@ -37,6 +37,7 @@ import nxt.NxtException.ValidationException;
 import nxt.VoteWeighting.VotingModel;
 import nxt.util.Convert;
 import nxt.util.Logger;
+import sun.util.logging.resources.logging;
 
 
 public abstract class TransactionType {
@@ -318,6 +319,7 @@ public abstract class TransactionType {
             return false;
         }
         if (currentCount == 0) {
+        	Logger.logDebugMessage("Tx duplicated with currentCount=0 for " + uniqueType + " - " + key);
             return true;
         }
         if (currentCount < maxCount) {
@@ -989,14 +991,25 @@ public abstract class TransactionType {
 
             @Override
             boolean isDuplicate(Transaction transaction, Map<TransactionType, Map<String, Integer>> duplicates) {
-                Attachment.MessagingAliasAssignment attachment = (Attachment.MessagingAliasAssignment) transaction.getAttachment();
-                return isDuplicate(Messaging.ALIAS_ASSIGNMENT, attachment.getAliasName().toLowerCase(), duplicates, true);
+            	Attachment.MessagingAliasAssignment attachment = (Attachment.MessagingAliasAssignment) transaction.getAttachment();
+            	String alias = attachment.getAliasName().toLowerCase();
+            	boolean duplicated = isDuplicate(Messaging.ALIAS_ASSIGNMENT, alias, duplicates, true);
+            	if (duplicated) {
+            		Logger.logDebugMessage("Tx isDuplicate for Messaging.ALIAS_ASSIGNMENT for alias " + alias);
+            	}
+            	return duplicated;
             }
 
             @Override
             boolean isBlockDuplicate(Transaction transaction, Map<TransactionType, Map<String, Integer>> duplicates) {
-                return Alias.getAlias(((Attachment.MessagingAliasAssignment) transaction.getAttachment()).getAliasName()) == null
-                        && isDuplicate(Messaging.ALIAS_ASSIGNMENT, "", duplicates, true);
+            	Alias alias = Alias.getAlias(((Attachment.MessagingAliasAssignment) transaction.getAttachment()).getAliasName());
+            	boolean duplicated = (alias == null
+                        && isDuplicate(Messaging.ALIAS_ASSIGNMENT, "", duplicates, true));
+            	
+            	if (duplicated) {
+            		Logger.logDebugMessage("Tx isBlockDuplicate for Messaging.ALIAS_ASSIGNMENT");
+            	}
+            	return duplicated;
             }
 
             @Override

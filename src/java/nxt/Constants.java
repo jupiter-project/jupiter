@@ -59,9 +59,9 @@ public final class Constants {
     public static final long MIN_BASE_TARGET = INITIAL_BASE_TARGET * 9 / 10;
     
     // new values after block 1718000
-    public static final int MIN_BLOCKTIME_LIMIT = 19;
-    public static final int MAX_BLOCKTIME_LIMIT = 27;
-    public static final int EXPECTED_AVERAGE_BLOCK_GENERATION_RATE = 25;
+    public static final int MIN_BLOCKTIME_LIMIT = 4;
+    public static final int MAX_BLOCKTIME_LIMIT = 10;
+    public static final int EXPECTED_AVERAGE_BLOCK_GENERATION_RATE = 7;
     public static final int BASE_TARGET_GAMMA = 30;
     public static final double BASE_TARGET_GAMMA_REDUCED = 1.023;
     
@@ -166,8 +166,8 @@ public final class Constants {
     // LAST_KNOWN_BLOCK must also be set in html/www/js/nrs.constants.js
     public static final int LAST_KNOWN_BLOCK = CHECKSUM_BLOCK_2;
 
-    public static final int[] MIN_VERSION = new int[] {2, 4, 0};
-    public static final int[] MIN_PROXY_VERSION = new int[] {2, 4, 0};
+    public static final int[] MIN_VERSION = new int[] {2, 5, 1};
+    public static final int[] MIN_PROXY_VERSION = new int[] {2, 5, 1};
 
     static final long UNCONFIRMED_POOL_DEPOSIT_NQT = (isTestnet ? 50 : 100) * ONE_JUP;
     public static final long SHUFFLING_DEPOSIT_NQT = (isTestnet ? 7 : 1000) * ONE_JUP;

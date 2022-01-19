@@ -57,7 +57,7 @@ public final class Generator implements Comparable<Generator> {
     private static volatile List<Generator> sortedForgers = null;
     private static long lastBlockId;
     private static int delayTime = Constants.FORGING_DELAY;
-    private static final int MIN_BLOCK_TIME = 8;
+    private static final int MIN_BLOCK_TIME = 4;
 
     private static final Runnable generateBlocksThread = new Runnable() {
 

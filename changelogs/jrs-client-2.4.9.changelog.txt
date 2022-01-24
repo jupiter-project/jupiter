@@ -1,0 +1,3 @@
+* Upgrade bcprov-jdk15on lib to version 1.58
+* Upgrade h2 lib to version 1.4.196
+* Upgrade jetty libs to version 9.3.25 fixing some memory leaks

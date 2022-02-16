@@ -316,7 +316,7 @@ public abstract class TransactionType {
             return false;
         }
         if (currentCount == 0) {
-        	Logger.logDebugMessage("Tx duplicated with currentCount=0 for " + uniqueType + " - " + key +", currentCount = " + currentCount);
+        	// Logger.logDebugMessage("Tx duplicated with currentCount=0 for " + uniqueType + " - " + key +", currentCount = " + currentCount);
             return true;
         }
         if (currentCount < maxCount) {
@@ -988,22 +988,27 @@ public abstract class TransactionType {
 
             @Override
             boolean isDuplicate(Transaction transaction, Map<TransactionType, Map<String, Integer>> duplicates) {
-            	//Logger.logDebugMessage("+Checking Messaging.ALIAS_ASSIGNMENT isDuplicate");
             	Attachment.MessagingAliasAssignment attachment = (Attachment.MessagingAliasAssignment) transaction.getAttachment();
-            	String alias = attachment.getAliasName().toLowerCase();
-            	boolean duplicated = isDuplicate(Messaging.ALIAS_ASSIGNMENT, alias, duplicates, true);
+                return isDuplicate(Messaging.ALIAS_ASSIGNMENT, attachment.getAliasName().toLowerCase(), duplicates, true);
+            	//Logger.logDebugMessage("+Checking Messaging.ALIAS_ASSIGNMENT isDuplicate");
+            	//Attachment.MessagingAliasAssignment attachment = (Attachment.MessagingAliasAssignment) transaction.getAttachment();
+            	//String alias = attachment.getAliasName().toLowerCase();
+            	//boolean duplicated = isDuplicate(Messaging.ALIAS_ASSIGNMENT, alias, duplicates, true);
             	//Logger.logDebugMessage("+end Checking Messaging.ALIAS_ASSIGNMENT isDuplicate for alias " + alias + " with " + duplicated);
-            	return duplicated;
+            	//return duplicated;
             }
 
             @Override
             boolean isBlockDuplicate(Transaction transaction, Map<TransactionType, Map<String, Integer>> duplicates) {
+            	return Alias.getAlias(((Attachment.MessagingAliasAssignment) transaction.getAttachment()).getAliasName()) == null
+                        && isDuplicate(Messaging.ALIAS_ASSIGNMENT, "", duplicates, true);
+            	
             	//Logger.logDebugMessage("-Checking isBlockDuplicate");
-            	Attachment.MessagingAliasAssignment messagingAliasAssignment = (Attachment.MessagingAliasAssignment) transaction.getAttachment();
-            	Alias alias = Alias.getAlias(messagingAliasAssignment.getAliasName());
-            	boolean duplicated = (alias != null);
+            	//Attachment.MessagingAliasAssignment messagingAliasAssignment = (Attachment.MessagingAliasAssignment) transaction.getAttachment();
+            	//Alias alias = Alias.getAlias(messagingAliasAssignment.getAliasName());
+            	//boolean duplicated = (alias != null);
             	//Logger.logDebugMessage("-end Checking isBlockDuplicate with " + duplicated);
-            	return duplicated;
+            	//return duplicated;
             }
 
             @Override

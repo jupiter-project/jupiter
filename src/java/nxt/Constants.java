@@ -62,7 +62,7 @@ public final class Constants {
     // new values after block 2460315
     public static final int MIN_BLOCKTIME_LIMIT = 11;
     public static final int MAX_BLOCKTIME_LIMIT = 18;
-    public static final int EXPECTED_AVERAGE_BLOCK_GENERATION_RATE = 14;
+    public static final int EXPECTED_AVERAGE_BLOCK_GENERATION_RATE = 12;
     public static final int BASE_TARGET_GAMMA = 21;
     public static final double BASE_TARGET_GAMMA_REDUCED = 1.023;
     

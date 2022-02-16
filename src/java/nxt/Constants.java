@@ -34,7 +34,7 @@ public final class Constants {
     public static final int BLOCK_HEIGHT_HARD_FORK_INCREASE_MAX_BASE_TARGET = isTestnet ? Nxt.getIntProperty("nxt.hardBlockBaseTarget", 0) : 1731000;
     public static final int BLOCK_HEIGHT_HARD_FORK_TRANSACTION_PER_BLOCK = isTestnet ? Nxt.getIntProperty("nxt.hardBlockTx", 0) : 1725000;
     public static final int BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME = isTestnet ? Nxt.getIntProperty("nxt.hardBlockHeight", 0) : 1718000;
-    public static final int BLOCK_HEIGHT_SECOND_HARD_FORK_GENERATION_TIME = isTestnet ? Nxt.getIntProperty("nxt.secondHardBlockHeight", 0) : 999999999;
+    public static final int BLOCK_HEIGHT_SECOND_HARD_FORK_GENERATION_TIME = isTestnet ? Nxt.getIntProperty("nxt.secondHardBlockHeight", 0) : 2460315;
     public static final int BLOCK_HEIGHT_HARD_FORK_REMOVE_MAX_BASE_TARGET = isTestnet ? Nxt.getIntProperty("nxt.hardRemoveBaseTarget", 0) : 1948750;
     public static final int BLOCK_HEIGHT_HARD_FORK_UPDATE_FEE = isTestnet ? Nxt.getIntProperty("nxt.hardUpdateFee", 0) : 1948750;
 
@@ -59,7 +59,7 @@ public final class Constants {
     public static final long ORIGINAL_MAX_BASE_TARGET = INITIAL_BASE_TARGET * 50;
     public static final long MIN_BASE_TARGET = INITIAL_BASE_TARGET * 9 / 10;
     
-    // new values after block XXXXXXXX
+    // new values after block 2460315
     public static final int MIN_BLOCKTIME_LIMIT = 11;
     public static final int MAX_BLOCKTIME_LIMIT = 18;
     public static final int EXPECTED_AVERAGE_BLOCK_GENERATION_RATE = 14;

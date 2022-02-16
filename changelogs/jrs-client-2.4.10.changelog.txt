@@ -1,0 +1,3 @@
+Scale Jupiter blockchain
+
+* Increase the rate of block generation to an average of 12 seconds per block from the current 25 seconds on average.

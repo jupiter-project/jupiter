@@ -55,6 +55,7 @@ import nxt.db.DbIterator;
 import nxt.db.DerivedDbTable;
 import nxt.db.FilteringIterator;
 import nxt.db.FullTextTrigger;
+import nxt.http.JSONData;
 import nxt.peer.Peer;
 import nxt.peer.Peers;
 import nxt.util.Convert;
@@ -1678,58 +1679,81 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
 
     SortedSet<UnconfirmedTransaction> selectUnconfirmedTransactions(Map<TransactionType, Map<String, Integer>> duplicates, Block previousBlock, int blockTimestamp) {
         List<UnconfirmedTransaction> orderedUnconfirmedTransactions = new ArrayList<>();
+        
         try (FilteringIterator<UnconfirmedTransaction> unconfirmedTransactions = new FilteringIterator<>(
                 TransactionProcessorImpl.getInstance().getAllUnconfirmedTransactions(),
                 transaction -> hasAllReferencedTransactions(transaction.getTransaction(), transaction.getTimestamp(), 0))) {
-            for (UnconfirmedTransaction unconfirmedTransaction : unconfirmedTransactions) {
+            
+        	for (UnconfirmedTransaction unconfirmedTransaction : unconfirmedTransactions) {
                 orderedUnconfirmedTransactions.add(unconfirmedTransaction);
             }
         }
+        
         SortedSet<UnconfirmedTransaction> sortedTransactions = new TreeSet<>(transactionArrivalComparator);
         int payloadLength = 0;
+        int maxPayload = getMaxPayloadLength(previousBlock.getHeight());
+        int maxNumberOfTransactions = getMaxNumberOfTransactions(previousBlock.getHeight());
         
-        while (payloadLength <= getMaxPayloadLength(previousBlock.getHeight()) && 
-        		sortedTransactions.size() <= getMaxNumberOfTransactions(previousBlock.getHeight())) {
+        if (orderedUnconfirmedTransactions.size() > 0) {
+        	 Logger.logDebugMessage("     Starting to select unconfirmed transactions");
+        }
+        
+        while (payloadLength <= maxPayload && sortedTransactions.size() <= maxNumberOfTransactions) {
             int prevNumberOfNewTransactions = sortedTransactions.size();
             
-            for (UnconfirmedTransaction unconfirmedTransaction : orderedUnconfirmedTransactions) {
+            for (UnconfirmedTransaction unconfirmedTransaction: orderedUnconfirmedTransactions) {
                 int transactionLength = unconfirmedTransaction.getTransaction().getFullSize();
                 
-                if (sortedTransactions.contains(unconfirmedTransaction) || 
-                		payloadLength + transactionLength > getMaxPayloadLength(previousBlock.getHeight())) {
+                if (sortedTransactions.size() >= maxNumberOfTransactions) {
+                	break;
+                }
+                
+                if (sortedTransactions.contains(unconfirmedTransaction)) {
                     continue;
                 }
                 
-                if (sortedTransactions.size() >= getMaxNumberOfTransactions(previousBlock.getHeight())) {
-                	continue;
+                if (payloadLength + transactionLength > maxPayload) {
+                    continue;
                 }
                 
                 if (unconfirmedTransaction.getVersion() != getTransactionVersion(previousBlock.getHeight())) {
                     continue;
                 }
+                
                 if (blockTimestamp > 0 && (unconfirmedTransaction.getTimestamp() > blockTimestamp + Constants.MAX_TIMEDRIFT
                         || unconfirmedTransaction.getExpiration() < blockTimestamp)) {
                     continue;
                 }
+                
                 try {
                     unconfirmedTransaction.getTransaction().validate();
                 } catch (NxtException.ValidationException e) {
+                	Logger.logDebugMessage("Error validating transaction while unconfirmed transactions are collected");
                     continue;
                 }
+                
                 if (unconfirmedTransaction.getTransaction().attachmentIsDuplicate(duplicates, true)) {
+                	Logger.logDebugMessage("Transaction attachment duplicated while unconfirmed transactions are collected");
+                	Logger.logDebugMessage(JSONData.unconfirmedTransaction(unconfirmedTransaction).toJSONString());
                     continue;
                 }
+                
                 sortedTransactions.add(unconfirmedTransaction);
                 payloadLength += transactionLength;
             }
             
             if (sortedTransactions.size() == prevNumberOfNewTransactions) {
+            	if (sortedTransactions.size() > 0) {
+            		Logger.logDebugMessage("Stop getting unconfirmed transactions with " + sortedTransactions.size() + " txs");
+            	}
                 break;
             }
         }
+        
         if (sortedTransactions.size() > 0) {
-        	Logger.logDebugMessage("Selected " + sortedTransactions.size() + " unconfirmed txs, payload " + payloadLength + ", pending " 
-        			+ (orderedUnconfirmedTransactions.size() - sortedTransactions.size()) + " to process");
+        	Logger.logDebugMessage("Selected " + sortedTransactions.size() + " unconfirmed txs (max of " + maxNumberOfTransactions + " txs). " 
+        			+ "Block payload " + payloadLength + " (max of " + maxPayload +"). Pending " 
+        			+ (orderedUnconfirmedTransactions.size() - sortedTransactions.size()) + " txs to process.");
         }
         return sortedTransactions;
     }
@@ -1749,7 +1773,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
     		return Constants.ORIGINAL_MAX_NUMBER_OF_TRANSACTIONS;
     	}
     }
-
+    
     private static final Comparator<UnconfirmedTransaction> transactionArrivalComparator = Comparator
             .comparingLong(UnconfirmedTransaction::getArrivalTimestamp)
             .thenComparingInt(UnconfirmedTransaction::getHeight)
@@ -1767,7 +1791,7 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
                 }
             }
         }
-
+        
         BlockImpl previousBlock = blockchain.getLastBlock();
         TransactionProcessorImpl.getInstance().processWaitingTransactions();
         SortedSet<UnconfirmedTransaction> sortedTransactions = selectUnconfirmedTransactions(duplicates, previousBlock, blockTimestamp);
@@ -1799,8 +1823,8 @@ final class BlockchainProcessorImpl implements BlockchainProcessor {
             Logger.logDebugMessage(" Account " + Long.toUnsignedString(block.getGeneratorId()) + " generated block " + block.getStringId()
             		+ " after " + (block.getTimestamp() - previousBlock.getTimestamp()) + "s"
                     + " height " + block.getHeight() 
-                    + " timestamp " + block.getTimestamp()+"("+Time.getDateTimeStringInfo(block.getTimestamp()) + ")" 
-                    + " fee " + ((float)block.getTotalFeeNQT())/Constants.ONE_JUP);
+                    + " with " + blockTransactions.size() + " transactions"
+                    + " timestamp " + block.getTimestamp()+"("+Time.getDateTimeStringInfo(block.getTimestamp()) + ")");
             
         } catch (TransactionNotAcceptedException e) {
             Logger.logDebugMessage("Generate block failed: " + e.getMessage());

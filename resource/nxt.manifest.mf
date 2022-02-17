@@ -1,18 +1,18 @@
 Manifest-Version: 1.0
-Class-Path: lib/slf4j-jdk14-1.7.22.jar lib/jetty-servlet-9.3.20.v20170
- 531.jar lib/bcprov-jdk15on-156.jar lib/core-3.3.0.jar lib/json-simple
- -1.1.1.jar lib/websocket-servlet-9.3.20.v20170531.jar lib/tika-core-1
- .13.jar lib/jetty-io-9.3.20.v20170531.jar lib/tika-parsers-1.13.jar l
- ib/websocket-client-9.3.20.v20170531.jar lib/websocket-server-9.3.20.
- v20170531.jar lib/h2-1.4.195.jar lib/jetty-proxy-9.3.20.v20170531.jar
-  lib/websocket-common-9.3.20.v20170531.jar lib/lucene-analyzers-commo
- n-5.3.2.jar lib/slf4j-api-1.7.22.jar lib/jetty-server-9.3.20.v2017053
- 1.jar lib/jetty-security-9.3.20.v20170531.jar lib/jetty-http-9.3.20.v
- 20170531.jar lib/javase-3.3.0.jar lib/javax.servlet-api-3.1.0.jar lib
- /lucene-queries-5.3.2.jar lib/jetty-util-9.3.20.v20170531.jar lib/web
- socket-api-9.3.20.v20170531.jar lib/lucene-core-5.3.2.jar lib/jetty-c
- ontinuation-9.3.20.v20170531.jar lib/weupnp-0.1.4.jar lib/jetty-servl
- ets-9.3.20.v20170531.jar lib/lucene-queryparser-5.3.2.jar lib/jetty-c
- lient-9.3.20.v20170531.jar conf/
+Class-Path: lib/websocket-server-9.3.25.v20180904.jar lib/websocket-ap
+ i-9.3.25.v20180904.jar lib/websocket-servlet-9.3.25.v20180904.jar lib
+ /slf4j-jdk14-1.7.26.jar lib/core-3.3.0.jar lib/json-simple-1.1.1.jar 
+ lib/jetty-io-9.3.25.v20180904.jar lib/jetty-security-9.3.25.v20180904
+ .jar lib/websocket-common-9.3.25.v20180904.jar lib/tika-core-1.13.jar
+  lib/jetty-continuation-9.3.25.v20180904.jar lib/tika-parsers-1.13.ja
+ r lib/jetty-client-9.3.25.v20180904.jar lib/jetty-http-9.3.25.v201809
+ 04.jar lib/jetty-util-9.3.25.v20180904.jar lib/slf4j-api-1.7.26.jar l
+ ib/lucene-analyzers-common-5.3.2.jar lib/bcprov-jdk15on-1.58.jar lib/
+ jetty-servlet-9.3.25.v20180904.jar lib/javase-3.3.0.jar lib/javax.ser
+ vlet-api-3.1.0.jar lib/jetty-proxy-9.3.25.v20180904.jar lib/lucene-qu
+ eries-5.3.2.jar lib/h2-1.4.196.jar lib/lucene-core-5.3.2.jar lib/weup
+ np-0.1.4.jar lib/lucene-queryparser-5.3.2.jar lib/websocket-client-9.
+ 3.25.v20180904.jar lib/jetty-servlets-9.3.25.v20180904.jar lib/jetty-
+ server-9.3.25.v20180904.jar conf/
 Main-Class: nxt.Nxt
 

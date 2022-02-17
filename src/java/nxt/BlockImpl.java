@@ -442,7 +442,16 @@ final class BlockImpl implements Block {
         double baseTargetGammaReduced = Constants.BASE_TARGET_GAMMA_REDUCED;
         int maxBlocktimeLimit = Constants.MAX_BLOCKTIME_LIMIT;
         int minBlockTimeLimit = Constants.MIN_BLOCKTIME_LIMIT;
-        if (previousBlock.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME) {
+        
+        if (previousBlock.getHeight() > Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME &&
+        		previousBlock.getHeight() < Constants.BLOCK_HEIGHT_SECOND_HARD_FORK_GENERATION_TIME) {
+        	expectedAverageBlockGenerationRate = Constants.EXPECTED_AVERAGE_BLOCK_GENERATION_RATE_FIRST_HARD_FORK;
+            baseTargetGamma = Constants.BASE_TARGET_GAMMA_FIRST_HARD_FORK;
+            baseTargetGammaReduced = Constants.BASE_TARGET_GAMMA_REDUCED_FIRST_HARD_FORK;
+            maxBlocktimeLimit = Constants.MAX_BLOCKTIME_LIMIT_FIRST_HARD_FORK;
+            minBlockTimeLimit = Constants.MIN_BLOCKTIME_LIMIT_FIRST_HARD_FORK;
+        
+        } else if (previousBlock.getHeight() < Constants.BLOCK_HEIGHT_HARD_FORK_GENERATION_TIME) {
         	baseTargetGamma = Constants.ORIGINAL_BASE_TARGET_GAMMA;
         	expectedAverageBlockGenerationRate = Constants.ORIGINAL_EXPECTED_AVERAGE_BLOCK_GENERATION_RATE;
             maxBlocktimeLimit = Constants.ORIGINAL_MAX_BLOCKTIME_LIMIT;

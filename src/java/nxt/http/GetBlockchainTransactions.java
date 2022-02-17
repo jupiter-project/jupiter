@@ -69,8 +69,15 @@ public final class GetBlockchainTransactions extends APIServlet.APIRequestHandle
 
         int firstIndex = ParameterParser.getFirstIndex(req);
         int lastIndex = ParameterParser.getLastIndex(req);
+        int firstIndexToInclude = ParameterParser.getFirstIndex(req);
+        int lastIndexToInclude = ParameterParser.getLastIndex(req);
+        if (withMessage && messageToFilter != null && !messageToFilter.isEmpty()) {
+        	firstIndex = 0;
+        	lastIndex = Integer.MAX_VALUE;
+        }
 
         JSONArray transactions = new JSONArray();
+        int elementsFiltered = 0;
         try (DbIterator<? extends Transaction> iterator = Nxt.getBlockchain().getTransactions(accountId, numberOfConfirmations,
                 type, subtype, timestamp, withMessage, phasedOnly, nonPhasedOnly, firstIndex, lastIndex,
                 includeExpiredPrunable, executedOnly)) {
@@ -87,10 +94,24 @@ public final class GetBlockchainTransactions extends APIServlet.APIRequestHandle
 	                	if (!messageString.contains(messageToFilter)) {
 	                		continue;
 	                	}
+	                	
+	                	if (elementsFiltered >= firstIndexToInclude && elementsFiltered <= lastIndexToInclude) {
+		            		transactions.add(JSONData.transaction(transaction, includePhasingResult));
+	            		}
+	            		
+	            		elementsFiltered++;
+	            		
+	            		if (elementsFiltered > lastIndexToInclude) {
+	            			break;
+	            		}
+
+	            	} else {
+	                	transactions.add(JSONData.transaction(transaction, includePhasingResult));
 	                }
+	            	
+                } else {
+                	transactions.add(JSONData.transaction(transaction, includePhasingResult));
                 }
-               
-                transactions.add(JSONData.transaction(transaction, includePhasingResult));
             }
         }
 

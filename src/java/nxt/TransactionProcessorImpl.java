@@ -516,6 +516,9 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                     }
                     waitingTransactions.add(unconfirmedTransaction);
                 }
+                if (waitingTransactions.size() > 0) {
+                	Logger.logDebugMessage("Requeued " + waitingTransactions.size() + " unconfirmed txs to waiting txs");
+                }
             }
             unconfirmedTransactionTable.truncate();
             unconfirmedDuplicates.clear();
@@ -596,9 +599,11 @@ final class TransactionProcessorImpl implements TransactionProcessor {
         BlockchainImpl.getInstance().writeLock();
         try {
             if (waitingTransactions.size() > 0) {
+            	Logger.logDebugMessage("Processing " + waitingTransactions.size() + " waiting txs");
                 int currentTime = Nxt.getEpochTime();
                 List<Transaction> addedUnconfirmedTransactions = new ArrayList<>();
                 Iterator<UnconfirmedTransaction> iterator = waitingTransactions.iterator();
+                
                 while (iterator.hasNext()) {
                     UnconfirmedTransaction unconfirmedTransaction = iterator.next();
                     try {
@@ -614,10 +619,13 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                             iterator.remove();
                         }
                     } catch (NxtException.ValidationException|RuntimeException e) {
+                    	Logger.logDebugMessage("Validation error moving waiting transaction to unconfirmed transaction" + e.getMessage());
                         iterator.remove();
                     }
                 }
+                
                 if (addedUnconfirmedTransactions.size() > 0) {
+                	Logger.logDebugMessage("Added " + addedUnconfirmedTransactions.size() + " unconfirmed txs from waiting txs");
                     transactionListeners.notify(addedUnconfirmedTransactions, Event.ADDED_UNCONFIRMED_TRANSACTIONS);
                 }
             }
@@ -695,8 +703,12 @@ final class TransactionProcessorImpl implements TransactionProcessor {
                     throw new NxtException.NotCurrentlyValidException("Blockchain not ready to accept transactions");
                 }
 
-                if (getUnconfirmedTransaction(transaction.getDbKey()) != null || TransactionDb.hasTransaction(transaction.getId())) {
+                if (getUnconfirmedTransaction(transaction.getDbKey()) != null) {
                     throw new NxtException.ExistingTransactionException("Transaction already processed");
+                }
+                
+                if (TransactionDb.hasTransaction(transaction.getId())) {
+                    throw new NxtException.ExistingTransactionException("TransactionDb already have unconfirmed transaction");
                 }
 
                 if (!transaction.verifySignature()) {

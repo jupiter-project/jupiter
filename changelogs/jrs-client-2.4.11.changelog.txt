@@ -1,0 +1,3 @@
+Scale Jupiter blockchain
+
+* Blacklisting version previous than the hardfork version, 2.4.10.

@@ -21,7 +21,7 @@ var NRS = (function(NRS, $) {
 	NRS.blocksPageType = null;
 	NRS.tempBlocks = [];
 	var trackBlockchain = false;
-	NRS.averageBlockGenerationTime = 60;
+	NRS.averageBlockGenerationTime = 12;
 
 	NRS.getBlock = function(id, callback, pageRequest) {
 		NRS.sendRequest("getBlock" + (pageRequest ? "+" : ""), {

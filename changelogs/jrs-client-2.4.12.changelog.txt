@@ -1,0 +1,6 @@
+* Fix a bug getting the parameters to calculate base target value for block 
+* Updated the value of wellKnownPeers property in nxt-default.properties
+* Updated the value of knownBlacklistedPeers property in nxt-default.properties
+* Updated the value of blacklistingPeriod to 86400000 (1 day)
+
+

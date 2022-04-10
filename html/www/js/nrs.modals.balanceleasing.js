@@ -24,7 +24,7 @@ var NRS = (function(NRS, $, undefined) {
 	};
 
     function setLeaseBalanceHelp(period) {
-        var days = Math.round(period / 1440);
+        var days = Math.round(period / 7200);
         $("#lease_balance_help").html($.t("lease_balance_help_var", {
             "blocks": String(period).escapeHTML(),
             "days": String(Math.round(days)).escapeHTML()
@@ -33,7 +33,7 @@ var NRS = (function(NRS, $, undefined) {
 
 	$("#lease_balance_modal").on("show.bs.modal", function() {
         var leaseBalancePeriod = $("#lease_balance_period");
-        leaseBalancePeriod.attr('min', 1440);
+        leaseBalancePeriod.attr('min', 7200);
         leaseBalancePeriod.attr('max', NRS.constants.MAX_UNSIGNED_SHORT_JAVA);
 		setLeaseBalanceHelp(NRS.constants.MAX_UNSIGNED_SHORT_JAVA);
 	});
